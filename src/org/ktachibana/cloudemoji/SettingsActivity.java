@@ -21,7 +21,8 @@ public class SettingsActivity extends PreferenceActivity
     private EditTextPreference editTextPreference;
     private Preference restore_pref;
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);

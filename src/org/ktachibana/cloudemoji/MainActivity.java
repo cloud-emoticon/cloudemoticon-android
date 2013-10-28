@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -54,7 +55,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         setupNotification();
         fireupNotification();
 
-        //Begin to download and parse repo
+        //Begin to download and parse repository
         process(url);
     }
 
@@ -149,10 +150,10 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     }
 
     /**
-     * Render a given repo to the screen
+     * Render a given repository to the screen
      */
     private void render(RepoXmlParser.Emoji emoji) {
-        //TODO: Display repo info
+        //TODO: Display repository information
         List<String> infoos = emoji.infoos.infoos;
         List<RepoXmlParser.Category> categories = emoji.categories;
 
@@ -262,14 +263,15 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
      * Listens on child item click and copy to clipboard
      */
     private class ChildClickListener implements ExpandableListView.OnChildClickListener {
-        @Override
+        @SuppressLint("NewApi")
+		@Override
         public boolean onChildClick(ExpandableListView parent, View view,
                                     int groupPosition, int childPosition, long id) {
             RepoXmlParser.Entry entry = (RepoXmlParser.Entry) adapter.getChild(groupPosition, childPosition);
             //TODO: not refer to entry but adapter
             String copied = entry.string;
 
-            //Copy to clipboard
+            //Copy to clip board
             if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
                 android.text.ClipboardManager clipboard
                         = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
