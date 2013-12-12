@@ -263,7 +263,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
      * Listens on child item click and copy to clipboard
      */
     private class ChildClickListener implements ExpandableListView.OnChildClickListener {
-        @SuppressLint("NewApi")
+        @SuppressWarnings("deprecation")
+		@SuppressLint("NewApi")
 		@Override
         public boolean onChildClick(ExpandableListView parent, View view,
                                     int groupPosition, int childPosition, long id) {
@@ -273,7 +274,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 
             //Copy to clip board
             if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                android.text.ClipboardManager clipboard
+				android.text.ClipboardManager clipboard
                         = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(copied);
             } else {
