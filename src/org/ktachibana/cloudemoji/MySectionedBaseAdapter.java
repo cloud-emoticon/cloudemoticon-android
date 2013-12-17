@@ -23,7 +23,7 @@ public class MySectionedBaseAdapter extends SectionedBaseAdapter {
 	
 	@Override
 	public Object getItem(int section, int position) {
-		return null;
+		return data.get(section).entries.get(position);
 	}
 
 	@Override

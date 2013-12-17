@@ -11,6 +11,7 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParserException;
 
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
+import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
@@ -153,6 +154,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         
         adapter = new MySectionedBaseAdapter(this, categories);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new MyOnItemClickListener());
     }
 
     /**
@@ -260,12 +262,12 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     /**
      * Listens on child item click and copy to clipboard
      */
-    private class MyClickListener implements OnItemClickListener {
+    private class MyOnItemClickListener extends PinnedHeaderListView.OnItemClickListener {
 
 		@SuppressLint("NewApi")
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int section, long arg3) {
-			String copied = "233";
+		public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
+			String copied = ((RepoXmlParser.Entry) adapter.getItem(section, position)).string;
 			
             // Copy to clip board
             if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -278,11 +280,19 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
                 clipboard.setPrimaryClip(clip);
             }
-
+            
+            // Make a toast
             Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
+            
+            // Close app or not
             if (isCloseAfterCopy) {
                 moveTaskToBack (true);
-            }
+            }			
+		}
+
+		@Override
+		public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
+			return;
 		}
     }
     
