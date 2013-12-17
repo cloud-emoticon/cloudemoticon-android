@@ -28,5 +28,14 @@
             android:key="pref_restore_default"
             android:title="@string/restore_default" />
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/debug"
+        android:key="pref_debug">
+       <CheckBoxPreference
+            android:key="pref_mock_data"
+            android:title="@string/mock_data"
+            android:defaultValue="false" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,5 +1,16 @@
 package org.ktachibana.cloudemoji;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
@@ -13,66 +24,57 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    int sdk;
-
-    private ExpandableListView expandable;
-    private ExpandableListViewAdapter adapter;
+    public static final int sdk = android.os.Build.VERSION.SDK_INT;
+    
+    private PinnedHeaderListView listView;
+    private MySectionedBaseAdapter adapter;
     private SharedPreferences preferences;
-    private Notification notification;
     private NotificationManager nManager;
+    private Notification notification;
 
     private boolean isInNotification;
     private boolean isCloseAfterCopy;
     private String url;
+    private boolean mocked;
 
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        
         initializations();
-        setupPreferences();
         setupNotification();
         fireupNotification();
 
-        //Begin to download and parse repository
+        // Begin to download and parse repository
         process(url);
+        setContentView(listView);
     }
 
     private void initializations() {
-        sdk = android.os.Build.VERSION.SDK_INT;
-        expandable = (ExpandableListView) findViewById(R.id.expandableListView);
+    	listView = new PinnedHeaderListView(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         nManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-    }
-
-    private void setupPreferences() {
         isInNotification
-                = preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
+        	= preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
         isCloseAfterCopy
-                = preferences.getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
+        	= preferences.getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
         url
-                = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
+        	= preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
+        mocked 
+        	= preferences.getBoolean(SettingsActivity.PREF_MOCK_DATA, false);
     }
 
     private void setupNotification() {
@@ -82,7 +84,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         
-        //ways to remove time stamp using NotificationCompat?
+        //TODO: Ways to remove time stamp using NotificationCompat?
         notification = new NotificationCompat.Builder(this)
                     .setContentTitle(title)
                     .setContentText(text)
@@ -104,7 +106,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu
+    	// Adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -114,7 +117,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_refresh: {
-                //Refresh: same task
+                // Refresh: same task
                 process(url);
                 return true;
             }
@@ -136,15 +139,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         }
     }
 
-    /**
-     * Make it easier to show a short toast
-     */
-    private void fireupToast(String message) {
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(MainActivity.this, message, duration);
-        toast.show();
-    }
-
     private void process(String url) {
         new ProcessRepoTask().execute(url);
     }
@@ -156,21 +150,20 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         //TODO: Display repository information
         List<String> infoos = emoji.infoos.infoos;
         List<RepoXmlParser.Category> categories = emoji.categories;
-
-        adapter = new ExpandableListViewAdapter(this, categories);
-        expandable.setAdapter(adapter);
-        expandable.setOnChildClickListener(new ChildClickListener());
+        
+        adapter = new MySectionedBaseAdapter(this, categories);
+        listView.setAdapter(adapter);
     }
 
     /**
-     * Fetch a URL of xml file, parse it and make it show on a list
+     * Fetch a URL of XML file, parse it and make it show on a list
      */
     private class ProcessRepoTask extends AsyncTask<String, Void, RepoXmlParser.Emoji> {
         private ProgressDialog pd;
         private List<Exception> taskExceptions; //Hold all exceptions during runtime
 
         protected void onPreExecute() {
-            //Show a processing dialog
+            // Show a processing dialog
             pd = new ProgressDialog(MainActivity.this);
             pd.setMessage(getString(R.string.processing));
             pd.show();
@@ -180,34 +173,38 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             Reader reader = null;
             RepoXmlParser.Emoji repo = null;
             taskExceptions = new ArrayList<Exception>();
-            //Try to download and parse
-            try {
-                //Downloading
-                URL url = new URL(stringUrl[0]);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(15000);
-                conn.setReadTimeout(10000);
-                conn.setRequestMethod("GET");
-                conn.connect();
-
-                //Parsing
-                reader = new InputStreamReader(conn.getInputStream());
-                repo = new RepoXmlParser().parse(reader);
-
-                //Bad connection
-            } catch (IOException e) {
-                taskExceptions.add(e);
-                //Wrong XML
-            } catch (XmlPullParserException e) {
-                taskExceptions.add(e);
-            } catch (Exception e) {
-                taskExceptions.add(e);
-            } finally {
-                try {
-                    reader.close();
-                } catch (Exception e) {
-                    taskExceptions.add(e);
-                }
+            if (!mocked)
+            {
+	            // Try to download and parse
+	            try {
+	                // Download
+	                URL url = new URL(stringUrl[0]);
+	                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	                conn.setConnectTimeout(15000);
+	                conn.setReadTimeout(10000);
+	                conn.setRequestMethod("GET");
+	                conn.connect();
+	                reader = new InputStreamReader(conn.getInputStream());
+	                // Parse
+	                repo = new RepoXmlParser().parse(reader);
+	
+	            } catch (IOException e) {
+	                taskExceptions.add(e);
+	            } catch (XmlPullParserException e) {
+	                taskExceptions.add(e);
+	            } catch (Exception e) {
+	                taskExceptions.add(e);
+	            } finally {
+	                try {
+	                    reader.close();
+	                } catch (Exception e) {
+	                    taskExceptions.add(e);
+	                }
+	            }
+            }
+            else
+            {
+            	repo = MockData.generateMock();
             }
             return repo;
         }
@@ -217,15 +214,13 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 render(emoji);
             } else {
                 Exception firstException = taskExceptions.get(0);
-                //If bad connection
                 if (firstException instanceof IOException) {
-                    fireupToast(getString(R.string.bad_conn));
-                    //If wrong XML
+                    Toast.makeText(MainActivity.this, getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
                 } else if (firstException instanceof XmlPullParserException) {
-                    fireupToast(getString(R.string.wrong_xml));
-                    //Please contact me
+                    Toast.makeText(MainActivity.this, getString(R.string.wrong_xml), Toast.LENGTH_SHORT).show();
                 } else {
-                    fireupToast(getString(R.string.fail));
+                	Log.e("CloudEmoji", "Unexpcted exception", firstException);
+                	Toast.makeText(MainActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
                 }
                 taskExceptions.clear();
             }
@@ -245,6 +240,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         else if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
             url = preferences.getString(key, getString(R.string.default_url));
         }
+        else if (key.equals(SettingsActivity.PREF_MOCK_DATA)) {
+        	mocked = preferences.getBoolean(key, false);
+        }
     }
 
     @Override
@@ -258,23 +256,20 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         super.onPause();
         preferences.registerOnSharedPreferenceChangeListener(this);
     }
-
+    
     /**
      * Listens on child item click and copy to clipboard
      */
-    private class ChildClickListener implements ExpandableListView.OnChildClickListener {
-        @SuppressWarnings("deprecation")
+    private class MyClickListener implements OnItemClickListener {
+
 		@SuppressLint("NewApi")
 		@Override
-        public boolean onChildClick(ExpandableListView parent, View view,
-                                    int groupPosition, int childPosition, long id) {
-            RepoXmlParser.Entry entry = (RepoXmlParser.Entry) adapter.getChild(groupPosition, childPosition);
-            //TODO: not refer to entry but adapter
-            String copied = entry.string;
-
-            //Copy to clip board
+		public void onItemClick(AdapterView<?> parent, View view, int section, long arg3) {
+			String copied = "233";
+			
+            // Copy to clip board
             if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-				android.text.ClipboardManager clipboard
+                                android.text.ClipboardManager clipboard
                         = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(copied);
             } else {
@@ -284,11 +279,11 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 clipboard.setPrimaryClip(clip);
             }
 
-            fireupToast(getString(R.string.copied));
+            Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
             if (isCloseAfterCopy) {
                 moveTaskToBack (true);
             }
-            return false;
-        }
+		}
     }
+    
 }

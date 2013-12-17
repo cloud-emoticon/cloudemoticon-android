@@ -1,14 +1,14 @@
 package org.ktachibana.cloudemoji;
 
-import android.util.Xml;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Xml;
 
 public class RepoXmlParser {
     private static final String ns = null;

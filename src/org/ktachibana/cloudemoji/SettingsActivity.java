@@ -16,6 +16,7 @@ public class SettingsActivity extends PreferenceActivity
     public static final String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";
     public static final String PREF_TEST_MY_REPO = "pref_test_my_repository";
     public static final String PREF_RESTORE_DEFAULT = "pref_restore_default";
+    public static final String PREF_MOCK_DATA = "pref_mock_data";
 
     private SharedPreferences myPreferences;
     private EditTextPreference editTextPreference;

@@ -29,5 +29,7 @@
     <string name="repositories">Repositories</string>
     <string name="test_my_repository">Test my repository</string>
     <string name="restore_default">Restore default</string>
+    <string name="debug">Debug</string>
+    <string name="mock_data">Mock data</string>
 
 </resources>
