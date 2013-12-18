@@ -274,6 +274,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     		this.adapter = adapter;
     	}
     	
+		@SuppressWarnings("deprecation")
 		@SuppressLint("NewApi")
 		@Override
 		public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
