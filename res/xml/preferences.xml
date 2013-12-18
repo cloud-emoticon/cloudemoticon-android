@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
-
-    <PreferenceCategory
+    android:layout_height="wrap_content"><PreferenceCategory
         android:title="@string/behaviors"
         android:key="pref_behaviors">
         <CheckBoxPreference
@@ -37,5 +35,6 @@
             android:title="@string/mock_data"
             android:defaultValue="false" />
     </PreferenceCategory>
+    <PreferenceCategory android:key="pref_about" android:title="@string/about"><Preference android:key="pref_github_repo" android:title="@string/github_repo"/></PreferenceCategory>
 
 </PreferenceScreen>

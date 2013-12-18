@@ -1,6 +1,8 @@
 package org.ktachibana.cloudemoji;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -17,10 +19,12 @@ public class SettingsActivity extends PreferenceActivity
     public static final String PREF_TEST_MY_REPO = "pref_test_my_repository";
     public static final String PREF_RESTORE_DEFAULT = "pref_restore_default";
     public static final String PREF_MOCK_DATA = "pref_mock_data";
+    public static final String PREF_GITHUB_REPO = "pref_github_repo";
 
     private SharedPreferences myPreferences;
-    private EditTextPreference editTextPreference;
-    private Preference restore_pref;
+    private EditTextPreference editRepositoryPref;
+    private Preference restorePref;
+    private Preference githubRepoPref;
 
     @SuppressWarnings("deprecation")
 	@Override
@@ -30,10 +34,12 @@ public class SettingsActivity extends PreferenceActivity
 
         myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         myPreferences.registerOnSharedPreferenceChangeListener(this);
-        editTextPreference = (EditTextPreference)findPreference(PREF_TEST_MY_REPO);
-        editTextPreference.setSummary(editTextPreference.getText());
-        restore_pref = findPreference(PREF_RESTORE_DEFAULT);
-        restore_pref.setOnPreferenceClickListener(this);
+        editRepositoryPref = (EditTextPreference)findPreference(PREF_TEST_MY_REPO);
+        editRepositoryPref.setSummary(editRepositoryPref.getText());
+        restorePref = findPreference(PREF_RESTORE_DEFAULT);
+        githubRepoPref = findPreference(PREF_GITHUB_REPO);
+        restorePref.setOnPreferenceClickListener(this);
+        githubRepoPref.setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -51,18 +57,24 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
         if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
-            String newUrl = editTextPreference.getText();
-            editTextPreference.setSummary(newUrl);
+            String newUrl = editRepositoryPref.getText();
+            editRepositoryPref.setSummary(newUrl);
         }
      }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        editTextPreference.setText(getString(R.string.default_url));
-        editTextPreference.setSummary(getString(R.string.default_url));
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(this, getString(R.string.restored_default), duration);
-        toast.show();
+    	String key = preference.getKey();
+    	if (PREF_RESTORE_DEFAULT.equals(key)) {
+	        editRepositoryPref.setText(getString(R.string.default_url));
+	        editRepositoryPref.setSummary(getString(R.string.default_url));
+	        Toast.makeText(this, getString(R.string.restored_default), Toast.LENGTH_SHORT).show();
+    	}
+    	else if (PREF_GITHUB_REPO.equals(key)) {
+    		Uri url = Uri.parse(getResources().getString(R.string.github_url));
+    		Intent intent = new Intent(Intent.ACTION_VIEW, url);
+            startActivity(intent);
+    	}
         return true;
     }
 

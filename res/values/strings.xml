@@ -32,5 +32,8 @@
     <string name="debug">Debug</string>
     <string name="mock_data">Mock data</string>
     <string name="category">Category</string>
+    <string name="about">About</string>
+    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
+    <string name="github_repo">GitHub repository</string>
 
 </resources>
