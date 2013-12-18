@@ -157,7 +157,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     	for (String infoo : infoos) {
     		TextView view = (TextView) getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
     		view.setText(infoo);
-    		listView.addHeaderView(view);
+    		view.setBackgroundColor(getResources().getColor(R.color.holo_gray_light));
+    		listView.addFooterView(view);
     	}
     }
 
