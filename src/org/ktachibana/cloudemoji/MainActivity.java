@@ -85,12 +85,12 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         
-        //TODO: Ways to remove time stamp using NotificationCompat?
         notification = new NotificationCompat.Builder(this)
                     .setContentTitle(title)
                     .setContentText(text)
                     .setSmallIcon(icon)
                     .setContentIntent(pIntent)
+                    .setWhen(0)
                     .build();
     }
 
@@ -269,7 +269,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 		public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 			String copied = ((RepoXmlParser.Entry) adapter.getItem(section, position)).string;
 			
-            // Copy to clip board
+            // Copy to clipboard
             if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
                                 android.text.ClipboardManager clipboard
                         = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
