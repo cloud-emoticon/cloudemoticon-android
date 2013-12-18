@@ -31,5 +31,6 @@
     <string name="restore_default">Restore default</string>
     <string name="debug">Debug</string>
     <string name="mock_data">Mock data</string>
+    <string name="category">Category</string>
 
 </resources>

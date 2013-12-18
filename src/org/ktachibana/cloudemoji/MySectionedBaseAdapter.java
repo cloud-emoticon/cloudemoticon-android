@@ -44,15 +44,18 @@ public class MySectionedBaseAdapter extends SectionedBaseAdapter {
 	@Override
 	public View getItemView(int section, int position, View convertView,
 			ViewGroup parent) {
-		TextView view = null;
+		View view = null;
     	if (convertView == null) {
-            view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            view = (View) inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
         }
     	else
     	{
-    		view = (TextView) convertView;
+    		view = (View) convertView;
     	}
-        view.setText(data.get(section).entries.get(position).string);
+    	TextView lineOne = (TextView)view.findViewById(android.R.id.text1);
+        lineOne.setText(data.get(section).entries.get(position).string);
+        TextView lineTwo = (TextView)view.findViewById(android.R.id.text2);
+        lineTwo.setText(data.get(section).entries.get(position).note);
         return view;
 	}
 
@@ -67,7 +70,7 @@ public class MySectionedBaseAdapter extends SectionedBaseAdapter {
         {
         	view = (TextView) convertView;
         }
-        view.setText("Caterogy: " + data.get(section).name);
+        view.setText(context.getString(R.string.category)+ ": " + data.get(section).name);
         view.setBackgroundColor(context.getResources().getColor(R.color.holo_blue_light));
         return view;
 	}

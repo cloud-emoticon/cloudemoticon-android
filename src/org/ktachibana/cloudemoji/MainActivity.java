@@ -11,7 +11,6 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParserException;
 
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
-import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
@@ -30,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
