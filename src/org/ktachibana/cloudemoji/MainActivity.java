@@ -29,14 +29,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final int sdk = android.os.Build.VERSION.SDK_INT;
-    
-    private PinnedHeaderListView listView;
-    private MySectionedBaseAdapter adapter;
+        
     private SharedPreferences preferences;
     private NotificationManager nManager;
     private Notification notification;
@@ -47,7 +46,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     private boolean mocked;
 
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +55,11 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         setupNotification();
         fireupNotification();
 
-        // Begin to download and parse repository
+        // Begin to download parse and render repository
         process(url);
-        setContentView(listView);
     }
 
     private void initializations() {
-    	listView = new PinnedHeaderListView(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         nManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         isInNotification
@@ -116,7 +112,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_refresh: {
-                // Refresh: same task
+                // Refresh is the same task as initial process
                 process(url);
                 return true;
             }
@@ -146,13 +142,23 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
      * Render a given repository to the screen
      */
     private void render(RepoXmlParser.Emoji emoji) {
-        //TODO: Display repository information
         List<String> infoos = emoji.infoos.infoos;
         List<RepoXmlParser.Category> categories = emoji.categories;
         
-        adapter = new MySectionedBaseAdapter(this, categories);
+        PinnedHeaderListView listView = new PinnedHeaderListView(this);
+        renderInfoos(listView, infoos);
+        MySectionedBaseAdapter adapter = new MySectionedBaseAdapter(this, categories);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new MyOnItemClickListener());
+        listView.setOnItemClickListener(new MyOnItemClickListener(adapter));
+        setContentView(listView);
+    }
+    
+    private void renderInfoos(PinnedHeaderListView listView, List<String> infoos) {
+    	for (String infoo : infoos) {
+    		TextView view = (TextView) getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
+    		view.setText(infoo);
+    		listView.addHeaderView(view);
+    	}
     }
 
     /**
@@ -160,7 +166,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
      */
     private class ProcessRepoTask extends AsyncTask<String, Void, RepoXmlParser.Emoji> {
         private ProgressDialog pd;
-        private List<Exception> taskExceptions; //Hold all exceptions during runtime
+        private List<Exception> taskExceptions; //Hold all exceptions
 
         protected void onPreExecute() {
             // Show a processing dialog
@@ -258,16 +264,22 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     }
     
     /**
-     * Listens on child item click and copy to clipboard
+     * Listens on child item click and copy to clip board
      */
     private class MyOnItemClickListener extends PinnedHeaderListView.OnItemClickListener {
-
+    	
+    	private MySectionedBaseAdapter adapter;
+    	
+    	public MyOnItemClickListener(MySectionedBaseAdapter adapter) {
+    		this.adapter = adapter;
+    	}
+    	
 		@SuppressLint("NewApi")
 		@Override
 		public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
 			String copied = ((RepoXmlParser.Entry) adapter.getItem(section, position)).string;
 			
-            // Copy to clipboard
+            // Copy to clip board
             if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
                                 android.text.ClipboardManager clipboard
                         = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -278,11 +290,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
                 clipboard.setPrimaryClip(clip);
             }
-            
-            // Make a toast
+    
             Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            
-            // Close app or not
             if (isCloseAfterCopy) {
                 moveTaskToBack (true);
             }			
