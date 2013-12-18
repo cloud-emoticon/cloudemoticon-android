@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     private void setupNotification() {
         String title = getString(R.string.app_name);
         String text = getString(R.string.touch_to_launch);
-        int icon = R.drawable.ic_notification;
+        int icon = R.drawable.ic_launcher;
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         
