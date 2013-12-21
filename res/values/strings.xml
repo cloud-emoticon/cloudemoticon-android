@@ -5,29 +5,22 @@
     <string name="settings">Settings</string>
     <string name="refresh">Retry/Refresh</string>
     <string name="exit">Exit</string>
-
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
-
     <string name="processing">Reading repository</string>
     <string name="copied">Copied to clipboard</string>
-
     <string name="wrong_url">Wrong URL, fix it</string>
     <string name="bad_conn">Bad connection/invalid URL, please retry</string>
     <string name="wrong_xml">Wrong XML format, fix it</string>
     <string name="restored_default">Default repository restored</string>
     <string name="fail">ლ(╹◡╹ლ)</string>
-
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
-
     <string name="action_settings">Settings</string>
-
     <string name="behaviors">Behaviors</string>
     <string name="stays_in_notification">Stay in notification</string>
     <string name="close_after_copy">Close after copy</string>
-
     <string name="repositories">Repositories</string>
-    <string name="test_my_repository">Test my repository</string>
+    <string name="test_my_repository">Repository URL</string>
     <string name="restore_default">Restore default</string>
     <string name="debug">Debug</string>
     <string name="mock_data">Mock data</string>

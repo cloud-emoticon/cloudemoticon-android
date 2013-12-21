@@ -31,7 +31,6 @@ public class SettingsActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
         myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         myPreferences.registerOnSharedPreferenceChangeListener(this);
         editRepositoryPref = (EditTextPreference)findPreference(PREF_TEST_MY_REPO);
@@ -47,7 +46,6 @@ public class SettingsActivity extends PreferenceActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 myPreferences.unregisterOnSharedPreferenceChangeListener(this);
-                onBackPressed();
                 finish();
                 return true;
         }

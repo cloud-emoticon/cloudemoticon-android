@@ -10,34 +10,32 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends FragmentActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final int sdk = android.os.Build.VERSION.SDK_INT;
-        
+    
+    private static final int PERSISTENT_NOTIFICATION_ID = 0;
+    private static final String FRAGMENT_TAG = "fragment";
+    
+    private Menu menu;
     private SharedPreferences preferences;
-    private NotificationManager nManager;
+    private NotificationManager notificationManager;
     private Notification notification;
 
     private boolean isInNotification;
@@ -45,23 +43,21 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     private String url;
     private boolean mocked;
 
-    public static final int PERSISTENT_NOTIFICATION_ID = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        initializations();
-        setupNotification();
-        fireupNotification();
-
-        // Begin to download parse and render repository
-        process(url);
+        setContentView(R.layout.activity_main);
+        init();
+        buildNotification();
+        setNotificationState();
+        if (savedInstanceState == null) {
+        	process();
+        }
     }
-
-    private void initializations() {
+    
+    private void init() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        nManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         isInNotification
         	= preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
         isCloseAfterCopy
@@ -72,13 +68,12 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         	= preferences.getBoolean(SettingsActivity.PREF_MOCK_DATA, false);
     }
 
-    private void setupNotification() {
+    private void buildNotification() {
         String title = getString(R.string.app_name);
         String text = getString(R.string.touch_to_launch);
         int icon = R.drawable.ic_launcher;
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        
         notification = new NotificationCompat.Builder(this)
                     .setContentTitle(title)
                     .setContentText(text)
@@ -87,104 +82,32 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                     .setWhen(0)
                     .build();
     }
-
-    private void fireupNotification() {
-        if (isInNotification) {
-            notification.flags = Notification.FLAG_NO_CLEAR;
-            nManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
-        }
-        else
-        {
-            nManager.cancel(PERSISTENT_NOTIFICATION_ID);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu
-    	// Adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_refresh: {
-                // Refresh is the same task as initial process
-                process(url);
-                return true;
-            }
-
-            case R.id.action_settings: {
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            }
-
-            case R.id.action_exit: {
-                finish();
-                return true;
-            }
-
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
-        }
-    }
-
-    private void process(String url) {
+    
+    /**
+     * Set spinning progress bar
+     * and start loading & displaying emoji from the Internet
+     */
+    private void process() {
+    	// Set refresh button to spinning progress bar
+    	setRefreshOptionState(true);
         new ProcessRepoTask().execute(url);
     }
-
-    /**
-     * Render a given repository to the screen
-     */
-    private void render(RepoXmlParser.Emoji emoji) {
-        List<String> infoos = emoji.infoos.infoos;
-        List<RepoXmlParser.Category> categories = emoji.categories;
-        
-        PinnedHeaderListView listView = new PinnedHeaderListView(this);
-        renderInfoos(listView, infoos);
-        MySectionedBaseAdapter adapter = new MySectionedBaseAdapter(this, categories);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new MyOnItemClickListener(adapter));
-        setContentView(listView);
-    }
     
-    private void renderInfoos(PinnedHeaderListView listView, List<String> infoos) {
-    	for (String infoo : infoos) {
-    		TextView view = (TextView) getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
-    		view.setText(infoo);
-    		view.setBackgroundColor(getResources().getColor(R.color.holo_gray_light));
-    		listView.addFooterView(view);
-    	}
-    }
-
     /**
-     * Fetch a URL of XML file, parse it and make it show on a list
+     * Fetch an XML file from the user preference URL and display on a list
      */
     private class ProcessRepoTask extends AsyncTask<String, Void, RepoXmlParser.Emoji> {
-        private ProgressDialog pd;
-        private List<Exception> taskExceptions; //Hold all exceptions
-
-        protected void onPreExecute() {
-            // Show a processing dialog
-            pd = new ProgressDialog(MainActivity.this);
-            pd.setMessage(getString(R.string.processing));
-            pd.show();
-        }
+    	
+        private List<Exception> taskExceptions; // Hold all exceptions during execution
 
         protected RepoXmlParser.Emoji doInBackground(String... stringUrl) {
             Reader reader = null;
             RepoXmlParser.Emoji repo = null;
             taskExceptions = new ArrayList<Exception>();
+            // If user preference is not to debug with mocked data
             if (!mocked)
             {
-	            // Try to download and parse
 	            try {
-	                // Download
 	                URL url = new URL(stringUrl[0]);
 	                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	                conn.setConnectTimeout(15000);
@@ -192,9 +115,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 	                conn.setRequestMethod("GET");
 	                conn.connect();
 	                reader = new InputStreamReader(conn.getInputStream());
-	                // Parse
 	                repo = new RepoXmlParser().parse(reader);
-	
 	            } catch (IOException e) {
 	                taskExceptions.add(e);
 	            } catch (XmlPullParserException e) {
@@ -211,15 +132,17 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
             else
             {
-            	repo = MockData.generateMock();
+            	repo = RepoXmlParser.generateMock();
             }
             return repo;
         }
 
         protected void onPostExecute(RepoXmlParser.Emoji emoji) {
+        	// If no exception caught and emoji is loaded
             if ((taskExceptions.isEmpty()) && (emoji != null)) {
-                render(emoji);
+            	render(emoji);
             } else {
+            	// Get the first exception caught
                 Exception firstException = taskExceptions.get(0);
                 if (firstException instanceof IOException) {
                     Toast.makeText(MainActivity.this, getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
@@ -231,15 +154,58 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 }
                 taskExceptions.clear();
             }
-            pd.dismiss();
+            // Set refresh button to static refresh icon
+            setRefreshOptionState(false);
         }
     }
-
+    
+    /**
+     * Display a emoji with a list held within a fragment
+     * @param emoji emoji being displayed
+     */
+    private void render(RepoXmlParser.Emoji emoji) {
+    	MyListFragment fragment = MyListFragment.newInstance(emoji);
+    	getSupportFragmentManager().beginTransaction().replace(R.id.main_container, fragment, FRAGMENT_TAG).commit();
+    }
+    
+    /**
+     * Show or dismiss notification according to user preference
+     */
+    private void setNotificationState() {
+        if (isInNotification) {
+            notification.flags = Notification.FLAG_NO_CLEAR;
+            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
+        }
+        else
+        {
+            notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
+        }
+    }
+    
+    /**
+     * Show a static refresh icon or spinning progress bar according to whether it is loading emoji from Internet
+     * @param refreshing whether it is loading from Internet
+     */
+	private void setRefreshOptionState(boolean refreshing) {
+    	if (menu != null) {
+	    	MenuItem item = menu.getItem(0);
+	    	if (item != null) {
+				if (refreshing) {
+					item.setIcon(android.R.drawable.progress_indeterminate_horizontal);
+				}
+				else
+				{
+					item.setIcon(android.R.drawable.ic_popup_sync);
+				}
+	    	}
+    	}
+    }
+    
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
         if (key.equals(SettingsActivity.PREF_STAY_IN_NOTIFICATION)) {
             isInNotification = preferences.getBoolean(key, true);
-            fireupNotification();
+            setNotificationState();
         }
         else if (key.equals(SettingsActivity.PREF_CLOSE_AFTER_COPY)) {
             isCloseAfterCopy = preferences.getBoolean(key, true);
@@ -264,45 +230,40 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         preferences.registerOnSharedPreferenceChangeListener(this);
     }
     
-    /**
-     * Listens on child item click and copy to clip board
-     */
-    private class MyOnItemClickListener extends PinnedHeaderListView.OnItemClickListener {
-    	
-    	private MySectionedBaseAdapter adapter;
-    	
-    	public MyOnItemClickListener(MySectionedBaseAdapter adapter) {
-    		this.adapter = adapter;
-    	}
-    	
-		@SuppressWarnings("deprecation")
-		@SuppressLint("NewApi")
-		@Override
-		public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
-			String copied = ((RepoXmlParser.Entry) adapter.getItem(section, position)).string;
-			
-            // Copy to clip board
-            if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                                android.text.ClipboardManager clipboard
-                        = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboard.setText(copied);
-            } else {
-                android.content.ClipboardManager clipboard
-                        = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
-                clipboard.setPrimaryClip(clip);
-            }
-    
-            Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            if (isCloseAfterCopy) {
-                moveTaskToBack (true);
-            }			
-		}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu
+    	// Adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+        return super.onCreateOptionsMenu(menu);
+    }
 
-		@Override
-		public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
-			return;
-		}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_refresh: {
+                // Refresh is the same task as initial process
+                process();
+                return true;
+            }
+
+            case R.id.action_settings: {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+
+            case R.id.action_exit: {
+                finish();
+                return true;
+            }
+
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
     
 }
