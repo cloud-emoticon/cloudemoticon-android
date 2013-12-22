@@ -27,6 +27,7 @@
         <activity
             android:name="org.ktachibana.cloudemoji.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:icon="@android:color/transparent"
             android:parentActivityName="org.ktachibana.cloudemoji.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

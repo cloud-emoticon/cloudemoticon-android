@@ -3,7 +3,7 @@
 
     <string name="app_name">Cloud emoji</string>
     <string name="settings">Settings</string>
-    <string name="refresh">Retry/Refresh</string>
+    <string name="refresh">Refresh</string>
     <string name="exit">Exit</string>
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="processing">Reading repository</string>
@@ -16,10 +16,10 @@
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
     <string name="action_settings">Settings</string>
-    <string name="behaviors">Behaviors</string>
+    <string name="behaviors">Behavior</string>
     <string name="stays_in_notification">Stay in notification</string>
     <string name="close_after_copy">Close after copy</string>
-    <string name="repositories">Repositories</string>
+    <string name="repositories">Repository</string>
     <string name="test_my_repository">Repository URL</string>
     <string name="restore_default">Restore default</string>
     <string name="debug">Debug</string>

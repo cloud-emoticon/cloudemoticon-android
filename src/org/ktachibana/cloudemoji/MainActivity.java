@@ -33,7 +33,6 @@ public class MainActivity extends FragmentActivity implements SharedPreferences.
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String FRAGMENT_TAG = "fragment";
     
-    private Menu menu;
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
     private Notification notification;
@@ -88,8 +87,6 @@ public class MainActivity extends FragmentActivity implements SharedPreferences.
      * and start loading & displaying emoji from the Internet
      */
     private void process() {
-    	// Set refresh button to spinning progress bar
-    	setRefreshOptionState(true);
         new ProcessRepoTask().execute(url);
     }
     
@@ -147,6 +144,7 @@ public class MainActivity extends FragmentActivity implements SharedPreferences.
                 if (firstException instanceof IOException) {
                     Toast.makeText(MainActivity.this, getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
                 } else if (firstException instanceof XmlPullParserException) {
+                	Log.e("CloudEmoji", "XmlPullParserException", firstException);
                     Toast.makeText(MainActivity.this, getString(R.string.wrong_xml), Toast.LENGTH_SHORT).show();
                 } else {
                 	Log.e("CloudEmoji", "Unexpcted exception", firstException);
@@ -154,8 +152,6 @@ public class MainActivity extends FragmentActivity implements SharedPreferences.
                 }
                 taskExceptions.clear();
             }
-            // Set refresh button to static refresh icon
-            setRefreshOptionState(false);
         }
     }
     
@@ -180,25 +176,6 @@ public class MainActivity extends FragmentActivity implements SharedPreferences.
         {
             notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
         }
-    }
-    
-    /**
-     * Show a static refresh icon or spinning progress bar according to whether it is loading emoji from Internet
-     * @param refreshing whether it is loading from Internet
-     */
-	private void setRefreshOptionState(boolean refreshing) {
-    	if (menu != null) {
-	    	MenuItem item = menu.getItem(0);
-	    	if (item != null) {
-				if (refreshing) {
-					item.setIcon(android.R.drawable.progress_indeterminate_horizontal);
-				}
-				else
-				{
-					item.setIcon(android.R.drawable.ic_popup_sync);
-				}
-	    	}
-    	}
     }
     
     @Override
@@ -235,7 +212,6 @@ public class MainActivity extends FragmentActivity implements SharedPreferences.
         // Inflate the menu
     	// Adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 

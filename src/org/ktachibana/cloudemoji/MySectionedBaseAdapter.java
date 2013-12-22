@@ -66,35 +66,13 @@ public class MySectionedBaseAdapter extends SectionedBaseAdapter {
 		TextView view = null;
         if (convertView == null) {
             view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            Random r = new Random();
-            int randomInt = r.nextInt(5);
-            int randomColor;
-            switch(randomInt) {
-            	case 0:
-            		randomColor = context.getResources().getColor(R.color.holo_blue_light);
-            		break;
-            	case 1:
-            		randomColor = context.getResources().getColor(R.color.holo_gray_light);
-            		break;
-            	case 2:
-            		randomColor = context.getResources().getColor(R.color.holo_green_light);
-            		break;
-            	case 3:
-            		randomColor = context.getResources().getColor(R.color.holo_orange_light);
-            		break;
-            	case 4:
-            		randomColor = context.getResources().getColor(R.color.holo_red_light);
-            		break;
-            	default:
-            		randomColor = context.getResources().getColor(R.color.holo_blue_light);
-            }
-            view.setBackgroundColor(randomColor);
         }
         else
         {
         	view = (TextView) convertView;
         }
         view.setText(context.getString(R.string.category)+ ": " + data.get(section).name);
+        view.setBackgroundColor(context.getResources().getColor(R.color.holo_blue_light));
         return view;
 	}
 

@@ -6,6 +6,7 @@ import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,10 +80,9 @@ public class MyListFragment extends Fragment {
             }
     
             Toast.makeText(getActivity().getBaseContext(), getString(R.string.copied), Toast.LENGTH_SHORT).show();
-            // TODO: bug fix
-            boolean isCloseAfterCopy
-            	= getActivity().getSharedPreferences("", Context.MODE_PRIVATE)
-            	.getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
+            boolean isCloseAfterCopy = 
+            		PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext())
+            		.getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
             if (isCloseAfterCopy) {
                 getActivity().moveTaskToBack (true);
             }			
