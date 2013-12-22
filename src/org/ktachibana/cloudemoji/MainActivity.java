@@ -251,8 +251,8 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onResumeFragments() {
+		super.onResumeFragments();
 		preferences.unregisterOnSharedPreferenceChangeListener(this);
 	}
 
