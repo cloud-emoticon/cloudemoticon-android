@@ -8,8 +8,7 @@
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="processing">Reading repository</string>
     <string name="copied">Copied to clipboard</string>
-    <string name="wrong_url">Wrong URL, fix it</string>
-    <string name="bad_conn">Bad connection/invalid URL, please retry</string>
+    <string name="bad_conn">Bad connection, please retry</string>
     <string name="wrong_xml">Wrong XML format, fix it</string>
     <string name="restored_default">Default repository restored</string>
     <string name="fail">ლ(╹◡╹ლ)</string>
@@ -28,5 +27,7 @@
     <string name="about">About</string>
     <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
     <string name="github_repo">GitHub repository</string>
+    <string name="updated">Updated</string>
+    <string name="file_not_found">File not found</string>
 
 </resources>
