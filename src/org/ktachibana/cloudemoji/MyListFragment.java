@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MyListFragment extends Fragment {
@@ -46,6 +47,12 @@ public class MyListFragment extends Fragment {
 		Context context = getActivity().getBaseContext();
 		PinnedHeaderListView listView = new PinnedHeaderListView(context);
 		MySectionedBaseAdapter adapter = new MySectionedBaseAdapter(context, emoji.categories);
+		for (String s : emoji.infoos.infoos) {
+			TextView textView = new TextView(context);
+			textView.setText(s);
+			textView.setBackgroundColor(context.getResources().getColor(R.color.holo_gray_light));
+			listView.addFooterView(textView);
+		}
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new MyOnItemClickListener(adapter));
 		return listView;

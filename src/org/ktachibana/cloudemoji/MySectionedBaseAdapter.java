@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji;
 
 import java.util.List;
-import java.util.Random;
 
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 import android.content.Context;
