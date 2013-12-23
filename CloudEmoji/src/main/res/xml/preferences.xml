@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"><PreferenceCategory
+        android:title="@string/behaviors"
+        android:key="pref_behaviors">
+        <CheckBoxPreference
+            android:key="pref_stay_in_notification"
+            android:title="@string/stays_in_notification"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="pref_close_after_copy"
+            android:title="@string/close_after_copy"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/repositories"
+        android:key="pref_repositories">
+        <EditTextPreference
+            android:key="pref_test_my_repository"
+            android:title="@string/test_my_repository"
+            android:defaultValue="@string/default_url"
+            android:summary=""/>
+        <Preference
+            android:key="pref_restore_default"
+            android:title="@string/restore_default" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/debug"
+        android:key="pref_debug">
+       <CheckBoxPreference
+            android:key="pref_mock_data"
+            android:title="@string/mock_data"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:key="pref_about" android:title="@string/about"><Preference android:key="pref_github_repo" android:title="@string/github_repo"/></PreferenceCategory>
+
+</PreferenceScreen>
