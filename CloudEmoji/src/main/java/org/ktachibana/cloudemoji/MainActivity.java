@@ -32,6 +32,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+/**
+ * Testing from IntelliJ
+ */
 public class MainActivity extends FragmentActivity implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
 
