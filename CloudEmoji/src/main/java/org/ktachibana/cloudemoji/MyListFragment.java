@@ -1,54 +1,52 @@
 package org.ktachibana.cloudemoji;
 
-import android.preference.PreferenceManager;
-import android.widget.ExpandableListAdapter;
-import android.widget.Toast;
-import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
-
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
+import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
 
 public class MyListFragment extends Fragment {
 
-	private static final String EMOJI_FLAG = "emoji";
+    private static final String EMOJI_FLAG = "emoji";
 
-	private RepoXmlParser.Emoji emoji;
+    private RepoXmlParser.Emoji emoji;
 
-	public static MyListFragment newInstance(RepoXmlParser.Emoji emoji) {
-		MyListFragment fragment = new MyListFragment();
-		Bundle args = new Bundle();
-		args.putSerializable(EMOJI_FLAG, emoji);
-		fragment.setArguments(args);
-		return fragment;
-	}
+    public static MyListFragment newInstance(RepoXmlParser.Emoji emoji) {
+        MyListFragment fragment = new MyListFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(EMOJI_FLAG, emoji);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-	public MyListFragment() {
-		// Required empty public constructor
-	}
+    public MyListFragment() {
+        // Required empty public constructor
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			emoji = (Emoji) getArguments().getSerializable(EMOJI_FLAG);
-		}
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            emoji = (Emoji) getArguments().getSerializable(EMOJI_FLAG);
+        }
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		Context context = getActivity().getBaseContext();
-		ExpandableListView listView = new ExpandableListView(context);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Context context = getActivity().getBaseContext();
+        ExpandableListView listView = new ExpandableListView(context);
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(context, emoji.categories);
-		listView.setAdapter(adapter);
+        listView.setAdapter(adapter);
         listView.setOnChildClickListener(new MyOnChildClickListener(adapter));
-		return listView;
-	}
+        return listView;
+    }
 
     private class MyOnChildClickListener implements ExpandableListView.OnChildClickListener {
 
