@@ -14,5 +14,5 @@ Features
 * Closes after copying (configurable)  
 * Stays in notification area for quick access (configurable)  
 
-Dependency  
-* PinnedHeaderListView: https://github.com/JimiSmith/PinnedHeaderListView  
+Dependency
+* ActionBar-PullToRefresh: https://github.com/chrisbanes/ActionBar-PullToRefresh
