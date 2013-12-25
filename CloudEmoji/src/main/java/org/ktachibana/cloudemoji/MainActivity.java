@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
+    private static final String FRAG_TAG = "fragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
@@ -53,19 +54,16 @@ public class MainActivity extends ActionBarActivity implements
         init();
         buildNotification();
         setNotificationState();
-        // If not coming from existing session
-        if (savedInstanceState == null) {
-            // Read saved XML from local storage
-            File file = new File(getFilesDir(), XML_FILE_NAME);
-            // If file does not exist
-            if (!file.exists()) {
-                update();
-            }
-            // Else render the existing
-            else {
-                Emoji emoji = readEmoji(file);
-                render(emoji);
-            }
+        // Read saved XML from local storage
+        File file = new File(getFilesDir(), XML_FILE_NAME);
+        // If file does not exist
+        if (!file.exists()) {
+            update();
+        }
+        // Else render the existing
+        else {
+            Emoji emoji = readEmoji(file);
+            render(emoji);
         }
     }
 
@@ -329,12 +327,14 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * Adapter that holds pages on the pager view
      */
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         private Emoji emoji;
+        private FragmentManager fm;
 
         public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
             super(fm);
+            this.fm = fm;
             this.emoji = emoji;
         }
 
@@ -344,6 +344,7 @@ public class MainActivity extends ActionBarActivity implements
             Bundle args = new Bundle();
             args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(position));
             fragment.setArguments(args);
+            fragment.setRetainInstance(true);
             return fragment;
         }
 
