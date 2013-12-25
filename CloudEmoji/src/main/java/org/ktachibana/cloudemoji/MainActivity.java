@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.*;
@@ -16,10 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
 import org.xmlpull.v1.XmlPullParserException;
@@ -238,6 +236,180 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
+     * Adapter that holds pages on the pager view
+     */
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
+        private Emoji emoji;
+        private FragmentManager fm;
+
+        public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
+            super(fm);
+            this.fm = fm;
+            this.emoji = emoji;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            DoubleItemListFragment fragment = new DoubleItemListFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(position));
+            fragment.setArguments(args);
+            fragment.setRetainInstance(true);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return emoji.categories.size();
+        }
+
+        @Override
+        public String getPageTitle(int position) {
+            return emoji.categories.get(position).name;
+        }
+    }
+
+    /**
+     * Fragment that holds a list for one category
+     */
+    private class DoubleItemListFragment extends Fragment {
+
+        private static final String CAT_KEY = "category";
+        private RepoXmlParser.Category cat;
+
+        public DoubleItemListFragment() {
+            // Required constructor
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                cat = (RepoXmlParser.Category) getArguments().getSerializable(CAT_KEY);
+            }
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            ListView listView = new ListView(MainActivity.this);
+            listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, cat));
+            listView.setOnItemClickListener(new copyToClipBoardListener());
+            return listView;
+        }
+    }
+
+    private class DoubleItemListAdapter implements ListAdapter {
+
+        private LayoutInflater inflater;
+        private RepoXmlParser.Category cat;
+
+        public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.cat = cat;
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return true;
+        }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return cat.entries.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return cat.entries.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+            }
+            TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
+            TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
+            RepoXmlParser.Entry entry = cat.entries.get(position);
+            lineOne.setText(entry.string);
+            lineTwo.setText(entry.note);
+            return view;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return cat.entries.isEmpty();
+        }
+    }
+
+    /**
+     * Copy string to clip board when clicked
+     */
+    private class copyToClipBoardListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            RepoXmlParser.Entry entry = (RepoXmlParser.Entry) parent.getAdapter().getItem(position);
+            String copied = entry.string;
+            // Below 3.0 support
+            int SDK = Build.VERSION.SDK_INT;
+            if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setText(copied);
+            }
+            // Above 3.0
+            else
+            {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
+                clipboard.setPrimaryClip(clip);
+            }
+            Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
+            boolean isCloseAfterCopy = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
+            if (isCloseAfterCopy) {
+                finish();
+            }
+        }
+    }
+
+    /**
      * Show or dismiss notification according to user preference
      */
     private void setNotificationState() {
@@ -324,146 +496,5 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    /**
-     * Adapter that holds pages on the pager view
-     */
-    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        private Emoji emoji;
-        private FragmentManager fm;
-
-        public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
-            super(fm);
-            this.fm = fm;
-            this.emoji = emoji;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            DoubleItemListFragment fragment = new DoubleItemListFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(position));
-            fragment.setArguments(args);
-            fragment.setRetainInstance(true);
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return emoji.categories.size();
-        }
-
-        @Override
-        public String getPageTitle(int position) {
-            return emoji.categories.get(position).name;
-        }
-    }
-
-    /**
-     * Fragment that holds a list for one category
-     */
-    private class DoubleItemListFragment extends Fragment {
-
-        private static final String CAT_KEY = "category";
-        private RepoXmlParser.Category cat;
-
-        public DoubleItemListFragment() {
-            // Required constructor
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            if (getArguments() != null) {
-                cat = (RepoXmlParser.Category) getArguments().getSerializable(CAT_KEY);
-            }
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            ListView listView = new ListView(MainActivity.this);
-            listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, cat));
-            return listView;
-        }
-    }
-
-    private class DoubleItemListAdapter implements ListAdapter {
-
-        private LayoutInflater inflater;
-        private RepoXmlParser.Category cat;
-
-        public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.cat = cat;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return true;
-        }
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public int getCount() {
-            return cat.entries.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return cat.entries.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = convertView;
-            if (view == null) {
-                view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
-            }
-            TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
-            TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
-            RepoXmlParser.Entry entry = cat.entries.get(position);
-            lineOne.setText(entry.string);
-            lineTwo.setText(entry.note);
-            return view;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return 0;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 1;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return cat.entries.isEmpty();
-        }
-    }
 }
