@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cloud emoji</string>
+    <string name="settings">设置</string>
+    <string name="refresh">刷新</string>
+    <string name="exit">退出</string>
+    <string name="processing">读取库</string>
+    <string name="copied">已复制到剪贴板</string>
+    <string name="bad_conn">网络不给力，请重试</string>
+    <string name="wrong_xml">XML格式错误</string>
+    <string name="restored_default">默认库已恢复</string>
+    <string name="fail">ლ(╹◡╹ლ)</string>
+    <string name="touch_to_launch">单击以启动</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="action_settings">设置</string>
+    <string name="behaviors">行为</string>
+    <string name="stays_in_notification">常驻通知面板</string>
+    <string name="close_after_copy">复制以后关闭</string>
+    <string name="repositories">库</string>
+    <string name="test_my_repository">库地址</string>
+    <string name="restore_default">恢复默认库</string>
+    <string name="debug">调试</string>
+    <string name="mock_data">本地模拟数据</string>
+    <string name="category">类别</string>
+    <string name="about">关于</string>
+    <string name="github_repo">GitHub源码</string>
+    <string name="updated">已更新</string>
+    <string name="file_not_found">文件未找到</string>
+    <string name="github_release">GitHub更新</string>
+    <string name="updating">更新中</string>
+
+    <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
+    <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
+    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
+
+</resources>
