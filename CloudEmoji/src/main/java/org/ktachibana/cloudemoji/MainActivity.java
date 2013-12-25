@@ -21,6 +21,9 @@ import android.widget.*;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
 import org.xmlpull.v1.XmlPullParserException;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -32,7 +35,6 @@ public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
-    private static final String FRAG_TAG = "fragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
@@ -40,6 +42,7 @@ public class MainActivity extends ActionBarActivity implements
     private Notification notification;
     private ViewPager viewPager;
     private ActionBar actionBar;
+    private PullToRefreshLayout pullToRefreshLayout;
 
     private boolean isInNotification;
     private String url;
@@ -108,7 +111,6 @@ public class MainActivity extends ActionBarActivity implements
 
         protected void onPreExecute() {
             taskExceptions = new ArrayList<Exception>();
-            Toast.makeText(MainActivity.this, getString(R.string.updating), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -152,6 +154,9 @@ public class MainActivity extends ActionBarActivity implements
         @Override
         protected void onPostExecute(Emoji emoji) {
             if (taskExceptions.isEmpty()) {
+                if (pullToRefreshLayout != null) {
+                    pullToRefreshLayout.setRefreshComplete();
+                }
                 render(emoji);
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             } else {
@@ -193,8 +198,7 @@ public class MainActivity extends ActionBarActivity implements
      * @param emoji Emoji object
      */
     private void render(Emoji emoji) {
-        if (emoji != null)
-        {
+        if (emoji != null) {
             // Set adapter for pages
             SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager(), emoji);
             viewPager.setAdapter(adapter);
@@ -241,11 +245,9 @@ public class MainActivity extends ActionBarActivity implements
     private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         private Emoji emoji;
-        private FragmentManager fm;
 
         public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
             super(fm);
-            this.fm = fm;
             this.emoji = emoji;
         }
 
@@ -292,10 +294,24 @@ public class MainActivity extends ActionBarActivity implements
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            ListView listView = new ListView(MainActivity.this);
+            // Inflate rootView
+            View rootView = inflater.inflate(R.layout.pull_to_refresh_layout, container, false);
+
+            // Setup pullToRefreshLayout
+            pullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.pullToRefreshLayout);
+            ActionBarPullToRefresh.from(MainActivity.this).allChildrenArePullable().listener(new OnRefreshListener() {
+                @Override
+                public void onRefreshStarted(View view) {
+                    update();
+                }
+            }).setup(pullToRefreshLayout);
+
+            // Setup listView
+            ListView listView = (ListView) rootView.findViewById(R.id.listView);
             listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, cat));
-            listView.setOnItemClickListener(new copyToClipBoardListener());
-            return listView;
+            listView.setOnItemClickListener(new CopyToClipBoardListener());
+
+            return rootView;
         }
     }
 
@@ -382,7 +398,7 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * Copy string to clip board when clicked
      */
-    private class copyToClipBoardListener implements AdapterView.OnItemClickListener {
+    private class CopyToClipBoardListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -395,8 +411,7 @@ public class MainActivity extends ActionBarActivity implements
                 clipboard.setText(copied);
             }
             // Above 3.0
-            else
-            {
+            else {
                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
                 clipboard.setPrimaryClip(clip);
