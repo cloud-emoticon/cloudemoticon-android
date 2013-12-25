@@ -10,14 +10,10 @@ import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.ListAdapter;
@@ -35,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener, ActionBar.TabListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String XML_FILE_NAME = "emoji.xml";
@@ -201,23 +197,45 @@ public class MainActivity extends ActionBarActivity implements
      * @param emoji Emoji object
      */
     private void render(Emoji emoji) {
-        // Set adapter for pages
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager(), emoji);
-        viewPager.setAdapter(adapter);
+        if (emoji != null)
+        {
+            // Set adapter for pages
+            SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager(), emoji);
+            viewPager.setAdapter(adapter);
 
-        // Set when page is changed, actionBar is also changed
-        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
+            // Set when page is changed, actionBar is also changed
+            viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    actionBar.setSelectedNavigationItem(position);
+                }
+            });
+
+            // Add all tabs to actionBar
+            for (int i = 0; i < adapter.getCount(); ++i) {
+                actionBar.addTab(actionBar.newTab()
+                        .setText(adapter.getPageTitle(i))
+                        .setTabListener(new ActionBar.TabListener() {
+                            @Override
+                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+                                viewPager.setCurrentItem(tab.getPosition());
+                            }
+
+                            @Override
+                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+                            }
+
+                            @Override
+                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+                            }
+                        }));
             }
-        });
 
-        // Add all tabs to actionBar
-        for (int i = 0 ; i < adapter.getCount() ; ++i) {
-            actionBar.addTab(actionBar.newTab()
-                    .setText(adapter.getPageTitle(i))
-                    .setTabListener(this));
+            // Set viewPager to display the first panel
+            viewPager.setCurrentItem(0);
+            actionBar.setSelectedNavigationItem(0);
         }
     }
 
@@ -306,21 +324,6 @@ public class MainActivity extends ActionBarActivity implements
                 return super.onOptionsItemSelected(item);
             }
         }
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
     }
 
     /**
