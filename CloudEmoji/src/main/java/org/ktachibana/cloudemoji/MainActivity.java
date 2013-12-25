@@ -6,14 +6,23 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.*;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
@@ -25,21 +34,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Testing from IntelliJ
- */
-public class MainActivity extends FragmentActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener {
-
-    public static final int SDK = android.os.Build.VERSION.SDK_INT;
+public class MainActivity extends ActionBarActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener, ActionBar.TabListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
-    private static final String FRAGMENT_TAG = "fragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
     private Notification notification;
+    private ViewPager viewPager;
+    private ActionBar actionBar;
 
     private boolean isInNotification;
     private String url;
@@ -69,6 +74,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void init() {
+        // Set up preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         isInNotification = preferences.getBoolean(
@@ -76,6 +82,11 @@ public class MainActivity extends FragmentActivity implements
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,
                 getString(R.string.default_url));
         mocked = preferences.getBoolean(SettingsActivity.PREF_MOCK_DATA, false);
+
+        // Set up ActionBar and viewPager
+        actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
     }
 
     private void buildNotification() {
@@ -90,15 +101,14 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * Set spinning progress bar and start loading & displaying emoji from the
-     * Internet
+     * Download file from the user preference URL and display
      */
     private void update() {
         new UpdateRepoTask().execute(url);
     }
 
     /**
-     * Fetch an XML file from the user preference URL and display on a list
+     * AsyncTask that fetches an XML file from the user preference URL and displays
      */
     private class UpdateRepoTask extends AsyncTask<String, Void, Emoji> {
 
@@ -106,6 +116,7 @@ public class MainActivity extends FragmentActivity implements
 
         protected void onPreExecute() {
             taskExceptions = new ArrayList<Exception>();
+            Toast.makeText(MainActivity.this, getString(R.string.updating), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -123,10 +134,12 @@ public class MainActivity extends FragmentActivity implements
                     conn.setReadTimeout(10000);
                     conn.setRequestMethod("GET");
                     conn.connect();
+
                     // Over-write existing file
                     reader = new InputStreamReader(conn.getInputStream());
                     fileOut = openFileOutput(XML_FILE_NAME, Context.MODE_PRIVATE);
                     IOUtils.copy(reader, fileOut);
+
                     // Read emoji from existing file
                     emoji = readEmoji(new File(getFilesDir(), XML_FILE_NAME));
                 } catch (IOException e) {
@@ -188,9 +201,23 @@ public class MainActivity extends FragmentActivity implements
      * @param emoji Emoji object
      */
     private void render(Emoji emoji) {
-        if (emoji != null) {
-            MyListFragment fragment = MyListFragment.newInstance(emoji);
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, fragment, FRAGMENT_TAG).commit();
+        // Set adapter for pages
+        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager(), emoji);
+        viewPager.setAdapter(adapter);
+
+        // Set when page is changed, actionBar is also changed
+        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
+
+        // Add all tabs to actionBar
+        for (int i = 0 ; i < adapter.getCount() ; ++i) {
+            actionBar.addTab(actionBar.newTab()
+                    .setText(adapter.getPageTitle(i))
+                    .setTabListener(this));
         }
     }
 
@@ -281,4 +308,158 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    /**
+     * Adapter that holds pages on the pager view
+     */
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private Emoji emoji;
+
+        public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
+            super(fm);
+            this.emoji = emoji;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            DoubleItemListFragment fragment = new DoubleItemListFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(position));
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return emoji.categories.size();
+        }
+
+        @Override
+        public String getPageTitle(int position) {
+            return emoji.categories.get(position).name;
+        }
+    }
+
+    /**
+     * Fragment that holds a list for one category
+     */
+    private class DoubleItemListFragment extends Fragment {
+
+        private static final String CAT_KEY = "category";
+        private RepoXmlParser.Category cat;
+
+        public DoubleItemListFragment() {
+            // Required constructor
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                cat = (RepoXmlParser.Category) getArguments().getSerializable(CAT_KEY);
+            }
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            ListView listView = new ListView(MainActivity.this);
+            listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, cat));
+            return listView;
+        }
+    }
+
+    private class DoubleItemListAdapter implements ListAdapter {
+
+        private LayoutInflater inflater;
+        private RepoXmlParser.Category cat;
+
+        public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.cat = cat;
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return true;
+        }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return cat.entries.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return cat.entries.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+            }
+            TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
+            TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
+            RepoXmlParser.Entry entry = cat.entries.get(position);
+            lineOne.setText(entry.string);
+            lineTwo.setText(entry.note);
+            return view;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return cat.entries.isEmpty();
+        }
+    }
 }

@@ -28,6 +28,7 @@
     <string name="updated">Updated</string>
     <string name="file_not_found">File not found</string>
     <string name="github_release">GitHub release</string>
+    <string name="updating">Updating...</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>

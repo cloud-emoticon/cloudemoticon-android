@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:appcompat-v7:+'
     compile files('./libs/commons-io-2.4.jar')
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
 }
