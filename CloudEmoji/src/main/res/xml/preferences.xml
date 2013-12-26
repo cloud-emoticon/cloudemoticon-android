@@ -45,6 +45,8 @@
         <Preference
             android:key="pref_github_repo"
             android:title="@string/github_repo"/>
+        <Preference
+            android:key="pref_version"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

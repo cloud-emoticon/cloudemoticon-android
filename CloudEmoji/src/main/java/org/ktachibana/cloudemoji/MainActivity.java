@@ -57,7 +57,6 @@ public class MainActivity extends ActionBarActivity implements
         buildNotification();
         setNotificationState();
 
-
         // Read saved XML from local storage
         File file = new File(getFilesDir(), XML_FILE_NAME);
         // If file does not exist
@@ -343,7 +342,6 @@ public class MainActivity extends ActionBarActivity implements
             ActionBarPullToRefresh.from(MainActivity.this).allChildrenArePullable().listener(new OnRefreshListener() {
                 @Override
                 public void onRefreshStarted(View view) {
-                    Log.d("233", "refresh started");
                     refreshingPullToRefreshLayout = pullToRefreshLayout;
                     update();
                 }

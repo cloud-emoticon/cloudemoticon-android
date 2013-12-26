@@ -2,6 +2,8 @@ package org.ktachibana.cloudemoji;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -22,6 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements
     public static final String PREF_MOCK_DATA = "pref_mock_data";
     public static final String PREF_GITHUB_RELEASE = "pref_github_release";
     public static final String PREF_GITHUB_REPO = "pref_github_repo";
+    public static final String PREF_VERSION = "pref_version";
 
     private SharedPreferences myPreferences;
     private EditTextPreference editRepositoryPref;
@@ -31,16 +34,31 @@ public class SettingsActivity extends PreferenceActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+
         myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         myPreferences.registerOnSharedPreferenceChangeListener(this);
+
         editRepositoryPref = (EditTextPreference) findPreference(PREF_TEST_MY_REPO);
         editRepositoryPref.setSummary(editRepositoryPref.getText());
+
         Preference restorePref = findPreference(PREF_RESTORE_DEFAULT);
-        Preference githubReleasePref = findPreference(PREF_GITHUB_RELEASE);
-        Preference githubRepoPref = findPreference(PREF_GITHUB_REPO);
         restorePref.setOnPreferenceClickListener(this);
+
+        Preference githubReleasePref = findPreference(PREF_GITHUB_RELEASE);
         githubReleasePref.setOnPreferenceClickListener(this);
+
+        Preference githubRepoPref = findPreference(PREF_GITHUB_REPO);
         githubRepoPref.setOnPreferenceClickListener(this);
+
+        Preference versionPref = findPreference(PREF_VERSION);
+        try
+        {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+            versionPref.setTitle(getString(R.string.version) + " " + version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
