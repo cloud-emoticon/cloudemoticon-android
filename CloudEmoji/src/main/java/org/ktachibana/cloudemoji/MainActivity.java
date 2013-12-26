@@ -52,22 +52,22 @@ public class MainActivity extends ActionBarActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         init();
         buildNotification();
         setNotificationState();
-        if (savedInstanceState == null)
-        {
-            // Read saved XML from local storage
-            File file = new File(getFilesDir(), XML_FILE_NAME);
-            // If file does not exist
-            if (!file.exists()) {
-                update();
-            }
-            // Else render the existing
-            else {
-                Emoji emoji = readEmoji(file);
-                render(emoji);
-            }
+
+
+        // Read saved XML from local storage
+        File file = new File(getFilesDir(), XML_FILE_NAME);
+        // If file does not exist
+        if (!file.exists()) {
+            update();
+        }
+        // Else render the existing
+        else {
+            Emoji emoji = readEmoji(file);
+            render(emoji);
         }
     }
 
@@ -81,7 +81,6 @@ public class MainActivity extends ActionBarActivity implements
                 getString(R.string.default_url));
         mocked = preferences.getBoolean(SettingsActivity.PREF_MOCK_DATA, false);
 
-        // Set up ActionBar and viewPager
         actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
     }
@@ -201,14 +200,12 @@ public class MainActivity extends ActionBarActivity implements
      */
     private void render(Emoji emoji) {
         if (emoji != null) {
-            Log.d("233", "render starts");
             ViewPagerFragment fragment = new ViewPagerFragment();
             Bundle args = new Bundle();
             args.putSerializable(ViewPagerFragment.EMOJI_KEY, emoji);
             fragment.setArguments(args);
             fragment.setRetainInstance(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, FRAGMENT_TAG).commit();
-            Log.d("233", "render ends");
         }
     }
 
@@ -241,7 +238,7 @@ public class MainActivity extends ActionBarActivity implements
             final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
 
             // Set up pages for viewPager
-            SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager(), emoji);
+            SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager(), emoji);
             viewPager.setAdapter(adapter);
 
             // Set when page is changed, actionBar is also changed
@@ -286,15 +283,13 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * Adapter that holds pages on the pager view
      */
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         private Emoji emoji;
-        private FragmentManager fm;
 
         public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
             super(fm);
             this.emoji = emoji;
-            this.fm = fm;
         }
 
         @Override
