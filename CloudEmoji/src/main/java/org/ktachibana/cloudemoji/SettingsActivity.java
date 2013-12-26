@@ -51,8 +51,7 @@ public class SettingsActivity extends PreferenceActivity implements
         githubRepoPref.setOnPreferenceClickListener(this);
 
         Preference versionPref = findPreference(PREF_VERSION);
-        try
-        {
+        try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
             versionPref.setTitle(getString(R.string.version) + " " + version);
