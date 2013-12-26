@@ -35,14 +35,14 @@ public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
+    private static final String FRAGMENT_TAG = "fragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
     private Notification notification;
-    private ViewPager viewPager;
     private ActionBar actionBar;
-    private PullToRefreshLayout pullToRefreshLayout;
+    private PullToRefreshLayout refreshingPullToRefreshLayout;
 
     private boolean isInNotification;
     private String url;
@@ -55,16 +55,19 @@ public class MainActivity extends ActionBarActivity implements
         init();
         buildNotification();
         setNotificationState();
-        // Read saved XML from local storage
-        File file = new File(getFilesDir(), XML_FILE_NAME);
-        // If file does not exist
-        if (!file.exists()) {
-            update();
-        }
-        // Else render the existing
-        else {
-            Emoji emoji = readEmoji(file);
-            render(emoji);
+        if (savedInstanceState == null)
+        {
+            // Read saved XML from local storage
+            File file = new File(getFilesDir(), XML_FILE_NAME);
+            // If file does not exist
+            if (!file.exists()) {
+                update();
+            }
+            // Else render the existing
+            else {
+                Emoji emoji = readEmoji(file);
+                render(emoji);
+            }
         }
     }
 
@@ -81,7 +84,6 @@ public class MainActivity extends ActionBarActivity implements
         // Set up ActionBar and viewPager
         actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
     }
 
     private void buildNotification() {
@@ -153,10 +155,10 @@ public class MainActivity extends ActionBarActivity implements
 
         @Override
         protected void onPostExecute(Emoji emoji) {
+            if (refreshingPullToRefreshLayout != null) {
+                refreshingPullToRefreshLayout.setRefreshComplete();
+            }
             if (taskExceptions.isEmpty()) {
-                if (pullToRefreshLayout != null) {
-                    pullToRefreshLayout.setRefreshComplete();
-                }
                 render(emoji);
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             } else {
@@ -199,7 +201,46 @@ public class MainActivity extends ActionBarActivity implements
      */
     private void render(Emoji emoji) {
         if (emoji != null) {
-            // Set adapter for pages
+            Log.d("233", "render starts");
+            ViewPagerFragment fragment = new ViewPagerFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(ViewPagerFragment.EMOJI_KEY, emoji);
+            fragment.setArguments(args);
+            fragment.setRetainInstance(true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, FRAGMENT_TAG).commit();
+            Log.d("233", "render ends");
+        }
+    }
+
+    /**
+     * Fragment that holds view pager
+     */
+    private class ViewPagerFragment extends Fragment {
+
+        private static final String EMOJI_KEY = "emoji";
+        private Emoji emoji;
+
+        public ViewPagerFragment() {
+            // Required constructor
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                emoji = (Emoji) getArguments().getSerializable(EMOJI_KEY);
+            }
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            // Inflate rootView
+            View rootView = inflater.inflate(R.layout.view_pager_layout, container, false);
+
+            // Set up viewPager
+            final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
+
+            // Set up pages for viewPager
             SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager(), emoji);
             viewPager.setAdapter(adapter);
 
@@ -212,6 +253,7 @@ public class MainActivity extends ActionBarActivity implements
             });
 
             // Add all tabs to actionBar
+            actionBar.removeAllTabs();
             for (int i = 0; i < adapter.getCount(); ++i) {
                 actionBar.addTab(actionBar.newTab()
                         .setText(adapter.getPageTitle(i))
@@ -236,19 +278,23 @@ public class MainActivity extends ActionBarActivity implements
             // Set viewPager to display the first panel
             viewPager.setCurrentItem(0);
             actionBar.setSelectedNavigationItem(0);
+
+            return rootView;
         }
     }
 
     /**
      * Adapter that holds pages on the pager view
      */
-    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private Emoji emoji;
+        private FragmentManager fm;
 
         public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
             super(fm);
             this.emoji = emoji;
+            this.fm = fm;
         }
 
         @Override
@@ -298,10 +344,12 @@ public class MainActivity extends ActionBarActivity implements
             View rootView = inflater.inflate(R.layout.pull_to_refresh_layout, container, false);
 
             // Setup pullToRefreshLayout
-            pullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.pullToRefreshLayout);
+            final PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.pullToRefreshLayout);
             ActionBarPullToRefresh.from(MainActivity.this).allChildrenArePullable().listener(new OnRefreshListener() {
                 @Override
                 public void onRefreshStarted(View view) {
+                    Log.d("233", "refresh started");
+                    refreshingPullToRefreshLayout = pullToRefreshLayout;
                     update();
                 }
             }).setup(pullToRefreshLayout);
@@ -309,7 +357,7 @@ public class MainActivity extends ActionBarActivity implements
             // Setup listView
             ListView listView = (ListView) rootView.findViewById(R.id.listView);
             listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, cat));
-            listView.setOnItemClickListener(new CopyToClipBoardListener());
+            listView.setOnItemClickListener(new OnItemClickCopyToClipBoardListener());
 
             return rootView;
         }
@@ -398,7 +446,7 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * Copy string to clip board when clicked
      */
-    private class CopyToClipBoardListener implements AdapterView.OnItemClickListener {
+    private class OnItemClickCopyToClipBoardListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
