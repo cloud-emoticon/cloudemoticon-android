@@ -27,6 +27,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,28 +43,33 @@ public class MainActivity extends ActionBarActivity implements
     private PullToRefreshLayout refreshingPullToRefreshLayout;
     private MenuDrawer menuDrawer;
 
+    private FavDataSource favDataSource;
+
     private boolean isInNotification;
     private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity_layout);
 
         // Initializations
         init();
         buildNotification();
         switchNotificationState();
 
-        // TODO: display my fav page
-        fillMenuDrawer();
+        // Fill drawer without displaying the first fragment
+        fillMenuDrawer(false);
+        replaceFragment(new FavFragment());
     }
 
     private void init() {
+        // Set up favorites data source
+        favDataSource = new FavDataSource(this);
+
         // Set up preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
         isInNotification = preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,getString(R.string.default_url));
 
@@ -76,7 +82,7 @@ public class MainActivity extends ActionBarActivity implements
         {
             menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.STATIC);
         }
-        menuDrawer.setContentView(R.layout.activity_main);
+        menuDrawer.setContentView(R.layout.main_activity_layout);
         menuDrawer.setMenuView(R.layout.menu_drawer_layout);
 
         // Set up my fav item
@@ -84,7 +90,8 @@ public class MainActivity extends ActionBarActivity implements
         myFavItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "233", Toast.LENGTH_SHORT).show();
+                replaceFragment(new FavFragment());
+                menuDrawer.closeMenu(true);
             }
         });
     }
@@ -101,7 +108,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Download XML file from user's prefered URL and replace the local one
+     * Download XML file from user's preferred URL and replace the local one
      */
     private void update() {
         new UpdateRepoTask().execute(url);
@@ -161,7 +168,7 @@ public class MainActivity extends ActionBarActivity implements
             // If update finishes without exceptions
             if (taskExceptions.isEmpty())
             {
-                fillMenuDrawer();
+                fillMenuDrawer(true);
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             }
             else
@@ -201,8 +208,10 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * Fill the menu drawer with categories read from local XML file
+     *
+     * @param showFirstFragment whether shows the first category fragment
      */
-    private void fillMenuDrawer() {
+    private void fillMenuDrawer(boolean showFirstFragment) {
         // Read saved XML from local storage
         File file = new File(getFilesDir(), XML_FILE_NAME);
 
@@ -245,12 +254,14 @@ public class MainActivity extends ActionBarActivity implements
                 }
             });
 
-            // Replace the main container with first fragment
-            DoubleItemListFragment fragment = new DoubleItemListFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(0));
-            fragment.setArguments(args);
-            replaceFragment(fragment);
+            if (showFirstFragment) {
+                // Replace the main container with first fragment
+                DoubleItemListFragment fragment = new DoubleItemListFragment();
+                Bundle args = new Bundle();
+                args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(0));
+                fragment.setArguments(args);
+                replaceFragment(fragment);
+            }
         }
     }
 
@@ -260,6 +271,33 @@ public class MainActivity extends ActionBarActivity implements
      */
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+    }
+
+    /**
+     * Fragment that holds a list of string in my favorites database
+     */
+    private class FavFragment extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            // Inflate rootView
+            View rootView = inflater.inflate(R.layout.my_fav_fragment_layout, container, false);
+
+            // Mock a new category and inflate list view
+            try {
+                favDataSource.open();
+                RepoXmlParser.Category mockCategory = new RepoXmlParser.Category("fav", favDataSource.getAllEntries());
+                favDataSource.close();
+                ListView listView = (ListView) rootView.findViewById(R.id.favListView);
+                listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, mockCategory));
+                listView.setOnItemClickListener(new OnItemClickCopyToClipBoardListener());
+            } catch (SQLException e) {
+                promptException(e);
+            }
+
+            return rootView;
+        }
+
     }
 
     /**
@@ -301,9 +339,44 @@ public class MainActivity extends ActionBarActivity implements
             ListView listView = (ListView) rootView.findViewById(R.id.listView);
             listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, cat));
             listView.setOnItemClickListener(new OnItemClickCopyToClipBoardListener());
+            registerForContextMenu(listView);
 
             return rootView;
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, view, menuInfo);
+            menu.add(0, 0, 0, R.string.add_to_fav);
+        }
+
+        @Override
+        public boolean onContextItemSelected(MenuItem item) {
+            if (item.getItemId() == 0) {
+                // Get string and note from view
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                View rootView = info.targetView;
+                String string = ((TextView) rootView.findViewById(android.R.id.text1)).getText().toString();
+                String note = ((TextView) rootView.findViewById(android.R.id.text2)).getText().toString();
+
+                // Add to db
+                try {
+                    favDataSource.open();
+                    if (favDataSource.addEntry(favDataSource.createEntry(string, note))) {
+                        Toast.makeText(getActivity().getBaseContext(), getString(R.string.added_to_fav), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity().getBaseContext(), getString(R.string.already_added_to_fav), Toast.LENGTH_SHORT).show();
+                    }
+                    favDataSource.close();
+                } catch (SQLException e) {
+                    promptException(e);
+                }
+            }
+            return true;
+        }
+
     }
 
     /**

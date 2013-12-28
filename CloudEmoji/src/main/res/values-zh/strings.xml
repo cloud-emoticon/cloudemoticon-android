@@ -34,6 +34,9 @@
     <string name="my_fav">我的最爱</string>
     <string name="split_view">左右分栏（需要重启应用）</string>
     <string name="ui">UI</string>
+    <string name="add_to_fav">添加到我的最爱</string>
+    <string name="added_to_fav">已添加</string>
+    <string name="already_added_to_fav">已经添加过了</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
