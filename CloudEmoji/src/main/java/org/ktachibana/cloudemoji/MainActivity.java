@@ -43,7 +43,6 @@ public class MainActivity extends ActionBarActivity implements
     private MenuDrawer menuDrawer;
 
     private boolean isInNotification;
-    private boolean isSplitView;
     private String url;
 
     @Override
@@ -66,11 +65,10 @@ public class MainActivity extends ActionBarActivity implements
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         isInNotification = preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
-        isSplitView = preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false);
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,getString(R.string.default_url));
 
         // Set up menu drawer
-        if (!isSplitView)
+        if (!preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false))
         {
             menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
         }
