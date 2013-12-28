@@ -90,6 +90,7 @@ public class MainActivity extends ActionBarActivity implements
             public void onClick(View v) {
                 replaceFragment(new FavFragment());
                 menuDrawer.closeMenu(true);
+                getSupportActionBar().setTitle(getString(R.string.local) + ": " + getString(R.string.my_fav));
             }
         });
     }
@@ -245,6 +246,7 @@ public class MainActivity extends ActionBarActivity implements
                     fragment.setArguments(args);
                     replaceFragment(fragment);
                     menuDrawer.closeMenu(true);
+                    getSupportActionBar().setTitle(getString(R.string.category) + ": " + cat.name);
                 }
             });
 
@@ -310,10 +312,11 @@ public class MainActivity extends ActionBarActivity implements
                     favDataSource.removeEntryByString(string);
                     favDataSource.close();
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.removed_from_fav), Toast.LENGTH_SHORT).show();
-                    favListUpdate();
                 } catch (SQLException e) {
                     promptException(e);
                 }
+
+                favListUpdate();
             }
             return true;
         }

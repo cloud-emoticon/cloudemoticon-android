@@ -39,6 +39,7 @@
     <string name="already_added_to_fav">Entry already added</string>
     <string name="remove_from_fav">Remove from my favorites</string>
     <string name="removed_from_fav">Entry removed</string>
+    <string name="long_press_item_prompt">Add something to your my favorites! Long press an item in a repository list to do so</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>

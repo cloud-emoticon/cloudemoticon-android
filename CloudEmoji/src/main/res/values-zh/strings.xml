@@ -39,6 +39,7 @@
     <string name="already_added_to_fav">已经添加过了</string>
     <string name="remove_from_fav">从我的最爱移除</string>
     <string name="removed_from_fav">已移除</string>
+    <string name="long_press_item_prompt">来添加点你最喜欢的吧！长按库列表的一个项目来添加到我的最爱</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
