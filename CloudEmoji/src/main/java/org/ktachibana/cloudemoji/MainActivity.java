@@ -36,13 +36,11 @@ public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
-    private static final String VIEWPAGER_FRAGMENT_TAG = "viewPagerFragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
     private Notification notification;
-    private ActionBar actionBar;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
     private MenuDrawer menuDrawer;
 
@@ -59,16 +57,8 @@ public class MainActivity extends ActionBarActivity implements
         buildNotification();
         setNotificationState();
 
-        renderViewPagerFragment();
-
-        // TODO
-        menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.STATIC);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[] {"Action 1", "Action 2"});
-        ListView listView = new ListView(this);
-        listView.setAdapter(adapter);
-        listView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
-        menuDrawer.setContentView(R.layout.activity_main);
-        menuDrawer.setMenuView(listView);
+        // TODO: update
+        renderMenuDrawer();
     }
 
     private void init() {
@@ -81,8 +71,10 @@ public class MainActivity extends ActionBarActivity implements
                 getString(R.string.default_url));
         mocked = preferences.getBoolean(SettingsActivity.PREF_MOCK_DATA, false);
 
-        actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        // Set up menu drawer
+        menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+        menuDrawer.setContentView(R.layout.activity_main);
+        menuDrawer.setMenuView(R.layout.menu_drawer_layout);
     }
 
     private void buildNotification() {
@@ -155,8 +147,8 @@ public class MainActivity extends ActionBarActivity implements
             // If update finishes
             if (taskExceptions.isEmpty())
             {
+                // TODO: update
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
-                renderViewPagerFragment();
             }
             else
             {
@@ -193,119 +185,18 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Places a view pager fragment on container to display repository
+     * Render the menu drawer with a list with menu items in menu drawer
      */
-    private void renderViewPagerFragment() {
-        ViewPagerFragment fragment = new ViewPagerFragment();
-        fragment.setRetainInstance(true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, VIEWPAGER_FRAGMENT_TAG).commit();
-    }
-
-    /**
-     * Fragment that holds view pager
-     */
-    private class ViewPagerFragment extends Fragment {
-
-        private Emoji emoji;
-
-        public ViewPagerFragment() {
-            // Required constructor
+    private void renderMenuDrawer() {
+        // Read saved XML from local storage
+        File file = new File(getFilesDir(), XML_FILE_NAME);
+        // If file does not exist
+        if (!file.exists()) {
+            update();
         }
+        Emoji emoji = readEmoji(file);
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            // Read saved XML from local storage
-            File file = new File(getFilesDir(), XML_FILE_NAME);
-            // If file does not exist
-            if (!file.exists()) {
-                update();
-            }
-            emoji = readEmoji(file);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            // Inflate rootView
-            View rootView = inflater.inflate(R.layout.view_pager_layout, container, false);
-
-            // Set up viewPager
-            final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
-
-            // Set up pages for viewPager
-            SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager(), emoji);
-            viewPager.setAdapter(adapter);
-
-            // Set when page is changed, actionBar is also changed
-            viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    actionBar.setSelectedNavigationItem(position);
-                }
-            });
-
-            // Add all tabs to actionBar
-            actionBar.removeAllTabs();
-            for (int i = 0; i < adapter.getCount(); ++i) {
-                actionBar.addTab(actionBar.newTab()
-                        .setText(adapter.getPageTitle(i))
-                        .setTabListener(new ActionBar.TabListener() {
-                            @Override
-                            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-                                viewPager.setCurrentItem(tab.getPosition());
-                            }
-
-                            @Override
-                            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-                            }
-
-                            @Override
-                            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-                            }
-                        }));
-            }
-
-            // Set viewPager to display the first panel
-            viewPager.setCurrentItem(0);
-            actionBar.setSelectedNavigationItem(0);
-
-            return rootView;
-        }
-    }
-
-    /**
-     * Adapter that holds pages on the pager view
-     */
-    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-
-        private Emoji emoji;
-
-        public SectionsPagerAdapter(FragmentManager fm, Emoji emoji) {
-            super(fm);
-            this.emoji = emoji;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            DoubleItemListFragment fragment = new DoubleItemListFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(position));
-            fragment.setArguments(args);
-            fragment.setRetainInstance(true);
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return emoji.categories.size();
-        }
-
-        @Override
-        public String getPageTitle(int position) {
-            return emoji.categories.get(position).name;
-        }
+        ListView listView = (ListView) menuDrawer.getMenuView().findViewById(R.id.menuDrawerListView);
     }
 
     /**

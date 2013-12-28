@@ -30,6 +30,8 @@
     <string name="github_release">GitHub更新</string>
     <string name="updating">更新中</string>
     <string name="version">版本</string>
+    <string name="local">本地</string>
+    <string name="my_fav">我的最爱</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
