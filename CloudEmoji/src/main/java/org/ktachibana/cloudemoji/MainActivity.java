@@ -43,6 +43,7 @@ public class MainActivity extends ActionBarActivity implements
     private MenuDrawer menuDrawer;
 
     private boolean isInNotification;
+    private boolean isSplitView;
     private String url;
 
     @Override
@@ -63,15 +64,31 @@ public class MainActivity extends ActionBarActivity implements
         // Set up preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        isInNotification = preferences.getBoolean(
-                SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
-        url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,
-                getString(R.string.default_url));
+
+        isInNotification = preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
+        isSplitView = preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false);
+        url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,getString(R.string.default_url));
 
         // Set up menu drawer
-        menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+        if (!isSplitView)
+        {
+            menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
+        }
+        else
+        {
+            menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.STATIC);
+        }
         menuDrawer.setContentView(R.layout.activity_main);
         menuDrawer.setMenuView(R.layout.menu_drawer_layout);
+
+        // Set up my fav item
+        TextView myFavItem = (TextView) menuDrawer.getMenuView().findViewById(R.id.myFavItem);
+        myFavItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "233", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void buildNotification() {
@@ -146,7 +163,7 @@ public class MainActivity extends ActionBarActivity implements
             // If update finishes without exceptions
             if (taskExceptions.isEmpty())
             {
-                // TODO: display the first repo page
+                fillMenuDrawer();
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             }
             else
@@ -204,12 +221,38 @@ public class MainActivity extends ActionBarActivity implements
 
             // Get the "repository" list view
             ListView listView = (ListView) menuDrawer.getMenuView().findViewById(R.id.menuDrawerListView);
+
+            // Set up this list view
             ArrayAdapter<RepoXmlParser.Category> adapter = new ArrayAdapter<RepoXmlParser.Category>(this, android.R.layout.simple_list_item_1);
             for (RepoXmlParser.Category cat : categories) {
                 adapter.add(cat);
             }
             listView.setAdapter(adapter);
-            // TODO: set fragment to first page
+
+            // What happens when an item in the list view is clicked
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Retrieve one category
+                    Adapter adapter = parent.getAdapter();
+                    RepoXmlParser.Category cat = (RepoXmlParser.Category) adapter.getItem(position);
+
+                    // Create the fragment
+                    DoubleItemListFragment fragment = new DoubleItemListFragment();
+                    Bundle args = new Bundle();
+                    args.putSerializable(DoubleItemListFragment.CAT_KEY, cat);
+                    fragment.setArguments(args);
+                    replaceFragment(fragment);
+                    menuDrawer.closeMenu(true);
+                }
+            });
+
+            // Replace the main container with first fragment
+            DoubleItemListFragment fragment = new DoubleItemListFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(DoubleItemListFragment.CAT_KEY, emoji.categories.get(0));
+            fragment.setArguments(args);
+            replaceFragment(fragment);
         }
     }
 

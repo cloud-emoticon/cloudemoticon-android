@@ -19,6 +19,7 @@ public class SettingsActivity extends PreferenceActivity implements
 
     public static final String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";
     public static final String PREF_STAY_IN_NOTIFICATION = "pref_stay_in_notification";
+    public static final String PREF_SPLIT_VIEW = "pref_split_view";
     public static final String PREF_TEST_MY_REPO = "pref_test_my_repository";
     public static final String PREF_RESTORE_DEFAULT = "pref_restore_default";
     public static final String PREF_GITHUB_RELEASE = "pref_github_release";

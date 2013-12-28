@@ -32,6 +32,8 @@
     <string name="version">Version</string>
     <string name="local">Local</string>
     <string name="my_fav">My favorites</string>
+    <string name="split_view">Split view (need to restart app)</string>
+    <string name="ui">UI</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>

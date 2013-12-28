@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content">
+
     <PreferenceCategory
         android:title="@string/behaviors"
         android:key="pref_behaviors">
@@ -13,6 +14,15 @@
             android:key="pref_close_after_copy"
             android:title="@string/close_after_copy"
             android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/ui"
+        android:key="pref_ui">
+        <CheckBoxPreference
+            android:key="pref_split_view"
+            android:title="@string/split_view"
+            android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory

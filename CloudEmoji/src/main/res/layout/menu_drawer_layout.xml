@@ -12,6 +12,7 @@
         android:text="@string/local"/>
 
     <TextView
+        android:id="@+id/myFavItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/my_fav"

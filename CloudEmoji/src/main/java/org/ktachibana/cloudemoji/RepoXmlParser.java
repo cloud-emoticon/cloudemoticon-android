@@ -186,6 +186,11 @@ public class RepoXmlParser {
             this.name = name;
             this.entries = entries;
         }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     /**
