@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
-    private static final String FRAGMENT_TAG = "fragment";
+    private static final String VIEWPAGER_FRAGMENT_TAG = "viewPagerFragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
@@ -57,17 +57,7 @@ public class MainActivity extends ActionBarActivity implements
         buildNotification();
         setNotificationState();
 
-        // Read saved XML from local storage
-        File file = new File(getFilesDir(), XML_FILE_NAME);
-        // If file does not exist
-        if (!file.exists()) {
-            update();
-        }
-        // Else render the existing
-        else {
-            Emoji emoji = readEmoji(file);
-            render(emoji);
-        }
+        renderViewPagerFragment();
     }
 
     private void init() {
@@ -103,63 +93,62 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * AsyncTask that fetches an XML file from the user preference URL and displays
+     * AsyncTask that fetches an XML file from the user preference URL
      */
-    private class UpdateRepoTask extends AsyncTask<String, Void, Emoji> {
+    private class UpdateRepoTask extends AsyncTask<String, Void, Void> {
 
         private List<Exception> taskExceptions;
 
+        @Override
         protected void onPreExecute() {
             taskExceptions = new ArrayList<Exception>();
         }
 
         @Override
-        protected Emoji doInBackground(String... stringUrl) {
-            Emoji emoji = null;
+        protected Void doInBackground(String... stringUrl) {
             HttpURLConnection conn = null;
             Reader reader = null;
             OutputStream fileOut = null;
-            if (!mocked) {
-                try {
-                    // Establish connection
-                    URL url = new URL(stringUrl[0]);
-                    conn = (HttpURLConnection) url.openConnection();
-                    conn.setConnectTimeout(15000);
-                    conn.setReadTimeout(10000);
-                    conn.setRequestMethod("GET");
-                    conn.connect();
-
-                    // Over-write existing file
-                    reader = new InputStreamReader(conn.getInputStream());
-                    fileOut = openFileOutput(XML_FILE_NAME, Context.MODE_PRIVATE);
-                    IOUtils.copy(reader, fileOut);
-
-                    // Read emoji from existing file
-                    emoji = readEmoji(new File(getFilesDir(), XML_FILE_NAME));
-                } catch (IOException e) {
-                    taskExceptions.add(e);
-                } catch (Exception e) {
-                    taskExceptions.add(e);
-                } finally {
-                    IOUtils.close(conn);
-                    IOUtils.closeQuietly(reader);
-                    IOUtils.closeQuietly(fileOut);
-                }
-            } else {
-                emoji = RepoXmlParser.generateMock();
+            try {
+                // Establish connection
+                URL url = new URL(stringUrl[0]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(10000);
+                conn.setRequestMethod("GET");
+                conn.connect();
+                // Over-write existing file
+                reader = new InputStreamReader(conn.getInputStream());
+                fileOut = openFileOutput(XML_FILE_NAME, Context.MODE_PRIVATE);
+                IOUtils.copy(reader, fileOut);
+            } catch (IOException e) {
+                taskExceptions.add(e);
+            } catch (Exception e) {
+                taskExceptions.add(e);
+            } finally {
+                IOUtils.close(conn);
+                IOUtils.closeQuietly(reader);
+                IOUtils.closeQuietly(fileOut);
             }
-            return emoji;
+            return null;
         }
 
+
         @Override
-        protected void onPostExecute(Emoji emoji) {
-            if (refreshingPullToRefreshLayout != null) {
+        protected void onPostExecute(Void v) {
+            // Stop pull to refresh layout
+            if (refreshingPullToRefreshLayout != null)
+            {
                 refreshingPullToRefreshLayout.setRefreshComplete();
             }
-            if (taskExceptions.isEmpty()) {
-                render(emoji);
+            // If update finishes
+            if (taskExceptions.isEmpty())
+            {
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
-            } else {
+                renderViewPagerFragment();
+            }
+            else
+            {
                 promptException(taskExceptions.get(0));
             }
         }
@@ -193,19 +182,12 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Display a emoji with a list held within a fragment
-     *
-     * @param emoji Emoji object
+     * Places a view pager fragment on container to display repository
      */
-    private void render(Emoji emoji) {
-        if (emoji != null) {
-            ViewPagerFragment fragment = new ViewPagerFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(ViewPagerFragment.EMOJI_KEY, emoji);
-            fragment.setArguments(args);
-            fragment.setRetainInstance(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, FRAGMENT_TAG).commit();
-        }
+    private void renderViewPagerFragment() {
+        ViewPagerFragment fragment = new ViewPagerFragment();
+        fragment.setRetainInstance(true);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, VIEWPAGER_FRAGMENT_TAG).commit();
     }
 
     /**
@@ -213,7 +195,6 @@ public class MainActivity extends ActionBarActivity implements
      */
     private class ViewPagerFragment extends Fragment {
 
-        private static final String EMOJI_KEY = "emoji";
         private Emoji emoji;
 
         public ViewPagerFragment() {
@@ -223,9 +204,13 @@ public class MainActivity extends ActionBarActivity implements
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (getArguments() != null) {
-                emoji = (Emoji) getArguments().getSerializable(EMOJI_KEY);
+            // Read saved XML from local storage
+            File file = new File(getFilesDir(), XML_FILE_NAME);
+            // If file does not exist
+            if (!file.exists()) {
+                update();
             }
+            emoji = readEmoji(file);
         }
 
         @Override
