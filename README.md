@@ -12,7 +12,8 @@ So that users don't have to
 
 Features  
 * Closes after copying (configurable)  
-* Stays in notification area for quick access (configurable)  
+* Stays in notification area for quick access (configurable)
+* Split view (configurable)
 
 Dependency
 * ActionBar-PullToRefresh: https://github.com/chrisbanes/ActionBar-PullToRefresh
