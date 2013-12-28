@@ -265,6 +265,7 @@ public class MainActivity extends ActionBarActivity implements
      * @param fragment Fragment to be displayed
      */
     private void replaceFragment(Fragment fragment) {
+        fragment.setRetainInstance(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
