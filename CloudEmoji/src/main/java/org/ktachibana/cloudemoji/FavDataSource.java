@@ -32,16 +32,13 @@ public class FavDataSource {
 
     public boolean addEntry(RepoXmlParser.Entry entry) {
         // If entry not found in db
-        if (getEntryByString(entry.string) == null)
-        {
+        if (getEntryByString(entry.string) == null) {
             ContentValues value = new ContentValues();
             value.put(FavDatabaseOpenHelper.COLUMN_STRING, entry.string);
             value.put(FavDatabaseOpenHelper.COLUMN_NOTE, entry.note);
             db.insert(FavDatabaseOpenHelper.TABLE_FAV, null, value);
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -63,9 +60,7 @@ public class FavDataSource {
         }
         if (entries.isEmpty()) {
             return null;
-        }
-        else
-        {
+        } else {
             return entries.get(0);
         }
     }
@@ -80,7 +75,7 @@ public class FavDataSource {
         if (cursor.moveToFirst()) {
             do {
                 entries.add(createEntry(cursor.getString(0), cursor.getString(1)));
-            } while(cursor.moveToNext()) ;
+            } while (cursor.moveToNext());
         }
 
         return entries;

@@ -9,7 +9,6 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class RepoXmlParser {
     private static final String ns = null;

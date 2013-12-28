@@ -11,7 +11,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
@@ -71,15 +72,12 @@ public class MainActivity extends ActionBarActivity implements
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         isInNotification = preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
-        url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,getString(R.string.default_url));
+        url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
 
         // Set up menu drawer
-        if (!preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false))
-        {
+        if (!preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false)) {
             menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-        }
-        else
-        {
+        } else {
             menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.STATIC);
         }
         menuDrawer.setContentView(R.layout.main_activity_layout);
@@ -160,19 +158,15 @@ public class MainActivity extends ActionBarActivity implements
         @Override
         protected void onPostExecute(Void v) {
             // Stop the refreshing pull to refresh layout
-            if (refreshingPullToRefreshLayout != null)
-            {
+            if (refreshingPullToRefreshLayout != null) {
                 refreshingPullToRefreshLayout.setRefreshComplete();
             }
 
             // If update finishes without exceptions
-            if (taskExceptions.isEmpty())
-            {
+            if (taskExceptions.isEmpty()) {
                 fillMenuDrawer(true);
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
+            } else {
                 promptException(taskExceptions.get(0));
             }
         }
@@ -267,6 +261,7 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * Replace the main container with a fragment
+     *
      * @param fragment Fragment to be displayed
      */
     private void replaceFragment(Fragment fragment) {
@@ -400,9 +395,7 @@ public class MainActivity extends ActionBarActivity implements
                     favDataSource.open();
                     if (favDataSource.addEntry(favDataSource.createEntry(string, note))) {
                         Toast.makeText(getActivity().getBaseContext(), getString(R.string.added_to_fav), Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getActivity().getBaseContext(), getString(R.string.already_added_to_fav), Toast.LENGTH_SHORT).show();
                     }
                     favDataSource.close();
