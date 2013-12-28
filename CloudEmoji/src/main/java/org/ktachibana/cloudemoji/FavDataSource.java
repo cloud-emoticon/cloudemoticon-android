@@ -50,7 +50,7 @@ public class FavDataSource {
         String queryString = "SELECT * FROM "
                 + FavDatabaseOpenHelper.TABLE_FAV +
                 " WHERE " + FavDatabaseOpenHelper.COLUMN_STRING
-                + "='" + string + "'";
+                + "=\"" + string + "\"";
         Cursor cursor = db.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
@@ -86,7 +86,7 @@ public class FavDataSource {
         String queryString = "DELETE FROM "
                 + FavDatabaseOpenHelper.TABLE_FAV
                 + " WHERE " + FavDatabaseOpenHelper.COLUMN_STRING
-                + "='" + string + "'";
+                + "=\"" + string + "\"";
         db.execSQL(queryString);
     }
 }
