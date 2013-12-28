@@ -12,8 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.*;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
@@ -46,19 +44,19 @@ public class MainActivity extends ActionBarActivity implements
 
     private boolean isInNotification;
     private String url;
-    private boolean mocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initializations
         init();
         buildNotification();
-        setNotificationState();
+        switchNotificationState();
 
-        // TODO: update
-        renderMenuDrawer();
+        // TODO: display my fav page
+        fillMenuDrawer();
     }
 
     private void init() {
@@ -69,7 +67,6 @@ public class MainActivity extends ActionBarActivity implements
                 SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO,
                 getString(R.string.default_url));
-        mocked = preferences.getBoolean(SettingsActivity.PREF_MOCK_DATA, false);
 
         // Set up menu drawer
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
@@ -89,14 +86,14 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Download file from the user preference URL and display
+     * Download XML file from user's prefered URL and replace the local one
      */
     private void update() {
         new UpdateRepoTask().execute(url);
     }
 
     /**
-     * AsyncTask that fetches an XML file from the user preference URL
+     * AsyncTask that fetches an XML file given a URL and replace the local one
      */
     private class UpdateRepoTask extends AsyncTask<String, Void, Void> {
 
@@ -120,6 +117,7 @@ public class MainActivity extends ActionBarActivity implements
                 conn.setReadTimeout(10000);
                 conn.setRequestMethod("GET");
                 conn.connect();
+
                 // Over-write existing file
                 reader = new InputStreamReader(conn.getInputStream());
                 fileOut = openFileOutput(XML_FILE_NAME, Context.MODE_PRIVATE);
@@ -139,15 +137,16 @@ public class MainActivity extends ActionBarActivity implements
 
         @Override
         protected void onPostExecute(Void v) {
-            // Stop pull to refresh layout
+            // Stop the refreshing pull to refresh layout
             if (refreshingPullToRefreshLayout != null)
             {
                 refreshingPullToRefreshLayout.setRefreshComplete();
             }
-            // If update finishes
+
+            // If update finishes without exceptions
             if (taskExceptions.isEmpty())
             {
-                // TODO: update
+                // TODO: display the first repo page
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             }
             else
@@ -158,10 +157,11 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Read emoji from a file
+     * Read emoji from a given file and return it
+     * Handle exceptions by its own so that XmlPullParserException is not covered by IOException
      *
      * @param file File object
-     * @return emoji
+     * @return Emoji object
      */
     private Emoji readEmoji(File file) {
         FileInputStream fileIn = null;
@@ -185,22 +185,44 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Render the menu drawer with a list with menu items in menu drawer
+     * Fill the menu drawer with categories read from local XML file
      */
-    private void renderMenuDrawer() {
+    private void fillMenuDrawer() {
         // Read saved XML from local storage
         File file = new File(getFilesDir(), XML_FILE_NAME);
+
         // If file does not exist
         if (!file.exists()) {
             update();
         }
-        Emoji emoji = readEmoji(file);
 
-        ListView listView = (ListView) menuDrawer.getMenuView().findViewById(R.id.menuDrawerListView);
+        // If emoji is read correctly
+        Emoji emoji = readEmoji(file);
+        if (emoji != null) {
+            // Retrieve categories from it
+            List<RepoXmlParser.Category> categories = emoji.categories;
+
+            // Get the "repository" list view
+            ListView listView = (ListView) menuDrawer.getMenuView().findViewById(R.id.menuDrawerListView);
+            ArrayAdapter<RepoXmlParser.Category> adapter = new ArrayAdapter<RepoXmlParser.Category>(this, android.R.layout.simple_list_item_1);
+            for (RepoXmlParser.Category cat : categories) {
+                adapter.add(cat);
+            }
+            listView.setAdapter(adapter);
+            // TODO: set fragment to first page
+        }
     }
 
     /**
-     * Fragment that holds a list for one category
+     * Replace the main container with a fragment
+     * @param fragment Fragment to be displayed
+     */
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+    }
+
+    /**
+     * Fragment that holds a list of strings for one category
      */
     private class DoubleItemListFragment extends Fragment {
 
@@ -243,6 +265,9 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
+    /**
+     * Adapter that holds a list of simple_list_item_2 text views
+     */
     private class DoubleItemListAdapter implements ListAdapter {
 
         private LayoutInflater inflater;
@@ -353,9 +378,9 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Show or dismiss notification according to user preference
+     * Switch notification state to show/dismiss according to current user preference
      */
-    private void setNotificationState() {
+    private void switchNotificationState() {
         if (isInNotification) {
             notification.flags = Notification.FLAG_NO_CLEAR;
             notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
@@ -389,11 +414,9 @@ public class MainActivity extends ActionBarActivity implements
                                           String key) {
         if (key.equals(SettingsActivity.PREF_STAY_IN_NOTIFICATION)) {
             isInNotification = preferences.getBoolean(key, true);
-            setNotificationState();
+            switchNotificationState();
         } else if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
             url = preferences.getString(key, getString(R.string.default_url));
-        } else if (key.equals(SettingsActivity.PREF_MOCK_DATA)) {
-            mocked = preferences.getBoolean(key, false);
         }
     }
 

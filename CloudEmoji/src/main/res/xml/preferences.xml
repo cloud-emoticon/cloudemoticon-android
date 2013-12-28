@@ -29,14 +29,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/debug"
-        android:key="pref_debug">
-        <CheckBoxPreference
-            android:key="pref_mock_data"
-            android:title="@string/mock_data"
-            android:defaultValue="false"/>
-    </PreferenceCategory>
-    <PreferenceCategory
         android:key="pref_about"
         android:title="@string/about">
         <Preference
