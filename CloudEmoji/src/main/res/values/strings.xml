@@ -37,6 +37,8 @@
     <string name="add_to_fav">Add to my favorites</string>
     <string name="added_to_fav">Entry added</string>
     <string name="already_added_to_fav">Entry already added</string>
+    <string name="remove_from_fav">Remove from my favorites</string>
+    <string name="removed_from_fav">Entry removed</string>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>

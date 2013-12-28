@@ -278,26 +278,62 @@ public class MainActivity extends ActionBarActivity implements
      */
     private class FavFragment extends Fragment {
 
+        private ListView listView;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             // Inflate rootView
             View rootView = inflater.inflate(R.layout.my_fav_fragment_layout, container, false);
 
+            // Inflate listView
+            listView = (ListView) rootView.findViewById(R.id.favListView);
+            registerForContextMenu(listView);
+            favListUpdate();
+
+            return rootView;
+        }
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, view, menuInfo);
+            menu.add(0, 0, 0, R.string.remove_from_fav);
+        }
+
+        @Override
+        public boolean onContextItemSelected(MenuItem item) {
+            if (item.getItemId() == 0) {
+                // Get string and note from view
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                View rootView = info.targetView;
+                String string = ((TextView) rootView.findViewById(android.R.id.text1)).getText().toString();
+
+                // Add to db
+                try {
+                    favDataSource.open();
+                    favDataSource.removeEntryByString(string);
+                    favDataSource.close();
+                    Toast.makeText(getActivity().getBaseContext(), getString(R.string.removed_from_fav), Toast.LENGTH_SHORT).show();
+                    favListUpdate();
+                } catch (SQLException e) {
+                    promptException(e);
+                }
+            }
+            return true;
+        }
+
+        private void favListUpdate() {
             // Mock a new category and inflate list view
             try {
                 favDataSource.open();
                 RepoXmlParser.Category mockCategory = new RepoXmlParser.Category("fav", favDataSource.getAllEntries());
                 favDataSource.close();
-                ListView listView = (ListView) rootView.findViewById(R.id.favListView);
                 listView.setAdapter(new DoubleItemListAdapter(MainActivity.this, mockCategory));
                 listView.setOnItemClickListener(new OnItemClickCopyToClipBoardListener());
             } catch (SQLException e) {
                 promptException(e);
             }
-
-            return rootView;
         }
-
     }
 
     /**

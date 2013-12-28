@@ -79,7 +79,7 @@ public class FavDataSource {
 
         if (cursor.moveToFirst()) {
             do {
-                entries.add(createEntry(cursor.getString(0), cursor.getString(0)));
+                entries.add(createEntry(cursor.getString(0), cursor.getString(1)));
             } while(cursor.moveToNext()) ;
         }
 
