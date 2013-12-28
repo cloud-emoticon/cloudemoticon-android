@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import net.simonvt.menudrawer.MenuDrawer;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
 import org.xmlpull.v1.XmlPullParserException;
@@ -43,6 +44,7 @@ public class MainActivity extends ActionBarActivity implements
     private Notification notification;
     private ActionBar actionBar;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
+    private MenuDrawer menuDrawer;
 
     private boolean isInNotification;
     private String url;
@@ -58,6 +60,15 @@ public class MainActivity extends ActionBarActivity implements
         setNotificationState();
 
         renderViewPagerFragment();
+
+        // TODO
+        menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.STATIC);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[] {"Action 1", "Action 2"});
+        ListView listView = new ListView(this);
+        listView.setAdapter(adapter);
+        listView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+        menuDrawer.setContentView(R.layout.activity_main);
+        menuDrawer.setMenuView(listView);
     }
 
     private void init() {
