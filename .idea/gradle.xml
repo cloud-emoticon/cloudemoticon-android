@@ -9,7 +9,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/CloudEmoji" />
-            <option value="$PROJECT_DIR$/Tests" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CloudEmoji.iml" filepath="$PROJECT_DIR$/CloudEmoji.iml" />
       <module fileurl="file://$PROJECT_DIR$/CloudEmoji/CloudEmoji-CloudEmoji.iml" filepath="$PROJECT_DIR$/CloudEmoji/CloudEmoji-CloudEmoji.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Tests/Tests.iml" filepath="$PROJECT_DIR$/Tests/Tests.iml" />
     </modules>
   </component>
 </project>
