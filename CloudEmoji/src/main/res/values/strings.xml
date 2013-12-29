@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cloud emoticon</string>
+    <string name="settings">Settings</string>
+    <string name="refresh">Refresh</string>
+    <string name="exit">Exit</string>
+    <string name="processing">Reading repository</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="bad_conn">Bad connection, please retry</string>
+    <string name="wrong_xml">Wrong XML format, fix it</string>
+    <string name="restored_default">Default repository restored</string>
+    <string name="fail">ლ(╹◡╹ლ)</string>
+    <string name="touch_to_launch">Touch to launch</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="behaviors">Behavior</string>
+    <string name="stays_in_notification">Stay in notification</string>
+    <string name="close_after_copy">Close after copy</string>
+    <string name="repositories">Repository</string>
+    <string name="test_my_repository">Repository URL</string>
+    <string name="restore_default">Restore default</string>
+    <string name="debug">Debug</string>
+    <string name="mock_data">Mock data</string>
+    <string name="category">Category</string>
+    <string name="about">About</string>
+    <string name="github_repo">GitHub repository</string>
+    <string name="updated">Updated</string>
+    <string name="file_not_found">File not found, please refresh</string>
+    <string name="github_release">GitHub release</string>
+    <string name="updating">Updating</string>
+    <string name="version">Version</string>
+    <string name="local">Local</string>
+    <string name="my_fav">My favorites</string>
+    <string name="split_view">Split view (need to restart app)</string>
+    <string name="ui">UI</string>
+    <string name="add_to_fav">Add to my favorites</string>
+    <string name="added_to_fav">Entry added</string>
+    <string name="already_added_to_fav">Entry already added</string>
+    <string name="remove_from_fav">Remove from my favorites</string>
+    <string name="removed_from_fav">Entry removed</string>
+    <string name="long_press_prompt_line1">Add something to your favorites!</string>
+    <string name="long_press_prompt_line2">Slide out navigation drawer on the left side and long press an entry to do so</string>
+
+    <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
+    <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
+    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
+
+</resources>
