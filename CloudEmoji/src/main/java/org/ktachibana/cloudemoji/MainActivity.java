@@ -221,7 +221,6 @@ public class MainActivity extends ActionBarActivity implements
                 if (position == 0) {
                     replaceFragment(new FavFragment());
                     menuDrawer.closeMenu(true);
-                    getSupportActionBar().setTitle(getString(R.string.local) + ": " + getString(R.string.my_fav));
                 }
             }
         });
@@ -266,7 +265,6 @@ public class MainActivity extends ActionBarActivity implements
                     fragment.setArguments(args);
                     replaceFragment(fragment);
                     menuDrawer.closeMenu(true);
-                    getSupportActionBar().setTitle(getString(R.string.repositories) + ": " + cat.name);
                 }
             });
         }
@@ -280,6 +278,13 @@ public class MainActivity extends ActionBarActivity implements
     private void replaceFragment(Fragment fragment) {
         fragment.setRetainInstance(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, CONTAINER_FRAGMENT_TAG).commit();
+        if (fragment instanceof FavFragment) {
+            getSupportActionBar().setTitle(getString(R.string.local) + ": " + getString(R.string.my_fav));
+        }
+        else if (fragment instanceof DoubleItemListFragment) {
+            String categoryName = ((RepoXmlParser.Category) fragment.getArguments().getSerializable(DoubleItemListFragment.CAT_KEY)).name;
+            getSupportActionBar().setTitle(getString(R.string.repositories) + ": " + categoryName);
+        }
     }
 
     /**
