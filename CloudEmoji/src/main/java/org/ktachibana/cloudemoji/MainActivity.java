@@ -32,6 +32,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MainActivity
+ * This module uses menudrawer from https://github.com/SimonVT/android-menudrawer
+ */
 public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -366,7 +370,7 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * Fragment that holds a list of strings for one category
-     * This module uses
+     * This module uses ActionBar-PullToRefresh from https://github.com/chrisbanes/ActionBar-PullToRefresh
      */
     private class DoubleItemListFragment extends Fragment {
 
