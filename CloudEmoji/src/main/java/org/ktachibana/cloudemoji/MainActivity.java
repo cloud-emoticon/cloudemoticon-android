@@ -366,6 +366,7 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * Fragment that holds a list of strings for one category
+     * This module uses
      */
     private class DoubleItemListFragment extends Fragment {
 

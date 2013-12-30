@@ -20,3 +20,6 @@ Cloud emoticon that reads in emoticons on the cloud and allows one-click copying
 ## Utilizes
 * [ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
 * [menudrawer] (https://github.com/SimonVT/android-menudrawer)
+
+## License
+* [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
