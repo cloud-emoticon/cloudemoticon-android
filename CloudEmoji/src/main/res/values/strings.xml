@@ -41,6 +41,7 @@
     <string name="long_press_prompt_line1">Add something to your favorites!</string>
     <string name="long_press_prompt_line2">Slide out navigation drawer on the left side and long press an entry to do so</string>
     <string name="notification_visibility">Notification visibility</string>
+    <string name="open_source_licenses">Open source licenses</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

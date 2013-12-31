@@ -41,15 +41,12 @@
     <string name="long_press_prompt_line1">来添加点你最喜欢的吧！</string>
     <string name="long_press_prompt_line2">在左侧划出导航抽屉并长按库列表中的某一个项目来添加到我的最爱</string>
     <string name="notification_visibility">通知可见性</string>
+    <string name="open_source_licenses">开源许可</string>
 
     <string-array name="notification_options">
         <item>不可见</item>
         <item>只在通知面板显示</item>
         <item>同时在通知面板和状态栏显示</item>
     </string-array>
-
-    <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
-    <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
-    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
 
 </resources>

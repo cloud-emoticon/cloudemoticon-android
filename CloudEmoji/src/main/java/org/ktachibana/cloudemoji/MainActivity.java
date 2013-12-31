@@ -122,6 +122,7 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * AsyncTask that fetches an XML file given a URL and replace the local one
+     * This module uses Apache Commons IO from http://commons.apache.org/proper/commons-io/
      */
     private class UpdateRepoTask extends AsyncTask<String, Void, Void> {
 
@@ -183,6 +184,7 @@ public class MainActivity extends ActionBarActivity implements
     /**
      * Read emoji from a given file and return it
      * Handle exceptions by its own so that XmlPullParserException is not covered by IOException
+     * This module uses Apache Commons IO from http://commons.apache.org/proper/commons-io/
      *
      * @param file File object
      * @return Emoji object

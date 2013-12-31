@@ -10,6 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles interaction between activities and database
+ * This module uses Apache Commons Lang from http://commons.apache.org/proper/commons-lang/
+ */
 public class FavDataSource {
 
     private SQLiteDatabase db;

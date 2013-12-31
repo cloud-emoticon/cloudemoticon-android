@@ -20,6 +20,8 @@ A cloud solution to your favorite emoticons
 ## Utilizes
 * [ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
 * [menudrawer] (https://github.com/SimonVT/android-menudrawer)
+* [Apache Commons IO] (http://commons.apache.org/proper/commons-io/)
+* [Apache Commons Lang] (http://commons.apache.org/proper/commons-lang/)
 
 ## License
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
