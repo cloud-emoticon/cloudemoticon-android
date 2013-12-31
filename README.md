@@ -1,20 +1,20 @@
 # Cloud emoticon
 
-Cloud emoticon that reads in emoticons on the cloud and allows one-click copying
+A cloud solution to your favorite emoticons  
 
 ## This is an Android app that
-* Reads in an emoticon repository on the cloud (e.g a Dropbox publicly shared XML file)
-* Shows on categorized lists
-* Is capable of easy one-click copy && paste
+* reads in an emoticon repository on the cloud (e.g a Dropbox publicly shared XML file)
+* shows on categorized lists
+* is capable of easy one-click copy && paste
 
 ## So that you don't have to
-* Hack built-in dictionary files for input methods (e.g baidu / touchpal)
-* Use other cloud services where their apps are slow and not one-click copy-paste capable (e.g Evernote)  
-* Use other emoticon apps which are not customizable by you
+* hack built-in dictionary files for input methods (e.g baidu / touchpal)
+* use other cloud services where their apps are slow and not one-click copy-paste capable (e.g Evernote)  
+* use other emoticon apps which are not customizable by you
 
 ## Configurable features
-* Closes after copying
-* Stays in notification area for quick access
+* Close after copying
+* Show in notification panel/status bar
 * Navigation drawer / Split view
 
 ## Utilizes
