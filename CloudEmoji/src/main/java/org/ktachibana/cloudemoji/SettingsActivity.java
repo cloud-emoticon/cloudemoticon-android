@@ -1,10 +1,8 @@
 package org.ktachibana.cloudemoji;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -22,8 +20,6 @@ public class SettingsActivity extends PreferenceActivity implements
     public static final String PREF_SPLIT_VIEW = "pref_split_view";
     public static final String PREF_TEST_MY_REPO = "pref_test_my_repository";
     public static final String PREF_RESTORE_DEFAULT = "pref_restore_default";
-    public static final String PREF_GITHUB_RELEASE = "pref_github_release";
-    public static final String PREF_GITHUB_REPO = "pref_github_repo";
     public static final String PREF_VERSION = "pref_version";
     public static final String PREF_HAS_RUN_BEFORE = "pref_has_run_before";
 
@@ -45,12 +41,6 @@ public class SettingsActivity extends PreferenceActivity implements
         // Restore default preference
         Preference restorePref = findPreference(PREF_RESTORE_DEFAULT);
         restorePref.setOnPreferenceClickListener(this);
-
-        // GitHub links
-        Preference githubReleasePref = findPreference(PREF_GITHUB_RELEASE);
-        githubReleasePref.setOnPreferenceClickListener(this);
-        Preference githubRepoPref = findPreference(PREF_GITHUB_REPO);
-        githubRepoPref.setOnPreferenceClickListener(this);
 
         // Version
         Preference versionPref = findPreference(PREF_VERSION);
@@ -91,14 +81,6 @@ public class SettingsActivity extends PreferenceActivity implements
             editRepositoryPref.setSummary(getString(R.string.default_url));
             Toast.makeText(this, getString(R.string.restored_default),
                     Toast.LENGTH_SHORT).show();
-        } else if (PREF_GITHUB_RELEASE.equals(key)) {
-            Uri url = Uri.parse(getResources().getString(R.string.github_release_url));
-            Intent intent = new Intent(Intent.ACTION_VIEW, url);
-            startActivity(intent);
-        } else if (PREF_GITHUB_REPO.equals(key)) {
-            Uri url = Uri.parse(getResources().getString(R.string.github_url));
-            Intent intent = new Intent(Intent.ACTION_VIEW, url);
-            startActivity(intent);
         }
         return true;
     }
