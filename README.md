@@ -14,7 +14,7 @@ A cloud solution to your favorite emoticons
 
 ## Configurable features
 * Close after copying
-* Show in notification panel/status bar
+* Show in notification panel / status bar
 * Navigation drawer / Split view
 
 ## Utilizes
