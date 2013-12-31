@@ -57,9 +57,6 @@
         </Preference>
         <Preference
             android:key="pref_version"/>
-        <Preference
-            android:key="pref_open_source_licenses"
-            android:title="@string/open_source_licenses"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
