@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements
 
     private FavDataSource favDataSource;
 
-    private boolean isInNotification;
+    private String notificationVisibility;
     private String url;
 
     @Override
@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements
         // Set up preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        isInNotification = preferences.getBoolean(SettingsActivity.PREF_STAY_IN_NOTIFICATION, true);
+        notificationVisibility = preferences.getString(SettingsActivity.PREF_NOTIFICATION_VISIBILITY, "both");
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
 
         // Set up menu drawer
@@ -559,14 +559,22 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Switch notification state to show/dismiss according to current user preference
+     * Switch notification state to according to current user preference
      */
     private void switchNotificationState() {
-        if (isInNotification) {
-            notification.flags = Notification.FLAG_NO_CLEAR;
-            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
-        } else {
+        if (notificationVisibility.equals("no")) {
             notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
+        }
+        else if (notificationVisibility.equals("panel")) {
+            notification.flags = Notification.FLAG_NO_CLEAR;
+            notification.priority = Notification.PRIORITY_MIN;
+            notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
+            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
+        }
+        else if (notificationVisibility.equals("both")) {
+            notification.flags = Notification.FLAG_NO_CLEAR;
+            notification.priority = Notification.PRIORITY_DEFAULT;
+            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
         }
     }
 
@@ -593,8 +601,8 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key) {
-        if (key.equals(SettingsActivity.PREF_STAY_IN_NOTIFICATION)) {
-            isInNotification = preferences.getBoolean(key, true);
+        if (key.equals(SettingsActivity.PREF_NOTIFICATION_VISIBILITY)) {
+            notificationVisibility = preferences.getString(key, "both");
             switchNotificationState();
         } else if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
             url = preferences.getString(key, getString(R.string.default_url));

@@ -18,7 +18,7 @@ public class SettingsActivity extends PreferenceActivity implements
         Preference.OnPreferenceClickListener {
 
     public static final String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";
-    public static final String PREF_STAY_IN_NOTIFICATION = "pref_stay_in_notification";
+    public static final String PREF_NOTIFICATION_VISIBILITY = "pref_notification_visibility";
     public static final String PREF_SPLIT_VIEW = "pref_split_view";
     public static final String PREF_TEST_MY_REPO = "pref_test_my_repository";
     public static final String PREF_RESTORE_DEFAULT = "pref_restore_default";
@@ -35,22 +35,24 @@ public class SettingsActivity extends PreferenceActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
         myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         myPreferences.registerOnSharedPreferenceChangeListener(this);
 
+        // Editable repository URL preference
         editRepositoryPref = (EditTextPreference) findPreference(PREF_TEST_MY_REPO);
         editRepositoryPref.setSummary(editRepositoryPref.getText());
 
+        // Restore default preference
         Preference restorePref = findPreference(PREF_RESTORE_DEFAULT);
         restorePref.setOnPreferenceClickListener(this);
 
+        // GitHub links
         Preference githubReleasePref = findPreference(PREF_GITHUB_RELEASE);
         githubReleasePref.setOnPreferenceClickListener(this);
-
         Preference githubRepoPref = findPreference(PREF_GITHUB_REPO);
         githubRepoPref.setOnPreferenceClickListener(this);
 
+        // Version
         Preference versionPref = findPreference(PREF_VERSION);
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

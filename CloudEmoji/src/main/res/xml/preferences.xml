@@ -6,10 +6,12 @@
     <PreferenceCategory
         android:title="@string/behaviors"
         android:key="pref_behaviors">
-        <CheckBoxPreference
-            android:key="pref_stay_in_notification"
-            android:title="@string/stays_in_notification"
-            android:defaultValue="true"/>
+        <ListPreference
+            android:key="pref_notification_visibility"
+            android:title="@string/notification_visibility"
+            android:entries="@array/notification_options"
+            android:entryValues="@array/notification_options_alias"
+            android:defaultValue="both"/>
         <CheckBoxPreference
             android:key="pref_close_after_copy"
             android:title="@string/close_after_copy"
