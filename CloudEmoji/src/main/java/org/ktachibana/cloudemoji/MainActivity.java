@@ -48,7 +48,6 @@ public class MainActivity extends ActionBarActivity implements
 
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
-    private Notification notification;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
     private MenuDrawer menuDrawer;
 
@@ -61,7 +60,6 @@ public class MainActivity extends ActionBarActivity implements
 
         // Initializations
         init();
-        buildNotification();
         switchNotificationState();
         firstTimeCheck();
 
@@ -93,14 +91,24 @@ public class MainActivity extends ActionBarActivity implements
         menuDrawer.setDropShadowEnabled(false);
     }
 
-    private void buildNotification() {
+    /**
+     * Build notification with a given priority
+     * @param priority priority from Notification.priority
+     * @return a Notification object
+     */
+    private Notification buildNotification(int priority) {
         String title = getString(R.string.app_name);
         String text = getString(R.string.touch_to_launch);
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        notification = new NotificationCompat.Builder(this)
-                .setContentTitle(title).setContentText(text).setSmallIcon(R.drawable.ic_notification)
-                .setContentIntent(pIntent).setWhen(0).build();
+        return new NotificationCompat.Builder(this)
+                .setContentTitle(title)                     // Title
+                .setContentText(text)                       // Text
+                .setSmallIcon(R.drawable.ic_notification)   // Icon
+                .setContentIntent(pIntent)                  // Intent to launch this app
+                .setWhen(0)                                 // No time to display
+                .setPriority(priority)                      // Given priority
+                .build();
     }
 
     private void firstTimeCheck() {
@@ -294,16 +302,17 @@ public class MainActivity extends ActionBarActivity implements
      * Switch notification state to according to current user preference
      */
     private void switchNotificationState() {
+        // Cancel current notification
         notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
         if (notificationVisibility.equals("no")) {
             notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
         } else if (notificationVisibility.equals("panel")) {
+            Notification notification = buildNotification(Notification.PRIORITY_MIN);
             notification.flags = Notification.FLAG_NO_CLEAR;
-            notification.priority = Notification.PRIORITY_MIN;
             notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
         } else if (notificationVisibility.equals("both")) {
+            Notification notification = buildNotification(Notification.PRIORITY_DEFAULT);
             notification.flags = Notification.FLAG_NO_CLEAR;
-            notification.priority = Notification.PRIORITY_DEFAULT;
             notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
         }
     }
