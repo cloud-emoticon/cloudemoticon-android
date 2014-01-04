@@ -96,11 +96,10 @@ public class MainActivity extends ActionBarActivity implements
     private void buildNotification() {
         String title = getString(R.string.app_name);
         String text = getString(R.string.touch_to_launch);
-        int icon = R.drawable.ic_launcher;
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         notification = new NotificationCompat.Builder(this)
-                .setContentTitle(title).setContentText(text).setSmallIcon(icon)
+                .setContentTitle(title).setContentText(text).setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(pIntent).setWhen(0).build();
     }
 
