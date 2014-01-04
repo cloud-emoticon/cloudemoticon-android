@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content">
+
+    <PreferenceCategory
+        android:title="@string/behaviors"
+        android:key="pref_behaviors">
+        <ListPreference
+            android:key="pref_notification_visibility"
+            android:title="@string/notification_visibility"
+            android:entries="@array/notification_options"
+            android:entryValues="@array/notification_options_alias"
+            android:defaultValue="both"/>
+        <CheckBoxPreference
+            android:key="pref_close_after_copy"
+            android:title="@string/close_after_copy"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/ui"
+        android:key="pref_ui">
+        <CheckBoxPreference
+            android:key="pref_split_view"
+            android:title="@string/split_view"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/repositories"
+        android:key="pref_repositories">
+        <EditTextPreference
+            android:key="pref_test_my_repository"
+            android:title="@string/test_my_repository"
+            android:defaultValue="@string/default_url"
+            android:summary=""/>
+        <Preference
+            android:key="pref_restore_default"
+            android:title="@string/restore_default"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_about"
+        android:title="@string/about">
+        <Preference
+            android:key="pref_github_release"
+            android:title="@string/github_release">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/github_release_url"/>
+        </Preference>
+        <Preference
+            android:key="pref_github_repo"
+            android:title="@string/github_repo">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/github_url"/>
+        </Preference>
+        <Preference
+            android:key="pref_version"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
