@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: commons-lang-2.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/CloudEmoji/libs/commons-lang-2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
