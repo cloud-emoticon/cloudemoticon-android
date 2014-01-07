@@ -59,7 +59,8 @@ public class MainActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
 
         // Initializations
-        init();
+        setupPreferences();
+        setupUI();
         switchNotificationState();
         firstTimeCheck();
 
@@ -73,13 +74,15 @@ public class MainActivity extends ActionBarActivity implements
 
     }
 
-    private void init() {
+    private void setupPreferences() {
         // Set up preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationVisibility = preferences.getString(SettingsActivity.PREF_NOTIFICATION_VISIBILITY, "both");
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
+    }
 
+    private void setupUI() {
         // Set up menu drawer
         if (!preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false)) {
             menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
@@ -93,6 +96,7 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * Build notification with a given priority
+     *
      * @param priority priority from Notification.priority
      * @return a Notification object
      */
