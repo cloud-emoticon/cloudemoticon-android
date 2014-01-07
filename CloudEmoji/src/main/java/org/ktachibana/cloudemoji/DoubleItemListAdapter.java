@@ -63,16 +63,31 @@ public class DoubleItemListAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
-        }
-        TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
-        TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
+        // Get string and note
         RepoXmlParser.Entry entry = cat.entries.get(position);
-        lineOne.setText(entry.string);
-        lineTwo.setText(entry.note);
-        return view;
+        String string = entry.string;
+        String note = entry.note;
+        // If no note included
+        if (note.equals("")) {
+            TextView view = (TextView) convertView;
+            if (view == null) {
+                view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            }
+            view.setText(string);
+            return view;
+        }
+        else
+        {
+            View view = convertView;
+            if (view == null) {
+                view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+            }
+            TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
+            TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
+            lineOne.setText(string);
+            lineTwo.setText(note);
+            return view;
+        }
     }
 
     @Override
