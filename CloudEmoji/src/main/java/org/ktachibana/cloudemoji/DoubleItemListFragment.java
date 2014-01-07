@@ -114,8 +114,9 @@ public class DoubleItemListFragment extends Fragment {
             // Get string and note from view
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             View rootView = info.targetView;
-            String string = ((TextView) rootView.findViewById(android.R.id.text1)).getText().toString();
-            String note = ((TextView) rootView.findViewById(android.R.id.text2)).getText().toString();
+            RepoXmlParser.Entry entry = DoubleItemListAdapter.getEntryFromView(rootView);
+            String string = entry.string;
+            String note = entry.note;
 
             // Add to db
             try {

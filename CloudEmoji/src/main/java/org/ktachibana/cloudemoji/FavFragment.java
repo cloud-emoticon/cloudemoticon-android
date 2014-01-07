@@ -68,7 +68,8 @@ public class FavFragment extends Fragment {
             // Get string and note from view
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             View rootView = info.targetView;
-            String string = ((TextView) rootView.findViewById(android.R.id.text1)).getText().toString();
+            RepoXmlParser.Entry entry = DoubleItemListAdapter.getEntryFromView(rootView);
+            String string = entry.string;
 
             // Add to database
             try {

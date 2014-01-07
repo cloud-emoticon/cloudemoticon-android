@@ -104,4 +104,26 @@ public class DoubleItemListAdapter implements ListAdapter {
     public boolean isEmpty() {
         return cat.entries.isEmpty();
     }
+
+    /**
+     * Get back the underlying Entry from the list item view created by this adapter
+     *
+     * @param view view crated by this adapter
+     * @return the underlying Entry
+     */
+    public static RepoXmlParser.Entry getEntryFromView(View view) {
+        // Determine whether the view is simple_list_item_1 or 2
+        TextView noteView = (TextView) view.findViewById(android.R.id.text2);
+        // If noteView does not exist, then it is an simple_list_item_1
+        if (noteView == null) {
+            String string = ((TextView) view).getText().toString();
+            return new RepoXmlParser.Entry(string, "");
+        }
+        else
+        {
+            String string = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
+            String note = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
+            return new RepoXmlParser.Entry(string, note);
+        }
+    }
 }
