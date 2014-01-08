@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -92,6 +93,10 @@ public class MainActivity extends ActionBarActivity implements
         menuDrawer.setContentView(R.layout.main_activity_layout);
         menuDrawer.setMenuView(R.layout.menu_drawer_layout);
         menuDrawer.setDropShadowEnabled(false);
+
+        // Set up toggle
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     /**
@@ -300,7 +305,6 @@ public class MainActivity extends ActionBarActivity implements
             getSupportActionBar().setTitle(getString(R.string.repositories) + ": " + categoryName);
         }
     }
-
 
     /**
      * Switch notification state to according to current user preference
