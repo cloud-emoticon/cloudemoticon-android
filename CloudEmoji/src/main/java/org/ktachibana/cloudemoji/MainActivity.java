@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,8 +97,8 @@ public class MainActivity extends ActionBarActivity implements
             }
         };
         drawerLayout.setDrawerListener(toggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -233,7 +234,7 @@ public class MainActivity extends ActionBarActivity implements
      * Fill the navigation drawer with categories read from local XML file
      */
     private void fillNavigationDrawer() {
-        // TODO
+        leftDrawer.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, new String[] {"Item 1", "Item 2", "Item 3"}));
     }
 
     /**
@@ -336,6 +337,9 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
             case R.id.action_refresh: {
                 update();
@@ -353,6 +357,19 @@ public class MainActivity extends ActionBarActivity implements
                 return super.onOptionsItemSelected(item);
             }
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        toggle.syncState();
     }
 
     /**
