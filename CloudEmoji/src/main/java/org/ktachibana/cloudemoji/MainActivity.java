@@ -33,6 +33,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Test changes
+ */
 public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,
         DoubleItemListFragment.OnRefreshStartedListener,
