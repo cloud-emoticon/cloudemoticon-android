@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
@@ -76,7 +75,7 @@ public class DoubleItemListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate rootView
-        View rootView = inflater.inflate(R.layout.pull_to_refresh_layout, container, false);
+        View rootView = inflater.inflate(R.layout.pull_to_refresh, container, false);
 
         // Setup pullToRefreshLayout
         final PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.pullToRefreshLayout);

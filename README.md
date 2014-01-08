@@ -22,7 +22,6 @@ A cloud solution to your favorite emoticons
 
 ## Utilizes
 * [chrisbanes/ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
-* [SimonVT/menudrawer] (https://github.com/SimonVT/android-menudrawer)
 * [Apache Commons IO] (http://commons.apache.org/proper/commons-io/)
 * [Apache Commons Lang] (http://commons.apache.org/proper/commons-lang/)
 

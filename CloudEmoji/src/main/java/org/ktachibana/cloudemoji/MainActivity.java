@@ -13,13 +13,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import net.simonvt.menudrawer.MenuDrawer;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
 import org.xmlpull.v1.XmlPullParserException;
@@ -31,11 +32,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MainActivity
- * This module uses menudrawer from https://github.com/SimonVT/android-menudrawer
- * Test from master branch
- */
 public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,
         DoubleItemListFragment.OnRefreshStartedListener,
@@ -44,13 +40,15 @@ public class MainActivity extends ActionBarActivity implements
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String ACTIONBAR_TITLE_TAG = "menudrawerTitle";
-    private static final String CONTAINER_FRAGMENT_TAG = "fragment";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
+
     private PullToRefreshLayout refreshingPullToRefreshLayout;
-    private MenuDrawer menuDrawer;
+    private DrawerLayout drawerLayout;
+    private ListView leftDrawer;
+    private ActionBarDrawerToggle toggle;
 
     private String notificationVisibility;
     private String url;
@@ -58,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
 
         // Initializations
         setupPreferences();
@@ -66,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements
         firstTimeCheck();
 
         // Fill drawer
-        fillMenuDrawer();
+        fillNavigationDrawer();
 
         // If not coming from previous sessions
         if (savedInstanceState == null) {
@@ -84,17 +83,19 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void setupUI() {
-        // Set up menu drawer
-        if (!preferences.getBoolean(SettingsActivity.PREF_SPLIT_VIEW, false)) {
-            menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY);
-        } else {
-            menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.STATIC);
-        }
-        menuDrawer.setContentView(R.layout.main_activity_layout);
-        menuDrawer.setMenuView(R.layout.menu_drawer_layout);
-        menuDrawer.setDropShadowEnabled(false);
+        // Find UIs
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        FrameLayout mainContainer = (FrameLayout) findViewById(R.id.mainContainer);
+        leftDrawer = (ListView) findViewById(R.id.leftDrawer);
 
         // Set up toggle
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name) {
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(R.string.app_name);
+            }
+        };
+        drawerLayout.setDrawerListener(toggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
@@ -127,7 +128,7 @@ public class MainActivity extends ActionBarActivity implements
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(SettingsActivity.PREF_HAS_RUN_BEFORE, true);
             editor.commit();
-            menuDrawer.openMenu(true);
+            drawerLayout.openDrawer(leftDrawer);
         }
     }
 
@@ -190,8 +191,8 @@ public class MainActivity extends ActionBarActivity implements
 
             // If update finishes without exceptions
             if (taskExceptions.isEmpty()) {
-                fillMenuDrawer();
-                menuDrawer.openMenu(true);
+                fillNavigationDrawer();
+                drawerLayout.openDrawer(leftDrawer);
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             } else {
                 promptException(taskExceptions.get(0));
@@ -229,66 +230,10 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Fill the menu drawer with categories read from local XML file
+     * Fill the navigation drawer with categories read from local XML file
      */
-    private void fillMenuDrawer() {
-
-        // Set up local list view
-        ListView localListView = (ListView) menuDrawer.getMenuView().findViewById(R.id.menuDrawerLocalView);
-        String[] localOptions = new String[]{getString(R.string.my_fav)};
-        ArrayAdapter<String> localAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, localOptions);
-        localListView.setAdapter(localAdapter);
-        localListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    replaceFragment(new FavFragment());
-                    menuDrawer.closeMenu(true);
-                    menuDrawer.closeMenu(true);
-                }
-            }
-        });
-
-        // Set up repository list view
-        // Read saved XML from local storage
-        File file = new File(getFilesDir(), XML_FILE_NAME);
-
-        // If file does not exist
-        if (!file.exists()) {
-            update();
-        }
-
-        // If emoji is read correctly
-        Emoji emoji = readEmoji(file);
-        if (emoji != null) {
-            // Retrieve categories from it
-            List<RepoXmlParser.Category> categories = emoji.categories;
-
-            // Get the "repository" list view
-            ListView repoListView = (ListView) menuDrawer.getMenuView().findViewById(R.id.menuDrawerListView);
-
-            // Set up this list view
-            ArrayAdapter<RepoXmlParser.Category> repoAdapter = new ArrayAdapter<RepoXmlParser.Category>(this, android.R.layout.simple_list_item_1);
-            for (RepoXmlParser.Category cat : categories) {
-                repoAdapter.add(cat);
-            }
-            repoListView.setAdapter(repoAdapter);
-
-            // What happens when an item in the list view is clicked
-            repoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // Retrieve one category
-                    Adapter adapter = parent.getAdapter();
-                    RepoXmlParser.Category cat = (RepoXmlParser.Category) adapter.getItem(position);
-
-                    // Create the fragment
-                    DoubleItemListFragment fragment = DoubleItemListFragment.newInstance(cat);
-                    replaceFragment(fragment);
-                    menuDrawer.closeMenu(true);
-                }
-            });
-        }
+    private void fillNavigationDrawer() {
+        // TODO
     }
 
     /**
@@ -297,7 +242,7 @@ public class MainActivity extends ActionBarActivity implements
      * @param fragment Fragment to be displayed
      */
     private void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, CONTAINER_FRAGMENT_TAG).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
         if (fragment instanceof FavFragment) {
             getSupportActionBar().setTitle(getString(R.string.local) + ": " + getString(R.string.my_fav));
         } else if (fragment instanceof DoubleItemListFragment) {

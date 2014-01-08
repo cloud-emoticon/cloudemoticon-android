@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -45,7 +44,7 @@ public class FavFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate rootView
-        View rootView = inflater.inflate(R.layout.my_fav_fragment_layout, container, false);
+        View rootView = inflater.inflate(R.layout.my_fav_fragment, container, false);
 
         // Find listView and update
         listView = (ListView) rootView.findViewById(R.id.favListView);
