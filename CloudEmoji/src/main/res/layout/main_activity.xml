@@ -4,13 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- The mainContainer -->
-    <FrameLayout
-        android:id="@+id/mainContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/drawer_content_padding"/>
-
     <!-- The leftDrawer -->
     <ListView
         android:id="@+id/leftDrawer"
@@ -18,5 +11,12 @@
         android:layout_height="match_parent"
         android:background="@android:color/background_light"
         android:layout_gravity="start"/>
+
+    <!-- The mainContainer -->
+    <FrameLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/drawer_content_padding"/>
 
 </android.support.v4.widget.DrawerLayout>
