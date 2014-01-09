@@ -15,9 +15,10 @@ A cloud solution to your favorite emoticons
 * use other cloud services where their apps are not one-click copy-paste capable
 * use other emoticon apps which are not customizable by you
 
-## Configurable features
-* Close after copying
-* Show in notification panel/status bar
+## Features
+* Close after copying (configurable)
+* Show in notification panel/status bar (configurable)
+* Navigation drawer/Split view (optimized for landscape and tablets)
 
 ## Utilizes
 * [chrisbanes/ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
