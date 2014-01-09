@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -251,9 +252,10 @@ public class MainActivity extends ActionBarActivity implements
         if (emoji != null) {
             // Fill leftDrawer
             leftDrawer.setAdapter(new SectionedMenuAdapter(emoji));
-            leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            leftDrawer.setOnItemClickListener(new ListView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.e("233", "clicked");
                     MyMenuItem menuItem = (MyMenuItem) parent.getAdapter().getItem(position);
                     updateMainContainer(menuItem);
                     if (!isDrawerStatic) {
