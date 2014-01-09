@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -82,15 +83,17 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void setupUI() {
-        // Determine whether the drawer is static
+        // Find views
         FrameLayout mainContainer = (FrameLayout) findViewById(R.id.mainContainer);
-        int mainContainerLeftMargin = ((ViewGroup.MarginLayoutParams) mainContainer.getLayoutParams()).leftMargin;
-        int drawerSize = (int) getResources().getDimension(R.dimen.drawer_size);
-        isDrawerStatic = mainContainerLeftMargin == drawerSize;
-
-        // Find leftDrawer and drawerLayout
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // Determine whether the drawer is static
+        int mainContainerLeftMargin = ((ViewGroup.MarginLayoutParams) mainContainer.getLayoutParams()).leftMargin;
+        int drawerSize = leftDrawer.getLayoutParams().width;
+        Log.e("233", "mainContainerLeftMargin is " + Integer.toString(mainContainerLeftMargin));
+        Log.e("233", "drawerSize is " + drawerSize);
+        isDrawerStatic = mainContainerLeftMargin == drawerSize;
 
         // Set up if drawer is locked
         if (isDrawerStatic) {
