@@ -18,7 +18,6 @@ A cloud solution to your favorite emoticons
 ## Configurable features
 * Close after copying
 * Show in notification panel/status bar
-* Navigation drawer/Split view
 
 ## Utilizes
 * [chrisbanes/ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
