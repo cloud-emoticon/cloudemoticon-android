@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -83,8 +82,11 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void setupUI() {
-        // Determine whether drawer is locked
-        isDrawerStatic = (int) getResources().getDimension(R.dimen.drawer_content_padding) == (int) getResources().getDimension(R.dimen.drawer_size);
+        // Determine whether the drawer is static
+        FrameLayout mainContainer = (FrameLayout) findViewById(R.id.mainContainer);
+        int mainContainerLeftMargin = ((ViewGroup.MarginLayoutParams) mainContainer.getLayoutParams()).leftMargin;
+        int drawerSize = (int) getResources().getDimension(R.dimen.drawer_size);
+        isDrawerStatic = mainContainerLeftMargin == drawerSize;
 
         // Find leftDrawer and drawerLayout
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
@@ -252,10 +254,9 @@ public class MainActivity extends ActionBarActivity implements
         if (emoji != null) {
             // Fill leftDrawer
             leftDrawer.setAdapter(new SectionedMenuAdapter(emoji));
-            leftDrawer.setOnItemClickListener(new ListView.OnItemClickListener() {
+            leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.e("233", "clicked");
                     MyMenuItem menuItem = (MyMenuItem) parent.getAdapter().getItem(position);
                     updateMainContainer(menuItem);
                     if (!isDrawerStatic) {
