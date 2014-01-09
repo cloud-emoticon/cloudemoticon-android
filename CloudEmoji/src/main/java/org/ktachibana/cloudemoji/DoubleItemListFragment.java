@@ -3,6 +3,7 @@ package org.ktachibana.cloudemoji;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -87,7 +88,7 @@ public class DoubleItemListFragment extends Fragment {
         }).setup(pullToRefreshLayout);
 
         // Setup listView
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        ListView listView = (ListView) rootView.findViewById(R.id.pullToRefreshListView);
         listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), cat));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -3,5 +3,4 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="?android:attr/listSeparatorTextViewStyle"
-    android:text="@string/app_name"
-/>
+    android:text="@string/app_name"/>

@@ -75,9 +75,7 @@ public class DoubleItemListAdapter implements ListAdapter {
             }
             view.setText(string);
             return view;
-        }
-        else
-        {
+        } else {
             View view = convertView;
             if (view == null) {
                 view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
@@ -118,9 +116,7 @@ public class DoubleItemListAdapter implements ListAdapter {
         if (noteView == null) {
             String string = ((TextView) view).getText().toString();
             return new RepoXmlParser.Entry(string, "");
-        }
-        else
-        {
+        } else {
             String string = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
             String note = ((TextView) view.findViewById(android.R.id.text2)).getText().toString();
             return new RepoXmlParser.Entry(string, note);

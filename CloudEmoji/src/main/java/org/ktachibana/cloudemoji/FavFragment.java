@@ -44,7 +44,7 @@ public class FavFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate rootView
-        View rootView = inflater.inflate(R.layout.my_fav_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fav_fragment, container, false);
 
         // Find listView and update
         listView = (ListView) rootView.findViewById(R.id.favListView);

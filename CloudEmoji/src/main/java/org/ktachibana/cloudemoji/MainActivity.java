@@ -14,12 +14,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -39,20 +37,22 @@ public class MainActivity extends ActionBarActivity implements
         OnExceptionListener,
         OnCopyToClipBoardListener {
 
+    // Constants
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String XML_FILE_NAME = "emoji.xml";
 
+    // Preferences and notification
     private SharedPreferences preferences;
     private NotificationManager notificationManager;
+    private String notificationVisibility;
+    private String url;
 
-    private PullToRefreshLayout refreshingPullToRefreshLayout;
+    // UI components
     private DrawerLayout drawerLayout;
     private ListView leftDrawer;
     private ActionBarDrawerToggle toggle;
-    private boolean isDrawerLocked;
-
-    private String notificationVisibility;
-    private String url;
+    private boolean isDrawerStatic;
+    private PullToRefreshLayout refreshingPullToRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements
 
         // If not coming from previous sessions
         if (savedInstanceState == null) {
-            updateMainContainer(new MyMenuItem(getString(R.string.my_fav), new FavFragment()));
+            updateMainContainer(new MyMenuItem(getString(R.string.my_fav), MyMenuItem.FAV_TYPE));
         }
 
     }
@@ -84,15 +84,15 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void setupUI() {
-        // Find UIs
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        FrameLayout mainContainer = (FrameLayout) findViewById(R.id.mainContainer);
-        leftDrawer = (ListView) findViewById(R.id.leftDrawer);
+        // Determine whether drawer is locked
+        isDrawerStatic = (int) getResources().getDimension(R.dimen.drawer_content_padding) == (int) getResources().getDimension(R.dimen.drawer_size);
 
-        // Determine whether leftDrawer is locked and lock
-        // If leftDrawer has the same width with left padding of the main container, then drawer is locked
-        isDrawerLocked = ((int) getResources().getDimension(R.dimen.drawer_content_padding) == (int) getResources().getDimension(R.dimen.drawer_size));
-        if (isDrawerLocked) {
+        // Find leftDrawer and drawerLayout
+        leftDrawer = (ListView) findViewById(R.id.leftDrawer);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        // Set up if drawer is locked
+        if (isDrawerStatic) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, leftDrawer);
             drawerLayout.setScrimColor(Color.TRANSPARENT);
         }
@@ -105,8 +105,7 @@ public class MainActivity extends ActionBarActivity implements
             }
         };
         drawerLayout.setDrawerListener(toggle);
-        if (!isDrawerLocked)
-        {
+        if (!isDrawerStatic) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -257,14 +256,10 @@ public class MainActivity extends ActionBarActivity implements
             leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    SectionedMenuAdapter adapter = (SectionedMenuAdapter) parent.getAdapter();
-                    MyMenuItem menuItem = (MyMenuItem) adapter.getItem(position);
-                    // If it is not a section header being pressed
-                    if (menuItem.getFragment() != null) {
-                        updateMainContainer(menuItem);
-                        if (!isDrawerLocked) {
-                            drawerLayout.closeDrawers();
-                        }
+                    MyMenuItem menuItem = (MyMenuItem) parent.getAdapter().getItem(position);
+                    updateMainContainer(menuItem);
+                    if (!isDrawerStatic) {
+                        drawerLayout.closeDrawers();
                     }
                 }
             });
@@ -272,14 +267,23 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
+     *
+     */
+    /**
      * Replace the main container with a fragment and change actionbar title
      *
      * @param menuItem Menu item being pressed on
      */
     private void updateMainContainer(MyMenuItem menuItem) {
-        getSupportActionBar().setTitle(menuItem.getItemName());
-        if (menuItem.getFragment() != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, menuItem.getFragment()).commit();
+        int type = menuItem.getType();
+        if (type != MyMenuItem.SECTION_HEADER_TYPE) {
+            getSupportActionBar().setTitle(menuItem.getItemName());
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if (type == MyMenuItem.FAV_TYPE) {
+                fragmentManager.beginTransaction().replace(R.id.mainContainer, new FavFragment()).commit();
+            } else if (type == MyMenuItem.CATEGORY_TYPE) {
+                fragmentManager.beginTransaction().replace(R.id.mainContainer, DoubleItemListFragment.newInstance(menuItem.getCategory())).commit();
+            }
         }
     }
 
@@ -319,7 +323,6 @@ public class MainActivity extends ActionBarActivity implements
             prompt = getString(R.string.fail);
         }
         Toast.makeText(MainActivity.this, prompt, Toast.LENGTH_SHORT).show();
-        Log.e("CloudEmoji", e.toString());
     }
 
     @Override
@@ -379,16 +382,15 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        toggle.onConfigurationChanged(newConfig);
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        toggle.syncState();
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
     }
 
     /**
@@ -437,23 +439,38 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * A class for a menu item in menu drawer
-     * Holding it's item name and corresponding fragment
+     * Holding it's item name, its corresponding type and Category it's holding if the type is CATEGORY
      */
     private class MyMenuItem {
-        private String itemName;
-        private Fragment fragment;
+        public static final int SECTION_HEADER_TYPE = 0;
+        public static final int CATEGORY_TYPE = 1;
+        public static final int FAV_TYPE = 2;
 
-        public MyMenuItem(String itemName, Fragment fragment) {
+        private String itemName;
+        private int type;
+        private RepoXmlParser.Category category;
+
+        public MyMenuItem(String itemName, int type) {
             this.itemName = itemName;
-            this.fragment = fragment;
+            this.type = type;
+        }
+
+        public MyMenuItem(String itemName, int type, RepoXmlParser.Category category) {
+            this.itemName = itemName;
+            this.type = type;
+            this.category = category;
         }
 
         public String getItemName() {
             return itemName;
         }
 
-        public Fragment getFragment() {
-            return fragment;
+        public int getType() {
+            return type;
+        }
+
+        public RepoXmlParser.Category getCategory() {
+            return category;
         }
     }
 
@@ -463,14 +480,14 @@ public class MainActivity extends ActionBarActivity implements
         public SectionedMenuAdapter(Emoji data) {
             menuItemMap = new ArrayList<MyMenuItem>();
             // Put section header for "local"
-            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.local), null));
+            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.local), MyMenuItem.SECTION_HEADER_TYPE));
             // Put my fav
-            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.my_fav), new FavFragment()));
+            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.my_fav), MyMenuItem.FAV_TYPE));
             // Put section header for "repository"
-            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.repositories), null));
+            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.repositories), MyMenuItem.SECTION_HEADER_TYPE));
             // Put all other categories
             for (RepoXmlParser.Category category : data.categories) {
-                menuItemMap.add(new MyMenuItem(category.name, DoubleItemListFragment.newInstance(category)));
+                menuItemMap.add(new MyMenuItem(category.name, MyMenuItem.CATEGORY_TYPE, category));
             }
         }
 
@@ -481,7 +498,7 @@ public class MainActivity extends ActionBarActivity implements
 
         @Override
         public boolean isEnabled(int position) {
-            return menuItemMap.get(position).getFragment() != null;
+            return menuItemMap.get(position).getType() != MyMenuItem.SECTION_HEADER_TYPE;
         }
 
         @Override
@@ -521,7 +538,7 @@ public class MainActivity extends ActionBarActivity implements
             // Determine if the menu item is section header or list item
             MyMenuItem menuItem = menuItemMap.get(position);
             // If it is a section header
-            if (menuItem.getFragment() == null) {
+            if (menuItem.getType() == MyMenuItem.SECTION_HEADER_TYPE) {
                 if (textView == null) {
                     textView = (TextView) inflater.inflate(R.layout.text_separator_style, parent, false);
                 }
@@ -529,8 +546,7 @@ public class MainActivity extends ActionBarActivity implements
                 textView.setText(sectionName);
             }
             // Else it is a list item
-            else
-            {
+            else {
                 if (textView == null) {
                     textView = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
                 }
@@ -542,7 +558,7 @@ public class MainActivity extends ActionBarActivity implements
 
         @Override
         public int getItemViewType(int position) {
-            return (menuItemMap.get(position).getFragment() == null) ? 0 : 1;
+            return (menuItemMap.get(position).getType() == MyMenuItem.SECTION_HEADER_TYPE) ? 0 : 1;
         }
 
         @Override

@@ -17,7 +17,6 @@
         android:layout_width="@dimen/drawer_size"
         android:layout_height="match_parent"
         android:background="@android:color/background_light"
-        android:layout_gravity="start"
-        android:orientation="vertical"/>
+        android:layout_gravity="start"/>
 
 </android.support.v4.widget.DrawerLayout>
