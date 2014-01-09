@@ -93,6 +93,7 @@ public class MainActivity extends ActionBarActivity implements
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
 
         // Determine whether leftDrawer is locked and lock
+        // If leftDrawer has the same width with left padding of the main container, then drawer is locked
         isDrawerLocked = ((int) getResources().getDimension(R.dimen.drawer_content_padding) == (int) getResources().getDimension(R.dimen.drawer_size));
         if (isDrawerLocked) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, leftDrawer);
