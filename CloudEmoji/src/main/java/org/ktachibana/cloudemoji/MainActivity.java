@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
@@ -33,9 +35,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Test changes
- */
 public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,
         DoubleItemListFragment.OnRefreshStartedListener,
@@ -53,6 +52,7 @@ public class MainActivity extends ActionBarActivity implements
     private DrawerLayout drawerLayout;
     private ListView leftDrawer;
     private ActionBarDrawerToggle toggle;
+    private boolean isDrawerLocked;
 
     private String notificationVisibility;
     private String url;
@@ -92,6 +92,13 @@ public class MainActivity extends ActionBarActivity implements
         FrameLayout mainContainer = (FrameLayout) findViewById(R.id.mainContainer);
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
 
+        // Determine whether leftDrawer is locked and lock
+        isDrawerLocked = ((int) getResources().getDimension(R.dimen.drawer_content_padding) == (int) getResources().getDimension(R.dimen.drawer_size));
+        if (isDrawerLocked) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, leftDrawer);
+            drawerLayout.setScrimColor(Color.TRANSPARENT);
+        }
+
         // Set up toggle
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name) {
             /** Called when a drawer has settled in a completely open state. */
@@ -100,8 +107,11 @@ public class MainActivity extends ActionBarActivity implements
             }
         };
         drawerLayout.setDrawerListener(toggle);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (!isDrawerLocked)
+        {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     /**
