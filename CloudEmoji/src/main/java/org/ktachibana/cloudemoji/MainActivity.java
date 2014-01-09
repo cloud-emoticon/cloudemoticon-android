@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,10 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
@@ -42,7 +40,6 @@ public class MainActivity extends ActionBarActivity implements
         OnCopyToClipBoardListener {
 
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
-    private static final String ACTIONBAR_TITLE_TAG = "menudrawerTitle";
     private static final String XML_FILE_NAME = "emoji.xml";
 
     private SharedPreferences preferences;
@@ -73,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements
 
         // If not coming from previous sessions
         if (savedInstanceState == null) {
-            replaceFragment(new FavFragment());
+            updateMainContainer(new MyMenuItem(getString(R.string.my_fav), new FavFragment()));
         }
 
     }
@@ -248,21 +245,41 @@ public class MainActivity extends ActionBarActivity implements
      * Fill the navigation drawer with categories read from local XML file
      */
     private void fillNavigationDrawer() {
-        leftDrawer.setAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, new String[] {"Item 1", "Item 2", "Item 3"}));
+        // Read file from local storage
+        File file = new File(getFilesDir(), XML_FILE_NAME);
+        if (!file.exists()) {
+            update();
+        }
+        Emoji emoji = readEmoji(file);
+        if (emoji != null) {
+            // Fill leftDrawer
+            leftDrawer.setAdapter(new SectionedMenuAdapter(emoji));
+            leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    SectionedMenuAdapter adapter = (SectionedMenuAdapter) parent.getAdapter();
+                    MyMenuItem menuItem = (MyMenuItem) adapter.getItem(position);
+                    // If it is not a section header being pressed
+                    if (menuItem.getFragment() != null) {
+                        updateMainContainer(menuItem);
+                        if (!isDrawerLocked) {
+                            drawerLayout.closeDrawers();
+                        }
+                    }
+                }
+            });
+        }
     }
 
     /**
-     * Replace the main container with a fragment
+     * Replace the main container with a fragment and change actionbar title
      *
-     * @param fragment Fragment to be displayed
+     * @param menuItem Menu item being pressed on
      */
-    private void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
-        if (fragment instanceof FavFragment) {
-            getSupportActionBar().setTitle(getString(R.string.local) + ": " + getString(R.string.my_fav));
-        } else if (fragment instanceof DoubleItemListFragment) {
-            String categoryName = ((RepoXmlParser.Category) fragment.getArguments().getSerializable(DoubleItemListFragment.CAT_KEY)).name;
-            getSupportActionBar().setTitle(getString(R.string.repositories) + ": " + categoryName);
+    private void updateMainContainer(MyMenuItem menuItem) {
+        getSupportActionBar().setTitle(menuItem.getItemName());
+        if (menuItem.getFragment() != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, menuItem.getFragment()).commit();
         }
     }
 
@@ -314,18 +331,6 @@ public class MainActivity extends ActionBarActivity implements
         } else if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
             url = preferences.getString(key, getString(R.string.default_url));
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(ACTIONBAR_TITLE_TAG, getSupportActionBar().getTitle().toString());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle inState) {
-        super.onRestoreInstanceState(inState);
-        getSupportActionBar().setTitle(inState.getString(ACTIONBAR_TITLE_TAG));
     }
 
     @Override
@@ -427,6 +432,127 @@ public class MainActivity extends ActionBarActivity implements
         boolean isCloseAfterCopy = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
         if (isCloseAfterCopy) {
             finish();
+        }
+    }
+
+    /**
+     * A class for a menu item in menu drawer
+     * Holding it's item name and corresponding fragment
+     */
+    private class MyMenuItem {
+        private String itemName;
+        private Fragment fragment;
+
+        public MyMenuItem(String itemName, Fragment fragment) {
+            this.itemName = itemName;
+            this.fragment = fragment;
+        }
+
+        public String getItemName() {
+            return itemName;
+        }
+
+        public Fragment getFragment() {
+            return fragment;
+        }
+    }
+
+    private class SectionedMenuAdapter implements ListAdapter {
+        private List<MyMenuItem> menuItemMap;
+
+        public SectionedMenuAdapter(Emoji data) {
+            menuItemMap = new ArrayList<MyMenuItem>();
+            // Put section header for "local"
+            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.local), null));
+            // Put my fav
+            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.my_fav), new FavFragment()));
+            // Put section header for "repository"
+            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.repositories), null));
+            // Put all other categories
+            for (RepoXmlParser.Category category : data.categories) {
+                menuItemMap.add(new MyMenuItem(category.name, DoubleItemListFragment.newInstance(category)));
+            }
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return menuItemMap.get(position).getFragment() != null;
+        }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return menuItemMap.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return menuItemMap.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            TextView textView = (TextView) convertView;
+            // Determine if the menu item is section header or list item
+            MyMenuItem menuItem = menuItemMap.get(position);
+            // If it is a section header
+            if (menuItem.getFragment() == null) {
+                if (textView == null) {
+                    textView = (TextView) inflater.inflate(R.layout.text_separator_style, parent, false);
+                }
+                String sectionName = menuItem.getItemName();
+                textView.setText(sectionName);
+            }
+            // Else it is a list item
+            else
+            {
+                if (textView == null) {
+                    textView = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+                }
+                String itemName = menuItem.getItemName();
+                textView.setText(itemName);
+            }
+            return textView;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return (menuItemMap.get(position).getFragment() == null) ? 0 : 1;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 2;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return menuItemMap.isEmpty();
         }
     }
 }
