@@ -41,9 +41,8 @@ public class MainActivity extends ActionBarActivity implements
     private static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String XML_FILE_NAME = "emoji.xml";
 
-    // Preferences and notification
+    // Preferences
     private SharedPreferences preferences;
-    private NotificationManager notificationManager;
     private String notificationVisibility;
     private String url;
 
@@ -78,7 +77,6 @@ public class MainActivity extends ActionBarActivity implements
     private void setupPreferences() {
         // Set up preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationVisibility = preferences.getString(SettingsActivity.PREF_NOTIFICATION_VISIBILITY, "both");
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
     }
@@ -292,6 +290,7 @@ public class MainActivity extends ActionBarActivity implements
      */
     private void switchNotificationState() {
         // Cancel current notification
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
         if (notificationVisibility.equals("no")) {
             notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
@@ -571,4 +570,5 @@ public class MainActivity extends ActionBarActivity implements
             return menuItemMap.isEmpty();
         }
     }
+
 }
