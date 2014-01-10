@@ -90,12 +90,12 @@ public class DoubleItemListAdapter implements ListAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return 0;
+        return (cat.entries.get(position).note.equals("")) ? 0 : 1;
     }
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     @Override
