@@ -91,9 +91,7 @@ public class MainActivity extends ActionBarActivity implements
         // Determine whether the drawer is static
         int mainContainerLeftMargin = ((ViewGroup.MarginLayoutParams) mainContainer.getLayoutParams()).leftMargin;
         int drawerSize = leftDrawer.getLayoutParams().width;
-        Log.e("233", "mainContainerLeftMargin is " + Integer.toString(mainContainerLeftMargin));
-        Log.e("233", "drawerSize is " + drawerSize);
-        isDrawerStatic = mainContainerLeftMargin == drawerSize;
+        isDrawerStatic = (mainContainerLeftMargin == drawerSize);
 
         // Set up if drawer is locked
         if (isDrawerStatic) {

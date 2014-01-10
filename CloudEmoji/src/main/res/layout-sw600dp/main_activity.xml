@@ -14,8 +14,8 @@
             android:id="@+id/leftDrawer"
             android:layout_width="@dimen/drawer_size"
             android:layout_height="match_parent"
-            android:background="@android:color/background_light"
-            android:layout_gravity="start"/>
+            android:layout_gravity="start"
+            android:background="@android:color/background_light"/>
 
     </android.support.v4.widget.DrawerLayout>
 
@@ -24,6 +24,7 @@
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/drawer_content_padding"/>
+        android:layout_marginLeft="@dimen/drawer_content_padding"
+        android:layout_gravity="end"/>
 
 </FrameLayout>
