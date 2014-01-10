@@ -3,9 +3,7 @@ package org.ktachibana.cloudemoji;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -18,7 +16,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -54,6 +51,9 @@ public class MainActivity extends ActionBarActivity implements
     private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
 
+    // Broadcast receiver
+    private BroadcastReceiver receiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +64,6 @@ public class MainActivity extends ActionBarActivity implements
         setupUI();
         switchNotificationState();
         firstTimeCheck();
-
-        // Fill drawer
         fillNavigationDrawer();
 
         // If not coming from previous sessions
@@ -90,8 +88,9 @@ public class MainActivity extends ActionBarActivity implements
 
         // Determine whether the drawer is static
         int mainContainerLeftMargin = ((ViewGroup.MarginLayoutParams) mainContainer.getLayoutParams()).leftMargin;
-        int drawerSize = leftDrawer.getLayoutParams().width;
-        isDrawerStatic = (mainContainerLeftMargin == drawerSize);
+        int drawerSize = (int) getResources().getDimension(R.dimen.drawer_size);
+        int difference = mainContainerLeftMargin - drawerSize;
+        isDrawerStatic = difference == 0 || difference == 1;
 
         // Set up if drawer is locked
         if (isDrawerStatic) {
@@ -106,10 +105,10 @@ public class MainActivity extends ActionBarActivity implements
                 getSupportActionBar().setTitle(R.string.app_name);
             }
         };
-        drawerLayout.setDrawerListener(toggle);
         if (!isDrawerStatic) {
-            getSupportActionBar().setHomeButtonEnabled(true);
+            drawerLayout.setDrawerListener(toggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
         }
     }
 
@@ -346,9 +345,26 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.intent.action.BOOT_COMPLETED");
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+                    Toast.makeText(MainActivity.this, "Booted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        this.registerReceiver(receiver, filter);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         preferences.registerOnSharedPreferenceChangeListener(this);
+        this.unregisterReceiver(receiver);
     }
 
     @Override
