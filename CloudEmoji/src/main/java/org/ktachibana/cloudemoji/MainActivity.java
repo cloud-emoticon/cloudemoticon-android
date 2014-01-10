@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -51,9 +52,6 @@ public class MainActivity extends ActionBarActivity implements
     private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
 
-    // Broadcast receiver
-    private BroadcastReceiver receiver;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,30 +80,20 @@ public class MainActivity extends ActionBarActivity implements
 
     private void setupUI() {
         // Find views
-        FrameLayout mainContainer = (FrameLayout) findViewById(R.id.mainContainer);
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
-        // Determine whether the drawer is static
-        int mainContainerLeftMargin = ((ViewGroup.MarginLayoutParams) mainContainer.getLayoutParams()).leftMargin;
-        int drawerSize = (int) getResources().getDimension(R.dimen.drawer_size);
-        int difference = mainContainerLeftMargin - drawerSize;
-        isDrawerStatic = difference == 0 || difference == 1;
-
-        // Set up if drawer is locked
-        if (isDrawerStatic) {
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, leftDrawer);
-            drawerLayout.setScrimColor(Color.TRANSPARENT);
-        }
+        // If drawerLayout not found, then the drawer is static
+        isDrawerStatic = (drawerLayout == null);
 
         // Set up toggle
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name) {
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(R.string.app_name);
-            }
-        };
         if (!isDrawerStatic) {
+            toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name) {
+                /** Called when a drawer has settled in a completely open state. */
+                public void onDrawerOpened(View drawerView) {
+                    getSupportActionBar().setTitle(R.string.app_name);
+                }
+            };
             drawerLayout.setDrawerListener(toggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -140,7 +128,6 @@ public class MainActivity extends ActionBarActivity implements
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(SettingsActivity.PREF_HAS_RUN_BEFORE, true);
             editor.commit();
-            drawerLayout.openDrawer(leftDrawer);
         }
     }
 
@@ -204,7 +191,9 @@ public class MainActivity extends ActionBarActivity implements
             // If update finishes without exceptions
             if (taskExceptions.isEmpty()) {
                 fillNavigationDrawer();
-                drawerLayout.openDrawer(leftDrawer);
+                if (!isDrawerStatic) {
+                    drawerLayout.openDrawer(leftDrawer);
+                }
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
             } else {
                 promptException(taskExceptions.get(0));
@@ -345,26 +334,9 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.intent.action.BOOT_COMPLETED");
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-                    Toast.makeText(MainActivity.this, "Booted", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        this.registerReceiver(receiver, filter);
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         preferences.registerOnSharedPreferenceChangeListener(this);
-        this.unregisterReceiver(receiver);
     }
 
     @Override
@@ -378,8 +350,10 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
+        if (!isDrawerStatic) {
+            if (toggle.onOptionsItemSelected(item)) {
+                return true;
+            }
         }
         switch (item.getItemId()) {
             case R.id.action_refresh: {
@@ -403,13 +377,17 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toggle.syncState();
+        if (!isDrawerStatic) {
+            toggle.syncState();
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        toggle.onConfigurationChanged(newConfig);
+        if (!isDrawerStatic) {
+            toggle.onConfigurationChanged(newConfig);
+        }
     }
 
     /**

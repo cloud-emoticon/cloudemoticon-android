@@ -8,8 +8,7 @@
     <FrameLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/drawer_content_padding"/>
+        android:layout_height="match_parent"/>
 
     <!-- The leftDrawer -->
     <ListView
