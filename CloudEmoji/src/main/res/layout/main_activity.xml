@@ -16,6 +16,7 @@
         android:layout_width="@dimen/drawer_size"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:choiceMode="singleChoice"
         android:background="@android:color/background_light"/>
 
 </android.support.v4.widget.DrawerLayout>

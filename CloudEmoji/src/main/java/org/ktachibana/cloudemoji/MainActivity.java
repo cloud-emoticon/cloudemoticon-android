@@ -81,6 +81,7 @@ public class MainActivity extends ActionBarActivity implements
     private void setupUI() {
         // Find views
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
+        leftDrawer.setSelector(R.drawable.left_drawer_selecter);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
         // If drawerLayout not found, then the drawer is static
