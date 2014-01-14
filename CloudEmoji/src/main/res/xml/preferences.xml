@@ -16,6 +16,10 @@
             android:key="pref_close_after_copy"
             android:title="@string/close_after_copy"
             android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="pref_show_after_boot_up"
+            android:title="@string/show_after_boot_up"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

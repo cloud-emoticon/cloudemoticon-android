@@ -1,22 +1,18 @@
 package org.ktachibana.cloudemoji;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.*;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
@@ -37,7 +33,7 @@ public class MainActivity extends ActionBarActivity implements
         OnCopyToClipBoardListener {
 
     // Constants
-    private static final int PERSISTENT_NOTIFICATION_ID = 0;
+    public static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String XML_FILE_NAME = "emoji.xml";
 
     // Preferences
@@ -93,27 +89,6 @@ public class MainActivity extends ActionBarActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
-    }
-
-    /**
-     * Build notification with a given priority
-     *
-     * @param priority priority from Notification.priority
-     * @return a Notification object
-     */
-    private Notification buildNotification(int priority) {
-        String title = getString(R.string.app_name);
-        String text = getString(R.string.touch_to_launch);
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        return new NotificationCompat.Builder(this)
-                .setContentTitle(title)                     // Title
-                .setContentText(text)                       // Text
-                .setSmallIcon(R.drawable.ic_notification)   // Icon
-                .setContentIntent(pIntent)                  // Intent to launch this app
-                .setWhen(0)                                 // No time to display
-                .setPriority(priority)                      // Given priority
-                .build();
     }
 
     private void firstTimeCheck() {
@@ -269,24 +244,8 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    /**
-     * Switch notification state to according to current user preference
-     */
     private void switchNotificationState() {
-        // Cancel current notification
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
-        if (notificationVisibility.equals("no")) {
-            notificationManager.cancel(PERSISTENT_NOTIFICATION_ID);
-        } else if (notificationVisibility.equals("panel")) {
-            Notification notification = buildNotification(Notification.PRIORITY_MIN);
-            notification.flags = Notification.FLAG_NO_CLEAR;
-            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
-        } else if (notificationVisibility.equals("both")) {
-            Notification notification = buildNotification(Notification.PRIORITY_DEFAULT);
-            notification.flags = Notification.FLAG_NO_CLEAR;
-            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification);
-        }
+        NotificationHelper.switchNotificationState(this, notificationVisibility);
     }
 
     /**
