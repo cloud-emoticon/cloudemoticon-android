@@ -18,6 +18,7 @@ A cloud solution to your favorite emoticons
 ## Features
 * Close after copying (configurable)
 * Show in notification panel/status bar (configurable)
+* Show notification after boot-up (configurable)
 * Split view (optimized for landscape and tablets)
 
 ## Utilizes
