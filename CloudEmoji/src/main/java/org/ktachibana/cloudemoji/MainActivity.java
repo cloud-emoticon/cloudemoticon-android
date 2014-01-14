@@ -252,9 +252,6 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     *
-     */
-    /**
      * Replace the main container with a fragment and change actionbar title
      *
      * @param menuItem Menu item being pressed on
