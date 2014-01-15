@@ -19,6 +19,7 @@ A cloud solution to your favorite emoticons
 * Close after copying
 * Show in notification panel/status bar
 * Show notification after boot-up
+* Navigation drawer / Split view (optimized or manual)
 * Override system font to display emoticons correctly
 
 ## Utilizes
