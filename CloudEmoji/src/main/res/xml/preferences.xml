@@ -25,6 +25,12 @@
     <PreferenceCategory
         android:title="@string/ui"
         android:key="pref_ui">
+        <ListPreference
+            android:key="pref_split_view"
+            android:title="@string/split_view"
+            android:entries="@array/split_view_options"
+            android:entryValues="@array/split_view_options_alias"
+            android:defaultValue="auto"/>
         <CheckBoxPreference
             android:key="pref_override_system_font"
             android:title="@string/override_system_font"

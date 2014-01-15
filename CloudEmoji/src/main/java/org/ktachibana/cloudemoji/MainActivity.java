@@ -56,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements
         // Initializations
         setupPreferences();
         setupUI();
+        setupComponents();
         switchNotificationState();
         firstTimeCheck();
         fillNavigationDrawer();
@@ -75,6 +76,44 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void setupUI() {
+        // Set up UI layout according to user preference for drawer and split view
+        String uiPreference = preferences.getString(SettingsActivity.PREF_SPLIT_VIEW, "auto");
+        int orientation = getResources().getConfiguration().orientation;
+        // If auto, set up the default layout optimized for landscape and tablets
+        if (uiPreference.equals("auto")) {
+            setContentView(R.layout.main_activity);
+        }
+        // If split_in_port, only manually set up split view if detected portrait
+        else if (uiPreference.equals("split_in_port")) {
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                setContentView(R.layout.main_activity_manual_split_view);
+            }
+            else
+            {
+                setContentView(R.layout.main_activity_manual_navi_drawer);
+            }
+        }
+        // If split_in_land, only manually set up split view if detected landscape
+        else if (uiPreference.equals("split_in_land")) {
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                setContentView(R.layout.main_activity_manual_split_view);
+            }
+            else
+            {
+                setContentView((R.layout.main_activity_manual_navi_drawer));
+            }
+        }
+        // If split_in_both, manually set up split view for both orientations
+        else if (uiPreference.equals("split_in_both")) {
+            setContentView(R.layout.main_activity_manual_split_view);
+        }
+        else
+        {
+            promptException(new Exception("setupUI() bug"));
+        }
+    }
+
+    private void setupComponents() {
         // Find views
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -262,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements
         } else if (e instanceof IOException) {
             prompt = getString(R.string.bad_conn);
         } else {
-            prompt = getString(R.string.fail);
+            prompt = getString(R.string.fail) + e.toString();
         }
         Toast.makeText(MainActivity.this, prompt, Toast.LENGTH_SHORT).show();
     }

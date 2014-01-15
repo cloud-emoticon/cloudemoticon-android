@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">云颜文字</string>
     <string name="settings">设置</string>
     <string name="refresh">刷新</string>
@@ -31,7 +30,7 @@
     <string name="version">版本</string>
     <string name="local">本地</string>
     <string name="my_fav">我的最爱</string>
-    <string name="split_view">左右分栏（需要重启应用）</string>
+    <string name="split_view">导航抽屉/左右分栏（需要重启应用）</string>
     <string name="ui">UI</string>
     <string name="add_to_fav">添加到我的最爱</string>
     <string name="added_to_fav">已添加</string>
@@ -49,9 +48,15 @@
         <item>只在通知面板显示</item>
         <item>同时在通知面板和状态栏显示</item>
     </string-array>
+    
+    <string-array name="split_view_options">
+        <item>自动（推荐）</item>
+        <item>在横屏时左右分栏</item>
+        <item>在竖屏时左右分栏</item>
+        <item>无论何时左右分栏</item>
+    </string-array>
 
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
     <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
-
 </resources>
