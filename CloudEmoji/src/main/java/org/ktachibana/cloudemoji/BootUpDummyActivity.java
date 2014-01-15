@@ -20,9 +20,8 @@ public class BootUpDummyActivity extends Activity {
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
-        // Hard way to kill the activity completely from background
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 }
