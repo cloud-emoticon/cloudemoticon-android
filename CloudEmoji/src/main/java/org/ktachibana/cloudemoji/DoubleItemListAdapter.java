@@ -2,6 +2,8 @@ package org.ktachibana.cloudemoji;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,16 @@ import android.widget.TextView;
  */
 public class DoubleItemListAdapter implements ListAdapter {
 
+    private Context context;
     private LayoutInflater inflater;
     private RepoXmlParser.Category cat;
+    private Typeface font;
 
     public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat) {
+        this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.cat = cat;
+        font = Typeface.createFromAsset(context.getAssets(), "DroidSansFallback.ttf");
     }
 
     @Override
@@ -63,6 +69,8 @@ public class DoubleItemListAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Get whether to override system font
+        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
         // Get string and note
         RepoXmlParser.Entry entry = cat.entries.get(position);
         String string = entry.string;
@@ -74,6 +82,10 @@ public class DoubleItemListAdapter implements ListAdapter {
                 view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             }
             view.setText(string);
+            if (overrideSystemFont)
+            {
+                view.setTypeface(font);
+            }
             return view;
         } else {
             View view = convertView;
@@ -83,6 +95,9 @@ public class DoubleItemListAdapter implements ListAdapter {
             TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
             TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
             lineOne.setText(string);
+            if (overrideSystemFont) {
+                lineOne.setTypeface(font);
+            }
             lineTwo.setText(note);
             return view;
         }

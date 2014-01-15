@@ -43,6 +43,7 @@
     <string name="notification_visibility">Notification visibility</string>
     <string name="open_source_licenses">Open source licenses</string>
     <string name="show_after_boot_up">Show the notification after boot-up</string>
+    <string name="override_system_font">Override system font</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

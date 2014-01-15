@@ -23,6 +23,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/ui"
+        android:key="pref_ui">
+        <CheckBoxPreference
+            android:key="pref_override_system_font"
+            android:title="@string/override_system_font"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/repositories"
         android:key="pref_repositories">
         <EditTextPreference
