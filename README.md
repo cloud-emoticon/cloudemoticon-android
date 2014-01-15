@@ -3,7 +3,10 @@
 A cloud solution to your favorite emoticons
 
 ## Now available on Play Store
-* [Play Store link](https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji)
+<a href="https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
 
 ## This is an unique Android emoticon app that
 * reads in an emoticon repository on the cloud (e.g a Dropbox public shared XML file)
@@ -20,7 +23,8 @@ A cloud solution to your favorite emoticons
 * Show in notification panel/status bar
 * Show notification after boot-up
 * Navigation drawer / Split view (optimized or manual)
-* Override system font to display emoticons correctly (Thanks to [+Jobin Wen](https://plus.google.com/u/0/+HaoyuWen) who extracts font from stock LG rom)
+* Override system font to display emoticons correctly
+    (Thanks to [+Jobin Wen](https://plus.google.com/u/0/+HaoyuWen) who extracts font from stock LG rom)
 
 ## Utilizes
 * [chrisbanes/ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
