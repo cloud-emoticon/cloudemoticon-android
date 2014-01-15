@@ -33,7 +33,7 @@ public class DoubleItemListAdapter implements ListAdapter {
     }
 
     @Override
-    public boolean isEnabled(int position) {
+    public boolean isEnabled(int pos2ition) {
         return true;
     }
 
