@@ -52,8 +52,8 @@
 
     <string-array name="split_view_options">
         <item>自动（推荐）</item>
-        <item>在横屏时左右分栏</item>
         <item>在竖屏时左右分栏</item>
+        <item>在横屏时左右分栏</item>
         <item>无论何时左右分栏</item>
     </string-array>
 
