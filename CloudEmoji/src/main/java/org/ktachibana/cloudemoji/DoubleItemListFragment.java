@@ -2,6 +2,7 @@ package org.ktachibana.cloudemoji;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.AdapterView;
@@ -88,7 +89,8 @@ public class DoubleItemListFragment extends Fragment {
 
         // Setup listView
         ListView listView = (ListView) rootView.findViewById(R.id.pullToRefreshListView);
-        listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), cat));
+        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
+        listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), cat, overrideSystemFont));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

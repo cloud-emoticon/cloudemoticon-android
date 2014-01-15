@@ -15,16 +15,15 @@ import android.widget.TextView;
  */
 public class DoubleItemListAdapter implements ListAdapter {
 
-    private Context context;
     private LayoutInflater inflater;
     private RepoXmlParser.Category cat;
-    private Typeface font;
+    private boolean overrideSystemFont;
 
-    public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat) {
-        this.context = context;
+    public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat, boolean overrideSystemFont) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.cat = cat;
-        font = Typeface.createFromAsset(context.getAssets(), "DroidSansFallback.ttf");
+        this.overrideSystemFont = overrideSystemFont;
+
     }
 
     @Override
@@ -33,7 +32,7 @@ public class DoubleItemListAdapter implements ListAdapter {
     }
 
     @Override
-    public boolean isEnabled(int pos2ition) {
+    public boolean isEnabled(int position) {
         return true;
     }
 
@@ -70,7 +69,7 @@ public class DoubleItemListAdapter implements ListAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get whether to override system font
-        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
+        Typeface font = MainActivity.getTypeface();
         // Get string and note
         RepoXmlParser.Entry entry = cat.entries.get(position);
         String string = entry.string;

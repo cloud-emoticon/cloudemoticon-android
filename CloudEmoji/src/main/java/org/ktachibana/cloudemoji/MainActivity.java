@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,6 +48,9 @@ public class MainActivity extends ActionBarActivity implements
     private ActionBarDrawerToggle toggle;
     private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
+
+    // Typeface
+    public static Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +126,9 @@ public class MainActivity extends ActionBarActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+
+        // Set up Typeface
+        tf = Typeface.createFromAsset(getAssets(), "DroidSansFallback.ttf");
     }
 
     private void firstTimeCheck() {
@@ -298,6 +305,10 @@ public class MainActivity extends ActionBarActivity implements
             prompt = getString(R.string.fail) + e.toString();
         }
         Toast.makeText(MainActivity.this, prompt, Toast.LENGTH_SHORT).show();
+    }
+
+    public static Typeface getTypeface() {
+        return tf;
     }
 
     @Override

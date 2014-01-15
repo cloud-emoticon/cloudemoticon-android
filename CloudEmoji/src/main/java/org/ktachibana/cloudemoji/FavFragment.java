@@ -2,6 +2,7 @@ package org.ktachibana.cloudemoji;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.AdapterView;
@@ -107,7 +108,8 @@ public class FavFragment extends Fragment {
     private void updateFavList() {
         RepoXmlParser.Category mockedCategory = mockCategory();
         if (mockedCategory != null) {
-            listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), mockedCategory));
+            boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
+            listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), mockedCategory, overrideSystemFont));
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
