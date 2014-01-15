@@ -33,7 +33,8 @@
                 android:value="org.ktachibana.cloudemoji.MainActivity"/>
         </activity>
         <activity
-            android:name="org.ktachibana.cloudemoji.BootUpDummyActivity">
+            android:name="org.ktachibana.cloudemoji.BootUpDummyActivity"
+            android:theme="@android:style/Theme.NoDisplay">
         </activity>
 
         <receiver
