@@ -82,8 +82,7 @@ public class DoubleItemListAdapter implements ListAdapter {
                 view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             }
             view.setText(string);
-            if (overrideSystemFont)
-            {
+            if (overrideSystemFont) {
                 view.setTypeface(font);
             }
             return view;

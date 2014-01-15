@@ -87,9 +87,7 @@ public class MainActivity extends ActionBarActivity implements
         else if (uiPreference.equals("split_in_port")) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 setContentView(R.layout.main_activity_manual_split_view);
-            }
-            else
-            {
+            } else {
                 setContentView(R.layout.main_activity_manual_navi_drawer);
             }
         }
@@ -97,18 +95,14 @@ public class MainActivity extends ActionBarActivity implements
         else if (uiPreference.equals("split_in_land")) {
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 setContentView(R.layout.main_activity_manual_split_view);
-            }
-            else
-            {
+            } else {
                 setContentView((R.layout.main_activity_manual_navi_drawer));
             }
         }
         // If split_in_both, manually set up split view for both orientations
         else if (uiPreference.equals("split_in_both")) {
             setContentView(R.layout.main_activity_manual_split_view);
-        }
-        else
-        {
+        } else {
             promptException(new Exception("setupUI() bug"));
         }
     }

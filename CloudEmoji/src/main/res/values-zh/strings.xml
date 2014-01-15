@@ -48,7 +48,7 @@
         <item>只在通知面板显示</item>
         <item>同时在通知面板和状态栏显示</item>
     </string-array>
-    
+
     <string-array name="split_view_options">
         <item>自动（推荐）</item>
         <item>在横屏时左右分栏</item>
