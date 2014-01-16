@@ -24,8 +24,8 @@ A cloud solution to your favorite emoticons
 * Show notification after boot-up
 * Navigation drawer / Split view (optimized or manual)
 * Override system font to display emoticons correctly
-    (Thanks to [+Jobin Wen](https://plus.google.com/u/0/+HaoyuWen) who extracts font from stock LG rom)
-    (LG please contact me if you have any copyright issues)
+ * Thanks to [+Jobin Wen](https://plus.google.com/u/0/+HaoyuWen) who extracts font from stock LG rom
+ * LG please contact me if you have any copyright issues
 
 ## Utilizes
 * [chrisbanes/ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
