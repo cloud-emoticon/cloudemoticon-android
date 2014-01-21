@@ -32,9 +32,10 @@ A cloud solution to your favorite emoticons
 * [Apache Commons IO] (http://commons.apache.org/proper/commons-io/)
 * [Apache Commons Lang] (http://commons.apache.org/proper/commons-lang/)
 
-## Known bugs
+## Known issues
 * After boot-up an empty activity (basically the BootUpDummyActivity) is retained in background tasks list
 * Only show in panel option not working for Android 2.x
+* Action bar title not remembered
 
 ## How to run
 * Import into IntelliJ IDEA 13, set up JDK and Android SDK, set up build configuration, and you are ready to go
