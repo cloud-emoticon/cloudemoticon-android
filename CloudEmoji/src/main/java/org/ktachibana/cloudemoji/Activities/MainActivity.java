@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
-import org.ktachibana.cloudemoji.RepoXmlParser.Emoji;
+import org.ktachibana.cloudemoji.*;
+import org.ktachibana.cloudemoji.fragments.DoubleItemListFragment;
+import org.ktachibana.cloudemoji.fragments.FavFragment;
+import org.ktachibana.cloudemoji.helpers.NotificationHelper;
+import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
+import org.ktachibana.cloudemoji.helpers.RepoXmlParser.Emoji;
+import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
+import org.ktachibana.cloudemoji.interfaces.OnExceptionListener;
 import org.xmlpull.v1.XmlPullParserException;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 

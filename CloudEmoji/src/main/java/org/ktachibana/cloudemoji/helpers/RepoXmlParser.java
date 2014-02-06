@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.helpers;
 
 import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;

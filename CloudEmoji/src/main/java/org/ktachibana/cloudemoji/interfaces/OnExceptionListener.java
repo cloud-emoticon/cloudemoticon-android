@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.interfaces;
 
 /**
  * Activities implementing this interface should be responsible for handling exceptions

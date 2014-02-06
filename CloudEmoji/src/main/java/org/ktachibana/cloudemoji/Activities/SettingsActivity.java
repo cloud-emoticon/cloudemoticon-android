@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.activities;
 
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -10,6 +10,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
+import org.ktachibana.cloudemoji.R;
 
 public class SettingsActivity extends PreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,

@@ -3,6 +3,7 @@ package org.ktachibana.cloudemoji;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import org.ktachibana.cloudemoji.activities.BootUpDummyActivity;
 
 /**
  * Receives when booted up

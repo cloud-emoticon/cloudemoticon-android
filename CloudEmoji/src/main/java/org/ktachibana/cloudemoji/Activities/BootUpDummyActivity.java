@@ -1,8 +1,9 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 
 /**
  * Shows notification after boot up according to user preference

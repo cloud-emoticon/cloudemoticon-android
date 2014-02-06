@@ -3,12 +3,13 @@ package org.ktachibana.cloudemoji;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import org.ktachibana.cloudemoji.activities.MainActivity;
+import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 
 /**
  * Adapter that holds a list of simple_list_item_2 text views

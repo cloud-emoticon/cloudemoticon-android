@@ -1,10 +1,11 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.databases;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.helpers;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.activities.MainActivity;
 
 /**
  * Abstract Notification codes from MainActivity to be shared among MainActivity and BootUpDummyActivity

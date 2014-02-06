@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,13 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import org.ktachibana.cloudemoji.DoubleItemListAdapter;
+import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.activities.SettingsActivity;
+import org.ktachibana.cloudemoji.databases.FavDataSource;
+import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
+import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
+import org.ktachibana.cloudemoji.interfaces.OnExceptionListener;
 
 import java.sql.SQLException;
 

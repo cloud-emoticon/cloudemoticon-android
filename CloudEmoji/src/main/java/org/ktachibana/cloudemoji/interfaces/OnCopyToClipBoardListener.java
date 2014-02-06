@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.interfaces;
 
 /**
  * Activities implementing this interface should be responsible for copying to clip board given a string

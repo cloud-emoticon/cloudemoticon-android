@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.databases;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
