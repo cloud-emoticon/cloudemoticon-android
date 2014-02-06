@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -25,11 +26,12 @@ import java.sql.SQLException;
  * Fragment that holds a list of strings for one category
  * This module uses ActionBar-PullToRefresh from https://github.com/chrisbanes/ActionBar-PullToRefresh
  */
-public class DoubleItemListFragment extends Fragment {
+public class CategoryListFragment extends Fragment {
 
     public static final String CAT_KEY = "category";
     private RepoXmlParser.Category cat;
     private FavDataSource favDataSource;
+    private Typeface font;
     private OnRefreshStartedListener refreshCallback;
     private OnExceptionListener exceptionCallback;
     private OnCopyToClipBoardListener copyCallback;
@@ -46,15 +48,15 @@ public class DoubleItemListFragment extends Fragment {
         public void onRefreshStarted(PullToRefreshLayout layout);
     }
 
-    public static DoubleItemListFragment newInstance(RepoXmlParser.Category cat) {
-        DoubleItemListFragment fragment = new DoubleItemListFragment();
+    public static CategoryListFragment newInstance(RepoXmlParser.Category cat) {
+        CategoryListFragment fragment = new CategoryListFragment();
         Bundle args = new Bundle();
         args.putSerializable(CAT_KEY, cat);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public DoubleItemListFragment() {
+    public CategoryListFragment() {
         // Required constructor
     }
 
@@ -77,7 +79,10 @@ public class DoubleItemListFragment extends Fragment {
             cat = (RepoXmlParser.Category) getArguments().getSerializable(CAT_KEY);
         }
         favDataSource = new FavDataSource(getActivity().getBaseContext());
-
+        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
+        if (overrideSystemFont) {
+            font = Typeface.createFromAsset(getActivity().getResources().getAssets(), "DroidSansFallback.ttf");
+        }
     }
 
     @Override
@@ -96,8 +101,7 @@ public class DoubleItemListFragment extends Fragment {
 
         // Setup listView
         ListView listView = (ListView) rootView.findViewById(R.id.pullToRefreshListView);
-        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
-        listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), cat, overrideSystemFont));
+        listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), cat, font));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

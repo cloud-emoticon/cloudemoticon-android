@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -21,14 +22,15 @@ import java.sql.SQLException;
 /**
  * Fragment that holds a list of string in my favorites database
  */
-public class FavFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
 
     private ListView listView;
     private FavDataSource favDataSource;
+    private Typeface font;
     private OnExceptionListener exceptionCallback;
     private OnCopyToClipBoardListener copyCallback;
 
-    public FavFragment() {
+    public FavoritesFragment() {
         // Required constructor
     }
 
@@ -47,6 +49,10 @@ public class FavFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         favDataSource = new FavDataSource(getActivity().getBaseContext());
+        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
+        if (overrideSystemFont) {
+            font = Typeface.createFromAsset(getActivity().getResources().getAssets(), "DroidSansFallback.ttf");
+        }
     }
 
     @Override
@@ -116,7 +122,7 @@ public class FavFragment extends Fragment {
         RepoXmlParser.Category mockedCategory = mockCategory();
         if (mockedCategory != null) {
             boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
-            listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), mockedCategory, overrideSystemFont));
+            listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), mockedCategory, font));
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

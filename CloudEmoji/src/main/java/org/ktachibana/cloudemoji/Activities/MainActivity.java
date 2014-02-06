@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +17,8 @@ import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.*;
-import org.ktachibana.cloudemoji.fragments.DoubleItemListFragment;
-import org.ktachibana.cloudemoji.fragments.FavFragment;
+import org.ktachibana.cloudemoji.fragments.CategoryListFragment;
+import org.ktachibana.cloudemoji.fragments.FavoritesFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser.Emoji;
@@ -36,7 +35,7 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,
-        DoubleItemListFragment.OnRefreshStartedListener,
+        CategoryListFragment.OnRefreshStartedListener,
         OnExceptionListener,
         OnCopyToClipBoardListener {
 
@@ -55,9 +54,6 @@ public class MainActivity extends ActionBarActivity implements
     private ActionBarDrawerToggle toggle;
     private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
-
-    // Typeface
-    public static Typeface tf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,9 +129,6 @@ public class MainActivity extends ActionBarActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
-
-        // Set up Typeface
-        tf = Typeface.createFromAsset(getAssets(), "DroidSansFallback.ttf");
     }
 
     private void firstTimeCheck() {
@@ -284,9 +277,9 @@ public class MainActivity extends ActionBarActivity implements
             getSupportActionBar().setTitle(menuItem.getItemName());
             FragmentManager fragmentManager = getSupportFragmentManager();
             if (type == MyMenuItem.FAV_TYPE) {
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, new FavFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.mainContainer, new FavoritesFragment()).commit();
             } else if (type == MyMenuItem.CATEGORY_TYPE) {
-                fragmentManager.beginTransaction().replace(R.id.mainContainer, DoubleItemListFragment.newInstance(menuItem.getCategory())).commit();
+                fragmentManager.beginTransaction().replace(R.id.mainContainer, CategoryListFragment.newInstance(menuItem.getCategory())).commit();
             }
         }
     }
@@ -312,10 +305,6 @@ public class MainActivity extends ActionBarActivity implements
             prompt = getString(R.string.fail) + e.toString();
         }
         Toast.makeText(MainActivity.this, prompt, Toast.LENGTH_SHORT).show();
-    }
-
-    public static Typeface getTypeface() {
-        return tf;
     }
 
     @Override
@@ -402,7 +391,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Implements from DoubleItemListFragment.OnRefreshStartedListener
+     * Implements from CategoryListFragment.OnRefreshStartedListener
      *
      * @param layout Layout being pulled
      */

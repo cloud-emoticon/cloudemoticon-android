@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import org.ktachibana.cloudemoji.activities.MainActivity;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 
 /**
@@ -18,13 +17,12 @@ public class DoubleItemListAdapter implements ListAdapter {
 
     private LayoutInflater inflater;
     private RepoXmlParser.Category cat;
-    private boolean overrideSystemFont;
+    private Typeface font;
 
-    public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat, boolean overrideSystemFont) {
+    public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat, Typeface font) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.cat = cat;
-        this.overrideSystemFont = overrideSystemFont;
-
+        this.font = font;
     }
 
     @Override
@@ -69,8 +67,6 @@ public class DoubleItemListAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get whether to override system font
-        Typeface font = MainActivity.getTypeface();
         // Get string and note
         RepoXmlParser.Entry entry = cat.entries.get(position);
         String string = entry.string;
@@ -82,7 +78,7 @@ public class DoubleItemListAdapter implements ListAdapter {
                 view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             }
             view.setText(string);
-            if (overrideSystemFont) {
+            if (font != null) {
                 view.setTypeface(font);
             }
             return view;
@@ -94,7 +90,7 @@ public class DoubleItemListAdapter implements ListAdapter {
             TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
             TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
             lineOne.setText(string);
-            if (overrideSystemFont) {
+            if (font != null) {
                 lineOne.setTypeface(font);
             }
             lineTwo.setText(note);
