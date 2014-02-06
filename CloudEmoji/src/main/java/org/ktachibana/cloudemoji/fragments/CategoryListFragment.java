@@ -1,17 +1,14 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import org.ktachibana.cloudemoji.DoubleItemListAdapter;
+import org.ktachibana.cloudemoji.CategoryListAdapter;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.activities.SettingsActivity;
 import org.ktachibana.cloudemoji.databases.FavDataSource;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
@@ -31,7 +28,6 @@ public class CategoryListFragment extends Fragment {
     public static final String CAT_KEY = "category";
     private RepoXmlParser.Category cat;
     private FavDataSource favDataSource;
-    private Typeface font;
     private OnRefreshStartedListener refreshCallback;
     private OnExceptionListener exceptionCallback;
     private OnCopyToClipBoardListener copyCallback;
@@ -79,10 +75,6 @@ public class CategoryListFragment extends Fragment {
             cat = (RepoXmlParser.Category) getArguments().getSerializable(CAT_KEY);
         }
         favDataSource = new FavDataSource(getActivity().getBaseContext());
-        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
-        if (overrideSystemFont) {
-            font = Typeface.createFromAsset(getActivity().getResources().getAssets(), "DroidSansFallback.ttf");
-        }
     }
 
     @Override
@@ -101,7 +93,7 @@ public class CategoryListFragment extends Fragment {
 
         // Setup listView
         ListView listView = (ListView) rootView.findViewById(R.id.pullToRefreshListView);
-        listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), cat, font));
+        listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), cat));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,7 +118,7 @@ public class CategoryListFragment extends Fragment {
             // Get string and note from view
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             View rootView = info.targetView;
-            RepoXmlParser.Entry entry = DoubleItemListAdapter.getEntryFromView(rootView);
+            RepoXmlParser.Entry entry = CategoryListAdapter.getEntryFromView(rootView);
             String string = entry.string;
             String note = entry.note;
 

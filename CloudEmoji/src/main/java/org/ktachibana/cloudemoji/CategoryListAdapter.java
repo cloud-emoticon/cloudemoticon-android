@@ -8,21 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import org.ktachibana.cloudemoji.activities.MainActivity;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 
 /**
  * Adapter that holds a list of simple_list_item_2 text views
  */
-public class DoubleItemListAdapter implements ListAdapter {
+public class CategoryListAdapter implements ListAdapter {
 
     private LayoutInflater inflater;
     private RepoXmlParser.Category cat;
     private Typeface font;
 
-    public DoubleItemListAdapter(Context context, RepoXmlParser.Category cat, Typeface font) {
+    public CategoryListAdapter(Context context, RepoXmlParser.Category cat) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.cat = cat;
-        this.font = font;
+        this.font = MainActivity.getFont();
     }
 
     @Override

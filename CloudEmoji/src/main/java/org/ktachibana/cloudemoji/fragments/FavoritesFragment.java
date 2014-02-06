@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,7 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import org.ktachibana.cloudemoji.DoubleItemListAdapter;
+import org.ktachibana.cloudemoji.CategoryListAdapter;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.activities.SettingsActivity;
 import org.ktachibana.cloudemoji.databases.FavDataSource;
@@ -26,7 +25,6 @@ public class FavoritesFragment extends Fragment {
 
     private ListView listView;
     private FavDataSource favDataSource;
-    private Typeface font;
     private OnExceptionListener exceptionCallback;
     private OnCopyToClipBoardListener copyCallback;
 
@@ -49,10 +47,6 @@ public class FavoritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         favDataSource = new FavDataSource(getActivity().getBaseContext());
-        boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
-        if (overrideSystemFont) {
-            font = Typeface.createFromAsset(getActivity().getResources().getAssets(), "DroidSansFallback.ttf");
-        }
     }
 
     @Override
@@ -81,7 +75,7 @@ public class FavoritesFragment extends Fragment {
             // Get string and note from view
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             View rootView = info.targetView;
-            RepoXmlParser.Entry entry = DoubleItemListAdapter.getEntryFromView(rootView);
+            RepoXmlParser.Entry entry = CategoryListAdapter.getEntryFromView(rootView);
             String string = entry.string;
 
             // Add to database
@@ -121,8 +115,7 @@ public class FavoritesFragment extends Fragment {
     private void updateFavList() {
         RepoXmlParser.Category mockedCategory = mockCategory();
         if (mockedCategory != null) {
-            boolean overrideSystemFont = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext()).getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
-            listView.setAdapter(new DoubleItemListAdapter(getActivity().getBaseContext(), mockedCategory, font));
+            listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), mockedCategory));
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
