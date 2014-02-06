@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">顏文字Cloud</string>
+    <string name="settings">設定</string>
+    <string name="refresh">リロード</string>
+    <string name="exit">終了</string>
+    <string name="processing">リポジトリを読み込み中</string>
+    <string name="copied">クリップボードにコピーしました</string>
+    <string name="bad_conn">インターネットに接続できない，再試行してください</string>
+    <string name="wrong_xml">XMLに書式エラーが発生しました</string>
+    <string name="restored_default">デフォルトリポジトリは復元しました</string>
+    <string name="fail">ლ(╹◡╹ლ)</string>
+    <string name="touch_to_launch">起動するにはタップしてください</string>
+    <string name="title_activity_settings">設定</string>
+    <string name="action_settings">設定</string>
+    <string name="behaviors">動作</string>
+    <string name="close_after_copy">コピー、そしてアプリを終了します</string>
+    <string name="repositories">リポジトリ</string>
+    <string name="test_my_repository">リポジトリURL</string>
+    <string name="restore_default">デフォルトリポジトリを復元します</string>
+    <string name="debug">デバッグ</string>
+    <string name="mock_data">ローカル擬似データ</string>
+    <string name="category">ジャンル</string>
+    <string name="about">情報</string>
+    <string name="github_repo">GitHubソースコード</string>
+    <string name="updated">アップデート完了</string>
+    <string name="file_not_found">ファイルが見つかりません，リロードしてください</string>
+    <string name="github_release">GitHubアップデート</string>
+    <string name="updating">アップデート中</string>
+    <string name="version">バージョン</string>
+    <string name="local">ローカル</string>
+    <string name="my_fav">お気に入り</string>
+    <string name="split_view">引き出し/左右段組（アプリの再起動が必要）</string>
+    <string name="ui">UI</string>
+    <string name="add_to_fav">お気に入りを追加します</string>
+    <string name="added_to_fav">追加しました</string>
+    <string name="already_added_to_fav">すでに追加します</string>
+    <string name="remove_from_fav">お気に入りを削除します</string>
+    <string name="removed_from_fav">削除しました</string>
+    <string name="long_press_prompt_line1">君の大スキの顏文字を追加しましょう！</string>
+    <string name="long_press_prompt_line2">左から引き出しを出てくるためにはスワイプします、お気に入りに追加ためにはリポジトリリスト中の一つの長押し</string>
+    <string name="notification_visibility">通知表示</string>
+    <string name="open_source_licenses">オープンソースライセンス</string>
+    <string name="show_after_boot_up">端末起動時に通知を表示します</string>
+    <string name="override_system_font">システムフォントを代用</string>
+
+    <string-array name="notification_options">
+        <item>隠す</item>
+        <item>通知領域に表示されるのみ</item>
+        <item>ステータスバーと通知領域に表示される</item>
+    </string-array>
+
+    <string-array name="split_view_options">
+        <item>自動（推奨）</item>
+        <item>縦固定のみ</item>
+        <item>横固定のみ</item>
+        <item>常に</item>
+    </string-array>
+
+    <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
+    <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
+    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
+</resources>
