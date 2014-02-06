@@ -14,6 +14,7 @@ public class BootUpReceiver extends BroadcastReceiver {
         if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
             Intent dummyActivityIntent = new Intent(context, BootUpDummyActivity.class);
             dummyActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            dummyActivityIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             context.startActivity(dummyActivityIntent);
         }
     }
