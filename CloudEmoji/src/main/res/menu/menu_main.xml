@@ -7,7 +7,12 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_action_navigation_refresh"
         app:showAsAction="ifRoom"/>
-
+    <item
+        android:id="@+id/action_add"
+        android:title="@string/add_entry"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_content_new"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"

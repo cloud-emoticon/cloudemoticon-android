@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,12 +32,14 @@ import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser.Emoji;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
 import org.ktachibana.cloudemoji.interfaces.OnExceptionListener;
+import org.ktachibana.cloudemoji.interfaces.OnFavoritesDatabaseOperationsListener;
 import org.xmlpull.v1.XmlPullParserException;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +47,8 @@ public class MainActivity extends ActionBarActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,
         CategoryListFragment.OnRefreshStartedListener,
         OnExceptionListener,
-        OnCopyToClipBoardListener {
+        OnCopyToClipBoardListener,
+        OnFavoritesDatabaseOperationsListener {
 
     // Constants
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
@@ -88,7 +92,7 @@ public class MainActivity extends ActionBarActivity implements
 
         // If not coming from previous sessions
         if (savedInstanceState == null) {
-            updateMainContainer(new MyMenuItem(getString(R.string.my_fav), MyMenuItem.FAV_TYPE));
+            updateMainContainerAndActionBar(new MyMenuItem(getString(R.string.my_fav), MyMenuItem.FAV_TYPE));
         }
 
     }
@@ -170,7 +174,6 @@ public class MainActivity extends ActionBarActivity implements
     private void update() {
         new UpdateRepoTask().execute(url);
     }
-
 
     /**
      * AsyncTask that fetches an XML file given a URL and replace the local one
@@ -281,7 +284,7 @@ public class MainActivity extends ActionBarActivity implements
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     MyMenuItem menuItem = (MyMenuItem) parent.getAdapter().getItem(position);
-                    updateMainContainer(menuItem);
+                    updateMainContainerAndActionBar(menuItem);
                     if (!isDrawerStatic) {
                         drawerLayout.closeDrawers();
                     }
@@ -291,11 +294,11 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Replace the main container with a fragment and change actionbar title
+     * Replace the main container with a fragment and correct actionbar
      *
      * @param menuItem Menu item being pressed on
      */
-    private void updateMainContainer(MyMenuItem menuItem) {
+    private void updateMainContainerAndActionBar(MyMenuItem menuItem) {
         int type = menuItem.getType();
         if (type != MyMenuItem.SECTION_HEADER_TYPE) {
             getSupportActionBar().setTitle(menuItem.getItemName());
@@ -390,6 +393,9 @@ public class MainActivity extends ActionBarActivity implements
                 update();
                 return true;
             }
+            case R.id.action_add: {
+                //TODO: add
+            }
             case R.id.action_settings: {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
@@ -421,7 +427,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Implements from OnExceptionListener
+     * Implemented from OnExceptionListener
      *
      * @param e Exception handled
      */
@@ -431,7 +437,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Implements from CategoryListFragment.OnRefreshStartedListener
+     * Implemented from CategoryListFragment.OnRefreshStartedListener
      *
      * @param layout Layout being pulled
      */
@@ -442,7 +448,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     /**
-     * Implements from OnCopyToClipBoardListener
+     * Implemented from OnCopyToClipBoardListener
      *
      * @param copied String copied
      */
@@ -465,6 +471,98 @@ public class MainActivity extends ActionBarActivity implements
         boolean isCloseAfterCopy = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
         if (isCloseAfterCopy) {
             finish();
+        }
+    }
+
+    /**
+     * Implemented from OnFavoritesDatabaseOperationsListener
+     *
+     * @param newEntry new entry to be added
+     */
+    @Override
+    public void onAddEntry(RepoXmlParser.Entry newEntry) {
+        try {
+            favoritesDataSource.open();
+            if (favoritesDataSource.addEntry(newEntry)) {
+                Toast.makeText(this, R.string.added_to_fav, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.already_added_to_fav, Toast.LENGTH_SHORT).show();
+            }
+            favoritesDataSource.close();
+        } catch (SQLException e) {
+            promptException(e);
+        }
+    }
+
+    /**
+     * Implemented from OnFavoritesDatabaseOperationsListener
+     *
+     * @param string string
+     * @return Entry found by string
+     */
+    @Override
+    public RepoXmlParser.Entry onGetEntryByString(String string) {
+        RepoXmlParser.Entry entry = null;
+        try {
+            favoritesDataSource.open();
+            entry = favoritesDataSource.getEntryByString(string);
+            favoritesDataSource.close();
+        } catch (SQLException e) {
+            promptException(e);
+        }
+        return entry;
+    }
+
+    /**
+     * Implemented from OnFavoritesDatabaseOperationsListener
+     *
+     * @return All entries
+     */
+    @Override
+    public List<RepoXmlParser.Entry> onGetAllEntries() {
+        List<RepoXmlParser.Entry> entries = null;
+        try {
+            favoritesDataSource.open();
+            entries = favoritesDataSource.getAllEntries();
+            favoritesDataSource.close();
+        } catch (SQLException e) {
+            promptException(e);
+        }
+        return entries;
+    }
+
+    /**
+     * Implemented from OnFavoritesDatabaseOperationsListener
+     *
+     * @param string   string of the old entry
+     * @param newEntry new entry to be replace
+     */
+    @Override
+    public void onUpdateEntryByString(String string, RepoXmlParser.Entry newEntry) {
+        try {
+            favoritesDataSource.open();
+            favoritesDataSource.updateEntryByString(string, newEntry);
+            Toast.makeText(this, R.string.entry_updated, Toast.LENGTH_SHORT).show();
+            favoritesDataSource.close();
+        } catch (SQLException e) {
+            promptException(e);
+        }
+    }
+
+    /**
+     * Implemented from OnFavoritesDatabaseOperationsListener
+     *
+     * @param string an entry with the string (unique)
+     */
+    @Override
+    public void onRemoveEntryByString(String string) {
+        try {
+            favoritesDataSource.open();
+            favoritesDataSource.removeEntryByString(string);
+            Toast.makeText(this, R.string.removed_from_fav, Toast.LENGTH_SHORT).show();
+            favoritesDataSource.close();
+        } catch (SQLException e) {
+            promptException(e);
         }
     }
 }
