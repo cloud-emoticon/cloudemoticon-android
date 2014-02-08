@@ -50,7 +50,8 @@ public class SettingsActivity extends PreferenceActivity implements
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
-            versionPref.setTitle(getString(R.string.version) + " " + version);
+            String versionCode = Integer.toString(pInfo.versionCode);
+            versionPref.setTitle(getString(R.string.version) + " " + version + " (" + versionCode + ")");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
