@@ -53,19 +53,25 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
-        menu.add(0, 0, 0, R.string.remove_from_fav);
+        menu.add(0, 0, 0, R.string.edit_entry);
+        menu.add(0, 1, 1, R.string.remove_from_fav);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if (item.getItemId() == 0) {
-            // Get string and note from view
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            View rootView = info.targetView;
-            RepoXmlParser.Entry entry = CategoryListAdapter.getEntryFromView(rootView);
-            String string = entry.string;
+        // Get string and note from view
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        View rootView = info.targetView;
+        RepoXmlParser.Entry entry = CategoryListAdapter.getEntryFromView(rootView);
+        String string = entry.string;
 
-            // Remove from database
+        // Edit entry
+        if (item.getItemId() == 0) {
+            EditEntryDialogFragment.createInstance(entry).show(getChildFragmentManager(), "edit");
+        }
+
+        // Remove entry
+        else if (item.getItemId() == 1) {
             favoritesDatabaseOperationsCallback.onRemoveEntryByString(string);
             updateFavoritesList();
         }
@@ -73,18 +79,9 @@ public class FavoritesFragment extends Fragment {
     }
 
     /**
-     * Get a mocked Category from database
-     *
-     * @return mocked Category
-     */
-    private RepoXmlParser.Category mockCategory() {
-        return new RepoXmlParser.Category("fav", favoritesDatabaseOperationsCallback.onGetAllEntries());
-    }
-
-    /**
      * Update the favorite list view
      */
-    private void updateFavoritesList() {
+    public void updateFavoritesList() {
         RepoXmlParser.Category mockedCategory = mockCategory();
         if (mockedCategory != null) {
             listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), mockedCategory));
@@ -96,5 +93,14 @@ public class FavoritesFragment extends Fragment {
                 }
             });
         }
+    }
+
+    /**
+     * Get a mocked Category from database
+     *
+     * @return mocked Category
+     */
+    private RepoXmlParser.Category mockCategory() {
+        return new RepoXmlParser.Category("fav", favoritesDatabaseOperationsCallback.onGetAllEntries());
     }
 }
