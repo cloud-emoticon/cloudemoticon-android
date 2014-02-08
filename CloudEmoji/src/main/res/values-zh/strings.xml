@@ -4,7 +4,6 @@
     <string name="settings">设置</string>
     <string name="refresh">刷新</string>
     <string name="exit">退出</string>
-    <string name="processing">读取源</string>
     <string name="copied">已复制到剪贴板</string>
     <string name="bad_conn">网络不给力，请重试</string>
     <string name="wrong_xml">XML格式错误</string>
@@ -12,21 +11,16 @@
     <string name="fail">ლ(╹◡╹ლ)</string>
     <string name="touch_to_launch">单击以启动</string>
     <string name="title_activity_settings">设置</string>
-    <string name="action_settings">设置</string>
     <string name="behaviors">行为</string>
     <string name="close_after_copy">复制以后关闭</string>
     <string name="repositories">源</string>
     <string name="test_my_repository">源地址</string>
     <string name="restore_default">恢复默认源</string>
-    <string name="debug">调试</string>
-    <string name="mock_data">本地模拟数据</string>
-    <string name="category">类别</string>
     <string name="about">关于</string>
     <string name="github_repo">GitHub源码</string>
     <string name="updated">已更新</string>
     <string name="file_not_found">文件未找到，请刷新</string>
     <string name="github_release">GitHub更新</string>
-    <string name="updating">更新中</string>
     <string name="version">版本</string>
     <string name="local">本地</string>
     <string name="my_fav">我的最爱</string>
@@ -40,7 +34,6 @@
     <string name="long_press_prompt_line1">来添加点你最喜欢的吧！</string>
     <string name="long_press_prompt_line2">在左侧划出导航抽屉并长按源列表中的某一个项目来添加到我的最爱</string>
     <string name="notification_visibility">通知可见性</string>
-    <string name="open_source_licenses">开源许可</string>
     <string name="show_after_boot_up">系统启动后显示通知</string>
     <string name="override_system_font">代替系统字体</string>
 
@@ -56,8 +49,4 @@
         <item>在横屏时左右分栏</item>
         <item>无论何时左右分栏</item>
     </string-array>
-
-    <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
-    <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
-    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
 </resources>

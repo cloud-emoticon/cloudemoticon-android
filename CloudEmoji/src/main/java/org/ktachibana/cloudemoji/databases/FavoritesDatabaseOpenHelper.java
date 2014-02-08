@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class FavDatabaseOpenHelper extends SQLiteOpenHelper {
+public class FavoritesDatabaseOpenHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_FAV = "favorites";
     public static final String COLUMN_STRING = "string";
@@ -21,7 +21,7 @@ public class FavDatabaseOpenHelper extends SQLiteOpenHelper {
             + COLUMN_STRING + " text not null, "
             + COLUMN_NOTE + " text not null);";
 
-    public FavDatabaseOpenHelper(Context context) {
+    public FavoritesDatabaseOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

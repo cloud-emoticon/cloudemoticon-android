@@ -17,7 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.*;
 import android.widget.*;
 import org.apache.commons.io.IOUtils;
-import org.ktachibana.cloudemoji.*;
+import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.fragments.CategoryListFragment;
 import org.ktachibana.cloudemoji.fragments.FavoritesFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
 
         // Initializations
         setupPreferences();
@@ -98,27 +98,27 @@ public class MainActivity extends ActionBarActivity implements
         int orientation = getResources().getConfiguration().orientation;
         // If auto, set up the default layout optimized for landscape and tablets
         if (uiPreference.equals("auto")) {
-            setContentView(R.layout.main_activity);
+            setContentView(R.layout.activity_main);
         }
         // If split_in_port, only manually set up split view if detected portrait
         else if (uiPreference.equals("split_in_port")) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                setContentView(R.layout.main_activity_manual_split_view);
+                setContentView(R.layout.activity_main_manual_split_view);
             } else {
-                setContentView(R.layout.main_activity_manual_navi_drawer);
+                setContentView(R.layout.activity_main_manual_navigation_drawer);
             }
         }
         // If split_in_land, only manually set up split view if detected landscape
         else if (uiPreference.equals("split_in_land")) {
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                setContentView(R.layout.main_activity_manual_split_view);
+                setContentView(R.layout.activity_main_manual_split_view);
             } else {
-                setContentView((R.layout.main_activity_manual_navi_drawer));
+                setContentView((R.layout.activity_main_manual_navigation_drawer));
             }
         }
         // If split_in_both, manually set up split view for both orientations
         else if (uiPreference.equals("split_in_both")) {
-            setContentView(R.layout.main_activity_manual_split_view);
+            setContentView(R.layout.activity_main_manual_split_view);
         } else {
             promptException(new Exception("setupUI() bug"));
         }
@@ -301,9 +301,7 @@ public class MainActivity extends ActionBarActivity implements
     private void switchFont() {
         if (overrideSystemFont) {
             font = Typeface.createFromAsset(getResources().getAssets(), "DroidSansFallback.ttf");
-        }
-        else
-        {
+        } else {
             font = null;
         }
     }

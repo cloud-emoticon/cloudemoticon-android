@@ -15,13 +15,13 @@ import java.util.List;
  * Handles interaction between activities and database
  * This module uses Apache Commons Lang from http://commons.apache.org/proper/commons-lang/
  */
-public class FavDataSource {
+public class FavoritesDataSource {
 
     private SQLiteDatabase db;
-    private FavDatabaseOpenHelper openHelper;
+    private FavoritesDatabaseOpenHelper openHelper;
 
-    public FavDataSource(Context context) {
-        openHelper = new FavDatabaseOpenHelper(context);
+    public FavoritesDataSource(Context context) {
+        openHelper = new FavoritesDatabaseOpenHelper(context);
     }
 
     public void open() throws SQLException {
@@ -40,9 +40,9 @@ public class FavDataSource {
         // If entry not found in db
         if (getEntryByString(entry.string) == null) {
             ContentValues value = new ContentValues();
-            value.put(FavDatabaseOpenHelper.COLUMN_STRING, entry.string);
-            value.put(FavDatabaseOpenHelper.COLUMN_NOTE, entry.note);
-            db.insert(FavDatabaseOpenHelper.TABLE_FAV, null, value);
+            value.put(FavoritesDatabaseOpenHelper.COLUMN_STRING, entry.string);
+            value.put(FavoritesDatabaseOpenHelper.COLUMN_NOTE, entry.note);
+            db.insert(FavoritesDatabaseOpenHelper.TABLE_FAV, null, value);
             return true;
         } else {
             return false;
@@ -55,8 +55,8 @@ public class FavDataSource {
         // SQL SELECT string
         string = StringEscapeUtils.escapeSql(string);
         String queryString = "SELECT * FROM "
-                + FavDatabaseOpenHelper.TABLE_FAV +
-                " WHERE " + FavDatabaseOpenHelper.COLUMN_STRING
+                + FavoritesDatabaseOpenHelper.TABLE_FAV +
+                " WHERE " + FavoritesDatabaseOpenHelper.COLUMN_STRING
                 + "='" + string + "'";
         Cursor cursor = db.rawQuery(queryString, null);
 
@@ -76,7 +76,7 @@ public class FavDataSource {
         List<RepoXmlParser.Entry> entries = new ArrayList<RepoXmlParser.Entry>();
 
         // SQL SELECT string
-        String queryString = "SELECT * FROM " + FavDatabaseOpenHelper.TABLE_FAV;
+        String queryString = "SELECT * FROM " + FavoritesDatabaseOpenHelper.TABLE_FAV;
         Cursor cursor = db.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
@@ -88,12 +88,22 @@ public class FavDataSource {
         return entries;
     }
 
+    public void updateEntryByString(String string, RepoXmlParser.Entry newEntry) {
+        ContentValues value = new ContentValues();
+        value.put(FavoritesDatabaseOpenHelper.COLUMN_STRING, newEntry.string);
+        value.put(FavoritesDatabaseOpenHelper.COLUMN_NOTE, newEntry.note);
+        db.update(FavoritesDatabaseOpenHelper.TABLE_FAV,
+                value,
+                FavoritesDatabaseOpenHelper.COLUMN_STRING + " = ?",
+                new String[]{string});
+    }
+
     public void removeEntryByString(String string) {
         // SQL DELETE string
         string = StringEscapeUtils.escapeSql(string);
         String queryString = "DELETE FROM "
-                + FavDatabaseOpenHelper.TABLE_FAV
-                + " WHERE " + FavDatabaseOpenHelper.COLUMN_STRING
+                + FavoritesDatabaseOpenHelper.TABLE_FAV
+                + " WHERE " + FavoritesDatabaseOpenHelper.COLUMN_STRING
                 + "='" + string + "'";
         db.execSQL(queryString);
     }

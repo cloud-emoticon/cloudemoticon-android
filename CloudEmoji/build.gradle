@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:0.7.+'
     }
 }
 apply plugin: 'android'
@@ -23,8 +23,9 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
+    compile 'com.android.support:support-v4:+'
     compile files('./libs/commons-io-2.4.jar')
     compile files('./libs/commons-lang-2.6.jar')
-    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
 }

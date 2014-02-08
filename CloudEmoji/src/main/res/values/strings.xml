@@ -4,7 +4,6 @@
     <string name="settings">Settings</string>
     <string name="refresh">Refresh</string>
     <string name="exit">Exit</string>
-    <string name="processing">Reading repository</string>
     <string name="copied">Copied to clipboard</string>
     <string name="bad_conn">Bad connection, please retry</string>
     <string name="wrong_xml">Wrong XML format, fix it</string>
@@ -12,21 +11,16 @@
     <string name="fail">ლ(╹◡╹ლ)</string>
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="action_settings">Settings</string>
     <string name="behaviors">Behavior</string>
     <string name="close_after_copy">Close after copy</string>
     <string name="repositories">Repository</string>
     <string name="test_my_repository">Repository URL</string>
     <string name="restore_default">Restore default</string>
-    <string name="debug">Debug</string>
-    <string name="mock_data">Mock data</string>
-    <string name="category">Category</string>
     <string name="about">About</string>
     <string name="github_repo">GitHub repository</string>
     <string name="updated">Updated</string>
     <string name="file_not_found">File not found, please refresh</string>
     <string name="github_release">GitHub release</string>
-    <string name="updating">Updating</string>
     <string name="version">Version</string>
     <string name="local">Local</string>
     <string name="my_fav">My favorites</string>
@@ -40,7 +34,6 @@
     <string name="long_press_prompt_line1">Add something to your favorites!</string>
     <string name="long_press_prompt_line2">Slide out navigation drawer on the left side and long press an entry to do so</string>
     <string name="notification_visibility">Notification visibility</string>
-    <string name="open_source_licenses">Open source licenses</string>
     <string name="show_after_boot_up">Show the notification after boot-up</string>
     <string name="override_system_font">Override system font</string>
 

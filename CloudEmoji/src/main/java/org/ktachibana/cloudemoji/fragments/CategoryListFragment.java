@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import org.ktachibana.cloudemoji.CategoryListAdapter;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.databases.FavDataSource;
+import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
 import org.ktachibana.cloudemoji.interfaces.OnExceptionListener;
@@ -27,7 +27,7 @@ public class CategoryListFragment extends Fragment {
 
     public static final String CAT_KEY = "category";
     private RepoXmlParser.Category cat;
-    private FavDataSource favDataSource;
+    private FavoritesDataSource favoritesDataSource;
     private OnRefreshStartedListener refreshCallback;
     private OnExceptionListener exceptionCallback;
     private OnCopyToClipBoardListener copyCallback;
@@ -74,13 +74,13 @@ public class CategoryListFragment extends Fragment {
         if (getArguments() != null) {
             cat = (RepoXmlParser.Category) getArguments().getSerializable(CAT_KEY);
         }
-        favDataSource = new FavDataSource(getActivity().getBaseContext());
+        favoritesDataSource = new FavoritesDataSource(getActivity().getBaseContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate rootView
-        View rootView = inflater.inflate(R.layout.pull_to_refresh, container, false);
+        View rootView = inflater.inflate(R.layout.list_view_pull_to_refresh, container, false);
 
         // Setup pullToRefreshLayout
         final PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.pullToRefreshLayout);
@@ -124,13 +124,13 @@ public class CategoryListFragment extends Fragment {
 
             // Add to db
             try {
-                favDataSource.open();
-                if (favDataSource.addEntry(favDataSource.createEntry(string, note))) {
+                favoritesDataSource.open();
+                if (favoritesDataSource.addEntry(favoritesDataSource.createEntry(string, note))) {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.added_to_fav), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity().getBaseContext(), getString(R.string.already_added_to_fav), Toast.LENGTH_SHORT).show();
                 }
-                favDataSource.close();
+                favoritesDataSource.close();
             } catch (SQLException e) {
                 exceptionCallback.onException(e);
             }
