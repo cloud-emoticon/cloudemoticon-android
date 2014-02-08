@@ -6,15 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.CategoryListAdapter;
-import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
-import org.ktachibana.cloudemoji.interfaces.OnExceptionListener;
-
-import java.sql.SQLException;
+import org.ktachibana.cloudemoji.interfaces.OnFavoritesDatabaseOperationsListener;
 
 /**
  * Fragment that holds a list of string in my favorites database
@@ -22,9 +18,8 @@ import java.sql.SQLException;
 public class FavoritesFragment extends Fragment {
 
     private ListView listView;
-    private FavoritesDataSource favoritesDataSource;
-    private OnExceptionListener exceptionCallback;
-    private OnCopyToClipBoardListener copyCallback;
+    private OnCopyToClipBoardListener copyToClipBoardCallback;
+    private OnFavoritesDatabaseOperationsListener favoritesDatabaseOperationsCallback;
 
     public FavoritesFragment() {
         // Required constructor
@@ -34,8 +29,8 @@ public class FavoritesFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            exceptionCallback = (OnExceptionListener) activity;
-            copyCallback = (OnCopyToClipBoardListener) activity;
+            copyToClipBoardCallback = (OnCopyToClipBoardListener) activity;
+            favoritesDatabaseOperationsCallback = (OnFavoritesDatabaseOperationsListener) activity;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -44,7 +39,6 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        favoritesDataSource = new FavoritesDataSource(getActivity().getBaseContext());
     }
 
     @Override
@@ -56,7 +50,7 @@ public class FavoritesFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.favListView);
         listView.setEmptyView(rootView.findViewById(R.id.emptyView));
         registerForContextMenu(listView);
-        updateFavList();
+        updateFavoritesList();
 
         return rootView;
     }
@@ -76,16 +70,9 @@ public class FavoritesFragment extends Fragment {
             RepoXmlParser.Entry entry = CategoryListAdapter.getEntryFromView(rootView);
             String string = entry.string;
 
-            // Add to database
-            try {
-                favoritesDataSource.open();
-                favoritesDataSource.removeEntryByString(string);
-                favoritesDataSource.close();
-                Toast.makeText(getActivity().getBaseContext(), getString(R.string.removed_from_fav), Toast.LENGTH_SHORT).show();
-                updateFavList();
-            } catch (SQLException e) {
-                exceptionCallback.onException(e);
-            }
+            // Remove from database
+            favoritesDatabaseOperationsCallback.onRemoveEntryByString(string);
+            updateFavoritesList();
         }
         return true;
     }
@@ -96,21 +83,13 @@ public class FavoritesFragment extends Fragment {
      * @return mocked Category
      */
     private RepoXmlParser.Category mockCategory() {
-        RepoXmlParser.Category category = null;
-        try {
-            favoritesDataSource.open();
-            category = new RepoXmlParser.Category("fav", favoritesDataSource.getAllEntries());
-            favoritesDataSource.close();
-        } catch (SQLException e) {
-            exceptionCallback.onException(e);
-        }
-        return category;
+        return new RepoXmlParser.Category("fav", favoritesDatabaseOperationsCallback.onGetAllEntries());
     }
 
     /**
      * Update the favorite list view
      */
-    private void updateFavList() {
+    private void updateFavoritesList() {
         RepoXmlParser.Category mockedCategory = mockCategory();
         if (mockedCategory != null) {
             listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), mockedCategory));
@@ -118,7 +97,7 @@ public class FavoritesFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     RepoXmlParser.Entry entry = (RepoXmlParser.Entry) parent.getAdapter().getItem(position);
-                    copyCallback.copyToClipBoard(entry.string);
+                    copyToClipBoardCallback.onCopyToClipBoard(entry.string);
                 }
             });
         }

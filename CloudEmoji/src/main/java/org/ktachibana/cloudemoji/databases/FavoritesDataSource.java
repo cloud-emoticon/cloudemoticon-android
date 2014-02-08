@@ -32,7 +32,7 @@ public class FavoritesDataSource {
         openHelper.close();
     }
 
-    public RepoXmlParser.Entry createEntry(String string, String note) {
+    public static RepoXmlParser.Entry createEntry(String string, String note) {
         return new RepoXmlParser.Entry(string, note);
     }
 

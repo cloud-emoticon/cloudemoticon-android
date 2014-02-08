@@ -22,6 +22,7 @@ import android.widget.Toast;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SectionedMenuAdapter;
+import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
 import org.ktachibana.cloudemoji.fragments.CategoryListFragment;
 import org.ktachibana.cloudemoji.fragments.FavoritesFragment;
 import org.ktachibana.cloudemoji.helpers.MyMenuItem;
@@ -65,6 +66,9 @@ public class MainActivity extends ActionBarActivity implements
     // Font
     public static Typeface font;
 
+    // Databases
+    private FavoritesDataSource favoritesDataSource = new FavoritesDataSource(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,10 +105,12 @@ public class MainActivity extends ActionBarActivity implements
         // Set up UI layout according to user preference for drawer and split view
         String uiPreference = preferences.getString(SettingsActivity.PREF_SPLIT_VIEW, "auto");
         int orientation = getResources().getConfiguration().orientation;
+
         // If auto, set up the default layout optimized for landscape and tablets
         if (uiPreference.equals("auto")) {
             setContentView(R.layout.activity_main);
         }
+
         // If split_in_port, only manually set up split view if detected portrait
         else if (uiPreference.equals("split_in_port")) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -113,6 +119,7 @@ public class MainActivity extends ActionBarActivity implements
                 setContentView(R.layout.activity_main_manual_navigation_drawer);
             }
         }
+
         // If split_in_land, only manually set up split view if detected landscape
         else if (uiPreference.equals("split_in_land")) {
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -121,6 +128,7 @@ public class MainActivity extends ActionBarActivity implements
                 setContentView((R.layout.activity_main_manual_navigation_drawer));
             }
         }
+
         // If split_in_both, manually set up split view for both orientations
         else if (uiPreference.equals("split_in_both")) {
             setContentView(R.layout.activity_main_manual_split_view);
@@ -162,6 +170,7 @@ public class MainActivity extends ActionBarActivity implements
     private void update() {
         new UpdateRepoTask().execute(url);
     }
+
 
     /**
      * AsyncTask that fetches an XML file given a URL and replace the local one
@@ -416,6 +425,7 @@ public class MainActivity extends ActionBarActivity implements
      *
      * @param e Exception handled
      */
+    @Override
     public void onException(Exception e) {
         promptException(e);
     }
@@ -425,6 +435,7 @@ public class MainActivity extends ActionBarActivity implements
      *
      * @param layout Layout being pulled
      */
+    @Override
     public void onRefreshStarted(PullToRefreshLayout layout) {
         refreshingPullToRefreshLayout = layout;
         update();
@@ -435,13 +446,15 @@ public class MainActivity extends ActionBarActivity implements
      *
      * @param copied String copied
      */
-    public void copyToClipBoard(String copied) {
-        // Below 3.0 support
+    @Override
+    public void onCopyToClipBoard(String copied) {
+        // Below 3.0
         int SDK = Build.VERSION.SDK_INT;
         if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
             android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setText(copied);
         }
+
         // Above 3.0
         else {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -454,5 +467,4 @@ public class MainActivity extends ActionBarActivity implements
             finish();
         }
     }
-
 }

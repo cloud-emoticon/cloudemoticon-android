@@ -10,5 +10,5 @@ public interface OnCopyToClipBoardListener {
      *
      * @param copied String copied
      */
-    public void copyToClipBoard(String copied);
+    public void onCopyToClipBoard(String copied);
 }
