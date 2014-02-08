@@ -36,6 +36,8 @@
     <string name="notification_visibility">通知可见性</string>
     <string name="show_after_boot_up">系统启动后显示通知</string>
     <string name="override_system_font">代替系统字体</string>
+    <string name="string">字符串</string>
+    <string name="note">注释</string>
 
     <string-array name="notification_options">
         <item>不可见</item>

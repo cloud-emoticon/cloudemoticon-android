@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Cloud emoticon</string>
     <string name="settings">Settings</string>
     <string name="refresh">Refresh</string>
@@ -36,13 +37,14 @@
     <string name="notification_visibility">Notification visibility</string>
     <string name="show_after_boot_up">Show the notification after boot-up</string>
     <string name="override_system_font">Override system font</string>
+    <string name="string">String</string>
+    <string name="note">Note</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
         <item>Only in notification panel</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
-
     <string-array name="split_view_options">
         <item>Automatic (recommended)</item>
         <item>Split view on portrait</item>
@@ -53,4 +55,6 @@
     <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
     <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

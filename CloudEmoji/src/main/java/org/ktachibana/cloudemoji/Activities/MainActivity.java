@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,12 +13,18 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.adapters.SectionedMenuAdapter;
 import org.ktachibana.cloudemoji.fragments.CategoryListFragment;
 import org.ktachibana.cloudemoji.fragments.FavoritesFragment;
+import org.ktachibana.cloudemoji.helpers.MyMenuItem;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser.Emoji;
@@ -262,7 +267,7 @@ public class MainActivity extends ActionBarActivity implements
         Emoji emoji = readEmoji(file);
         if (emoji != null) {
             // Fill leftDrawer
-            leftDrawer.setAdapter(new SectionedMenuAdapter(emoji));
+            leftDrawer.setAdapter(new SectionedMenuAdapter(this, emoji));
             leftDrawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -447,141 +452,6 @@ public class MainActivity extends ActionBarActivity implements
         boolean isCloseAfterCopy = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
         if (isCloseAfterCopy) {
             finish();
-        }
-    }
-
-    /**
-     * A class for a menu item in menu drawer
-     * Holding it's item name, its corresponding type and Category it's holding if the type is CATEGORY
-     */
-    private class MyMenuItem {
-        public static final int SECTION_HEADER_TYPE = 0;
-        public static final int CATEGORY_TYPE = 1;
-        public static final int FAV_TYPE = 2;
-
-        private String itemName;
-        private int type;
-        private RepoXmlParser.Category category;
-
-        public MyMenuItem(String itemName, int type) {
-            this.itemName = itemName;
-            this.type = type;
-        }
-
-        public MyMenuItem(String itemName, int type, RepoXmlParser.Category category) {
-            this.itemName = itemName;
-            this.type = type;
-            this.category = category;
-        }
-
-        public String getItemName() {
-            return itemName;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public RepoXmlParser.Category getCategory() {
-            return category;
-        }
-    }
-
-    private class SectionedMenuAdapter implements ListAdapter {
-        private List<MyMenuItem> menuItemMap;
-
-        public SectionedMenuAdapter(Emoji data) {
-            menuItemMap = new ArrayList<MyMenuItem>();
-            // Put section header for "local"
-            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.local), MyMenuItem.SECTION_HEADER_TYPE));
-            // Put my fav
-            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.my_fav), MyMenuItem.FAV_TYPE));
-            // Put section header for "repository"
-            menuItemMap.add(new MyMenuItem(getResources().getString(R.string.repositories), MyMenuItem.SECTION_HEADER_TYPE));
-            // Put all other categories
-            for (RepoXmlParser.Category category : data.categories) {
-                menuItemMap.add(new MyMenuItem(category.name, MyMenuItem.CATEGORY_TYPE, category));
-            }
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return menuItemMap.get(position).getType() != MyMenuItem.SECTION_HEADER_TYPE;
-        }
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public int getCount() {
-            return menuItemMap.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return menuItemMap.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            TextView textView = (TextView) convertView;
-            // Determine if the menu item is section header or list item
-            MyMenuItem menuItem = menuItemMap.get(position);
-            // If it is a section header
-            if (menuItem.getType() == MyMenuItem.SECTION_HEADER_TYPE) {
-                if (textView == null) {
-                    textView = (TextView) inflater.inflate(R.layout.text_separator_style, parent, false);
-                }
-                String sectionName = menuItem.getItemName();
-                textView.setText(sectionName);
-            }
-            // Else it is a list item
-            else {
-                if (textView == null) {
-                    textView = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-                }
-                String itemName = menuItem.getItemName();
-                textView.setText(itemName);
-            }
-            return textView;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return (menuItemMap.get(position).getType() == MyMenuItem.SECTION_HEADER_TYPE) ? 0 : 1;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 2;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return menuItemMap.isEmpty();
         }
     }
 
