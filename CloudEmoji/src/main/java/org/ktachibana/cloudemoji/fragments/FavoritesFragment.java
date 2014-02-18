@@ -38,6 +38,8 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         // Inflate rootView
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
 
@@ -102,5 +104,22 @@ public class FavoritesFragment extends Fragment {
      */
     private RepoXmlParser.Category mockCategory() {
         return new RepoXmlParser.Category("fav", favoritesDatabaseOperationsCallback.onGetAllEntries());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_favorites, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                EditEntryDialogFragment.createInstance(null).show(getChildFragmentManager(), "add");
+                updateFavoritesList();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

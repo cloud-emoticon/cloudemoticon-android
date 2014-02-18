@@ -75,6 +75,8 @@ public class CategoryListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         // Inflate rootView
         View rootView = inflater.inflate(R.layout.list_view_pull_to_refresh, container, false);
 
@@ -124,4 +126,19 @@ public class CategoryListFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_repository, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refreshStartedCallback.onRefreshStarted(null);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

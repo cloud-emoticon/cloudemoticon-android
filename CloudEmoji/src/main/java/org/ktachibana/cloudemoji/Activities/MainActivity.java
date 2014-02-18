@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,7 +25,6 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SectionedMenuAdapter;
 import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
 import org.ktachibana.cloudemoji.fragments.CategoryListFragment;
-import org.ktachibana.cloudemoji.fragments.EditEntryDialogFragment;
 import org.ktachibana.cloudemoji.fragments.FavoritesFragment;
 import org.ktachibana.cloudemoji.helpers.MyMenuItem;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
@@ -53,8 +53,6 @@ public class MainActivity extends ActionBarActivity implements
     // Constants
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String XML_FILE_NAME = "emoji.xml";
-    private static final int MENU_MODE_FAV = 0;
-    private static final int MENU_MODE_CAT = 1;
 
     // Preferences
     private SharedPreferences preferences;
@@ -68,7 +66,6 @@ public class MainActivity extends ActionBarActivity implements
     private ActionBarDrawerToggle toggle;
     private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
-    private int menuMode;
 
     // Font
     public static Typeface font;
@@ -308,10 +305,8 @@ public class MainActivity extends ActionBarActivity implements
             FragmentManager fragmentManager = getSupportFragmentManager();
             if (type == MyMenuItem.FAV_TYPE) {
                 fragmentManager.beginTransaction().replace(R.id.mainContainer, new FavoritesFragment()).commit();
-                menuMode = MENU_MODE_FAV;
             } else if (type == MyMenuItem.CATEGORY_TYPE) {
                 fragmentManager.beginTransaction().replace(R.id.mainContainer, CategoryListFragment.newInstance(menuItem.getCategory())).commit();
-                menuMode = MENU_MODE_CAT;
             }
             supportInvalidateOptionsMenu();
         }
@@ -383,15 +378,6 @@ public class MainActivity extends ActionBarActivity implements
         // Inflate the menu
         // Adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem addEntryMenuItem = menu.findItem(R.id.action_add);
-        MenuItem refreshMenuItem = menu.findItem(R.id.action_refresh);
-        if (menuMode == MENU_MODE_FAV) {
-            addEntryMenuItem.setVisible(true);
-            refreshMenuItem.setVisible(false);
-        } else if (menuMode == MENU_MODE_CAT) {
-            addEntryMenuItem.setVisible(false);
-            refreshMenuItem.setVisible(true);
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -404,20 +390,13 @@ public class MainActivity extends ActionBarActivity implements
             }
         }
         switch (item.getItemId()) {
-            case R.id.action_refresh: {
-                update();
-                return true;
-            }
-            case R.id.action_add: {
-                EditEntryDialogFragment.createInstance(null).show(getSupportFragmentManager(), "add");
-                return true;
-            }
             case R.id.action_settings: {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
             }
             case R.id.action_exit: {
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(PERSISTENT_NOTIFICATION_ID);
                 finish();
             }
             default: {
@@ -504,10 +483,6 @@ public class MainActivity extends ActionBarActivity implements
             } else {
                 Toast.makeText(this, R.string.already_added_to_fav, Toast.LENGTH_SHORT).show();
             }
-            favoritesDataSource.close();
-            if (menuMode == MENU_MODE_FAV) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new FavoritesFragment()).commit();
-            }
         } catch (SQLException e) {
             promptException(e);
         }
@@ -563,9 +538,6 @@ public class MainActivity extends ActionBarActivity implements
             favoritesDataSource.updateEntryByString(string, newEntry);
             Toast.makeText(this, R.string.entry_updated, Toast.LENGTH_SHORT).show();
             favoritesDataSource.close();
-            if (menuMode == MENU_MODE_FAV) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new FavoritesFragment()).commit();
-            }
         } catch (SQLException e) {
             promptException(e);
         }
