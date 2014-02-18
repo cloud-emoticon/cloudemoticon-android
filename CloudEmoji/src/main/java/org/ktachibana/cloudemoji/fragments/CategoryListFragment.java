@@ -91,7 +91,7 @@ public class CategoryListFragment extends Fragment {
 
         // Setup listView
         ListView listView = (ListView) rootView.findViewById(R.id.pullToRefreshListView);
-        listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), category));
+        listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), R.id.pullToRefreshListView, category.entries));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

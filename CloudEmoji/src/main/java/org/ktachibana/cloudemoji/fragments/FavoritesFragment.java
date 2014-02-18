@@ -1,25 +1,31 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.*;
+import org.apache.commons.lang.ObjectUtils;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.CategoryListAdapter;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
 import org.ktachibana.cloudemoji.interfaces.OnFavoritesDatabaseOperationsListener;
 
+import java.util.List;
+
 /**
  * Fragment that holds a list of string in my favorites database
  */
 public class FavoritesFragment extends Fragment {
 
-    private ListView listView;
+    private ArrayAdapter<RepoXmlParser.Entry> adapter;
     private OnCopyToClipBoardListener copyToClipBoardCallback;
     private OnFavoritesDatabaseOperationsListener favoritesDatabaseOperationsCallback;
+
+    public static final int ADD_REQUEST_CODE = 0;
+    public static final int EDIT_REQUEST_CODE = 1;
 
     public FavoritesFragment() {
         // Required constructor
@@ -44,10 +50,18 @@ public class FavoritesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
 
         // Find listView and update
-        listView = (ListView) rootView.findViewById(R.id.favListView);
+        adapter = new CategoryListAdapter(getActivity().getBaseContext(), R.id.favListView, favoritesDatabaseOperationsCallback.onGetAllEntries());
+        ListView listView = (ListView) rootView.findViewById(R.id.favListView);
         listView.setEmptyView(rootView.findViewById(R.id.emptyView));
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RepoXmlParser.Entry entry = (RepoXmlParser.Entry) parent.getAdapter().getItem(position);
+                copyToClipBoardCallback.onCopyToClipBoard(entry.string);
+            }
+        });
         registerForContextMenu(listView);
-        updateFavoritesList();
 
         return rootView;
     }
@@ -69,41 +83,26 @@ public class FavoritesFragment extends Fragment {
 
         // Edit entry
         if (item.getItemId() == 0) {
-            EditEntryDialogFragment.createInstance(entry).show(getChildFragmentManager(), "edit");
+            EditEntryDialogFragment editEntryDialogFragment = EditEntryDialogFragment.createInstance(entry);
+            editEntryDialogFragment.setTargetFragment(this, EDIT_REQUEST_CODE);
+            editEntryDialogFragment.show(getChildFragmentManager(), "edit");
         }
 
         // Remove entry
         else if (item.getItemId() == 1) {
             favoritesDatabaseOperationsCallback.onRemoveEntryByString(string);
-            updateFavoritesList();
+            updateAdapter();
         }
         return true;
     }
 
-    /**
-     * Update the favorite list view
-     */
-    public void updateFavoritesList() {
-        RepoXmlParser.Category mockedCategory = mockCategory();
-        if (mockedCategory != null) {
-            listView.setAdapter(new CategoryListAdapter(getActivity().getBaseContext(), mockedCategory));
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    RepoXmlParser.Entry entry = (RepoXmlParser.Entry) parent.getAdapter().getItem(position);
-                    copyToClipBoardCallback.onCopyToClipBoard(entry.string);
-                }
-            });
+    private void updateAdapter() {
+        adapter.clear();
+        List<RepoXmlParser.Entry> entries = favoritesDatabaseOperationsCallback.onGetAllEntries();
+        for (RepoXmlParser.Entry entry : entries) {
+            adapter.add(entry);
         }
-    }
-
-    /**
-     * Get a mocked Category from database
-     *
-     * @return mocked Category
-     */
-    private RepoXmlParser.Category mockCategory() {
-        return new RepoXmlParser.Category("fav", favoritesDatabaseOperationsCallback.onGetAllEntries());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -116,10 +115,24 @@ public class FavoritesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                EditEntryDialogFragment.createInstance(null).show(getChildFragmentManager(), "add");
-                updateFavoritesList();
+                EditEntryDialogFragment editEntryDialogFragment = EditEntryDialogFragment.createInstance(null);
+                editEntryDialogFragment.setTargetFragment(this, ADD_REQUEST_CODE);
+                editEntryDialogFragment.show(getChildFragmentManager(), "add");
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        RepoXmlParser.Entry newEntry = (RepoXmlParser.Entry) intent.getSerializableExtra(EditEntryDialogFragment.NEW_ENTRY_KEY);
+        if (resultCode == ADD_REQUEST_CODE) {
+            favoritesDatabaseOperationsCallback.onAddEntry(newEntry);
+        }
+        else if (requestCode == EDIT_REQUEST_CODE) {
+            RepoXmlParser.Entry oldEntry = (RepoXmlParser.Entry) intent.getSerializableExtra(EditEntryDialogFragment.OLD_ENTRY_KEY);
+            favoritesDatabaseOperationsCallback.onUpdateEntryByString(oldEntry.string, newEntry);
+        }
+        updateAdapter();
     }
 }

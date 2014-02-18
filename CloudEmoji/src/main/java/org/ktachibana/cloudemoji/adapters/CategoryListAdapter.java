@@ -6,70 +6,45 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import org.ktachibana.cloudemoji.activities.MainActivity;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 
+import java.util.List;
+
 /**
  * Adapter that holds a list of simple_list_item_2 text views
  */
-public class CategoryListAdapter implements ListAdapter {
+public class CategoryListAdapter extends ArrayAdapter<RepoXmlParser.Entry> {
 
+    private List<RepoXmlParser.Entry> category;
     private LayoutInflater inflater;
-    private RepoXmlParser.Category cat;
     private Typeface font;
 
-    public CategoryListAdapter(Context context, RepoXmlParser.Category cat) {
+    public CategoryListAdapter(Context context, int resource, List<RepoXmlParser.Entry> category) {
+        super(context, resource, category);
+        this.category = category;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.cat = cat;
         this.font = MainActivity.getFont();
     }
 
     @Override
-    public boolean areAllItemsEnabled() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled(int position) {
-        return true;
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
     public int getCount() {
-        return cat.entries.size();
+        return category.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return cat.entries.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
+    public RepoXmlParser.Entry getItem(int position) {
+        return category.get(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get string and note
-        RepoXmlParser.Entry entry = cat.entries.get(position);
+        RepoXmlParser.Entry entry = category.get(position);
         String string = entry.string;
         String note = entry.note;
         // If no note included
@@ -101,7 +76,7 @@ public class CategoryListAdapter implements ListAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (cat.entries.get(position).note.equals("")) ? 0 : 1;
+        return (category.get(position).note.equals("")) ? 0 : 1;
     }
 
     @Override
@@ -111,7 +86,7 @@ public class CategoryListAdapter implements ListAdapter {
 
     @Override
     public boolean isEmpty() {
-        return cat.entries.isEmpty();
+        return category.isEmpty();
     }
 
     /**

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -15,11 +16,12 @@ import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.interfaces.OnFavoritesDatabaseOperationsListener;
 
 public class EditEntryDialogFragment extends DialogFragment {
-    private static final String OLD_ENTRY_KEY = "oldEntry";
+
     private RepoXmlParser.Entry oldEntry;
     private boolean createNewEntry;
 
-    private OnFavoritesDatabaseOperationsListener favoritesDatabaseOperationsCallback;
+    public static final String OLD_ENTRY_KEY = "oldEntry";
+    public static final String NEW_ENTRY_KEY = "newEntry";
 
     public static EditEntryDialogFragment createInstance(RepoXmlParser.Entry oldEntry) {
         EditEntryDialogFragment fragment = new EditEntryDialogFragment();
@@ -31,16 +33,6 @@ public class EditEntryDialogFragment extends DialogFragment {
 
     public EditEntryDialogFragment() {
         // Required empty constructor
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            favoritesDatabaseOperationsCallback = (OnFavoritesDatabaseOperationsListener) activity;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -78,10 +70,13 @@ public class EditEntryDialogFragment extends DialogFragment {
                         String string = editTextString.getText().toString();
                         String note = editTextNote.getText().toString();
                         RepoXmlParser.Entry newEntry = FavoritesDataSource.createEntry(string, note);
+                        Intent intent = new Intent();
+                        intent.putExtra(NEW_ENTRY_KEY, newEntry);
                         if (createNewEntry) {
-                            favoritesDatabaseOperationsCallback.onAddEntry(newEntry);
+                            getTargetFragment().onActivityResult(getTargetRequestCode(), FavoritesFragment.ADD_REQUEST_CODE, intent);
                         } else {
-                            favoritesDatabaseOperationsCallback.onUpdateEntryByString(string, newEntry);
+                            intent.putExtra(OLD_ENTRY_KEY, oldEntry);
+                            getTargetFragment().onActivityResult(getTargetRequestCode(), FavoritesFragment.EDIT_REQUEST_CODE, intent);
                         }
                     }
                 })
