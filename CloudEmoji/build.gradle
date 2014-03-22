@@ -19,6 +19,14 @@ android {
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 19
+        versionCode 8
+        versionName '0.6.0'
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+        }
     }
 
     packagingOptions {
@@ -36,9 +44,8 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
-    compile 'com.android.support:support-v4:+'
-    compile files('./libs/commons-io-2.4.jar')
-    compile files('./libs/commons-lang-2.6.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }

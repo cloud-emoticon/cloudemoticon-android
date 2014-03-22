@@ -398,6 +398,7 @@ public class MainActivity extends ActionBarActivity implements
             case R.id.action_exit: {
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(PERSISTENT_NOTIFICATION_ID);
                 finish();
+                return true;
             }
             default: {
                 return super.onOptionsItemSelected(item);

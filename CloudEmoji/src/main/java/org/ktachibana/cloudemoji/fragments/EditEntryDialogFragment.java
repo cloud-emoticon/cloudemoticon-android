@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
-import org.ktachibana.cloudemoji.interfaces.OnFavoritesDatabaseOperationsListener;
 
 public class EditEntryDialogFragment extends DialogFragment {
 

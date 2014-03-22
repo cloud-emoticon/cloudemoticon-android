@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.*;
-import android.widget.*;
-import org.apache.commons.lang.ObjectUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.CategoryListAdapter;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
@@ -128,8 +129,7 @@ public class FavoritesFragment extends Fragment {
         RepoXmlParser.Entry newEntry = (RepoXmlParser.Entry) intent.getSerializableExtra(EditEntryDialogFragment.NEW_ENTRY_KEY);
         if (resultCode == ADD_REQUEST_CODE) {
             favoritesDatabaseOperationsCallback.onAddEntry(newEntry);
-        }
-        else if (requestCode == EDIT_REQUEST_CODE) {
+        } else if (requestCode == EDIT_REQUEST_CODE) {
             RepoXmlParser.Entry oldEntry = (RepoXmlParser.Entry) intent.getSerializableExtra(EditEntryDialogFragment.OLD_ENTRY_KEY);
             favoritesDatabaseOperationsCallback.onUpdateEntryByString(oldEntry.string, newEntry);
         }
