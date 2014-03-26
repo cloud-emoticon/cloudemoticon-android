@@ -31,10 +31,6 @@
             android:entries="@array/split_view_options"
             android:entryValues="@array/split_view_options_alias"
             android:defaultValue="auto"/>
-        <CheckBoxPreference
-            android:key="pref_override_system_font"
-            android:title="@string/override_system_font"
-            android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

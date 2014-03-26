@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,9 +66,6 @@ public class MainActivity extends ActionBarActivity implements
     private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
 
-    // Font
-    public static Typeface font;
-
     // Databases
     private FavoritesDataSource favoritesDataSource = new FavoritesDataSource(this);
 
@@ -85,7 +81,6 @@ public class MainActivity extends ActionBarActivity implements
 
         // Switch states
         switchNotificationState();
-        switchFont();
 
         firstTimeCheck();
         fillNavigationDrawer();
@@ -316,14 +311,6 @@ public class MainActivity extends ActionBarActivity implements
         NotificationHelper.switchNotificationState(this, notificationVisibility);
     }
 
-    private void switchFont() {
-        if (overrideSystemFont) {
-            font = Typeface.createFromAsset(getResources().getAssets(), "DroidSansFallback.ttf");
-        } else {
-            font = null;
-        }
-    }
-
     /**
      * Show a toast given a type of exception
      *
@@ -351,14 +338,7 @@ public class MainActivity extends ActionBarActivity implements
             switchNotificationState();
         } else if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
             url = preferences.getString(key, getString(R.string.default_url));
-        } else if (key.equals(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT)) {
-            overrideSystemFont = preferences.getBoolean(key, false);
-            switchFont();
         }
-    }
-
-    public static Typeface getFont() {
-        return font;
     }
 
     @Override

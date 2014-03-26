@@ -19,13 +19,11 @@ public class CategoryListAdapter extends ArrayAdapter<RepoXmlParser.Entry> {
 
     private List<RepoXmlParser.Entry> category;
     private LayoutInflater inflater;
-    private Typeface font;
 
     public CategoryListAdapter(Context context, int resource, List<RepoXmlParser.Entry> category) {
         super(context, resource, category);
         this.category = category;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.font = MainActivity.getFont();
     }
 
     @Override
@@ -51,9 +49,6 @@ public class CategoryListAdapter extends ArrayAdapter<RepoXmlParser.Entry> {
                 view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             }
             view.setText(string);
-            if (font != null) {
-                view.setTypeface(font);
-            }
             return view;
         } else {
             View view = convertView;
@@ -63,9 +58,6 @@ public class CategoryListAdapter extends ArrayAdapter<RepoXmlParser.Entry> {
             TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
             TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
             lineOne.setText(string);
-            if (font != null) {
-                lineOne.setTypeface(font);
-            }
             lineTwo.setText(note);
             return view;
         }

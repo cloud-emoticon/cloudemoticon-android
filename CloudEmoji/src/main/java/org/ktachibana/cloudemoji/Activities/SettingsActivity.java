@@ -51,7 +51,8 @@ public class SettingsActivity extends PreferenceActivity implements
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
             String versionCode = Integer.toString(pInfo.versionCode);
-            versionPref.setTitle(getString(R.string.version) + " " + version + " (" + versionCode + ")");
+            versionPref.setTitle(getString(R.string.version) + " " + version);
+            versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
