@@ -31,8 +31,7 @@
     <string name="already_added_to_fav">すでに追加します</string>
     <string name="remove_from_fav">お気に入りを削除します</string>
     <string name="removed_from_fav">削除しました</string>
-    <string name="long_press_prompt_line1">君の大スキの顏文字を追加しましょう！</string>
-    <string name="long_press_prompt_line2">左から引き出しを出てくるためにはスワイプします、お気に入りに追加ためにはリポジトリリスト中の一つの長押し</string>
+    <string name="long_press_prompt_line">君の大スキの顏文字を追加しましょう！\n左から引き出しを出てくるためにはスワイプします、お気に入りに追加ためにはリポジトリリスト中の一つの長押し</string>
     <string name="notification_visibility">通知表示</string>
     <string name="show_after_boot_up">端末起動時に通知を表示します</string>
     <string name="override_system_font">システムフォントを代用</string>

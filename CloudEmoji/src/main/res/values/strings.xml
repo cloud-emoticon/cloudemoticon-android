@@ -31,8 +31,7 @@
     <string name="already_added_to_fav">Entry already added</string>
     <string name="remove_from_fav">Remove from my favorites</string>
     <string name="removed_from_fav">Entry removed</string>
-    <string name="long_press_prompt_line1">Add something to your favorites!</string>
-    <string name="long_press_prompt_line2">Slide out navigation drawer on the left side and long press an entry to do so</string>
+    <string name="long_press_prompt_line">Add something to your favorites!\nSlide out navigation drawer on the left side and long press an entry to do so</string>
     <string name="notification_visibility">Notification visibility</string>
     <string name="show_after_boot_up">Show the notification after boot-up</string>
     <string name="override_system_font">Override system font</string>
@@ -41,6 +40,7 @@
     <string name="add_entry">Add entry</string>
     <string name="edit_entry">Edit entry</string>
     <string name="entry_updated">Entry updated</string>
+    <string name="version_code">Version code</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

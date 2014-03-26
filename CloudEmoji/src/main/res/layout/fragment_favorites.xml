@@ -29,14 +29,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center_horizontal"
-            android:text="@string/long_press_prompt_line1"/>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="center_horizontal"
-            android:text="@string/long_press_prompt_line2"/>
+            android:text="@string/long_press_prompt_line"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold|italic"/>
 
     </LinearLayout>
 

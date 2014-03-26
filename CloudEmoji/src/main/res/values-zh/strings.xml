@@ -31,8 +31,7 @@
     <string name="already_added_to_fav">已经添加过了</string>
     <string name="remove_from_fav">从我的最爱移除</string>
     <string name="removed_from_fav">已移除</string>
-    <string name="long_press_prompt_line1">来添加点你最喜欢的吧！</string>
-    <string name="long_press_prompt_line2">在左侧划出导航抽屉并长按源列表中的某一个项目来添加到我的最爱</string>
+    <string name="long_press_prompt_line">来添加点你最喜欢的吧！\n在左侧划出导航抽屉并长按源列表中的某一个项目来添加到我的最爱</string>
     <string name="notification_visibility">通知可见性</string>
     <string name="show_after_boot_up">系统启动后显示通知</string>
     <string name="override_system_font">代替系统字体</string>
@@ -41,6 +40,7 @@
     <string name="add_entry">添加项目</string>
     <string name="edit_entry">编辑项目</string>
     <string name="entry_updated">项目已更新</string>
+    <string name="version_code">版本号</string>
 
     <string-array name="notification_options">
         <item>不可见</item>
