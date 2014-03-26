@@ -23,17 +23,15 @@ A cloud solution to your favorite emoticons
 * Show in notification panel/status bar
 * Show notification after boot-up
 * Navigation drawer / Split view (optimized or manual)
-* Override system font to display emoticons correctly
- * Thanks to [+Jobin Wen](https://plus.google.com/u/0/+HaoyuWen) who extracts font from stock LG rom
- * LG please contact me if you have any copyright issues
 
 ## Utilizes
-* [chrisbanes/ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
-* [Apache Commons IO] (http://commons.apache.org/proper/commons-io/)
+* [chrisbanes / ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
+* [loopj / android-async-http](https://github.com/loopj/android-async-http)
 * [Apache Commons Lang] (http://commons.apache.org/proper/commons-lang/)
+* [Apache IO Utils] (http://commons.apache.org/proper/commons-io/)
 
 ## How to run
-* Import into IntelliJ IDEA 13, set up JDK and Android SDK, set up build configuration, and you are ready to go
+* Import into IntelliJ IDEA and you are ready to go
 
 ## License
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)

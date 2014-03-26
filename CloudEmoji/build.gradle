@@ -47,5 +47,6 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
+    compile 'com.loopj.android:android-async-http:+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

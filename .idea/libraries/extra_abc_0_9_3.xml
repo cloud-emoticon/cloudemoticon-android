@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="extra-abc-0.9.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/CloudEmoji/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshExtraAbc093.aar/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/CloudEmoji/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshExtraAbc093.aar/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
