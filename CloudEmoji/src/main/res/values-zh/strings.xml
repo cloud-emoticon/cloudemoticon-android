@@ -24,7 +24,8 @@
     <string name="version">版本</string>
     <string name="local">本地</string>
     <string name="my_fav">我的最爱</string>
-    <string name="split_view">导航抽屉/左右分栏（需要重启应用）</string>
+    <string name="split_view_title">导航抽屉/左右分栏</string>
+    <string name="split_view_summary">需要重启应用</string>
     <string name="ui">UI</string>
     <string name="add_to_fav">添加到我的最爱</string>
     <string name="added_to_fav">已添加</string>

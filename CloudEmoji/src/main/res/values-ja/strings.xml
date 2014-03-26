@@ -24,7 +24,8 @@
     <string name="version">バージョン</string>
     <string name="local">ローカル</string>
     <string name="my_fav">お気に入り</string>
-    <string name="split_view">引き出し/左右段組（アプリの再起動が必要）</string>
+    <string name="split_view_title">引き出し/左右段組</string>
+    <string name="split_view_summary">アプリの再起動が必要</string>
     <string name="ui">UI</string>
     <string name="add_to_fav">お気に入りを追加します</string>
     <string name="added_to_fav">追加しました</string>

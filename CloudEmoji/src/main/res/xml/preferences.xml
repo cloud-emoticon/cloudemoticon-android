@@ -27,7 +27,8 @@
         android:key="pref_ui">
         <ListPreference
             android:key="pref_split_view_new"
-            android:title="@string/split_view"
+            android:title="@string/split_view_title"
+            android:summary="@string/split_view_summary"
             android:entries="@array/split_view_options"
             android:entryValues="@array/split_view_options_alias"
             android:defaultValue="auto"/>
