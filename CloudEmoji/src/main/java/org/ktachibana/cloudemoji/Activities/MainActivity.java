@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,7 +18,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SectionedMenuAdapter;
 import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
@@ -36,10 +38,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements
@@ -57,7 +56,6 @@ public class MainActivity extends ActionBarActivity implements
     private SharedPreferences preferences;
     private String notificationVisibility;
     private String url;
-    private boolean overrideSystemFont;
 
     // UI components
     private DrawerLayout drawerLayout;
@@ -97,7 +95,6 @@ public class MainActivity extends ActionBarActivity implements
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         notificationVisibility = preferences.getString(SettingsActivity.PREF_NOTIFICATION_VISIBILITY, "both");
         url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
-        overrideSystemFont = preferences.getBoolean(SettingsActivity.PREF_OVERRIDE_SYSTEM_FONT, true);
     }
 
     private void setupUI() {
@@ -128,11 +125,9 @@ public class MainActivity extends ActionBarActivity implements
             }
         }
 
-        // If split_in_both, manually set up split view for both orientations
-        else if (uiPreference.equals("split_in_both")) {
+        // Else split_in_both, manually set up split view for both orientations
+        else {
             setContentView(R.layout.activity_main_manual_split_view);
-        } else {
-            promptException(new Exception("setupUI() bug"));
         }
     }
 
@@ -165,78 +160,51 @@ public class MainActivity extends ActionBarActivity implements
 
     /**
      * Download XML file from user's preferred URL and replace the local one
+     * This function uses android-async-http from https://github.com/loopj/android-async-http
      */
     private void update() {
-        new UpdateRepoTask().execute(url);
-    }
+        new AsyncHttpClient().get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // Write to file
+                FileOutputStream fos = null;
+                try {
+                    fos = openFileOutput(XML_FILE_NAME, Context.MODE_PRIVATE);
+                    fos.write(responseBody);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    IOUtils.closeQuietly(fos);
+                }
 
-    /**
-     * AsyncTask that fetches an XML file given a URL and replace the local one
-     * This module uses Apache Commons IO from http://commons.apache.org/proper/commons-io/
-     */
-    private class UpdateRepoTask extends AsyncTask<String, Void, Void> {
-
-        private List<Exception> taskExceptions;
-
-        @Override
-        protected void onPreExecute() {
-            taskExceptions = new ArrayList<Exception>();
-        }
-
-        @Override
-        protected Void doInBackground(String... stringUrl) {
-            HttpURLConnection conn = null;
-            Reader reader = null;
-            OutputStream fileOut = null;
-            try {
-                // Establish connection
-                URL url = new URL(stringUrl[0]);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(15000);
-                conn.setReadTimeout(10000);
-                conn.setRequestMethod("GET");
-                conn.connect();
-
-                // Over-write existing file
-                reader = new InputStreamReader(conn.getInputStream());
-                fileOut = openFileOutput(XML_FILE_NAME, Context.MODE_PRIVATE);
-                IOUtils.copy(reader, fileOut);
-            } catch (IOException e) {
-                taskExceptions.add(e);
-            } catch (Exception e) {
-                taskExceptions.add(e);
-            } finally {
-                IOUtils.close(conn);
-                IOUtils.closeQuietly(reader);
-                IOUtils.closeQuietly(fileOut);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            // Stop the refreshing pull to refresh layout
-            if (refreshingPullToRefreshLayout != null) {
-                refreshingPullToRefreshLayout.setRefreshComplete();
-            }
-
-            // If update finishes without exceptions
-            if (taskExceptions.isEmpty()) {
+                // Fill drawer and make toast
                 fillNavigationDrawer();
                 if (!isDrawerStatic) {
                     drawerLayout.openDrawer(leftDrawer);
                 }
                 Toast.makeText(MainActivity.this, getString(R.string.updated), Toast.LENGTH_SHORT).show();
-            } else {
-                promptException(taskExceptions.get(0));
             }
-        }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // Make toast about exception
+                promptException((Exception) error);
+            }
+
+            @Override
+            public void onFinish() {
+                // Finally stop the refreshing pull to refresh layout
+                if (refreshingPullToRefreshLayout != null) {
+                    refreshingPullToRefreshLayout.setRefreshComplete();
+                }
+            }
+        });
     }
 
     /**
      * Read emoji from a given file and return it
      * Handle exceptions by its own so that XmlPullParserException is not covered by IOException
-     * This module uses Apache Commons IO from http://commons.apache.org/proper/commons-io/
+     * This function uses Apache Commons IO from http://commons.apache.org/proper/commons-io/
      *
      * @param file File object
      * @return Emoji object
@@ -249,11 +217,7 @@ public class MainActivity extends ActionBarActivity implements
             fileIn = new FileInputStream(file);
             reader = new InputStreamReader(fileIn);
             emoji = new RepoXmlParser().parse(reader);
-        } catch (FileNotFoundException e) {
-            promptException(e);
-        } catch (XmlPullParserException e) {
-            promptException(e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             promptException(e);
         } finally {
             IOUtils.closeQuietly(fileIn);

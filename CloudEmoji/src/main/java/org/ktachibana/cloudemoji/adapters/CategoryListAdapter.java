@@ -1,13 +1,11 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import org.ktachibana.cloudemoji.activities.MainActivity;
 import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 
 import java.util.List;
