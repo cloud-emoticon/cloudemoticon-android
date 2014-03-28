@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.ktachibana.cloudemoji.R;
@@ -98,6 +99,12 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void setupUI() {
+        // Set up tint system bar
+        SystemBarTintManager manager = new SystemBarTintManager(this);
+        manager.setStatusBarTintEnabled(true);
+        manager.setNavigationBarTintEnabled(true);
+        manager.setTintColor(getResources().getColor(R.color.holo_blue_light));
+
         // Set up UI layout according to user preference for drawer and split view
         String uiPreference = preferences.getString(SettingsActivity.PREF_SPLIT_VIEW, "auto");
         int orientation = getResources().getConfiguration().orientation;
