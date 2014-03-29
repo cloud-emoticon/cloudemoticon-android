@@ -19,7 +19,8 @@ public class BaseActivity extends ActionBarActivity {
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setNavigationBarTintEnabled(true);
-        tintManager.setTintColor(getResources().getColor(R.color.holo_blue_light));
+        tintManager.setStatusBarTintColor(getResources().getColor(R.color.holo_blue_light));
+        tintManager.setNavigationBarTintColor(getResources().getColor(android.R.color.transparent));
     }
 
     @Override
@@ -33,35 +34,16 @@ public class BaseActivity extends ActionBarActivity {
                         .getIdentifier("status_bar_height", "dimen", "android"));
 
         // Get height of action bar
-        int actionbarHeight = getActionBarHeight();
+        TypedValue value = new TypedValue();
+        int actionBarHeight = 0;
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, value, true))
+        {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(value.data, getResources().getDisplayMetrics());
+        }
 
         // Pad the root view on the top to circumvent
         // part of views on the top being cut out by status bar and action bar
-        int top = statusBarHeight + actionbarHeight;
+        int top = statusBarHeight + actionBarHeight;
         rootView.setPadding(0, top, 0, 0);
-    }
-
-    /**
-     * Get the height of action bar in pixels
-     *
-     * @return height of action bar
-     */
-    public int getActionBarHeight() {
-        int actionBarHeight = 0;
-        TypedValue value = new TypedValue();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, value,true))
-            {
-                actionBarHeight= TypedValue
-                        .complexToDimensionPixelSize(value.data, getResources().getDisplayMetrics());
-            }
-        }
-        else
-        {
-            actionBarHeight = TypedValue
-                    .complexToDimensionPixelSize(value.data, getResources().getDisplayMetrics());
-        }
-        return actionBarHeight;
     }
 }
