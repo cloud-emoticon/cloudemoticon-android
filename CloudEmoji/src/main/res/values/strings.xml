@@ -61,4 +61,8 @@
     <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+    <string name="skip_button_label">Skip</string>
+
 </resources>

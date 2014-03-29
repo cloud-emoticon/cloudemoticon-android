@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +19,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
+import org.ktachibana.cloudemoji.BaseActivity;
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SectionedMenuAdapter;
 import org.ktachibana.cloudemoji.databases.FavoritesDataSource;
@@ -42,7 +42,8 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class MainActivity extends ActionBarActivity implements
+public class MainActivity extends BaseActivity implements
+        Constants,
         SharedPreferences.OnSharedPreferenceChangeListener,
         CategoryListFragment.OnRefreshStartedListener,
         OnExceptionListener,
@@ -53,34 +54,28 @@ public class MainActivity extends ActionBarActivity implements
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
     private static final String XML_FILE_NAME = "emoji.xml";
 
-    // Preferences
-    private SharedPreferences preferences;
-    private String notificationVisibility;
-    private String url;
-
-    // UI components
+    // Views
     private DrawerLayout drawerLayout;
     private ListView leftDrawer;
     private ActionBarDrawerToggle toggle;
-    private boolean isDrawerStatic;
     private PullToRefreshLayout refreshingPullToRefreshLayout;
 
-    // Databases
+    // etc
+    private SharedPreferences preferences;
+    private boolean isDrawerStatic;
     private FavoritesDataSource favoritesDataSource = new FavoritesDataSource(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Initializations
-        setupPreferences();
-        setupUI();
-        setupComponents();
+        setupLayout();
+        setupViews();
 
-        // Switch states
         switchNotificationState();
-
         firstTimeCheck();
         fillNavigationDrawer();
 
@@ -91,22 +86,9 @@ public class MainActivity extends ActionBarActivity implements
 
     }
 
-    private void setupPreferences() {
-        // Set up preferences
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        notificationVisibility = preferences.getString(SettingsActivity.PREF_NOTIFICATION_VISIBILITY, "both");
-        url = preferences.getString(SettingsActivity.PREF_TEST_MY_REPO, getString(R.string.default_url));
-    }
-
-    private void setupUI() {
-        // Set up tint system bar
-        SystemBarTintManager manager = new SystemBarTintManager(this);
-        manager.setStatusBarTintEnabled(true);
-        manager.setNavigationBarTintEnabled(true);
-        manager.setTintColor(getResources().getColor(R.color.holo_blue_light));
-
+    private void setupLayout() {
         // Set up UI layout according to user preference for drawer and split view
-        String uiPreference = preferences.getString(SettingsActivity.PREF_SPLIT_VIEW, "auto");
+        String uiPreference = preferences.getString(PREF_SPLIT_VIEW, "auto");
         int orientation = getResources().getConfiguration().orientation;
 
         // If auto, set up the default layout optimized for landscape and tablets
@@ -138,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements
         }
     }
 
-    private void setupComponents() {
+    private void setupViews() {
         // Find views
         leftDrawer = (ListView) findViewById(R.id.leftDrawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -156,11 +138,11 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void firstTimeCheck() {
-        boolean hasRunBefore = preferences.getBoolean(SettingsActivity.PREF_HAS_RUN_BEFORE, false);
+        boolean hasRunBefore = preferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
         // Hasn't run before
         if (!hasRunBefore) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(SettingsActivity.PREF_HAS_RUN_BEFORE, true);
+            editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
             editor.commit();
         }
     }
@@ -170,6 +152,7 @@ public class MainActivity extends ActionBarActivity implements
      * This function uses android-async-http from https://github.com/loopj/android-async-http
      */
     private void update() {
+        String url = preferences.getString(PREF_TEST_MY_REPO, getResources().getString(R.string.default_url));
         new AsyncHttpClient().get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -279,7 +262,7 @@ public class MainActivity extends ActionBarActivity implements
     }
 
     private void switchNotificationState() {
-        NotificationHelper.switchNotificationState(this, notificationVisibility);
+        NotificationHelper.switchNotificationState(this, preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
     }
 
     /**
@@ -304,11 +287,8 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key) {
-        if (key.equals(SettingsActivity.PREF_NOTIFICATION_VISIBILITY)) {
-            notificationVisibility = preferences.getString(key, "both");
+        if (PREF_NOTIFICATION_VISIBILITY.equals(key)) {
             switchNotificationState();
-        } else if (key.equals(SettingsActivity.PREF_TEST_MY_REPO)) {
-            url = preferences.getString(key, getString(R.string.default_url));
         }
     }
 
@@ -342,7 +322,7 @@ public class MainActivity extends ActionBarActivity implements
         }
         switch (item.getItemId()) {
             case R.id.action_settings: {
-                Intent intent = new Intent(this, SettingsActivity.class);
+                Intent intent = new Intent(this, PreferenceActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -415,7 +395,7 @@ public class MainActivity extends ActionBarActivity implements
             clipboard.setPrimaryClip(clip);
         }
         Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
-        boolean isCloseAfterCopy = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getBoolean(SettingsActivity.PREF_CLOSE_AFTER_COPY, true);
+        boolean isCloseAfterCopy = preferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
         if (isCloseAfterCopy) {
             finish();
         }

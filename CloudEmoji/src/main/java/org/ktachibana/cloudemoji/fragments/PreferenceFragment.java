@@ -11,7 +11,7 @@ import android.widget.Toast;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 
-public class PreferenceFragment extends android.preference.PreferenceFragment implements Constants {
+public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment implements Constants {
     SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
     SharedPreferences preferences;
 
