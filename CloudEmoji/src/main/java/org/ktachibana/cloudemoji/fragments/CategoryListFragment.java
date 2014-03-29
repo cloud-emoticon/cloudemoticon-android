@@ -18,7 +18,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * Fragment that holds a list of strings for one category
- * This module uses ActionBar-PullToRefresh from https://github.com/chrisbanes/ActionBar-PullToRefresh
+ * This class uses ActionBar-PullToRefresh from https://github.com/chrisbanes/ActionBar-PullToRefresh
  */
 public class CategoryListFragment extends Fragment {
 

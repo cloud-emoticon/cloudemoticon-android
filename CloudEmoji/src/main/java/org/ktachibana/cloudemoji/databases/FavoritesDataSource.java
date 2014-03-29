@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Handles interaction between activities and database
- * This module uses Apache Commons Lang from http://commons.apache.org/proper/commons-lang/
+ * This class uses Apache Commons Lang from http://commons.apache.org/proper/commons-lang/
  */
 public class FavoritesDataSource {
 
