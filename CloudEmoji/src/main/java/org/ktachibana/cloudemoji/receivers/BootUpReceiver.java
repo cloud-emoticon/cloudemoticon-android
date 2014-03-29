@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji;
+package org.ktachibana.cloudemoji.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
