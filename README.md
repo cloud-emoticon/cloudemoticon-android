@@ -28,6 +28,7 @@ A cloud solution to your favorite emoticons
 * [chrisbanes / ActionBar-PullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
 * [jgilfelt / SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
 * [loopj / android-async-http](https://github.com/loopj/android-async-http)
+* [kolavar / android-support-v4-preferencefragment](https://github.com/kolavar/android-support-v4-preferencefragment)
 * [Apache Commons Lang] (http://commons.apache.org/proper/commons-lang/)
 * [Apache IO Utils] (http://commons.apache.org/proper/commons-io/)
 
