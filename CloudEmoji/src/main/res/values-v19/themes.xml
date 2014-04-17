@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme"
+           parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+        <item name="actionBarStyle">@style/CustomActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/CustomOverFlowButton</item>
+        <item name="actionOverflowButtonStyle">@style/CustomOverFlowButton</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="CustomActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/holo_blue_light</item>
+        <item name="background">@color/holo_blue_light</item>
+    </style>
+
+    <!-- ActionBar Overflow Button styles-->
+    <style name="CustomOverFlowButton"
+           parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_core_overflow</item>
+    </style>
+
+</resources>

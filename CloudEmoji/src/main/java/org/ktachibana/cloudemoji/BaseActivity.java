@@ -1,4 +1,5 @@
 package org.ktachibana.cloudemoji;
+import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -26,24 +27,28 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        View rootView = findViewById(android.R.id.content);
 
-        // Get height of status bar
-        int statusBarHeight = getResources()
-                .getDimensionPixelSize(getResources()
-                        .getIdentifier("status_bar_height", "dimen", "android"));
+        // If version is higher than 19, then use padding oppset
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View rootView = findViewById(android.R.id.content);
 
-        // Get height of action bar
-        TypedValue value = new TypedValue();
-        int actionBarHeight = 0;
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, value, true))
-        {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(value.data, getResources().getDisplayMetrics());
+            // Get height of status bar
+            int statusBarHeight = getResources()
+                    .getDimensionPixelSize(getResources()
+                            .getIdentifier("status_bar_height", "dimen", "android"));
+
+            // Get height of action bar
+            TypedValue value = new TypedValue();
+            int actionBarHeight = 0;
+            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, value, true))
+            {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(value.data, getResources().getDisplayMetrics());
+            }
+
+            // Pad the root view on the top to circumvent
+            // part of views on the top being cut out by status bar and action bar
+            int top = statusBarHeight + actionBarHeight;
+            rootView.setPadding(0, top, 0, 0);
         }
-
-        // Pad the root view on the top to circumvent
-        // part of views on the top being cut out by status bar and action bar
-        int top = statusBarHeight + actionBarHeight;
-        rootView.setPadding(0, top, 0, 0);
     }
 }
