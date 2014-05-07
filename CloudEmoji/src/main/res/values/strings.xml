@@ -15,7 +15,7 @@
     <string name="behaviors">Behavior</string>
     <string name="close_after_copy">Close after copy</string>
     <string name="repositories">Repository</string>
-    <string name="test_my_repository">Repository URL</string>
+    <string name="repo_url">Repository URL</string>
     <string name="restore_default">Restore default</string>
     <string name="about">About</string>
     <string name="github_repo">GitHub repository</string>
@@ -33,7 +33,7 @@
     <string name="already_added_to_fav">Entry already added</string>
     <string name="remove_from_fav">Remove from my favorites</string>
     <string name="removed_from_fav">Entry removed</string>
-    <string name="long_press_prompt_line">Add something to your favorites!\nSlide out navigation drawer on the left side and long press an entry to do so</string>
+    <string name="no_fav_prompt">Add something to your favorites!\nSlide out navigation drawer on the left side and long press an entry to do so</string>
     <string name="notification_visibility">Notification visibility</string>
     <string name="show_after_boot_up">Show the notification after boot-up</string>
     <string name="override_system_font">Override system font</string>
@@ -43,6 +43,9 @@
     <string name="edit_entry">Edit entry</string>
     <string name="entry_updated">Entry updated</string>
     <string name="version_code">Version code</string>
+    <string name="no_repo_prompt">You do not have any repository</string>
+    <string name="repo_manager">Repository Manager</string>
+    <string name="add_repo">Add repository</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
@@ -60,7 +63,6 @@
     <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
     <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="back_button_label">Back</string>
     <string name="next_button_label">Next</string>
     <string name="skip_button_label">Skip</string>

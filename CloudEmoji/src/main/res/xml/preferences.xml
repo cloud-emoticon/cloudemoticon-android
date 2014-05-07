@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <PreferenceCategory
-        android:title="@string/behaviors"
-        android:key="pref_behaviors">
+        android:key="pref_behaviors"
+        android:title="@string/behaviors">
         <ListPreference
-            android:key="pref_notification_visibility"
-            android:title="@string/notification_visibility"
+            android:defaultValue="both"
             android:entries="@array/notification_options"
             android:entryValues="@array/notification_options_alias"
-            android:defaultValue="both"/>
+            android:key="pref_notification_visibility"
+            android:title="@string/notification_visibility" />
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_close_after_copy"
-            android:title="@string/close_after_copy"
-            android:defaultValue="true"/>
+            android:title="@string/close_after_copy" />
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_show_after_boot_up"
-            android:title="@string/show_after_boot_up"
-            android:defaultValue="true"/>
+            android:title="@string/show_after_boot_up" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/ui"
-        android:key="pref_ui">
+        android:key="pref_ui"
+        android:title="@string/ui">
         <ListPreference
-            android:key="pref_split_view_new"
-            android:title="@string/split_view_title"
-            android:summary="@string/split_view_summary"
+            android:defaultValue="auto"
             android:entries="@array/split_view_options"
             android:entryValues="@array/split_view_options_alias"
-            android:defaultValue="auto"/>
+            android:key="pref_split_view_new"
+            android:summary="@string/split_view_summary"
+            android:title="@string/split_view_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/repositories"
-        android:key="pref_repositories">
+        android:key="pref_repositories"
+        android:title="@string/repositories">
         <EditTextPreference
-            android:key="pref_test_my_repository"
-            android:title="@string/test_my_repository"
             android:defaultValue="@string/default_url"
-            android:summary=""/>
+            android:key="pref_test_my_repository"
+            android:summary=""
+            android:title="@string/repo_url" />
         <Preference
             android:key="pref_restore_default"
-            android:title="@string/restore_default"/>
+            android:title="@string/restore_default" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -55,17 +55,16 @@
             android:title="@string/github_release">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="@string/github_release_url"/>
+                android:data="@string/github_release_url" />
         </Preference>
         <Preference
             android:key="pref_github_repo"
             android:title="@string/github_repo">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="@string/github_url"/>
+                android:data="@string/github_url" />
         </Preference>
-        <Preference
-            android:key="pref_version"/>
+        <Preference android:key="pref_version" />
     </PreferenceCategory>
 
 </PreferenceScreen>

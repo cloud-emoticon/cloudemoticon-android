@@ -1,10 +1,11 @@
 package org.ktachibana.cloudemoji;
-import android.content.pm.PackageInfo;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.View;
+
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
@@ -28,7 +29,7 @@ public class BaseActivity extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        // If version is higher than 19, then use padding oppset
+        // If version is higher than 19, then use padding to offset
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View rootView = findViewById(android.R.id.content);
 
@@ -40,8 +41,7 @@ public class BaseActivity extends ActionBarActivity {
             // Get height of action bar
             TypedValue value = new TypedValue();
             int actionBarHeight = 0;
-            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, value, true))
-            {
+            if (getTheme().resolveAttribute(android.R.attr.actionBarSize, value, true)) {
                 actionBarHeight = TypedValue.complexToDimensionPixelSize(value.data, getResources().getDisplayMetrics());
             }
 

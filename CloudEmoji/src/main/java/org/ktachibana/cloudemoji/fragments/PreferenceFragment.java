@@ -8,6 +8,7 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 

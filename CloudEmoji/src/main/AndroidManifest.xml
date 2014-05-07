@@ -1,46 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.ktachibana.cloudemoji">
+    package="org.ktachibana.cloudemoji">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/CustomActionBarTheme">
+        <meta-data
+            android:name="DATABASE"
+            android:value="ce.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="org.ktachibana.cloudemoji.models" />
+
         <activity
-            android:name=".activities.MainActivity"
+            android:name="org.ktachibana.cloudemoji.activities.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.PreferenceActivity"
+            android:name="org.ktachibana.cloudemoji.activities.PreferenceActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.ktachibana.cloudemoji.activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.ktachibana.cloudemoji.MainActivity"/>
-        </activity>
-        <activity
-            android:name=".activities.BootUpDummyActivity"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoDisplay">
+                android:value="org.ktachibana.cloudemoji.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".activities.RepositoryManagerActivity"
+            android:label="@string/repo_manager"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.ktachibana.cloudemoji.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="org.ktachibana.cloudemoji.activities.BootUpDummyActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay" />
+
         <receiver
-            android:name=".receivers.BootUpReceiver"
+            android:name="org.ktachibana.cloudemoji.receivers.BootUpReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="StartMyServiceAtBootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

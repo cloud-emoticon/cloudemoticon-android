@@ -1,7 +1,7 @@
 package org.ktachibana.cloudemoji.models;
 
 /**
- * POJO class holding an emoticon string ans description
+ * POJO class holding an emoticon string and its description
  */
 public class Entry {
     private String emoticon;

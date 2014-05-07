@@ -2,6 +2,7 @@ package org.ktachibana.cloudemoji.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.fragments.PreferenceFragment;

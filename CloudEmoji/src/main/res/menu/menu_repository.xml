@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_refresh"
-        android:title="@string/refresh"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_action_navigation_refresh"
-        app:showAsAction="ifRoom"/>
-</menu>
