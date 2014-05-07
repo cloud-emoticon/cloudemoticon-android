@@ -7,9 +7,6 @@ import com.orm.SugarRecord;
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 /**
  * POJO class holding a remote repository and its relevant information
  */

@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -44,14 +43,16 @@ public class RepositoryListFragment extends Fragment {
                     public String getStringValue(Repository repository, int i) {
                         return repository.getRemoteAddress();
                     }
-                });
+                }
+        );
         dictionary.addStringField(R.id.repositoryLastUpdateTextView,
                 new StringExtractor<Repository>() {
                     @Override
                     public String getStringValue(Repository repository, int i) {
                         return repository.getLastUpdate().toString();
                     }
-                });
+                }
+        );
         ArrayList<Repository> whyArrayListAsInterface = new ArrayList<Repository>();
         for (Repository repository : repositories) {
             whyArrayListAsInterface.add(repository);

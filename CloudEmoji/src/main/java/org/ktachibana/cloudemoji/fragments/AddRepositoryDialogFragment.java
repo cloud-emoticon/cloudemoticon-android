@@ -37,9 +37,7 @@ public class AddRepositoryDialogFragment extends DialogFragment {
                     repository.save();
                     dialog.dismiss();
                     Toast.makeText(getActivity().getBaseContext(), "SAVED", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity().getBaseContext(), "INVALID", Toast.LENGTH_SHORT).show();
                 }
             }
