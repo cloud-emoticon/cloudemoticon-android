@@ -9,19 +9,23 @@
         android:id="@+id/addRepositoryUrlEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addRepositoryUrlEditText"
+        android:layout_alignEnd="@+id/addRepositoryAliasEditText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="@string/repo_url"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/addRepositoryAliasEditText"
+        android:hint="@string/repo_url"
+        android:inputType="textUri" />
+
+    <EditText
+        android:id="@+id/addRepositoryAliasEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/addRepositoryUrlEditText"
+        android:hint="@string/alias" />
 
 </RelativeLayout>

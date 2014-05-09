@@ -37,19 +37,19 @@ public class RepositoryListFragment extends Fragment {
 
     private FunDapter<Repository> generateAdapter(final List<Repository> repositories) {
         BindDictionary<Repository> dictionary = new BindDictionary<Repository>();
-        dictionary.addStringField(R.id.repositoryURLTextView,
+        dictionary.addStringField(R.id.repositoryAliasTextView,
+                new StringExtractor<Repository>() {
+                    @Override
+                    public String getStringValue(Repository repository, int i) {
+                        return repository.getAlias();
+                    }
+                }
+        );
+        dictionary.addStringField(R.id.repositoryUrlTextView,
                 new StringExtractor<Repository>() {
                     @Override
                     public String getStringValue(Repository repository, int i) {
                         return repository.getRemoteAddress();
-                    }
-                }
-        );
-        dictionary.addStringField(R.id.repositoryLastUpdateTextView,
-                new StringExtractor<Repository>() {
-                    @Override
-                    public String getStringValue(Repository repository, int i) {
-                        return repository.getLastUpdate().toString();
                     }
                 }
         );

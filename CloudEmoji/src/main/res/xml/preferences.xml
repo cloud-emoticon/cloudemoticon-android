@@ -35,19 +35,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_repositories"
-        android:title="@string/repositories">
-        <EditTextPreference
-            android:defaultValue="@string/default_url"
-            android:key="pref_test_my_repository"
-            android:summary=""
-            android:title="@string/repo_url" />
-        <Preference
-            android:key="pref_restore_default"
-            android:title="@string/restore_default" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="pref_about"
         android:title="@string/about">
         <Preference

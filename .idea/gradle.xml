@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="D:\Codes\CloudEmoji" />
-            <option value="D:\Codes\CloudEmoji\CloudEmoji" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/CloudEmoji" />
           </set>
         </option>
       </GradleProjectSettings>

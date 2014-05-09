@@ -3,6 +3,8 @@ package org.ktachibana.cloudemoji.activities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
@@ -41,4 +43,9 @@ public class RepositoryManagerActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void fancy(View view) {
+        Toast.makeText(this, "233", Toast.LENGTH_SHORT).show();
+    }
+
 }

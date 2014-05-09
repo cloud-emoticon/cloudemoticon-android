@@ -27,4 +27,5 @@ public class PreferenceActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

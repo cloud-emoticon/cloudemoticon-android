@@ -5,20 +5,31 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/repositoryURLTextView"
+        android:id="@+id/repositoryAliasTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:text="@string/alias"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/repositoryLastUpdateTextView"
+        android:id="@+id/repositoryUrlTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/repositoryURLTextView"
+        android:layout_below="@+id/repositoryAliasTextView"
+        android:text="@string/repo_url"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageButton
+        android:id="@+id/repositoryDownloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="fancy" />
 </RelativeLayout>
