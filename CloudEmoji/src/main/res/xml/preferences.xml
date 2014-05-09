@@ -38,19 +38,11 @@
         android:key="pref_about"
         android:title="@string/about">
         <Preference
-            android:key="pref_github_release"
-            android:title="@string/github_release">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/github_release_url" />
-        </Preference>
+            android:key="pref_git_hub_release"
+            android:title="@string/github_release"/>
         <Preference
-            android:key="pref_github_repo"
-            android:title="@string/github_repo">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/github_url" />
-        </Preference>
+            android:key="pref_git_hub_repo"
+            android:title="@string/github_repo"/>
         <Preference android:key="pref_version" />
     </PreferenceCategory>
 

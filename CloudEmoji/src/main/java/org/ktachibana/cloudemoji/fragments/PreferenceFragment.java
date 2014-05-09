@@ -1,14 +1,18 @@
 package org.ktachibana.cloudemoji.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+
+import java.net.URI;
 
 /**
  * This class uses android-support-v4-preferencefragment from https://github.com/kolavar/android-support-v4-preferencefragment
@@ -24,6 +28,30 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+
+        // GitHub Release
+        Preference gitHubReleasePref = findPreference(PREF_GIT_HUB_RELEASE);
+        gitHubReleasePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent();
+                intent.setData(Uri.parse(GIT_HUB_RELEASE_URL));
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        // GitHub Repo
+        Preference gitHubRepoPref = findPreference(PREF_GIT_HUB_REPO);
+        gitHubRepoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent();
+                intent.setData(Uri.parse(GIT_HUB_REPO_URL));
+                startActivity(intent);
+                return true;
+            }
+        });
 
         // Version
         Preference versionPref = findPreference(PREF_VERSION);

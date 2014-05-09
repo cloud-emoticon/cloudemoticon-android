@@ -60,9 +60,6 @@
         <item>Always split view</item>
     </string-array>
 
-    <string name="default_url">https://dl.dropboxusercontent.com/u/120725807/test.xml</string>
-    <string name="github_release_url">https://github.com/KTachibanaM/cloudemoji/releases</string>
-    <string name="github_url">https://github.com/KTachibanaM/cloudemoji</string>
     <string name="back_button_label">Back</string>
     <string name="next_button_label">Next</string>
     <string name="skip_button_label">Skip</string>
