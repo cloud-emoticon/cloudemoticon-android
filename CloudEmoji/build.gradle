@@ -48,8 +48,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
     compile 'com.readystatesoftware.systembartint:systembartint:+'
-    compile 'com.loopj.android:android-async-http:+'
     compile 'com.arasthel:gnavdrawer-library:1.0.+'
     compile 'uk.co.ribot:easyadapter:1.0.1'
+    compile 'com.koushikdutta.ion:ion:1.2.4'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

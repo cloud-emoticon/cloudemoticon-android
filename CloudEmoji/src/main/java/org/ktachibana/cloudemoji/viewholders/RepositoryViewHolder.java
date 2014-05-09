@@ -5,8 +5,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.orm.SugarApp;
+
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.Repository;
+
+import java.io.File;
 
 import uk.co.ribot.easyadapter.ItemViewHolder;
 import uk.co.ribot.easyadapter.PositionInfo;
@@ -35,17 +41,25 @@ public class RepositoryViewHolder extends ItemViewHolder<Repository> {
     @Override
     public void onSetValues(final Repository item, PositionInfo positionInfo) {
         repositoryAliasTextView.setText(item.getAlias());
-        repositoryUrlTextView.setText(item.getRemoteAddress());
+        repositoryUrlTextView.setText(item.getUrl());
         repositoryDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("233", "Downloading: " + item.getRemoteAddress());
+                Ion.with(SugarApp.getSugarContext())
+                        .load(item.getUrl())
+                        .write(new File(item.getFileName()))
+                        .setCallback(new FutureCallback<File>() {
+                            @Override
+                            public void onCompleted(Exception e, File result) {
+                                Log.e("233", "completed");
+                            }
+                        });
             }
         });
         repositoryDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("233", "Deleting: " + item.getRemoteAddress());
+                item.delete();
             }
         });
     }

@@ -13,29 +13,31 @@ import java.io.Serializable;
  * POJO class holding a remote repository and its relevant information
  */
 public class Repository extends SugarRecord<Repository> implements Constants, Serializable {
-    private String remoteAddress;
+    private String url;
     private String alias;
     private String fileName;
     private boolean isAvailable;
+    private boolean isVisible;
     private int formatType;
 
     public Repository(Context context) {
         super(context);
     }
 
-    public Repository(Context context, String remoteAddress, String alias) {
+    public Repository(Context context, String url, String alias) {
         super(context);
-        this.remoteAddress = remoteAddress;
+        this.url = url;
         this.alias = alias;
-        this.fileName = FilenameUtils.getName(remoteAddress);
+        this.fileName = FilenameUtils.getName(url);
         this.isAvailable = false;
-        String extension = FilenameUtils.getExtension(remoteAddress);
+        this.isVisible = false;
+        String extension = FilenameUtils.getExtension(url);
         if (extension.equals("xml")) formatType = FORMAT_TYPE_XML;
         if (extension.equals("json")) formatType = FORMAT_TYPE_JSON;
     }
 
-    public String getRemoteAddress() {
-        return remoteAddress;
+    public String getUrl() {
+        return url;
     }
 
     public String getAlias() {
@@ -57,6 +59,14 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
     public FormatType getFormatType() {
         if (formatType == FORMAT_TYPE_XML) return FormatType.XML;
         else return FormatType.JSON;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
 
     public static enum FormatType {XML, JSON}

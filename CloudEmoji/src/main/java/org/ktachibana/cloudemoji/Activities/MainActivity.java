@@ -20,7 +20,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
-import org.ktachibana.cloudemoji.interfaces.OnExceptionListener;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.FileNotFoundException;
@@ -29,7 +28,6 @@ import java.io.IOException;
 public class MainActivity extends BaseActivity implements
         Constants,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        OnExceptionListener,
         OnCopyToClipBoardListener {
 
     // Constants
@@ -134,25 +132,6 @@ public class MainActivity extends BaseActivity implements
         NotificationHelper.switchNotificationState(this, preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
     }
 
-    /**
-     * Show a toast given a type of exception
-     *
-     * @param e exception
-     */
-    private void promptException(Exception e) {
-        String prompt;
-        if (e instanceof XmlPullParserException) {
-            prompt = getString(R.string.wrong_xml);
-        } else if (e instanceof FileNotFoundException) {
-            prompt = getString(R.string.file_not_found);
-        } else if (e instanceof IOException) {
-            prompt = getString(R.string.bad_conn);
-        } else {
-            prompt = getString(R.string.fail) + e.toString();
-        }
-        Toast.makeText(MainActivity.this, prompt, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key) {
@@ -225,16 +204,6 @@ public class MainActivity extends BaseActivity implements
         if (!isDrawerStatic) {
             toggle.onConfigurationChanged(newConfig);
         }
-    }
-
-    /**
-     * Implemented from OnExceptionListener
-     *
-     * @param e Exception handled
-     */
-    @Override
-    public void onException(Exception e) {
-        promptException(e);
     }
 
     /**
