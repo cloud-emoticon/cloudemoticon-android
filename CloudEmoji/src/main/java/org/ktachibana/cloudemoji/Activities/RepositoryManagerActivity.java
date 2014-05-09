@@ -1,14 +1,12 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.fragments.AddRepositoryDialogFragment;
 import org.ktachibana.cloudemoji.fragments.RepositoryListFragment;
 
 
@@ -22,20 +20,8 @@ public class RepositoryManagerActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu
-        // Adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_repository_manager, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add_repository: {
-                new AddRepositoryDialogFragment().show(getSupportFragmentManager(), "add_repository");
-                return true;
-            }
             case android.R.id.home: {
                 finish();
                 return true;
@@ -44,8 +30,11 @@ public class RepositoryManagerActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void fancy(View view) {
-        Toast.makeText(this, "233", Toast.LENGTH_SHORT).show();
+    public void onDownloadButtonClicked(View view) {
+        Toast.makeText(this, "download clicked", Toast.LENGTH_SHORT).show();
     }
 
+    public void onDeleteButtonClicked(View view) {
+        Toast.makeText(this, "delete clicked", Toast.LENGTH_SHORT).show();
+    }
 }
