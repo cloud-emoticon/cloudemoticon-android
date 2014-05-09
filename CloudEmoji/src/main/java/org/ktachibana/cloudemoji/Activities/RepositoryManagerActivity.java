@@ -29,12 +29,4 @@ public class RepositoryManagerActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void onDownloadButtonClicked(View view) {
-        Toast.makeText(this, "download clicked", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onDeleteButtonClicked(View view) {
-        Toast.makeText(this, "delete clicked", Toast.LENGTH_SHORT).show();
-    }
 }

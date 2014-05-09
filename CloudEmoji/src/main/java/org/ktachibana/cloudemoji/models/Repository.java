@@ -7,10 +7,12 @@ import com.orm.SugarRecord;
 import org.apache.commons.io.FilenameUtils;
 import org.ktachibana.cloudemoji.Constants;
 
+import java.io.Serializable;
+
 /**
  * POJO class holding a remote repository and its relevant information
  */
-public class Repository extends SugarRecord<Repository> implements Constants {
+public class Repository extends SugarRecord<Repository> implements Constants, Serializable {
     private String remoteAddress;
     private String alias;
     private String fileName;

@@ -2,11 +2,11 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight">
+    android:layout_height="wrap_content">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
@@ -36,21 +36,20 @@
         <ImageButton
             android:id="@+id/repositoryDownloadButton"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/repositoryDeleteButton"
+            android:layout_height="wrap_content"
             android:background="@drawable/ic_action_av_download"
-            android:onClick="onDownloadButtonClicked" />
+            android:layout_marginRight="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/repositoryDeleteButton" />
 
         <ImageButton
             android:id="@+id/repositoryDeleteButton"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/ic_action_content_discard"
-            android:onClick="onDeleteButtonClicked" />
+            android:background="@drawable/ic_action_content_discard" />
     </RelativeLayout>
 
 </FrameLayout>

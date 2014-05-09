@@ -3,6 +3,7 @@ package org.ktachibana.cloudemoji.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
@@ -10,10 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import org.apache.commons.io.FilenameUtils;
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.Repository;
 
-public class AddRepositoryDialogFragment extends DialogFragment {
+public class AddRepositoryDialogFragment extends DialogFragment implements Constants {
     EditText urlEditText;
     EditText aliasEditText;
 
@@ -57,7 +59,9 @@ public class AddRepositoryDialogFragment extends DialogFragment {
                     String alias = aliasEditText.getText().toString();
                     Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
                     repository.save();
-                    getTargetFragment().onActivityResult(0, 0, null);
+                    Intent intent = new Intent();
+                    intent.putExtra(REPOSITORY_TAG_IN_INTENT, repository);
+                    getTargetFragment().onActivityResult(0, 0, intent);
                     dialog.dismiss();
                 } else {
                     urlEditText.setError(getString(R.string.invalid_repo_format));

@@ -12,4 +12,5 @@ public interface Constants {
     // Repository
     public static final int FORMAT_TYPE_XML = 0;
     public static final int FORMAT_TYPE_JSON = 1;
+    public static final String REPOSITORY_TAG_IN_INTENT = "repository";
 }

@@ -12,18 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.amigold.fundapter.BindDictionary;
-import com.amigold.fundapter.FunDapter;
-import com.amigold.fundapter.extractors.StringExtractor;
-
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.viewholders.RepositoryViewHolder;
 
-import java.util.ArrayList;
-import java.util.List;
+import uk.co.ribot.easyadapter.EasyAdapter;
 
-public class RepositoryListFragment extends Fragment {
-    FunDapter<Repository> adapter;
+public class RepositoryListFragment extends Fragment implements Constants {
+    private EasyAdapter<Repository> adapter;
 
     public RepositoryListFragment() {
         // Required empty public constructor
@@ -41,34 +38,9 @@ public class RepositoryListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_repository_list, container, false);
         ListView repositoryListView = (ListView) rootView.findViewById(R.id.repositoryListView);
         repositoryListView.setEmptyView(rootView.findViewById(R.id.repositoryEmptyView));
-        this.adapter = generateAdapter(Repository.listAll(Repository.class));
+        this.adapter = new EasyAdapter<Repository>(getActivity(), RepositoryViewHolder.class, Repository.listAll(Repository.class));
         repositoryListView.setAdapter(adapter);
         return rootView;
-    }
-
-    private FunDapter<Repository> generateAdapter(final List<Repository> repositories) {
-        BindDictionary<Repository> dictionary = new BindDictionary<Repository>();
-        dictionary.addStringField(R.id.repositoryAliasTextView,
-                new StringExtractor<Repository>() {
-                    @Override
-                    public String getStringValue(Repository repository, int i) {
-                        return repository.getAlias();
-                    }
-                }
-        );
-        dictionary.addStringField(R.id.repositoryUrlTextView,
-                new StringExtractor<Repository>() {
-                    @Override
-                    public String getStringValue(Repository repository, int i) {
-                        return repository.getRemoteAddress();
-                    }
-                }
-        );
-        ArrayList<Repository> whyArrayListAsInterface = new ArrayList<Repository>();
-        for (Repository repository : repositories) {
-            whyArrayListAsInterface.add(repository);
-        }
-        return new FunDapter<Repository>(getActivity(), whyArrayListAsInterface, R.layout.list_item_repository, dictionary);
     }
 
     @Override
@@ -92,11 +64,7 @@ public class RepositoryListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        List<Repository> repositories = Repository.listAll(Repository.class);
-        ArrayList<Repository> whyArrayListAsInterface = new ArrayList<Repository>();
-        for (Repository repository : repositories) {
-            whyArrayListAsInterface.add(repository);
-        }
-        adapter.updateData(whyArrayListAsInterface);
+        Repository addedRepository = (Repository) data.getSerializableExtra(REPOSITORY_TAG_IN_INTENT);
+        adapter.addItem(addedRepository);
     }
 }

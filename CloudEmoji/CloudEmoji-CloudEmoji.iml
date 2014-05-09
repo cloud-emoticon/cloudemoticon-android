@@ -73,6 +73,7 @@
     <orderEntry type="library" exported="" name="android-async-http-1.4.4" level="project" />
     <orderEntry type="library" exported="" name="sugar-1.2" level="project" />
     <orderEntry type="library" exported="" name="systembartint-1.0.3" level="project" />
+    <orderEntry type="library" exported="" name="easyadapter-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="gnavdrawer-library-1.0.6" level="project" />
@@ -81,8 +82,6 @@
     <orderEntry type="library" exported="" name="commons-lang-2.6" level="project" />
     <orderEntry type="library" exported="" name="library-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
-    <orderEntry type="library" exported="" name="joda-time-2.3" level="project" />
-    <orderEntry type="library" exported="" name="library-1.0" level="project" />
   </component>
 </module>
 
