@@ -81,6 +81,7 @@
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="androidasync-1.2.4" level="project" />
     <orderEntry type="library" exported="" name="ion-1.2.4" level="project" />
+    <orderEntry type="library" exported="" name="eventbus-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="gnavdrawer-library-1.0.6" level="project" />
     <orderEntry type="library" exported="" name="library-0.9.9" level="project" />
     <orderEntry type="library" exported="" name="library-0.4.0" level="project" />

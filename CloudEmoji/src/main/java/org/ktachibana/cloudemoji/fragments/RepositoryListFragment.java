@@ -11,12 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.viewholders.RepositoryViewHolder;
 
+import de.greenrobot.event.EventBus;
 import uk.co.ribot.easyadapter.EasyAdapter;
 
 public class RepositoryListFragment extends Fragment implements Constants {
@@ -30,6 +35,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setHasOptionsMenu(true);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -54,7 +60,6 @@ public class RepositoryListFragment extends Fragment implements Constants {
         switch (item.getItemId()) {
             case R.id.action_add_repository: {
                 AddRepositoryDialogFragment fragment = new AddRepositoryDialogFragment();
-                fragment.setTargetFragment(this, 0);
                 fragment.show(getFragmentManager(), "add_repository");
                 return true;
             }
@@ -63,8 +68,26 @@ public class RepositoryListFragment extends Fragment implements Constants {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Repository addedRepository = (Repository) data.getSerializableExtra(REPOSITORY_TAG_IN_INTENT);
-        adapter.addItem(addedRepository);
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEvent(RepositoryDownloadedEvent event) {
+        if (event.getStatus() == RepositoryDownloadedEvent.Status.SUCCESS) {
+            Toast.makeText(getActivity(), event.getRepository().getAlias() + " success", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(getActivity(), event.getRepository().getAlias() + " fail", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onEvent(RepositoryDeletedEvent event) {
+        adapter.setItems(Repository.listAll(Repository.class));
+    }
+
+    public void onEvent(RepositoryAddedEvent event) {
+        adapter.addItem(event.getRepository());
     }
 }

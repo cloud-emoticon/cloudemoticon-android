@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.viewholders;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,10 +9,13 @@ import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
 import java.io.File;
 
+import de.greenrobot.event.EventBus;
 import uk.co.ribot.easyadapter.ItemViewHolder;
 import uk.co.ribot.easyadapter.PositionInfo;
 import uk.co.ribot.easyadapter.annotations.LayoutId;
@@ -51,7 +53,15 @@ public class RepositoryViewHolder extends ItemViewHolder<Repository> {
                         .setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
-                                Log.e("233", "completed");
+                                RepositoryDownloadedEvent event;
+                                if (e == null) {
+                                    event = new RepositoryDownloadedEvent(item, RepositoryDownloadedEvent.Status.SUCCESS);
+                                }
+                                else
+                                {
+                                    event = new RepositoryDownloadedEvent(item, RepositoryDownloadedEvent.Status.FAIL);
+                                }
+                                EventBus.getDefault().post(event);
                             }
                         });
             }
@@ -60,6 +70,7 @@ public class RepositoryViewHolder extends ItemViewHolder<Repository> {
             @Override
             public void onClick(View view) {
                 item.delete();
+                EventBus.getDefault().post(new RepositoryDeletedEvent(item));
             }
         });
     }

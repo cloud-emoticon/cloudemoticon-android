@@ -51,5 +51,6 @@ dependencies {
     compile 'com.arasthel:gnavdrawer-library:1.0.+'
     compile 'uk.co.ribot:easyadapter:1.0.1'
     compile 'com.koushikdutta.ion:ion:1.2.4'
+    compile 'de.greenrobot:eventbus:2.2.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

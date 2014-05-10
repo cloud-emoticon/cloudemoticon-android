@@ -13,7 +13,10 @@ import android.widget.EditText;
 import org.apache.commons.io.FilenameUtils;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
+
+import de.greenrobot.event.EventBus;
 
 public class AddRepositoryDialogFragment extends DialogFragment implements Constants {
     EditText urlEditText;
@@ -59,9 +62,7 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                     String alias = aliasEditText.getText().toString();
                     Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
                     repository.save();
-                    Intent intent = new Intent();
-                    intent.putExtra(REPOSITORY_TAG_IN_INTENT, repository);
-                    getTargetFragment().onActivityResult(0, 0, intent);
+                    EventBus.getDefault().post(new RepositoryAddedEvent(repository));
                     dialog.dismiss();
                 } else {
                     urlEditText.setError(getString(R.string.invalid_repo_format));
