@@ -14,7 +14,6 @@ public interface Constants {
     // Repository
     public static final int FORMAT_TYPE_XML = 0;
     public static final int FORMAT_TYPE_JSON = 1;
-    public static final String REPOSITORY_TAG_IN_INTENT = "repository";
 
     // URL
     public static final String DEFAULT_URL = "https://dl.dropboxusercontent.com/u/120725807/test.xml";
