@@ -39,10 +39,10 @@
         android:title="@string/about">
         <Preference
             android:key="pref_git_hub_release"
-            android:title="@string/github_release"/>
+            android:title="@string/github_release" />
         <Preference
             android:key="pref_git_hub_repo"
-            android:title="@string/github_repo"/>
+            android:title="@string/github_repo" />
         <Preference android:key="pref_version" />
     </PreferenceCategory>
 

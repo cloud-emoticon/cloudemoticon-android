@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.viewholders;
 
-import android.app.Application;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -9,14 +8,12 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
-import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 
 import de.greenrobot.event.EventBus;
 import uk.co.ribot.easyadapter.ItemViewHolder;

@@ -12,8 +12,6 @@ import android.preference.PreferenceManager;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 
-import java.net.URI;
-
 /**
  * This class uses android-support-v4-preferencefragment from https://github.com/kolavar/android-support-v4-preferencefragment
  */

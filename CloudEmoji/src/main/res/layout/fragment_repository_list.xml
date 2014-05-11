@@ -21,14 +21,15 @@
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:padding="20dp">
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:gravity="center_horizontal"
             android:text="@string/no_repo_prompt"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/darker_gray"
-            android:textStyle="bold|italic"
-            android:layout_centerInParent="true"/>
+            android:textStyle="bold|italic" />
     </RelativeLayout>
 </RelativeLayout>

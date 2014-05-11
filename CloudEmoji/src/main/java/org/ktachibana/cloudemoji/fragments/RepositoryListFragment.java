@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -76,9 +75,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
     public void onEvent(RepositoryDownloadedEvent event) {
         if (event.getException() == null) {
             Toast.makeText(getActivity(), event.getRepository().getAlias(), Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        } else {
             Toast.makeText(getActivity(), event.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }

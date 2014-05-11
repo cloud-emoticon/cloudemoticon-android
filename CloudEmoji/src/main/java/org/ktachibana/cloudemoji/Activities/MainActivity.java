@@ -20,10 +20,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class MainActivity extends BaseActivity implements
         Constants,
