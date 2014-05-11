@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.viewholders;
 
+import android.app.Application;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -8,12 +9,14 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
+import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import de.greenrobot.event.EventBus;
 import uk.co.ribot.easyadapter.ItemViewHolder;
@@ -49,19 +52,15 @@ public class RepositoryViewHolder extends ItemViewHolder<Repository> {
             public void onClick(View view) {
                 Ion.with(SugarApp.getSugarContext())
                         .load(item.getUrl())
-                        .write(new File(item.getFileName()))
+                        .write(new File(SugarApp.getSugarContext().getFilesDir(), item.getFileName()))
                         .setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
-                                RepositoryDownloadedEvent event;
                                 if (e == null) {
-                                    event = new RepositoryDownloadedEvent(item, RepositoryDownloadedEvent.Status.SUCCESS);
+                                    item.setAvailable(true);
+                                    item.save();
                                 }
-                                else
-                                {
-                                    event = new RepositoryDownloadedEvent(item, RepositoryDownloadedEvent.Status.FAIL);
-                                }
-                                EventBus.getDefault().post(event);
+                                EventBus.getDefault().post(new RepositoryDownloadedEvent(item, e));
                             }
                         });
             }
@@ -70,6 +69,8 @@ public class RepositoryViewHolder extends ItemViewHolder<Repository> {
             @Override
             public void onClick(View view) {
                 item.delete();
+                File deletedFile = new File(SugarApp.getSugarContext().getFilesDir(), item.getFileName());
+                deletedFile.delete();
                 EventBus.getDefault().post(new RepositoryDeletedEvent(item));
             }
         });

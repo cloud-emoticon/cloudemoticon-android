@@ -74,12 +74,12 @@ public class RepositoryListFragment extends Fragment implements Constants {
     }
 
     public void onEvent(RepositoryDownloadedEvent event) {
-        if (event.getStatus() == RepositoryDownloadedEvent.Status.SUCCESS) {
-            Toast.makeText(getActivity(), event.getRepository().getAlias() + " success", Toast.LENGTH_SHORT).show();
+        if (event.getException() == null) {
+            Toast.makeText(getActivity(), event.getRepository().getAlias(), Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(getActivity(), event.getRepository().getAlias() + " fail", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), event.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

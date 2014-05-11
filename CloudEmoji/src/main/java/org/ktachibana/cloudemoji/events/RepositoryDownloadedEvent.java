@@ -4,20 +4,18 @@ import org.ktachibana.cloudemoji.models.Repository;
 
 public class RepositoryDownloadedEvent {
     private Repository repository;
-    private Status status;
+    private Exception exception;
 
-    public RepositoryDownloadedEvent(Repository repository, Status status) {
+    public RepositoryDownloadedEvent(Repository repository, Exception exception) {
         this.repository = repository;
-        this.status = status;
+        this.exception = exception;
     }
 
     public Repository getRepository() {
         return repository;
     }
 
-    public Status getStatus() {
-        return status;
+    public Exception getException() {
+        return exception;
     }
-
-    public enum Status{SUCCESS, FAIL}
 }

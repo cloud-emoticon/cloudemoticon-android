@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,7 +15,6 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
  * This class uses SystemBarTint from https://github.com/jgilfelt/SystemBarTint
  */
 public class BaseActivity extends ActionBarActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,4 +51,5 @@ public class BaseActivity extends ActionBarActivity {
             rootView.setPadding(0, top, 0, 0);
         }
     }
+
 }
