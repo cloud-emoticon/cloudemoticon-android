@@ -1,6 +1,9 @@
 package org.ktachibana.cloudemoji;
 
 public interface Constants {
+    // Notification
+    public static final int PERSISTENT_NOTIFICATION_ID = 0;
+
     // Preferences
     public static final String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";
     public static final String PREF_NOTIFICATION_VISIBILITY = "pref_notification_visibility";

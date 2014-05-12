@@ -12,9 +12,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.arasthel.googlenavdrawermenu.views.GoogleNavigationDrawer;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -25,9 +28,6 @@ public class MainActivity extends BaseActivity implements
         Constants,
         SharedPreferences.OnSharedPreferenceChangeListener,
         OnCopyToClipBoardListener {
-
-    // Constants
-    public static final int PERSISTENT_NOTIFICATION_ID = 0;
 
     // Views
     private DrawerLayout drawerLayout;
@@ -56,11 +56,7 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
-        // If not coming from previous
-        if (savedInstanceState == null) {
-
-        }
-
+        setupDrawer();
     }
 
     private void setupLayout() {
@@ -99,8 +95,8 @@ public class MainActivity extends BaseActivity implements
 
     private void setupViews() {
         // Find views
-        leftDrawer = (ListView) findViewById(R.id.leftDrawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        leftDrawer = (ListView) findViewById(R.id.leftDrawer);
 
         // If drawerLayout not found, then the drawer is static
         isDrawerStatic = (drawerLayout == null);
@@ -122,6 +118,10 @@ public class MainActivity extends BaseActivity implements
             editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
             editor.commit();
         }
+    }
+
+    private void setupDrawer() {
+        leftDrawer.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, new String[]{"1", "2"}));
     }
 
     private void switchNotificationState() {
@@ -228,5 +228,7 @@ public class MainActivity extends BaseActivity implements
             finish();
         }
     }
+
+
 
 }
