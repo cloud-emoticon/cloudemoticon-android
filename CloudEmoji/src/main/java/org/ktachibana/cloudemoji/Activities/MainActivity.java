@@ -12,17 +12,20 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.arasthel.googlenavdrawermenu.views.GoogleNavigationDrawer;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.adapters.DrawerListItem;
+import org.ktachibana.cloudemoji.adapters.DrawerListViewAdapter;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
+import org.ktachibana.cloudemoji.models.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements
         Constants,
@@ -41,7 +44,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Initialize layout
@@ -56,7 +58,7 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
-        setupDrawer();
+        if (savedInstanceState == null) setupDrawer();
     }
 
     private void setupLayout() {
@@ -121,7 +123,25 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setupDrawer() {
-        leftDrawer.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, new String[]{"1", "2"}));
+        // Add left drawer items
+        ArrayList<DrawerListItem> items = new ArrayList<DrawerListItem>();
+
+        // Add local sources
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_HEADER, getString(R.string.source), 0));
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.my_fav), 0));
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.history), 0));
+
+        // Add repository sources
+        List<Repository> repositories = Repository.listAll(Repository.class);
+        for (Repository repository : repositories) {
+            items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, repository.getAlias(), 0));
+        }
+
+        // Add categories
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_HEADER, getString(R.string.category), 0));
+
+        // Set adapter
+        leftDrawer.setAdapter(new DrawerListViewAdapter(items));
     }
 
     private void switchNotificationState() {
@@ -228,7 +248,6 @@ public class MainActivity extends BaseActivity implements
             finish();
         }
     }
-
 
 
 }

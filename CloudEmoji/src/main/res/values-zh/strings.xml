@@ -47,6 +47,9 @@
     <string name="add_repo">添加源</string>
     <string name="alias">别名</string>
     <string name="invalid_repo_format">源格式无效</string>
+    <string name="source">源</string>
+    <string name="history">历史</string>
+    <string name="category">类型</string>
 
     <string-array name="notification_options">
         <item>不可见</item>

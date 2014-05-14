@@ -1,6 +1,11 @@
 package org.ktachibana.cloudemoji;
 
 public interface Constants {
+    // DrawerListItem
+    public static final int DRAWER_LIST_ITEM_TYPE_HEADER = 0;
+    public static final int DRAWER_LIST_ITEM_TYPE_SOURCE = 1;
+    public static final int DRAWER_LIST_ITEM_TYPE_CATEGORY = 2;
+
     // Notification
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
 

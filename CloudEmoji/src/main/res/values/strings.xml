@@ -47,6 +47,9 @@
     <string name="add_repo">Add repository</string>
     <string name="alias">Alias</string>
     <string name="invalid_repo_format">Invalid repository format</string>
+    <string name="source">Source</string>
+    <string name="history">History</string>
+    <string name="category">Category</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
