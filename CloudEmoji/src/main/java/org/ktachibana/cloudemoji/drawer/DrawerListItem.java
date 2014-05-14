@@ -1,6 +1,4 @@
-package org.ktachibana.cloudemoji.adapters;
-
-import android.view.View;
+package org.ktachibana.cloudemoji.drawer;
 
 import org.ktachibana.cloudemoji.Constants;
 

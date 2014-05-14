@@ -18,8 +18,9 @@ import android.widget.Toast;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.adapters.DrawerListItem;
-import org.ktachibana.cloudemoji.adapters.DrawerListViewAdapter;
+import org.ktachibana.cloudemoji.drawer.DrawerListItem;
+import org.ktachibana.cloudemoji.drawer.DrawerListViewAdapter;
+import org.ktachibana.cloudemoji.events.StringCopiedEvent;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
 import org.ktachibana.cloudemoji.models.Repository;
@@ -29,13 +30,13 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements
         Constants,
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        OnCopyToClipBoardListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Views
     private DrawerLayout drawerLayout;
     private ListView leftDrawer;
     private ActionBarDrawerToggle toggle;
+    private DrawerListViewAdapter adapter;
 
     // etc
     private SharedPreferences preferences;
@@ -128,20 +129,24 @@ public class MainActivity extends BaseActivity implements
 
         // Add local sources
         items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_HEADER, getString(R.string.source), 0));
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.my_fav), 0));
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.history), 0));
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.my_fav), R.drawable.ic_favorite));
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.history), R.drawable.ic_history));
 
         // Add repository sources
         List<Repository> repositories = Repository.listAll(Repository.class);
         for (Repository repository : repositories) {
-            items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, repository.getAlias(), 0));
+            items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, repository.getAlias(), R.drawable.ic_repository));
         }
 
         // Add categories
         items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_HEADER, getString(R.string.category), 0));
+        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_CATEGORY, "test", 0));
 
         // Set adapter
-        leftDrawer.setAdapter(new DrawerListViewAdapter(items));
+        this.adapter = new DrawerListViewAdapter(items, this);
+        leftDrawer.setAdapter(adapter);
+
+        // TODO: Set on click listener
     }
 
     private void switchNotificationState() {
@@ -222,13 +227,9 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    /**
-     * Implemented from OnCopyToClipBoardListener
-     *
-     * @param copied String copied
-     */
-    @Override
-    public void onCopyToClipBoard(String copied) {
+    public void onEvent(StringCopiedEvent event) {
+        String copied = event.getString();
+
         // Below 3.0
         int SDK = Build.VERSION.SDK_INT;
         if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -248,6 +249,5 @@ public class MainActivity extends BaseActivity implements
             finish();
         }
     }
-
 
 }
