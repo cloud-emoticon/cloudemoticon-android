@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/repositoryAliasTextView"
+            android:layout_below="@+id/repositoryDownloadImageButton"
             android:text="@string/repo_url"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -37,17 +37,14 @@
             android:id="@+id/repositoryDownloadImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@+id/repositoryDeleteButton"
-            android:background="@drawable/ic_download" />
+            android:layout_toLeftOf="@+id/repositoryDeleteButton" />
 
         <ImageButton
             android:id="@+id/repositoryDeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/ic_discard" />
+            android:layout_alignParentTop="true" />
     </RelativeLayout>
 
 </FrameLayout>

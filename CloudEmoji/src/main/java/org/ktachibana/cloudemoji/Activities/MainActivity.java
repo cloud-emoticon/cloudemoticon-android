@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity implements
 
         // Set up toggle
         if (!isDrawerStatic) {
-            toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer, R.string.app_name, R.string.app_name);
+            toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_ab_navigation_drawer, R.string.app_name, R.string.app_name);
             drawerLayout.setDrawerListener(toggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);

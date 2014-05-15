@@ -53,19 +53,35 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.list_item_repository, viewGroup, false);
         }
+
+        // Find views
         TextView alias = (TextView) view.findViewById(R.id.repositoryAliasTextView);
         TextView url = (TextView) view.findViewById(R.id.repositoryUrlTextView);
         ImageButton download = (ImageButton) view.findViewById(R.id.repositoryDownloadImageButton);
         ImageButton delete = (ImageButton) view.findViewById(R.id.repositoryDeleteButton);
+
         final Repository item = items.get(i);
+
+        // Setup alias
         alias.setText(item.getAlias());
+
+        // Setup url
         url.setText(item.getUrl());
+
+        // Setup download
+        if (item.isAvailable()) {
+            download.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_update));
+        }
+        else
+        {
+            download.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_download));
+        }
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ProgressDialog dialog = new ProgressDialog(context);
                 dialog.setTitle(R.string.downloading);
-                dialog.setMessage(item.getAlias());
+                dialog.setMessage(item.getUrl());
                 dialog.show();
                 Ion.with(SugarApp.getSugarContext())
                         .load(item.getUrl())
@@ -83,6 +99,9 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                         });
             }
         });
+
+        // Setup delete
+        delete.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_discard));
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

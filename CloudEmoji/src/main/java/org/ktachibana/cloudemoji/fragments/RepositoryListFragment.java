@@ -79,6 +79,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
         } else {
             Toast.makeText(getActivity(), event.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
+        adapter.updateRepositories(Repository.listAll(Repository.class));
     }
 
     public void onEvent(RepositoryDeletedEvent event) {

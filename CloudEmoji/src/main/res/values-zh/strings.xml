@@ -52,6 +52,7 @@
     <string name="category">类型</string>
     <string name="downloading">下载中</string>
     <string name="downloaded">下载完成</string>
+    <string name="duplicate_url">重复URL</string>
 
     <string-array name="notification_options">
         <item>不可见</item>

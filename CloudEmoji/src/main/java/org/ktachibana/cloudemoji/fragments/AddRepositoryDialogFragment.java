@@ -15,6 +15,8 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 
 public class AddRepositoryDialogFragment extends DialogFragment implements Constants {
@@ -57,14 +59,30 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
             public void onClick(View view) {
                 String url = urlEditText.getText().toString();
                 String extension = FilenameUtils.getExtension(url);
-                if (extension.equals("json") || extension.equals("xml")) {
-                    String alias = aliasEditText.getText().toString();
-                    Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
-                    repository.save();
-                    EventBus.getDefault().post(new RepositoryAddedEvent(repository));
-                    dialog.dismiss();
-                } else {
-                    urlEditText.setError(getString(R.string.invalid_repo_format));
+                boolean duplicateUrl = false;
+
+                // Detect duplicate URL
+                List<Repository> repositories = Repository.listAll(Repository.class);
+                for (Repository repository : repositories) {
+                    if (url.equals(repository.getUrl())) {
+                        duplicateUrl = true;
+                    }
+                }
+                if (duplicateUrl) {
+                    urlEditText.setError(getString(R.string.duplicate_url));
+                }
+                else
+                {
+                    // Detect correct file format
+                    if (extension.equals("json") || extension.equals("xml")) {
+                        String alias = aliasEditText.getText().toString();
+                        Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
+                        repository.save();
+                        EventBus.getDefault().post(new RepositoryAddedEvent(repository));
+                        dialog.dismiss();
+                    } else {
+                        urlEditText.setError(getString(R.string.invalid_repo_format));
+                    }
                 }
             }
         });

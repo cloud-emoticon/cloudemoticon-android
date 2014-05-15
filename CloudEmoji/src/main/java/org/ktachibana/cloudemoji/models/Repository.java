@@ -15,10 +15,10 @@ import java.io.Serializable;
 public class Repository extends SugarRecord<Repository> implements Constants, Serializable {
     private String url;
     private String alias;
+    private int formatType;
     private String fileName;
     private boolean isAvailable;
     private boolean isVisible;
-    private int formatType;
 
     public Repository(Context context) {
         super(context);
@@ -28,12 +28,12 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
         super(context);
         this.url = url;
         this.alias = alias;
-        this.fileName = FilenameUtils.getName(url);
-        this.isAvailable = false;
-        this.isVisible = false;
         String extension = FilenameUtils.getExtension(url);
         if (extension.equals("xml")) formatType = FORMAT_TYPE_XML;
         if (extension.equals("json")) formatType = FORMAT_TYPE_JSON;
+        this.fileName = String.valueOf(url.hashCode()) + "." + extension;
+        this.isAvailable = false;
+        this.isVisible = false;
     }
 
     public String getUrl() {
