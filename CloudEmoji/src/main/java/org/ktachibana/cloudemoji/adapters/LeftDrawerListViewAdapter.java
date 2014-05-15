@@ -12,6 +12,9 @@ import org.ktachibana.cloudemoji.R;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class LeftDrawerListViewAdapter extends BaseAdapter {
     private List<LeftDrawerListItem> items;
     private Context context;
@@ -38,14 +41,30 @@ public class LeftDrawerListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder viewHolder;
         if (view == null) {
+            LayoutInflater inflater
+                    = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_item_left_drawer, viewGroup, false);
+            viewHolder = new ViewHolder(view);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
-        ImageView imageView = (ImageView) view.findViewById(R.id.leftDrawerListItemImageView);
-        TextView textView = (TextView) view.findViewById(R.id.leftDrawerListItemTextView);
-        imageView.setImageDrawable(context.getResources().getDrawable(items.get(i).getDrawable()));
-        textView.setText(items.get(i).getText());
+        viewHolder.imageView
+                .setImageDrawable(context.getResources().getDrawable(items.get(i).getDrawable()));
+        viewHolder.textView.setText(items.get(i).getText());
         return view;
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.leftDrawerListItemImageView)
+        ImageView imageView;
+        @InjectView(R.id.leftDrawerListItemTextView)
+        TextView textView;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

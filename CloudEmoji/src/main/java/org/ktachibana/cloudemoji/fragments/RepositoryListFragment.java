@@ -20,9 +20,13 @@ import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class RepositoryListFragment extends Fragment implements Constants {
+    @InjectView(R.id.repositoryListView)
+    ListView repositoryListView;
     private RepositoryListViewAdapter adapter;
 
     public RepositoryListFragment() {
@@ -40,10 +44,12 @@ public class RepositoryListFragment extends Fragment implements Constants {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_repository_list, container, false);
-        ListView repositoryListView = (ListView) rootView.findViewById(R.id.repositoryListView);
+        ButterKnife.inject(this, rootView);
+
         repositoryListView.setEmptyView(rootView.findViewById(R.id.repositoryEmptyView));
         this.adapter = new RepositoryListViewAdapter(Repository.listAll(Repository.class), getActivity());
         repositoryListView.setAdapter(adapter);
+
         return rootView;
     }
 

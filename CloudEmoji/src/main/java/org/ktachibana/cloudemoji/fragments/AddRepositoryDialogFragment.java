@@ -17,10 +17,14 @@ import org.ktachibana.cloudemoji.models.Repository;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class AddRepositoryDialogFragment extends DialogFragment implements Constants {
+    @InjectView(R.id.addRepositoryUrlEditText)
     EditText urlEditText;
+    @InjectView(R.id.addRepositoryAliasEditText)
     EditText aliasEditText;
 
     public AddRepositoryDialogFragment() {
@@ -31,8 +35,8 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View rootView = getActivity().getLayoutInflater().inflate(R.layout.fragment_add_repository_dialog, null);
-        urlEditText = (EditText) rootView.findViewById(R.id.addRepositoryUrlEditText);
-        aliasEditText = (EditText) rootView.findViewById(R.id.addRepositoryAliasEditText);
+        ButterKnife.inject(this, rootView);
+
         builder.setTitle(R.string.add_repo);
         builder.setView(rootView);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -70,9 +74,7 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                 }
                 if (duplicateUrl) {
                     urlEditText.setError(getString(R.string.duplicate_url));
-                }
-                else
-                {
+                } else {
                     // Detect correct file format
                     if (extension.equals("json") || extension.equals("xml")) {
                         String alias = aliasEditText.getText().toString();

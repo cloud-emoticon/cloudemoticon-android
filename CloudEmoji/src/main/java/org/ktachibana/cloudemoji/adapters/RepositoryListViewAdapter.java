@@ -21,6 +21,8 @@ import org.ktachibana.cloudemoji.models.Repository;
 import java.io.File;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class RepositoryListViewAdapter extends BaseAdapter {
@@ -49,34 +51,34 @@ public class RepositoryListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder viewHolder;
         if (view == null) {
+            LayoutInflater inflater
+                    = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_item_repository, viewGroup, false);
+            viewHolder = new ViewHolder(view);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
-
-        // Find views
-        TextView alias = (TextView) view.findViewById(R.id.repositoryAliasTextView);
-        TextView url = (TextView) view.findViewById(R.id.repositoryUrlTextView);
-        ImageButton download = (ImageButton) view.findViewById(R.id.repositoryDownloadImageButton);
-        ImageButton delete = (ImageButton) view.findViewById(R.id.repositoryDeleteButton);
 
         final Repository item = items.get(i);
 
-        // Setup alias
-        alias.setText(item.getAlias());
+        // Setup contents
+        viewHolder.aliasTextView.setText(item.getAlias());
+        viewHolder.urlTextView.setText(item.getUrl());
+        viewHolder.downloadButton.setImageDrawable(context
+                .getResources()
+                .getDrawable(
+                        item.isAvailable() ? (R.drawable.ic_update) : (R.drawable.ic_download)
+                ));
+        viewHolder.deleteButton.setImageDrawable(context
+                        .getResources()
+                        .getDrawable(R.drawable.ic_discard)
+        );
 
-        // Setup url
-        url.setText(item.getUrl());
-
-        // Setup download
-        if (item.isAvailable()) {
-            download.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_update));
-        }
-        else
-        {
-            download.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_download));
-        }
-        download.setOnClickListener(new View.OnClickListener() {
+        // Setup listeners
+        viewHolder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ProgressDialog dialog = new ProgressDialog(context);
@@ -85,7 +87,8 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                 dialog.show();
                 Ion.with(SugarApp.getSugarContext())
                         .load(item.getUrl())
-                        .write(new File(SugarApp.getSugarContext().getFilesDir(), item.getFileName()))
+                        .write(new File(SugarApp.getSugarContext().getFilesDir()
+                                , item.getFileName()))
                         .setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
@@ -99,23 +102,37 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                         });
             }
         });
-
-        // Setup delete
-        delete.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_discard));
-        delete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 item.delete();
-                File deletedFile = new File(SugarApp.getSugarContext().getFilesDir(), item.getFileName());
+                File deletedFile = new File(SugarApp.getSugarContext().getFilesDir()
+                        , item.getFileName());
                 deletedFile.delete();
                 EventBus.getDefault().post(new RepositoryDeletedEvent(item));
             }
         });
+
         return view;
     }
 
     public void updateRepositories(List<Repository> repositories) {
         this.items = repositories;
         notifyDataSetChanged();
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.repositoryAliasTextView)
+        TextView aliasTextView;
+        @InjectView(R.id.repositoryUrlTextView)
+        TextView urlTextView;
+        @InjectView(R.id.repositoryDownloadButton)
+        ImageButton downloadButton;
+        @InjectView(R.id.repositoryDeleteButton)
+        ImageButton deleteButton;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,13 +15,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.orm.SugarApp;
+
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.StringCopiedEvent;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
+import org.ktachibana.cloudemoji.models.Repository;
 
+import java.io.File;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.Optional;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements
@@ -28,7 +39,9 @@ public class MainActivity extends BaseActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Views
-    private DrawerLayout drawerLayout;
+    @Optional
+    @InjectView(R.id.drawerLayout)
+    DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
 
     // etc
@@ -91,15 +104,19 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setupViews() {
-        // Find views
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        ButterKnife.inject(this);
 
         // If drawerLayout not found, then the drawer is static
         isDrawerStatic = (drawerLayout == null);
 
         // Set up toggle
         if (!isDrawerStatic) {
-            toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_ab_navigation_drawer, R.string.app_name, R.string.app_name);
+            toggle = new ActionBarDrawerToggle(
+                    this,
+                    drawerLayout,
+                    R.drawable.ic_ab_navigation_drawer,
+                    R.string.app_name,
+                    R.string.app_name);
             drawerLayout.setDrawerListener(toggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -108,8 +125,30 @@ public class MainActivity extends BaseActivity implements
 
     private void firstTimeCheck() {
         boolean hasRunBefore = preferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
-        // Hasn't run before
+        // If hasn't run before
         if (!hasRunBefore) {
+            // Download ans save default repo
+            final Repository kt = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
+            kt.save();
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle(R.string.downloading);
+            dialog.setMessage(kt.getUrl());
+            dialog.show();
+            Ion.with(SugarApp.getSugarContext())
+                    .load(kt.getUrl())
+                    .write(new File(SugarApp.getSugarContext().getFilesDir(), kt.getFileName()))
+                    .setCallback(new FutureCallback<File>() {
+                        @Override
+                        public void onCompleted(Exception e, File result) {
+                            if (e == null) {
+                                kt.setAvailable(true);
+                                kt.save();
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+
+            // Change has run before to true
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
             editor.commit();
@@ -124,7 +163,9 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void switchNotificationState() {
-        NotificationHelper.switchNotificationState(this, preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
+        NotificationHelper
+                .switchNotificationState(this,
+                        preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
     }
 
     @Override
@@ -175,7 +216,8 @@ public class MainActivity extends BaseActivity implements
                 return true;
             }
             case R.id.action_exit: {
-                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(PERSISTENT_NOTIFICATION_ID);
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                        .cancel(PERSISTENT_NOTIFICATION_ID);
                 finish();
                 return true;
             }
@@ -207,16 +249,20 @@ public class MainActivity extends BaseActivity implements
         // Below 3.0
         int SDK = Build.VERSION.SDK_INT;
         if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            android.text.ClipboardManager clipboard
+                    = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setText(copied);
         }
 
         // Above 3.0
         else {
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipboardManager clipboard
+                    = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
             clipboard.setPrimaryClip(clip);
         }
+
+        // Show toast
         Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
         boolean isCloseAfterCopy = preferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
         if (isCloseAfterCopy) {

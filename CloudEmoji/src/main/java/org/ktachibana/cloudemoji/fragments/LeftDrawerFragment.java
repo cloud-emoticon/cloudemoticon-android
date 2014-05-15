@@ -18,16 +18,21 @@ import org.ktachibana.cloudemoji.models.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class LeftDrawerFragment extends Fragment implements Constants {
+    @InjectView(R.id.leftDrawerSourceListView)
+    LinearListView sourceListView;
+    @InjectView(R.id.leftDrawerCategoryListView)
+    LinearListView categoryListView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate view
         View rootView = inflater.inflate(R.layout.fragment_left_drawer, container, false);
-
-        // Find views
-        LinearListView sourceListView = (LinearListView) rootView.findViewById(R.id.leftDrawerSourceListView);
-        LinearListView categoryListView = (LinearListView) rootView.findViewById(R.id.leftDrawerCategoryListView);
+        ButterKnife.inject(this, rootView);
 
         // Setup source list view
         final List<LeftDrawerListItem> sourceListItems = getSourceListItems();

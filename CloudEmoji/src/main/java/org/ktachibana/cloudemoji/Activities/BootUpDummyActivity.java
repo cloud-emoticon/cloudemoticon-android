@@ -9,7 +9,7 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 
 /**
- * Shows notification after boot up according to user preference
+ * Dummy activity that shows notification after boot up
  */
 public class BootUpDummyActivity extends Activity implements Constants {
     @Override
