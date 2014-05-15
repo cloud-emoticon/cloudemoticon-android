@@ -12,8 +12,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.BaseActivity;
@@ -230,5 +228,11 @@ public class MainActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupDrawer();
     }
 }
