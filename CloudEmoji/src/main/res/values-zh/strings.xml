@@ -50,6 +50,8 @@
     <string name="source">源</string>
     <string name="history">历史</string>
     <string name="category">类型</string>
+    <string name="downloading">下载中</string>
+    <string name="downloaded">下载完成</string>
 
     <string-array name="notification_options">
         <item>不可见</item>

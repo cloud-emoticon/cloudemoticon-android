@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.leftdrawer;
+package org.ktachibana.cloudemoji.adapters;
 
 import org.ktachibana.cloudemoji.Constants;
 

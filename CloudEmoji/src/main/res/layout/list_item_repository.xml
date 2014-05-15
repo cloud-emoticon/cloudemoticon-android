@@ -34,10 +34,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageButton
-            android:id="@+id/repositoryDownloadButton"
+            android:id="@+id/repositoryDownloadImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@+id/repositoryDeleteButton"
             android:background="@drawable/ic_download" />
@@ -46,7 +45,6 @@
             android:id="@+id/repositoryDeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/ic_discard" />

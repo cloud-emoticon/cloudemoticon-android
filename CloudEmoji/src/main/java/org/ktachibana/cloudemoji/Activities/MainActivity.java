@@ -38,8 +38,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        EventBus.getDefault().register(this);
 
         // Initialize layout
         setupLayout();

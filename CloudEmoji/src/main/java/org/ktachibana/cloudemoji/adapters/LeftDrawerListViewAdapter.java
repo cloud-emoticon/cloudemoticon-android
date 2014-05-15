@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.leftdrawer;
+package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

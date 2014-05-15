@@ -18,7 +18,7 @@
 
     <!-- ActionBar Overflow Button styles-->
     <style name="CustomOverFlowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_action_core_overflow</item>
+        <item name="android:src">@drawable/ic_core_overflow</item>
     </style>
 
 </resources>

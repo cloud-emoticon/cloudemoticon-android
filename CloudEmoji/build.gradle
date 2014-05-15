@@ -47,10 +47,9 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
-    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
     compile 'com.readystatesoftware.systembartint:systembartint:+'
-    compile 'uk.co.ribot:easyadapter:1.0.1'
     compile 'com.koushikdutta.ion:ion:1.2.4'
     compile 'de.greenrobot:eventbus:2.2.0'
+    compile 'com.github.frankiesardo:linearlistview:1.0.1@aar'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

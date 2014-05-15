@@ -5,12 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+
+import com.linearlistview.LinearListView;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.leftdrawer.LeftDrawerListItem;
-import org.ktachibana.cloudemoji.leftdrawer.LeftDrawerListViewAdapter;
+import org.ktachibana.cloudemoji.adapters.LeftDrawerListItem;
+import org.ktachibana.cloudemoji.adapters.LeftDrawerListViewAdapter;
 import org.ktachibana.cloudemoji.models.Repository;
 
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_left_drawer, container, false);
-        ListView sourceListView = (ListView) rootView.findViewById(R.id.leftDrawerSourceListView);
-        ListView categoryListView = (ListView) rootView.findViewById(R.id.leftDrawerCategoryListView);
+        LinearListView sourceListView = (LinearListView) rootView.findViewById(R.id.leftDrawerSourceListView);
+        LinearListView categoryListView = (LinearListView) rootView.findViewById(R.id.leftDrawerCategoryListView);
         sourceListView.setAdapter(new LeftDrawerListViewAdapter(getSourceListItems(), getActivity()));
         return rootView;
     }

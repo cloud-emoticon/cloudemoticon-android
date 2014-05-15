@@ -30,6 +30,9 @@ public class BaseActivity extends ActionBarActivity {
 
         // If version is higher than 19, then use padding to offset
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // TODO
+            getSupportActionBar().setHomeAsUpIndicator(0);
+
             View rootView = findViewById(android.R.id.content);
 
             // Get height of status bar

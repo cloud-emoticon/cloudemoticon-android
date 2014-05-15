@@ -51,6 +51,8 @@
     <string name="source">Source</string>
     <string name="history">History</string>
     <string name="category">Category</string>
+    <string name="downloading">Downloading</string>
+    <string name="downloaded">Downloaded</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

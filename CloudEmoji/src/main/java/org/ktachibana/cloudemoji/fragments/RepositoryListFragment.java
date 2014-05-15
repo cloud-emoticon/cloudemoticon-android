@@ -14,17 +14,16 @@ import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
-import org.ktachibana.cloudemoji.viewholders.RepositoryViewHolder;
 
 import de.greenrobot.event.EventBus;
-import uk.co.ribot.easyadapter.EasyAdapter;
 
 public class RepositoryListFragment extends Fragment implements Constants {
-    private EasyAdapter<Repository> adapter;
+    private RepositoryListViewAdapter adapter;
 
     public RepositoryListFragment() {
         // Required empty public constructor
@@ -43,7 +42,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
         View rootView = inflater.inflate(R.layout.fragment_repository_list, container, false);
         ListView repositoryListView = (ListView) rootView.findViewById(R.id.repositoryListView);
         repositoryListView.setEmptyView(rootView.findViewById(R.id.repositoryEmptyView));
-        this.adapter = new EasyAdapter<Repository>(getActivity(), RepositoryViewHolder.class, Repository.listAll(Repository.class));
+        this.adapter = new RepositoryListViewAdapter(Repository.listAll(Repository.class), getActivity());
         repositoryListView.setAdapter(adapter);
         return rootView;
     }
@@ -74,17 +73,19 @@ public class RepositoryListFragment extends Fragment implements Constants {
 
     public void onEvent(RepositoryDownloadedEvent event) {
         if (event.getException() == null) {
-            Toast.makeText(getActivity(), event.getRepository().getAlias(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), event.getRepository().getAlias()
+                    + " "
+                    + getString(R.string.downloaded), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), event.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     public void onEvent(RepositoryDeletedEvent event) {
-        adapter.setItems(Repository.listAll(Repository.class));
+        adapter.updateRepositories(Repository.listAll(Repository.class));
     }
 
     public void onEvent(RepositoryAddedEvent event) {
-        adapter.addItem(event.getRepository());
+        adapter.updateRepositories(Repository.listAll(Repository.class));
     }
 }
