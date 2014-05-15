@@ -12,21 +12,18 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.drawer.DrawerListItem;
-import org.ktachibana.cloudemoji.drawer.DrawerListViewAdapter;
 import org.ktachibana.cloudemoji.events.StringCopiedEvent;
+import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
-import org.ktachibana.cloudemoji.interfaces.OnCopyToClipBoardListener;
-import org.ktachibana.cloudemoji.models.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements
         Constants,
@@ -34,9 +31,7 @@ public class MainActivity extends BaseActivity implements
 
     // Views
     private DrawerLayout drawerLayout;
-    private ListView leftDrawer;
     private ActionBarDrawerToggle toggle;
-    private DrawerListViewAdapter adapter;
 
     // etc
     private SharedPreferences preferences;
@@ -45,6 +40,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Initialize layout
@@ -99,7 +95,6 @@ public class MainActivity extends BaseActivity implements
     private void setupViews() {
         // Find views
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        leftDrawer = (ListView) findViewById(R.id.leftDrawer);
 
         // If drawerLayout not found, then the drawer is static
         isDrawerStatic = (drawerLayout == null);
@@ -124,29 +119,10 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setupDrawer() {
-        // Add left drawer items
-        ArrayList<DrawerListItem> items = new ArrayList<DrawerListItem>();
-
-        // Add local sources
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_HEADER, getString(R.string.source), 0));
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.my_fav), R.drawable.ic_favorite));
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, getString(R.string.history), R.drawable.ic_history));
-
-        // Add repository sources
-        List<Repository> repositories = Repository.listAll(Repository.class);
-        for (Repository repository : repositories) {
-            items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_SOURCE, repository.getAlias(), R.drawable.ic_repository));
-        }
-
-        // Add categories
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_HEADER, getString(R.string.category), 0));
-        items.add(new DrawerListItem(DRAWER_LIST_ITEM_TYPE_CATEGORY, "test", 0));
-
-        // Set adapter
-        this.adapter = new DrawerListViewAdapter(items, this);
-        leftDrawer.setAdapter(adapter);
-
-        // TODO: Set on click listener
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.leftDrawer, new LeftDrawerFragment())
+                .commit();
     }
 
     private void switchNotificationState() {
@@ -250,4 +226,9 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
