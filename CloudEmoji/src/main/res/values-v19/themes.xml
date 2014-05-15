@@ -8,6 +8,8 @@
         <item name="actionBarStyle">@style/CustomActionBar</item>
         <item name="android:actionOverflowButtonStyle">@style/CustomOverFlowButton</item>
         <item name="actionOverflowButtonStyle">@style/CustomOverFlowButton</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_home_as_up</item>
+        <item name="homeAsUpIndicator">@drawable/ic_home_as_up</item>
     </style>
 
     <!-- ActionBar styles -->
@@ -20,5 +22,4 @@
     <style name="CustomOverFlowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_core_overflow</item>
     </style>
-
 </resources>
