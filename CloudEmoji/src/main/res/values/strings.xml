@@ -54,6 +54,8 @@
     <string name="downloading">Downloading</string>
     <string name="downloaded">Downloaded</string>
     <string name="duplicate_url">Duplicate URL</string>
+    <string name="navbar_gesture_title">Navbar gesture</string>
+    <string name="navbar_gesture_summary">Swipe-up from the navbar to start</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

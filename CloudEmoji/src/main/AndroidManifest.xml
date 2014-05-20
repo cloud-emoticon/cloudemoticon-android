@@ -31,6 +31,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name="org.ktachibana.cloudemoji.activities.AssistActivity"
+            android:targetActivity="org.ktachibana.cloudemoji.activities.MainActivity"
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -38,7 +44,7 @@
             <meta-data
                 android:name="com.android.systemui.action_assist_icon"
                 android:resource="@drawable/ic_assist"/>
-        </activity>
+        </activity-alias>
 
         <activity
             android:name="org.ktachibana.cloudemoji.activities.PreferenceActivity"

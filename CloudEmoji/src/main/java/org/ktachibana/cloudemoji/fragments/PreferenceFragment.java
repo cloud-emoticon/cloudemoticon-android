@@ -1,10 +1,12 @@
 package org.ktachibana.cloudemoji.fragments;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -19,6 +21,8 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
     SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
     SharedPreferences preferences;
 
+    private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +30,24 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+
+        // Navbar Gesture
+        Preference navbarGesturePref = findPreference(PREF_NAVBAR_GESTURE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+            navbarGesturePref.setEnabled(false);
+        navbarGesturePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                PackageManager packageManager = getActivity().getPackageManager();
+                ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
+                int componentState = newValue.equals(true) ?
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+                packageManager.setComponentEnabledSetting(componentName, componentState,
+                        PackageManager.DONT_KILL_APP);
+                return true;
+            }
+        });
 
         // GitHub Release
         Preference gitHubReleasePref = findPreference(PREF_GIT_HUB_RELEASE);
