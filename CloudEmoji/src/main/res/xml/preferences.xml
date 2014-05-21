@@ -20,6 +20,11 @@
             android:defaultValue="true"
             android:key="pref_show_after_boot_up"
             android:title="@string/show_after_boot_up" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_navbar_gesture"
+            android:title="@string/navbar_gesture_title"
+            android:summary="@string/navbar_gesture_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory

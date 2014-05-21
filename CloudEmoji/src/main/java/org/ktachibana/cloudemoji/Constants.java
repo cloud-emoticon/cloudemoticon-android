@@ -17,6 +17,7 @@ public interface Constants {
     public static final String PREF_GIT_HUB_RELEASE = "pref_git_hub_release";
     public static final String PREF_GIT_HUB_REPO = "pref_git_hub_repo";
     public static final String PREF_HAS_RUN_BEFORE = "pref_has_run_before";
+    public static final String PREF_NAVBAR_GESTURE = "pref_navbar_gesture";
 
     // Repository
     public static final int FORMAT_TYPE_XML = 0;

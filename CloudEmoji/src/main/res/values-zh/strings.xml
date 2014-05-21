@@ -53,6 +53,8 @@
     <string name="downloading">下载中</string>
     <string name="downloaded">下载完成</string>
     <string name="duplicate_url">重复URL</string>
+    <string name="navbar_gesture_title">导航栏手势启动</string>
+    <string name="navbar_gesture_summary">向上滑动导航栏启动云颜文字</string>
 
     <string-array name="notification_options">
         <item>不可见</item>
