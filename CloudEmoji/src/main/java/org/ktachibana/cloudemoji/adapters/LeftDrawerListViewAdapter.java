@@ -67,4 +67,5 @@ public class LeftDrawerListViewAdapter extends BaseAdapter {
             ButterKnife.inject(this, view);
         }
     }
+
 }

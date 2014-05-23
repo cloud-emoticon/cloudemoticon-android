@@ -18,10 +18,9 @@ import org.ktachibana.cloudemoji.R;
  * This class uses android-support-v4-preferencefragment from https://github.com/kolavar/android-support-v4-preferencefragment
  */
 public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment implements Constants {
+    private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
     SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
     SharedPreferences preferences;
-
-    private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

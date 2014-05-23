@@ -23,8 +23,8 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_navbar_gesture"
-            android:title="@string/navbar_gesture_title"
-            android:summary="@string/navbar_gesture_summary" />
+            android:summary="@string/navbar_gesture_summary"
+            android:title="@string/navbar_gesture_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
