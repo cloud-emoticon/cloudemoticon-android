@@ -22,7 +22,10 @@ import com.orm.SugarApp;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.StringCopiedEvent;
+import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
+import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.models.Repository;
@@ -145,6 +148,7 @@ public class MainActivity extends BaseActivity implements
                                 kt.save();
                             }
                             dialog.dismiss();
+                            setupDrawer();
                         }
                     });
 
@@ -267,6 +271,28 @@ public class MainActivity extends BaseActivity implements
         boolean isCloseAfterCopy = preferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
         if (isCloseAfterCopy) {
             finish();
+        }
+    }
+
+    public void onEvent(RepositoryClickedEvent event) {
+        long id = event.getId();
+        if (id == LIST_ITEM_FAVORITE_ID) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mainContainer, new FavoriteFragment())
+                    .commit();
+            drawerLayout.closeDrawers();
+        }
+        else if (id == LIST_ITEM_HISTORY_ID) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mainContainer, new HistoryFragment())
+                    .commit();
+            drawerLayout.closeDrawers();
+        }
+        else
+        {
+
         }
     }
 
