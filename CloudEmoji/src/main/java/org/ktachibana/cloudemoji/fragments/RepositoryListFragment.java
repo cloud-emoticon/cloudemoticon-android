@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
@@ -27,6 +28,10 @@ import de.greenrobot.event.EventBus;
 public class RepositoryListFragment extends Fragment implements Constants {
     @InjectView(R.id.repositoryListView)
     ListView repositoryListView;
+
+    @InjectView(R.id.repositoryEmptyView)
+    RelativeLayout repositoryEmptyView;
+
     private RepositoryListViewAdapter adapter;
 
     public RepositoryListFragment() {
@@ -46,7 +51,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
         View rootView = inflater.inflate(R.layout.fragment_repository_list, container, false);
         ButterKnife.inject(this, rootView);
 
-        repositoryListView.setEmptyView(rootView.findViewById(R.id.repositoryEmptyView));
+        repositoryListView.setEmptyView(repositoryEmptyView);
         this.adapter = new RepositoryListViewAdapter(Repository.listAll(Repository.class), getActivity());
         repositoryListView.setAdapter(adapter);
 

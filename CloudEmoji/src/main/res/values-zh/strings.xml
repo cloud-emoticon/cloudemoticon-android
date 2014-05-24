@@ -32,7 +32,6 @@
     <string name="already_added_to_fav">已经添加过了</string>
     <string name="remove_from_fav">从我的最爱移除</string>
     <string name="removed_from_fav">已移除</string>
-    <string name="no_fav_prompt">来添加点你最喜欢的吧！\n在左侧划出导航抽屉并长按源列表中的某一个项目来添加到我的最爱</string>
     <string name="notification_visibility">通知可见性</string>
     <string name="show_after_boot_up">系统启动后显示通知</string>
     <string name="override_system_font">代替系统字体</string>
@@ -55,6 +54,8 @@
     <string name="duplicate_url">重复URL</string>
     <string name="navbar_gesture_title">导航栏手势启动</string>
     <string name="navbar_gesture_summary">向上滑动导航栏启动云颜文字</string>
+    <string name="no_favorite_prompt">你没有任何最爱</string>
+    <string name="no_history_prompt">你没有任何历史</string>
 
     <string-array name="notification_options">
         <item>不可见</item>

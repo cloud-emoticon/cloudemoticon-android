@@ -13,6 +13,7 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListItem;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListViewAdapter;
+import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 public class LeftDrawerFragment extends Fragment implements Constants {
     @InjectView(R.id.leftDrawerSourceListView)
@@ -40,9 +42,8 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         sourceListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-                LeftDrawerListItem item = sourceListItems.get(i);
-                long id = item.getId();
-                Toast.makeText(getActivity(), String.valueOf(id), Toast.LENGTH_SHORT).show();
+                EventBus.getDefault()
+                        .post(new RepositoryClickedEvent(sourceListItems.get(i).getId()));
             }
         });
 
