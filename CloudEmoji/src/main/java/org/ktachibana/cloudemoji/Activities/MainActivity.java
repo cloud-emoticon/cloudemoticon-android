@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
+import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -27,10 +29,17 @@ import org.ktachibana.cloudemoji.events.StringCopiedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
+import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
+import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
 import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.models.Source;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -130,33 +139,40 @@ public class MainActivity extends BaseActivity implements
         boolean hasRunBefore = preferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
         // If hasn't run before
         if (!hasRunBefore) {
-            // Download ans save default repo
-            final Repository kt = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
-            kt.save();
-            final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle(R.string.downloading);
-            dialog.setMessage(kt.getUrl());
-            dialog.show();
-            Ion.with(SugarApp.getSugarContext())
-                    .load(kt.getUrl())
-                    .write(new File(SugarApp.getSugarContext().getFilesDir(), kt.getFileName()))
-                    .setCallback(new FutureCallback<File>() {
-                        @Override
-                        public void onCompleted(Exception e, File result) {
-                            if (e == null) {
-                                kt.setAvailable(true);
-                                kt.save();
-                            }
-                            dialog.dismiss();
-                            setupDrawer();
-                        }
-                    });
+            downloadAndSaveDefaultRepo();
 
             // Change has run before to true
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
             editor.commit();
         }
+    }
+
+    private void downloadAndSaveDefaultRepo() {
+        final Repository kt = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
+        kt.save();
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle(R.string.downloading);
+        dialog.setMessage(kt.getUrl());
+        dialog.show();
+        Ion.with(SugarApp.getSugarContext())
+                .load(kt.getUrl())
+                .write(new File(SugarApp.getSugarContext().getFilesDir(), kt.getFileName()))
+                .setCallback(new FutureCallback<File>() {
+                    @Override
+                    public void onCompleted(Exception e, File result) {
+                        if (e == null) {
+                            kt.setAvailable(true);
+                            kt.save();
+                        }
+                        dialog.dismiss();
+                        setupDrawer();
+                    }
+                });
+    }
+
+    private void upgradeFavoriteDatabase() {
+
     }
 
     private void setupDrawer() {
@@ -247,6 +263,7 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void onEvent(StringCopiedEvent event) {
         String copied = event.getString();
 
@@ -277,23 +294,41 @@ public class MainActivity extends BaseActivity implements
     public void onEvent(RepositoryClickedEvent event) {
         long id = event.getId();
         if (id == LIST_ITEM_FAVORITE_ID) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.mainContainer, new FavoriteFragment())
-                    .commit();
+            replaceMainContainer(new FavoriteFragment());
             drawerLayout.closeDrawers();
-        }
-        else if (id == LIST_ITEM_HISTORY_ID) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.mainContainer, new HistoryFragment())
-                    .commit();
+        } else if (id == LIST_ITEM_HISTORY_ID) {
+            replaceMainContainer(new HistoryFragment());
             drawerLayout.closeDrawers();
-        }
-        else
-        {
+        } else {
+            // Get repository file
+            String fileName = Repository.findById(Repository.class, id).getFileName();
+            File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
+            FileReader fileReader = null;
 
+            // Read it
+            try {
+                fileReader = new FileReader(file);
+                try {
+                    Source source = new RepoXmlParser().parse(fileReader);
+                    replaceMainContainer(SourceFragment.newInstance(source));
+                } catch (XmlPullParserException e) {
+                    Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            } catch (FileNotFoundException e) {
+                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            } finally {
+                IOUtils.closeQuietly(fileReader);
+            }
         }
+    }
+
+    private void replaceMainContainer(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContainer, fragment)
+                .commit();
     }
 
     @Override

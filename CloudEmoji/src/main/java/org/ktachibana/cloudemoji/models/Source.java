@@ -1,11 +1,12 @@
 package org.ktachibana.cloudemoji.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * POJO class holding information and a list of categories
  */
-public class Source {
+public class Source implements Serializable {
     private List<String> information;
     private List<Category> categories;
 

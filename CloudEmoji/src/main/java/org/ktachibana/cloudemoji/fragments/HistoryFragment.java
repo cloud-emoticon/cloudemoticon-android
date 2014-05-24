@@ -10,8 +10,6 @@ import android.widget.RelativeLayout;
 
 import org.ktachibana.cloudemoji.R;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
