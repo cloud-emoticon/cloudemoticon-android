@@ -1,18 +1,19 @@
 package org.ktachibana.cloudemoji.models;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import org.apache.commons.io.FilenameUtils;
 import org.ktachibana.cloudemoji.Constants;
 
-import java.io.Serializable;
-
 /**
  * POJO class holding a remote repository and its relevant information
  */
-public class Repository extends SugarRecord<Repository> implements Constants, Serializable {
+public class Repository extends SugarRecord<Repository> implements Constants, Parcelable {
     private String url;
     private String alias;
     private int formatType;
@@ -70,4 +71,40 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
     }
 
     public static enum FormatType {XML, JSON}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.url);
+        dest.writeString(this.alias);
+        dest.writeInt(this.formatType);
+        dest.writeString(this.fileName);
+        dest.writeByte(isAvailable ? (byte) 1 : (byte) 0);
+        dest.writeByte(isVisible ? (byte) 1 : (byte) 0);
+    }
+
+    private Repository(Parcel in) {
+        super(null);
+        this.url = in.readString();
+        this.alias = in.readString();
+        this.formatType = in.readInt();
+        this.fileName = in.readString();
+        this.isAvailable = in.readByte() != 0;
+        this.isVisible = in.readByte() != 0;
+    }
+
+    @Ignore
+    public static Parcelable.Creator<Repository> CREATOR = new Parcelable.Creator<Repository>() {
+        public Repository createFromParcel(Parcel source) {
+            return new Repository(source);
+        }
+
+        public Repository[] newArray(int size) {
+            return new Repository[size];
+        }
+    };
 }

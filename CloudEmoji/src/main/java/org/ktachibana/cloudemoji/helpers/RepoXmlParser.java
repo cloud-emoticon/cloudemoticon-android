@@ -31,7 +31,7 @@ public class RepoXmlParser {
     private Source readEmoji(XmlPullParser parser)
             throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "emoji");
-        List<String> informations = new ArrayList<String>();
+        ArrayList<String> information = new ArrayList<String>();
         List<Category> categories = new ArrayList<Category>();
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
@@ -39,31 +39,31 @@ public class RepoXmlParser {
             }
             String name = parser.getName();
             if (name.equals("infoos")) {
-                informations = readInformations(parser);
+                information = readInformations(parser);
             } else if (name.equals("category")) {
                 categories.add(readCategory(parser));
             }
         }
-        return new Source(informations, categories);
+        return new Source(information, categories);
     }
 
     /**
      * Read informations in tag <infoos>
      */
-    private List<String> readInformations(XmlPullParser parser)
+    private ArrayList<String> readInformations(XmlPullParser parser)
             throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "infoos");
-        List<String> informations = new ArrayList<String>();
+        ArrayList<String> information = new ArrayList<String>();
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
             if (name.equals("info")) {
-                informations.add(readInformation(parser));
+                information.add(readInformation(parser));
             }
         }
-        return informations;
+        return information;
     }
 
     /**

@@ -28,7 +28,7 @@ public class SourceFragment extends Fragment {
     public static SourceFragment newInstance(Source source) {
         SourceFragment fragment = new SourceFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_SOURCE, source);
+        args.putParcelable(ARG_SOURCE, source);
         fragment.setArguments(args);
         return fragment;
     }
@@ -37,7 +37,7 @@ public class SourceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            source = (Source) getArguments().getSerializable(ARG_SOURCE);
+            source = getArguments().getParcelable(ARG_SOURCE);
         }
     }
 
