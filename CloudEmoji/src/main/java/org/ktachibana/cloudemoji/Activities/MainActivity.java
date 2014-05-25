@@ -59,6 +59,8 @@ public class MainActivity extends BaseActivity implements
     // etc
     private SharedPreferences preferences;
     private boolean isDrawerStatic;
+    private long currentRepositoryId;
+    private long currentCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +141,7 @@ public class MainActivity extends BaseActivity implements
         boolean hasRunBefore = preferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
         // If hasn't run before
         if (!hasRunBefore) {
+            upgradeFavoriteDatabase();
             downloadAndSaveDefaultRepo();
 
             // Change has run before to true

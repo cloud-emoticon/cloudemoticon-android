@@ -5,12 +5,12 @@ import android.content.Context;
 import com.orm.SugarRecord;
 
 /**
- * POJO class holding an entry with order
+ * POJO class holding an entry with arrangingOrder
  */
 public class Favorite extends SugarRecord<Favorite> {
     private String emoticon;
     private String description;
-    private int order;
+    private int arrangingOrder;
 
     public Favorite(Context context) {
         super(context);
@@ -20,7 +20,7 @@ public class Favorite extends SugarRecord<Favorite> {
         super(context);
         this.emoticon = emoticon;
         this.description = description;
-        this.order = order;
+        this.arrangingOrder = order;
     }
 
     public String getEmoticon() {
@@ -31,7 +31,7 @@ public class Favorite extends SugarRecord<Favorite> {
         return description;
     }
 
-    public int getOrder() {
-        return order;
+    public int getArrangingOrder() {
+        return arrangingOrder;
     }
 }

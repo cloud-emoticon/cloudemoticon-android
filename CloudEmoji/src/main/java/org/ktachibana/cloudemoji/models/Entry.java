@@ -1,9 +1,11 @@
 package org.ktachibana.cloudemoji.models;
 
+import java.io.Serializable;
+
 /**
  * POJO class holding an emoticon string and its description
  */
-public class Entry {
+public class Entry implements Serializable {
     private String emoticon;
     private String description;
 
