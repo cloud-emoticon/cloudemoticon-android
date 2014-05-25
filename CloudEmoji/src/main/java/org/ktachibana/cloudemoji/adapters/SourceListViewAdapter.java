@@ -59,20 +59,6 @@ public class SourceListViewAdapter extends BaseAdapter {
         viewHolder.categoryTitleTextView.setText(category.getName());
         viewHolder.categoryContentsListView.setAdapter(
                 new CategoryListViewAdapter(context, category.getEntries()));
-        viewHolder.categoryTitleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("233", "title");
-            }
-        });
-        viewHolder.categoryContentsListView.setOnItemClickListener(
-                new LinearListView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-                        Log.e("233", "on item click");
-                    }
-                }
-        );
         return view;
     }
 

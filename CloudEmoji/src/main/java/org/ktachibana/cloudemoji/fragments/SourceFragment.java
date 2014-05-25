@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.linearlistview.LinearListView;
+
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.models.Source;
