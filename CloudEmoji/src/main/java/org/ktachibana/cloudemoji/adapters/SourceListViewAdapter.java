@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +58,24 @@ public class SourceListViewAdapter extends BaseAdapter {
         viewHolder.categoryTitleTextView.setText(category.getName());
         viewHolder.categoryContentsListView.setAdapter(
                 new CategoryListViewAdapter(context, category.getEntries()));
+
+        viewHolder.categoryContentsListView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // this is responding
+                    }
+                }
+        );
+
+        viewHolder.categoryContentsListView.setOnItemClickListener(
+                new LinearListView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+                        // TODO: this is somehow not responding!
+                    }
+                }
+        );
         return view;
     }
 

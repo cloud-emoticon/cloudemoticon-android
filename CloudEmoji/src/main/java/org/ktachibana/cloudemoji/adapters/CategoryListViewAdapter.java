@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.events.StringCopiedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -72,8 +70,10 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
                 view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             }
             view.setText(string);
+            // TODO: hacky!
             view.setTag(string);
             view.setOnClickListener(this);
+            //
             return view;
         }
 
@@ -86,8 +86,10 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
             TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
             TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
             lineOne.setText(string);
+            // TODO: hacky!
             lineOne.setTag(string);
             lineOne.setOnClickListener(this);
+            //
             lineTwo.setText(note);
             return view;
         }
@@ -118,6 +120,7 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
         return false;
     }
 
+    // TODO: hacky!
     @Override
     public void onClick(View view) {
         if (view instanceof TextView) {

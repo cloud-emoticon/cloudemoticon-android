@@ -14,6 +14,16 @@ import org.ktachibana.cloudemoji.Constants;
  * POJO class holding a remote repository and its relevant information
  */
 public class Repository extends SugarRecord<Repository> implements Constants, Parcelable {
+    @Ignore
+    public static Parcelable.Creator<Repository> CREATOR = new Parcelable.Creator<Repository>() {
+        public Repository createFromParcel(Parcel source) {
+            return new Repository(source);
+        }
+
+        public Repository[] newArray(int size) {
+            return new Repository[size];
+        }
+    };
     private String url;
     private String alias;
     private int formatType;
@@ -35,6 +45,16 @@ public class Repository extends SugarRecord<Repository> implements Constants, Pa
         this.fileName = String.valueOf(url.hashCode()) + "." + extension;
         this.isAvailable = false;
         this.isVisible = false;
+    }
+
+    private Repository(Parcel in) {
+        super(null);
+        this.url = in.readString();
+        this.alias = in.readString();
+        this.formatType = in.readInt();
+        this.fileName = in.readString();
+        this.isAvailable = in.readByte() != 0;
+        this.isVisible = in.readByte() != 0;
     }
 
     public String getUrl() {
@@ -70,8 +90,6 @@ public class Repository extends SugarRecord<Repository> implements Constants, Pa
         this.isVisible = isVisible;
     }
 
-    public static enum FormatType {XML, JSON}
-
     @Override
     public int describeContents() {
         return 0;
@@ -87,24 +105,5 @@ public class Repository extends SugarRecord<Repository> implements Constants, Pa
         dest.writeByte(isVisible ? (byte) 1 : (byte) 0);
     }
 
-    private Repository(Parcel in) {
-        super(null);
-        this.url = in.readString();
-        this.alias = in.readString();
-        this.formatType = in.readInt();
-        this.fileName = in.readString();
-        this.isAvailable = in.readByte() != 0;
-        this.isVisible = in.readByte() != 0;
-    }
-
-    @Ignore
-    public static Parcelable.Creator<Repository> CREATOR = new Parcelable.Creator<Repository>() {
-        public Repository createFromParcel(Parcel source) {
-            return new Repository(source);
-        }
-
-        public Repository[] newArray(int size) {
-            return new Repository[size];
-        }
-    };
+    public static enum FormatType {XML, JSON}
 }
