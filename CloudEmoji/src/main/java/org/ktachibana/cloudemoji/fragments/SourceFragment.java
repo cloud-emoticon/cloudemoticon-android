@@ -1,12 +1,17 @@
 package org.ktachibana.cloudemoji.fragments;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.linearlistview.LinearListView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
@@ -19,6 +24,7 @@ public class SourceFragment extends Fragment {
     private static final String ARG_SOURCE = "param1";
     @InjectView(R.id.sourceListView)
     ListView sourceListView;
+
     private Source source;
 
     public SourceFragment() {
@@ -48,6 +54,15 @@ public class SourceFragment extends Fragment {
         ButterKnife.inject(this, rootView);
 
         sourceListView.setAdapter(new SourceListViewAdapter(getActivity(), source));
+
+        // Setup information footer
+        for (String information : source.getInformation()) {
+            TextView textView = new TextView(getActivity());
+            textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
+            textView.setText(information);
+            sourceListView.addFooterView(textView);
+        }
+
         return rootView;
     }
 
