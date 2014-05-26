@@ -13,7 +13,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepoXmlParser {
+public class SourceXmlParser {
     private static final String ns = null;
 
     public Source parse(Reader reader) throws XmlPullParserException,

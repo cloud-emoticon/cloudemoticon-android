@@ -15,9 +15,13 @@ public class BootUpDummyActivity extends Activity implements Constants {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Read whether to show up and what way to show up
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean showAfterBootUp = preferences.getBoolean(PREF_SHOW_AFTER_BOOT_UP, true);
         String notificationVisibility = preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both");
+
+        // Do it
         if (showAfterBootUp) {
             NotificationHelper.switchNotificationState(this, notificationVisibility);
         }
@@ -27,7 +31,7 @@ public class BootUpDummyActivity extends Activity implements Constants {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // The hard way to remove this activity from background tasks
+        // OS way to kill this activity from background tasks
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

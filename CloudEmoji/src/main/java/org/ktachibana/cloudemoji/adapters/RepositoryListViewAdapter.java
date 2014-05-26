@@ -26,22 +26,22 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class RepositoryListViewAdapter extends BaseAdapter {
-    private List<Repository> items;
-    private Context context;
+    private List<Repository> mItems;
+    private Context mContext;
 
     public RepositoryListViewAdapter(List<Repository> items, Context context) {
-        this.items = items;
-        this.context = context;
+        this.mItems = items;
+        this.mContext = context;
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return mItems.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return items.get(i);
+        return mItems.get(i);
     }
 
     @Override
@@ -51,10 +51,11 @@ public class RepositoryListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        // Standard view holder pattern
         ViewHolder viewHolder;
         if (view == null) {
             LayoutInflater inflater
-                    = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_item_repository, viewGroup, false);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
@@ -62,29 +63,33 @@ public class RepositoryListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        final Repository item = items.get(i);
+        // Get the item
+        final Repository item = mItems.get(i);
 
         // Setup contents
         viewHolder.aliasTextView.setText(item.getAlias());
         viewHolder.urlTextView.setText(item.getUrl());
-        viewHolder.downloadButton.setImageDrawable(context
+        viewHolder.downloadButton.setImageDrawable(mContext
                 .getResources()
                 .getDrawable(
                         item.isAvailable() ? (R.drawable.ic_update) : (R.drawable.ic_download)
                 ));
-        viewHolder.deleteButton.setImageDrawable(context
+        viewHolder.deleteButton.setImageDrawable(mContext
                         .getResources()
                         .getDrawable(R.drawable.ic_discard)
         );
 
-        // Setup listeners
+        // Setup what happens if download button is clicked
         viewHolder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ProgressDialog dialog = new ProgressDialog(context);
+                // Show a dialog progress dialog
+                final ProgressDialog dialog = new ProgressDialog(mContext);
                 dialog.setTitle(R.string.downloading);
                 dialog.setMessage(item.getUrl());
                 dialog.show();
+
+                // Download repository to file system
                 Ion.with(SugarApp.getSugarContext())
                         .load(item.getUrl())
                         .write(new File(SugarApp.getSugarContext().getFilesDir()
@@ -92,11 +97,19 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                         .setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
+                                // Dismiss the dialog
                                 dialog.dismiss();
+
+                                // If no exception, set repository to available and SAVE it
                                 if (e == null) {
                                     item.setAvailable(true);
                                     item.save();
                                 }
+
+                                /**
+                                 * Tell anybody who cares about a repository being downloaded
+                                 * Namely the anybody would be repository list fragment
+                                 */
                                 EventBus.getDefault().post(new RepositoryDownloadedEvent(item, e));
                             }
                         });
@@ -105,10 +118,16 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Delete repository file from file system
                 item.delete();
                 File deletedFile = new File(SugarApp.getSugarContext().getFilesDir()
                         , item.getFileName());
                 deletedFile.delete();
+
+                /**
+                 * Tell anybody who cares about a repository being deleted
+                 * Namely the anybody would be repository list fragment
+                 */
                 EventBus.getDefault().post(new RepositoryDeletedEvent(item));
             }
         });
@@ -117,7 +136,7 @@ public class RepositoryListViewAdapter extends BaseAdapter {
     }
 
     public void updateRepositories(List<Repository> repositories) {
-        this.items = repositories;
+        this.mItems = repositories;
         notifyDataSetChanged();
     }
 

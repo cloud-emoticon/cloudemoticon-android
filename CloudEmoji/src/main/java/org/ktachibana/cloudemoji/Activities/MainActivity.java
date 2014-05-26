@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
 import org.apache.commons.io.IOUtils;
@@ -25,13 +22,14 @@ import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryParsedEvent;
 import org.ktachibana.cloudemoji.events.StringCopiedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
-import org.ktachibana.cloudemoji.helpers.RepoXmlParser;
+import org.ktachibana.cloudemoji.helpers.SourceXmlParser;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.xmlpull.v1.XmlPullParserException;
@@ -51,27 +49,29 @@ public class MainActivity extends BaseActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Views
-    @Optional
+    @Optional // Optional because on split view it doesn't exist
     @InjectView(R.id.drawerLayout)
-    DrawerLayout drawerLayout;
+    DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
 
     // etc
-    private SharedPreferences preferences;
-    private boolean isDrawerStatic;
-    private long currentRepositoryId;
-    private long currentCategoryId;
+    private SharedPreferences mPreferences;
+    private boolean mIsDrawerStatic;
+    private long mCurrentRepositoryId;
+    private long mCurrentCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         EventBus.getDefault().register(this);
 
-        // Initialize layout
+        // Choose layout to inflate
         setupLayout();
 
-        // Initialize views
+        // Setup views
         setupViews();
 
         // Toggle notification state
@@ -80,12 +80,11 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
-        if (savedInstanceState == null) setupDrawer();
     }
 
     private void setupLayout() {
         // Set up UI layout according to user preference for drawer and split view
-        String uiPreference = preferences.getString(PREF_SPLIT_VIEW, "auto");
+        String uiPreference = mPreferences.getString(PREF_SPLIT_VIEW, "auto");
         int orientation = getResources().getConfiguration().orientation;
 
         // If auto, set up the default layout optimized for landscape and tablets
@@ -120,65 +119,47 @@ public class MainActivity extends BaseActivity implements
     private void setupViews() {
         ButterKnife.inject(this);
 
-        // If drawerLayout not found, then the drawer is static
-        isDrawerStatic = (drawerLayout == null);
+        // If mDrawerLayout not found, then the drawer is static
+        mIsDrawerStatic = (mDrawerLayout == null);
 
         // Set up toggle
-        if (!isDrawerStatic) {
+        if (!mIsDrawerStatic) {
             toggle = new ActionBarDrawerToggle(
                     this,
-                    drawerLayout,
+                    mDrawerLayout,
                     R.drawable.ic_ab_navigation_drawer,
                     R.string.app_name,
                     R.string.app_name);
-            drawerLayout.setDrawerListener(toggle);
+            mDrawerLayout.setDrawerListener(toggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
     }
 
     private void firstTimeCheck() {
-        boolean hasRunBefore = preferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
+        boolean hasRunBefore = mPreferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
+
         // If hasn't run before
         if (!hasRunBefore) {
             upgradeFavoriteDatabase();
-            downloadAndSaveDefaultRepo();
+            saveDefaultRepo();
 
-            // Change has run before to true
-            SharedPreferences.Editor editor = preferences.edit();
+            // It has run
+            SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
             editor.commit();
         }
     }
 
-    private void downloadAndSaveDefaultRepo() {
-        final Repository kt = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
-        kt.save();
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle(R.string.downloading);
-        dialog.setMessage(kt.getUrl());
-        dialog.show();
-        Ion.with(SugarApp.getSugarContext())
-                .load(kt.getUrl())
-                .write(new File(SugarApp.getSugarContext().getFilesDir(), kt.getFileName()))
-                .setCallback(new FutureCallback<File>() {
-                    @Override
-                    public void onCompleted(Exception e, File result) {
-                        if (e == null) {
-                            kt.setAvailable(true);
-                            kt.save();
-                        }
-                        dialog.dismiss();
-                        setupDrawer();
-                    }
-                });
+    private void saveDefaultRepo() {
+        // TODO: read default xml from assets
     }
 
     private void upgradeFavoriteDatabase() {
-
+        // TODO: upgrade favorite database if exists
     }
 
-    private void setupDrawer() {
+    private void setupLeftDrawer() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.leftDrawer, new LeftDrawerFragment())
@@ -188,7 +169,7 @@ public class MainActivity extends BaseActivity implements
     private void switchNotificationState() {
         NotificationHelper
                 .switchNotificationState(this,
-                        preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
+                        mPreferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
     }
 
     @Override
@@ -202,13 +183,13 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        preferences.unregisterOnSharedPreferenceChangeListener(this);
+        mPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        preferences.registerOnSharedPreferenceChangeListener(this);
+        mPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -222,7 +203,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (!isDrawerStatic) {
+        if (!mIsDrawerStatic) {
             if (toggle.onOptionsItemSelected(item)) {
                 return true;
             }
@@ -253,7 +234,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (!isDrawerStatic) {
+        if (!mIsDrawerStatic) {
             toggle.syncState();
         }
     }
@@ -261,17 +242,22 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (!isDrawerStatic) {
+        if (!mIsDrawerStatic) {
             toggle.onConfigurationChanged(newConfig);
         }
     }
 
+    /**
+     * Listens for any string copied and send it to clipboard
+     *
+     * @param event string copied event
+     */
     @SuppressWarnings("deprecation")
     public void onEvent(StringCopiedEvent event) {
         String copied = event.getString();
 
-        // Below 3.0
         int SDK = Build.VERSION.SDK_INT;
+        // Below 3.0
         if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
             android.text.ClipboardManager clipboard
                     = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -288,34 +274,67 @@ public class MainActivity extends BaseActivity implements
 
         // Show toast
         Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
-        boolean isCloseAfterCopy = preferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
+        boolean isCloseAfterCopy = mPreferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
+
+        // Close if you want
         if (isCloseAfterCopy) {
             finish();
         }
     }
 
+    /**
+     * Listens for any repository list item clicked (namely from left drawer fragment)
+     * @param event repository list item clicked
+     */
     public void onEvent(RepositoryClickedEvent event) {
+        // Get id of the repository
         long id = event.getId();
+
+        /**
+         * If the id is special for favorite, i.e. -1
+         * This is not possible for an id in database
+         */
         if (id == LIST_ITEM_FAVORITE_ID) {
             replaceMainContainer(new FavoriteFragment());
-            drawerLayout.closeDrawers();
-        } else if (id == LIST_ITEM_HISTORY_ID) {
+            mDrawerLayout.closeDrawers();
+        }
+
+        // Same as above except for it is history
+        else if (id == LIST_ITEM_HISTORY_ID) {
             replaceMainContainer(new HistoryFragment());
-            drawerLayout.closeDrawers();
-        } else {
-            // Get repository file
+            mDrawerLayout.closeDrawers();
+        }
+
+        // Else it is an repository
+        else {
+            // Get repository file name
             String fileName = Repository.findById(Repository.class, id).getFileName();
+
+            // Read the file from file system
             File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
-            FileReader fileReader = null;
 
             // Read it
+            FileReader fileReader = null;
             try {
                 fileReader = new FileReader(file);
                 try {
-                    Source source = new RepoXmlParser().parse(fileReader);
+                    // Parse source from file
+                    Source source = new SourceXmlParser().parse(fileReader);
+
+                    // Fill main container with this repository
                     replaceMainContainer(SourceFragment.newInstance(source));
-                } catch (XmlPullParserException e) {
-                    Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT).show();
+
+                    /**
+                     * Tell anybody who cares about a repository being parsed
+                     * Namely the anybody is left drawer who wants to display categories as well
+                     */
+                    EventBus.getDefault().post(new RepositoryParsedEvent(source));
+                }
+
+                // Parser error
+                catch (XmlPullParserException e) {
+                    Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
+                            .show();
                 } catch (IOException e) {
                     Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -343,6 +362,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        setupDrawer();
+        setupLeftDrawer();
     }
 }

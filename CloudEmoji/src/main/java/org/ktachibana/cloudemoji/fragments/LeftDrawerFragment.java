@@ -13,7 +13,10 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListItem;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListViewAdapter;
 import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryParsedEvent;
+import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.models.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,12 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     LinearListView categoryListView;
 
     @Override
+    public void onCreate(Bundle savedInstanceBundle) {
+        super.onCreate(savedInstanceBundle);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate view
@@ -42,11 +51,10 @@ public class LeftDrawerFragment extends Fragment implements Constants {
             @Override
             public void onItemClick(LinearListView linearListView, View view, int i, long l) {
                 EventBus.getDefault()
-                        .post(new RepositoryClickedEvent(sourceListItems.get(i).getId()));
+                        .post(new RepositoryClickedEvent(sourceListItems.get(i).getmId()));
             }
         });
 
-        // Setup category list view
         return rootView;
     }
 
@@ -66,5 +74,26 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         }
 
         return items;
+    }
+
+    public void onEvent(RepositoryParsedEvent event) {
+        List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
+        final Source source = event.getSource();
+        for (Category category : source.getCategories()) {
+            items.add(new LeftDrawerListItem(category.getName(), R.drawable.ic_category, 0));
+        }
+        categoryListView.setAdapter(new LeftDrawerListViewAdapter(items, getActivity()));
+        categoryListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -17,12 +17,12 @@ import de.greenrobot.event.EventBus;
 
 public class CategoryListViewAdapter implements ListAdapter, View.OnClickListener {
 
-    private List<Entry> category;
-    private LayoutInflater inflater;
+    private List<Entry> mCategory;
+    private LayoutInflater mInflater;
 
     public CategoryListViewAdapter(Context context, List<Entry> category) {
-        this.category = category;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mCategory = category;
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
 
     @Override
     public int getCount() {
-        return category.size();
+        return mCategory.size();
     }
 
     @Override
     public Entry getItem(int position) {
-        return category.get(position);
+        return mCategory.get(position);
     }
 
     @Override
@@ -59,45 +59,57 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get string and note
-        Entry entry = category.get(position);
+        Entry entry = mCategory.get(position);
         String string = entry.getEmoticon();
         String note = entry.getDescription();
 
         // If no note included
         if (note.equals("")) {
+            // Inflate the view if not
             TextView view = (TextView) convertView;
             if (view == null) {
-                view = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+                view = (TextView) mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             }
+
+            // Set text
             view.setText(string);
+
             // TODO: hacky!
             view.setTag(string);
             view.setOnClickListener(this);
-            //
+
             return view;
         }
 
         // Else included
         else {
+            // Inflate the view if not
             View view = convertView;
             if (view == null) {
-                view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+                view = mInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
             }
+
+            // Find views
             TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
             TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
+
+            // Set emoticon text
             lineOne.setText(string);
+
             // TODO: hacky!
             lineOne.setTag(string);
             lineOne.setOnClickListener(this);
-            //
+
+            // Set description text
             lineTwo.setText(note);
+
             return view;
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (category.get(position).getDescription().equals("")) ? 0 : 1;
+        return (mCategory.get(position).getDescription().equals("")) ? 0 : 1;
     }
 
     @Override
@@ -107,7 +119,7 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
 
     @Override
     public boolean isEmpty() {
-        return category.isEmpty();
+        return mCategory.isEmpty();
     }
 
     @Override
@@ -123,9 +135,11 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
     // TODO: hacky!
     @Override
     public void onClick(View view) {
+        // If it is the text view containing emoticon pressed
         if (view instanceof TextView) {
             if (view.getTag() != null) {
                 try {
+                    // Get the string and tell anybody who cared about an emoticon being copied
                     String string = (String) view.getTag();
                     EventBus.getDefault().post(new StringCopiedEvent(string));
                 } catch (ClassCastException e) {

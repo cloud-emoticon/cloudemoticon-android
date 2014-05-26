@@ -16,22 +16,22 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class LeftDrawerListViewAdapter extends BaseAdapter {
-    private List<LeftDrawerListItem> items;
-    private Context context;
+    private List<LeftDrawerListItem> mItems;
+    private Context mContext;
 
     public LeftDrawerListViewAdapter(List<LeftDrawerListItem> items, Context context) {
-        this.items = items;
-        this.context = context;
+        this.mItems = items;
+        this.mContext = context;
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return mItems.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return items.get(i);
+        return mItems.get(i);
     }
 
     @Override
@@ -41,19 +41,23 @@ public class LeftDrawerListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        // Standard view holder pattern
         ViewHolder viewHolder;
         if (view == null) {
             LayoutInflater inflater
-                    = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_item_left_drawer, viewGroup, false);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
+
+        // Setup contents
         viewHolder.imageView
-                .setImageDrawable(context.getResources().getDrawable(items.get(i).getDrawable()));
-        viewHolder.textView.setText(items.get(i).getText());
+                .setImageDrawable(mContext.getResources().getDrawable(mItems.get(i).getDrawable()));
+        viewHolder.textView.setText(mItems.get(i).getText());
+
         return view;
     }
 

@@ -11,7 +11,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/card_background"
         android:orientation="vertical">
 
         <TextView
@@ -19,15 +18,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/category"
+            android:paddingBottom="5dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
 
-        <com.linearlistview.LinearListView
-            android:id="@+id/categoryContentsListView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            android:orientation="vertical" />
+            android:background="@drawable/card_background">
+
+            <com.linearlistview.LinearListView
+                android:id="@+id/categoryContentsListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:orientation="vertical" />
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>
