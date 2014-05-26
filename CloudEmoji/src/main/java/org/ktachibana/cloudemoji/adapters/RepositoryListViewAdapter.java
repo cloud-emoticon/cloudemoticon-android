@@ -2,12 +2,15 @@ package org.ktachibana.cloudemoji.adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -87,36 +90,46 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         viewHolder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Show a dialog progress dialog
-                final ProgressDialog dialog = new ProgressDialog(mContext);
-                dialog.setTitle(R.string.downloading);
-                dialog.setMessage(item.getUrl());
-                dialog.show();
+                // If network is available
+                if (isNetworkConnectionAvailable()) {
 
-                // Download repository to file system
-                Ion.with(SugarApp.getSugarContext())
-                        .load(item.getUrl())
-                        .write(new File(SugarApp.getSugarContext().getFilesDir()
-                                , item.getFileName()))
-                        .setCallback(new FutureCallback<File>() {
-                            @Override
-                            public void onCompleted(Exception e, File result) {
-                                // Dismiss the dialog
-                                dialog.dismiss();
+                    // Show a dialog progress dialog
+                    final ProgressDialog dialog = new ProgressDialog(mContext);
+                    dialog.setTitle(R.string.downloading);
+                    dialog.setMessage(item.getUrl());
+                    dialog.show();
 
-                                // If no exception, set repository to available and SAVE it
-                                if (e == null) {
-                                    item.setAvailable(true);
-                                    item.save();
+                    // Download repository to file system
+                    Ion.with(SugarApp.getSugarContext())
+                            .load(item.getUrl())
+                            .write(new File(SugarApp.getSugarContext().getFilesDir()
+                                    , item.getFileName()))
+                            .setCallback(new FutureCallback<File>() {
+                                @Override
+                                public void onCompleted(Exception e, File result) {
+                                    // Dismiss the dialog
+                                    dialog.dismiss();
+
+                                    // If no exception, set repository to available and SAVE it
+                                    if (e == null) {
+                                        item.setAvailable(true);
+                                        item.save();
+                                    }
+
+                                    /**
+                                     * Tell anybody who cares about a repository being downloaded
+                                     * Namely the anybody would be repository list fragment
+                                     */
+                                    EventBus.getDefault().post(new RepositoryDownloadedEvent(item, e));
                                 }
+                            });
+                }
+                else
+                {
+                    Toast.makeText(mContext, mContext.getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
+                }
 
-                                /**
-                                 * Tell anybody who cares about a repository being downloaded
-                                 * Namely the anybody would be repository list fragment
-                                 */
-                                EventBus.getDefault().post(new RepositoryDownloadedEvent(item, e));
-                            }
-                        });
+
             }
         });
 
@@ -157,6 +170,14 @@ public class RepositoryListViewAdapter extends BaseAdapter {
     public void updateRepositories(List<Repository> repositories) {
         this.mItems = repositories;
         notifyDataSetChanged();
+    }
+
+    private boolean isNetworkConnectionAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info == null) return false;
+        NetworkInfo.State network = info.getState();
+        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 
     static class ViewHolder {

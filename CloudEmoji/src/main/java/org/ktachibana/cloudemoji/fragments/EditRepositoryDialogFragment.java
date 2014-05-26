@@ -5,10 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import org.ktachibana.cloudemoji.R;
@@ -20,16 +17,19 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class EditRepositoryDialogFragment extends DialogFragment {
+    private static final String ARG_REPOSITORY = "repository";
     @InjectView(R.id.editRepositoryAliasEditText)
     EditText mAliasEditText;
-
     private Repository mRepository;
-    private static final String ARG_REPOSITORY = "repository";
+
+    public EditRepositoryDialogFragment() {
+        // Required empty public constructor
+    }
 
     public static EditRepositoryDialogFragment newInstance(Repository repository) {
         EditRepositoryDialogFragment fragment = new EditRepositoryDialogFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_REPOSITORY, repository);
+        args.putSerializable(ARG_REPOSITORY, repository);
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,12 +38,8 @@ public class EditRepositoryDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRepository = getArguments().getParcelable(ARG_REPOSITORY);
+            mRepository = (Repository) getArguments().getSerializable(ARG_REPOSITORY);
         }
-    }
-
-    public EditRepositoryDialogFragment() {
-        // Required empty public constructor
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
