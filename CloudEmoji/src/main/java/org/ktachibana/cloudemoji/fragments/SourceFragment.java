@@ -3,20 +3,14 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.models.Source;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class SourceFragment extends ListFragment {
     private static final String ARG_SOURCE = "param1";

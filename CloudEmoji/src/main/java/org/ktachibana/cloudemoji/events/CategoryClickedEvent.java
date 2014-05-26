@@ -1,5 +1,8 @@
 package org.ktachibana.cloudemoji.events;
 
+/**
+ * A category list item is clicked
+ */
 public class CategoryClickedEvent {
     private int mIndex;
 

@@ -86,6 +86,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
 
     /**
      * Listens for repository downloaded from Internet, namely from repository list view adapter
+     *
      * @param event repository downloaded from Internet event
      */
     public void onEvent(RepositoryDownloadedEvent event) {
@@ -101,6 +102,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
 
     /**
      * Listens for repository deleted, namely from repository list view adapter
+     *
      * @param event repository deleted event
      */
     public void onEvent(RepositoryDeletedEvent event) {
@@ -109,6 +111,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
 
     /**
      * Listens for repository added, namely from add repository dialog fragment
+     *
      * @param event repository added event
      */
     public void onEvent(RepositoryAddedEvent event) {

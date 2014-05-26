@@ -5,20 +5,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.linearlistview.LinearListView;
+import com.orm.SugarApp;
 
+import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListItem;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListViewAdapter;
 import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryParsedEvent;
+import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
+import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
+import org.ktachibana.cloudemoji.helpers.SourceXmlParser;
 import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +42,6 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     LinearListView mCategoryListView;
 
     @Override
-    public void onCreate(Bundle savedInstanceBundle) {
-        super.onCreate(savedInstanceBundle);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Setup views
@@ -51,17 +54,82 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         mSourceListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+                long id = sourceListItems.get(i).getId();
+
                 /**
-                 * Tell anybody who cares about a repository list item clicked
-                 * Namely anybody is main activity
+                 * If it is a local repository clicked
+                 * Clean categories and notify anyone who cares
+                 * Namely the anyone is main activity
                  */
-                EventBus.getDefault()
-                        .post(new RepositoryClickedEvent(sourceListItems.get(i).getId()));
+                if (id < 0) {
+                    mCategoryListView.setAdapter(null);
+                    EventBus.getDefault().post(new LocalRepositoryClickedEvent(id));
+                }
+
+                /**
+                 * Else it is a remote repository clicked
+                 * Parse the file according to id and fill categories
+                 * Notify anyone who cares
+                 * Namely the anyone is main activity
+                 */
+                else {
+                    Source source = readSourceFromFile(id);
+                    if (source != null) {
+                        mCategoryListView.setAdapter(
+                                new LeftDrawerListViewAdapter(
+                                        getCategoryListItems(source), getActivity())
+                        );
+                        mCategoryListView.setOnItemClickListener(
+                                new LinearListView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+                                        EventBus.getDefault().post(new CategoryClickedEvent(i));
+                                    }
+                                }
+                        );
+                        EventBus.getDefault().post(new RemoteRepositoryParsedEvent(source));
+                    }
+                }
             }
         });
 
         return rootView;
     }
+
+    private Source readSourceFromFile(long id) {
+        Source source = null;
+
+        // Get repository file name
+        String fileName = Repository.findById(Repository.class, id).getFileName();
+
+        // Read the file from file system
+        File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
+
+        // Read it
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(file);
+            try {
+                // Parse source from file
+                source = new SourceXmlParser().parse(fileReader);
+            }
+
+            // Parser error
+            catch (XmlPullParserException e) {
+                Toast.makeText(getActivity(), getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
+                        .show();
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+            IOUtils.closeQuietly(fileReader);
+        }
+
+        return source;
+    }
+
 
     private List<LeftDrawerListItem> getSourceListItems() {
         List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
@@ -69,10 +137,12 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         // Add local favorite and history
         items.add(
                 new LeftDrawerListItem(
-                        getString(R.string.my_fav), R.drawable.ic_favorite, LIST_ITEM_FAVORITE_ID));
+                        getString(R.string.my_fav), R.drawable.ic_favorite, LIST_ITEM_FAVORITE_ID)
+        );
         items.add(
                 new LeftDrawerListItem(
-                        getString(R.string.history), R.drawable.ic_history, LIST_ITEM_HISTORY_ID));
+                        getString(R.string.history), R.drawable.ic_history, LIST_ITEM_HISTORY_ID)
+        );
 
         // Add remote repositories
         List<Repository> repositories = Repository.listAll(Repository.class);
@@ -80,45 +150,21 @@ public class LeftDrawerFragment extends Fragment implements Constants {
             if (repository.isAvailable()) {
                 items.add(
                         new LeftDrawerListItem(
-                                repository.getAlias(), R.drawable.ic_repository, repository.getId()));
+                                repository.getAlias(), R.drawable.ic_repository, repository.getId())
+                );
             }
         }
 
         return items;
     }
 
-    /**
-     * Listens for any repository parsed, namely from main activity
-     * @param event repository parsed event
-     */
-    public void onEvent(RepositoryParsedEvent event) {
+    private List<LeftDrawerListItem> getCategoryListItems(Source source) {
         List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
 
-        // Fill list items with category names
-        final Source source = event.getSource();
         for (Category category : source.getCategories()) {
             items.add(new LeftDrawerListItem(category.getName(), R.drawable.ic_category, 0));
         }
 
-        // Setup category list view
-        mCategoryListView.setAdapter(new LeftDrawerListViewAdapter(items, getActivity()));
-
-        // What happens when a category is clicked
-        mCategoryListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-                /**
-                 * Tell anybody who cares about a category list item click
-                 * Namely the anybody is main activity
-                 */
-                EventBus.getDefault().post(new CategoryClickedEvent(i));
-            }
-        });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        return items;
     }
 }

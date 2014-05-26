@@ -10,37 +10,23 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.orm.SugarApp;
-
-import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryParsedEvent;
+import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
+import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
-import org.ktachibana.cloudemoji.helpers.SourceXmlParser;
-import org.ktachibana.cloudemoji.models.Repository;
-import org.ktachibana.cloudemoji.models.Source;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -84,6 +70,8 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
+        // If starting fresh new, setup left drawer
+        if (savedInstanceState == null) setupLeftDrawer();
     }
 
     private void setupLayout() {
@@ -286,76 +274,30 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    /**
-     * Listens for any repository list item clicked (namely from left drawer fragment)
-     * @param event repository list item clicked
-     */
-    public void onEvent(RepositoryClickedEvent event) {
-        // Get id of the repository
-        long id = event.getId();
+    public void onEvent(LocalRepositoryClickedEvent event) {
+        mCurrentSourceFragment = null; // Force GC
 
-        /**
-         * If the id is special for favorite, i.e. -1
-         * This is not possible for an id in database
-         */
+        long id = event.getId();
+        // Favorite
         if (id == LIST_ITEM_FAVORITE_ID) {
             replaceMainContainer(new FavoriteFragment());
-            mDrawerLayout.closeDrawers();
         }
 
-        // Same as above except for it is history
+        // History
         else if (id == LIST_ITEM_HISTORY_ID) {
             replaceMainContainer(new HistoryFragment());
-            mDrawerLayout.closeDrawers();
         }
 
-        // Else it is an repository
-        else {
-            // Get repository file name
-            String fileName = Repository.findById(Repository.class, id).getFileName();
-
-            // Read the file from file system
-            File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
-
-            // Read it
-            FileReader fileReader = null;
-            try {
-                fileReader = new FileReader(file);
-                try {
-                    // Parse source from file
-                    Source source = new SourceXmlParser().parse(fileReader);
-
-                    // Fill main container with this repository
-                    mCurrentSourceFragment = SourceFragment.newInstance(source);
-                    replaceMainContainer(mCurrentSourceFragment);
-
-                    /**
-                     * Tell anybody who cares about a repository being parsed
-                     * Namely the anybody is left drawer who wants to display categories as well
-                     */
-                    EventBus.getDefault().post(new RepositoryParsedEvent(source));
-                }
-
-                // Parser error
-                catch (XmlPullParserException e) {
-                    Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
-                            .show();
-                } catch (IOException e) {
-                    Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            } catch (FileNotFoundException e) {
-                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            } finally {
-                IOUtils.closeQuietly(fileReader);
-            }
-        }
+        mDrawerLayout.closeDrawers();
     }
 
-    /**
-     * Listens for any category list item clicked (namely from left drawer fragment)
-     * @param event category list item clicked
-     */
+    public void onEvent(RemoteRepositoryParsedEvent event) {
+        this.mCurrentSourceFragment = SourceFragment.newInstance(event.getSource());
+        replaceMainContainer(mCurrentSourceFragment);
+    }
+
     public void onEvent(CategoryClickedEvent event) {
+        // ni kan kan ni, you see see you
         if (mCurrentSourceFragment != null) {
             mCurrentSourceFragment.getListView().setSelection(event.getIndex());
             mDrawerLayout.closeDrawers();
@@ -375,9 +317,4 @@ public class MainActivity extends BaseActivity implements
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupLeftDrawer();
-    }
 }

@@ -96,9 +96,7 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                 // If duplicate, set error in URL edit text
                 if (duplicateUrl) {
                     mUrlEditText.setError(getString(R.string.duplicate_url));
-                }
-
-                else {
+                } else {
                     // Detect correct file format
                     // TODO: support json
                     if (extension.equals("xml")) {

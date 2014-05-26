@@ -1,12 +1,12 @@
 package org.ktachibana.cloudemoji.events;
 
 /**
- * A repository is clicked on left drawer
+ * A local repository list item is clicked
  */
-public class RepositoryClickedEvent {
+public class LocalRepositoryClickedEvent {
     private long mId;
 
-    public RepositoryClickedEvent(long id) {
+    public LocalRepositoryClickedEvent(long id) {
         this.mId = id;
     }
 

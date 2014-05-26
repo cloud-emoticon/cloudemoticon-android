@@ -5,10 +5,10 @@ import org.ktachibana.cloudemoji.models.Source;
 /**
  * A repository is read and parsed to source
  */
-public class RepositoryParsedEvent {
+public class RemoteRepositoryParsedEvent {
     private Source mSource;
 
-    public RepositoryParsedEvent(Source source) {
+    public RemoteRepositoryParsedEvent(Source source) {
         this.mSource = source;
     }
 
