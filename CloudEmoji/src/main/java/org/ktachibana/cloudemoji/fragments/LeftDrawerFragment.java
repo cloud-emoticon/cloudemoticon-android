@@ -12,6 +12,7 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListItem;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListViewAdapter;
+import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryParsedEvent;
 import org.ktachibana.cloudemoji.models.Category;
@@ -106,7 +107,11 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         mCategoryListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-                // TODO:
+                /**
+                 * Tell anybody who cares about a category list item click
+                 * Namely the anybody is main activity
+                 */
+                EventBus.getDefault().post(new CategoryClickedEvent(i));
             }
         });
     }

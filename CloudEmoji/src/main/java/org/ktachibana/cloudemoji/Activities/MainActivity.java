@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryParsedEvent;
@@ -53,6 +56,7 @@ public class MainActivity extends BaseActivity implements
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
+    private SourceFragment mCurrentSourceFragment;
 
     // etc
     private SharedPreferences mPreferences;
@@ -322,7 +326,8 @@ public class MainActivity extends BaseActivity implements
                     Source source = new SourceXmlParser().parse(fileReader);
 
                     // Fill main container with this repository
-                    replaceMainContainer(SourceFragment.newInstance(source));
+                    mCurrentSourceFragment = SourceFragment.newInstance(source);
+                    replaceMainContainer(mCurrentSourceFragment);
 
                     /**
                      * Tell anybody who cares about a repository being parsed
@@ -343,6 +348,17 @@ public class MainActivity extends BaseActivity implements
             } finally {
                 IOUtils.closeQuietly(fileReader);
             }
+        }
+    }
+
+    /**
+     * Listens for any category list item clicked (namely from left drawer fragment)
+     * @param event category list item clicked
+     */
+    public void onEvent(CategoryClickedEvent event) {
+        if (mCurrentSourceFragment != null) {
+            mCurrentSourceFragment.getListView().setSelection(event.getIndex());
+            mDrawerLayout.closeDrawers();
         }
     }
 

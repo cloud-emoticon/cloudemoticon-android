@@ -4,6 +4,7 @@ package org.ktachibana.cloudemoji.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,8 @@ import org.ktachibana.cloudemoji.models.Source;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SourceFragment extends Fragment {
+public class SourceFragment extends ListFragment {
     private static final String ARG_SOURCE = "param1";
-    @InjectView(R.id.sourceListView)
-    ListView mSourceListView;
-
     private Source source;
 
     public SourceFragment() {
@@ -47,23 +45,24 @@ public class SourceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Setup views
-        View rootView = inflater.inflate(R.layout.fragment_source, container, false);
-        ButterKnife.inject(this, rootView);
+        // Setup contents
+        setListAdapter(new SourceListViewAdapter(getActivity(), source));
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
-        // Set up contents
-        mSourceListView.setAdapter(new SourceListViewAdapter(getActivity(), source));
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Setup style
+        getListView().setDivider(null);
+        getListView().setDividerHeight(0);
 
         // Setup information footer
         for (String information : source.getInformation()) {
             TextView textView = new TextView(getActivity());
             textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
             textView.setText(information);
-            mSourceListView.addFooterView(textView);
+            getListView().addFooterView(textView);
         }
-
-        return rootView;
     }
-
-
 }
