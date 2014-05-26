@@ -15,10 +15,10 @@ import butterknife.InjectView;
 
 public class HistoryFragment extends Fragment {
     @InjectView(R.id.historyListView)
-    ListView historyListView;
+    ListView mHistoryListView;
 
     @InjectView(R.id.historyEmptyView)
-    RelativeLayout historyEmptyView;
+    RelativeLayout mHistoryEmptyView;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -28,10 +28,11 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Setup views
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
         ButterKnife.inject(this, rootView);
 
-        historyListView.setEmptyView(historyEmptyView);
+        mHistoryListView.setEmptyView(mHistoryEmptyView);
         return rootView;
     }
 

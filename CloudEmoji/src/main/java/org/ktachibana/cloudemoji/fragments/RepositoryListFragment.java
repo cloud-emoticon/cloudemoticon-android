@@ -27,12 +27,12 @@ import de.greenrobot.event.EventBus;
 
 public class RepositoryListFragment extends Fragment implements Constants {
     @InjectView(R.id.repositoryListView)
-    ListView repositoryListView;
+    ListView mRepositoryListView;
 
     @InjectView(R.id.repositoryEmptyView)
-    RelativeLayout repositoryEmptyView;
+    RelativeLayout mRepositoryEmptyView;
 
-    private RepositoryListViewAdapter adapter;
+    private RepositoryListViewAdapter mAdapter;
 
     public RepositoryListFragment() {
         // Required empty public constructor
@@ -48,12 +48,14 @@ public class RepositoryListFragment extends Fragment implements Constants {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Setup views
         View rootView = inflater.inflate(R.layout.fragment_repository_list, container, false);
         ButterKnife.inject(this, rootView);
 
-        repositoryListView.setEmptyView(repositoryEmptyView);
-        this.adapter = new RepositoryListViewAdapter(Repository.listAll(Repository.class), getActivity());
-        repositoryListView.setAdapter(adapter);
+        // Setup contents
+        mRepositoryListView.setEmptyView(mRepositoryEmptyView);
+        this.mAdapter = new RepositoryListViewAdapter(Repository.listAll(Repository.class), getActivity());
+        mRepositoryListView.setAdapter(mAdapter);
 
         return rootView;
     }
@@ -82,6 +84,10 @@ public class RepositoryListFragment extends Fragment implements Constants {
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * Listens for repository downloaded from Internet, namely from repository list view adapter
+     * @param event repository downloaded from Internet event
+     */
     public void onEvent(RepositoryDownloadedEvent event) {
         if (event.getException() == null) {
             Toast.makeText(getActivity(), event.getRepository().getAlias()
@@ -90,14 +96,22 @@ public class RepositoryListFragment extends Fragment implements Constants {
         } else {
             Toast.makeText(getActivity(), event.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
-        adapter.updateRepositories(Repository.listAll(Repository.class));
+        mAdapter.updateRepositories(Repository.listAll(Repository.class));
     }
 
+    /**
+     * Listens for repository deleted, namely from repository list view adapter
+     * @param event repository deleted event
+     */
     public void onEvent(RepositoryDeletedEvent event) {
-        adapter.updateRepositories(Repository.listAll(Repository.class));
+        mAdapter.updateRepositories(Repository.listAll(Repository.class));
     }
 
+    /**
+     * Listens for repository added, namely from add repository dialog fragment
+     * @param event repository added event
+     */
     public void onEvent(RepositoryAddedEvent event) {
-        adapter.updateRepositories(Repository.listAll(Repository.class));
+        mAdapter.updateRepositories(Repository.listAll(Repository.class));
     }
 }

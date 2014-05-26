@@ -7,7 +7,7 @@ import android.content.Intent;
 import org.ktachibana.cloudemoji.activities.BootUpDummyActivity;
 
 /**
- * Receives when booted up
+ * Shows notification when booted up
  */
 public class BootUpReceiver extends BroadcastReceiver {
     @Override

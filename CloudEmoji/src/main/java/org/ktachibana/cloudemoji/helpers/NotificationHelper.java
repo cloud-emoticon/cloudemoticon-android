@@ -22,13 +22,21 @@ public class NotificationHelper {
         // Cancel current notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(MainActivity.PERSISTENT_NOTIFICATION_ID);
+
+        // If not showing
         if (notificationVisibility.equals("no")) {
             notificationManager.cancel(MainActivity.PERSISTENT_NOTIFICATION_ID);
-        } else if (notificationVisibility.equals("panel")) {
+        }
+
+        // If only shows in panel
+        else if (notificationVisibility.equals("panel")) {
             Notification notification = buildNotification(context, Notification.PRIORITY_MIN);
             notification.flags = Notification.FLAG_NO_CLEAR;
             notificationManager.notify(MainActivity.PERSISTENT_NOTIFICATION_ID, notification);
-        } else if (notificationVisibility.equals("both")) {
+        }
+
+        // If shows on both panel and status bar
+        else if (notificationVisibility.equals("both")) {
             Notification notification = buildNotification(context, Notification.PRIORITY_DEFAULT);
             notification.flags = Notification.FLAG_NO_CLEAR;
             notificationManager.notify(MainActivity.PERSISTENT_NOTIFICATION_ID, notification);

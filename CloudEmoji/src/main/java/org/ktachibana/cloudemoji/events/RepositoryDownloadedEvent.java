@@ -2,20 +2,23 @@ package org.ktachibana.cloudemoji.events;
 
 import org.ktachibana.cloudemoji.models.Repository;
 
+/**
+ * A repository is downloaded from Internet
+ */
 public class RepositoryDownloadedEvent {
-    private Repository repository;
-    private Exception exception;
+    private Repository mRepository;
+    private Exception mException;
 
     public RepositoryDownloadedEvent(Repository repository, Exception exception) {
-        this.repository = repository;
-        this.exception = exception;
+        this.mRepository = repository;
+        this.mException = exception;
     }
 
     public Repository getRepository() {
-        return repository;
+        return mRepository;
     }
 
     public Exception getException() {
-        return exception;
+        return mException;
     }
 }

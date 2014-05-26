@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import org.ktachibana.cloudemoji.events.StringCopiedEvent;
+import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 
 import java.util.List;
@@ -141,7 +141,7 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
                 try {
                     // Get the string and tell anybody who cared about an emoticon being copied
                     String string = (String) view.getTag();
-                    EventBus.getDefault().post(new StringCopiedEvent(string));
+                    EventBus.getDefault().post(new EmoticonCopiedEvent(string));
                 } catch (ClassCastException e) {
                     e.printStackTrace();
                 }

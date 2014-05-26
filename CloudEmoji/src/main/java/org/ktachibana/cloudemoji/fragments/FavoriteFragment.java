@@ -15,10 +15,10 @@ import butterknife.InjectView;
 
 public class FavoriteFragment extends Fragment {
     @InjectView(R.id.favoriteListView)
-    ListView favoriteListView;
+    ListView mFavoriteListView;
 
     @InjectView(R.id.favoriteEmptyView)
-    RelativeLayout favoriteEmptyView;
+    RelativeLayout mFavoriteEmptyView;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -28,10 +28,11 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Setup views
         View rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
         ButterKnife.inject(this, rootView);
 
-        favoriteListView.setEmptyView(favoriteEmptyView);
+        mFavoriteListView.setEmptyView(mFavoriteEmptyView);
         return rootView;
     }
 

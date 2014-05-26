@@ -2,14 +2,17 @@ package org.ktachibana.cloudemoji.events;
 
 import org.ktachibana.cloudemoji.models.Repository;
 
+/**
+ * A repository is added to database
+ */
 public class RepositoryAddedEvent {
-    private Repository repository;
+    private Repository mRepository;
 
     public RepositoryAddedEvent(Repository repository) {
-        this.repository = repository;
+        this.mRepository = repository;
     }
 
     public Repository getRepository() {
-        return repository;
+        return mRepository;
     }
 }

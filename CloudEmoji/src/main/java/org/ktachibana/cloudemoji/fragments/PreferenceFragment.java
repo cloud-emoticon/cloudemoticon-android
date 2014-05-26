@@ -19,16 +19,16 @@ import org.ktachibana.cloudemoji.R;
  */
 public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment implements Constants {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
-    SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
-    SharedPreferences preferences;
+    SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
+    SharedPreferences mPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Load the preferences from an XML resource
+        // Load the mPreferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 
         // Navbar Gesture
         Preference navbarGesturePref = findPreference(PREF_NAVBAR_GESTURE);
@@ -88,6 +88,6 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
     @Override
     public void onDestroy() {
         super.onDestroy();
-        preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+        mPreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
     }
 }

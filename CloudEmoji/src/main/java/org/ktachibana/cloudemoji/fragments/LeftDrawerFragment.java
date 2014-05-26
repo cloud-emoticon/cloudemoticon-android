@@ -27,9 +27,9 @@ import de.greenrobot.event.EventBus;
 
 public class LeftDrawerFragment extends Fragment implements Constants {
     @InjectView(R.id.leftDrawerSourceListView)
-    LinearListView sourceListView;
+    LinearListView mSourceListView;
     @InjectView(R.id.leftDrawerCategoryListView)
-    LinearListView categoryListView;
+    LinearListView mCategoryListView;
 
     @Override
     public void onCreate(Bundle savedInstanceBundle) {
@@ -40,18 +40,22 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate view
+        // Setup views
         View rootView = inflater.inflate(R.layout.fragment_left_drawer, container, false);
         ButterKnife.inject(this, rootView);
 
         // Setup source list view
         final List<LeftDrawerListItem> sourceListItems = getSourceListItems();
-        sourceListView.setAdapter(new LeftDrawerListViewAdapter(sourceListItems, getActivity()));
-        sourceListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
+        mSourceListView.setAdapter(new LeftDrawerListViewAdapter(sourceListItems, getActivity()));
+        mSourceListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+                /**
+                 * Tell anybody who cares about a repository list item clicked
+                 * Namely anybody is main activity
+                 */
                 EventBus.getDefault()
-                        .post(new RepositoryClickedEvent(sourceListItems.get(i).getmId()));
+                        .post(new RepositoryClickedEvent(sourceListItems.get(i).getId()));
             }
         });
 
@@ -62,31 +66,47 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
 
         // Add local favorite and history
-        items.add(new LeftDrawerListItem(getString(R.string.my_fav), R.drawable.ic_favorite, LIST_ITEM_FAVORITE_ID));
-        items.add(new LeftDrawerListItem(getString(R.string.history), R.drawable.ic_history, LIST_ITEM_HISTORY_ID));
+        items.add(
+                new LeftDrawerListItem(
+                        getString(R.string.my_fav), R.drawable.ic_favorite, LIST_ITEM_FAVORITE_ID));
+        items.add(
+                new LeftDrawerListItem(
+                        getString(R.string.history), R.drawable.ic_history, LIST_ITEM_HISTORY_ID));
 
         // Add remote repositories
         List<Repository> repositories = Repository.listAll(Repository.class);
         for (Repository repository : repositories) {
             if (repository.isAvailable()) {
-                items.add(new LeftDrawerListItem(repository.getAlias(), R.drawable.ic_repository, repository.getId()));
+                items.add(
+                        new LeftDrawerListItem(
+                                repository.getAlias(), R.drawable.ic_repository, repository.getId()));
             }
         }
 
         return items;
     }
 
+    /**
+     * Listens for any repository parsed, namely from main activity
+     * @param event repository parsed event
+     */
     public void onEvent(RepositoryParsedEvent event) {
         List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
+
+        // Fill list items with category names
         final Source source = event.getSource();
         for (Category category : source.getCategories()) {
             items.add(new LeftDrawerListItem(category.getName(), R.drawable.ic_category, 0));
         }
-        categoryListView.setAdapter(new LeftDrawerListViewAdapter(items, getActivity()));
-        categoryListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
+
+        // Setup category list view
+        mCategoryListView.setAdapter(new LeftDrawerListViewAdapter(items, getActivity()));
+
+        // What happens when a category is clicked
+        mCategoryListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-
+                // TODO:
             }
         });
     }
