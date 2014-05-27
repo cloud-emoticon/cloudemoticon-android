@@ -32,7 +32,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/repositoryDeleteButton" />
+                android:layout_toLeftOf="@+id/repositoryEditButton" />
+
+            <ImageButton
+                android:id="@+id/repositoryEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/repositoryDeleteButton"/>
 
             <ImageButton
                 android:id="@+id/repositoryDeleteButton"

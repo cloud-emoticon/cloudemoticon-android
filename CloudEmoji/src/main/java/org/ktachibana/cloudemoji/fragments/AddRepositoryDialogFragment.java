@@ -38,7 +38,8 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Setup views
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View rootView = getActivity().getLayoutInflater().inflate(R.layout.fragment_add_repository_dialog, null);
+        View rootView = getActivity().getLayoutInflater()
+                .inflate(R.layout.fragment_add_repository_dialog, null);
         ButterKnife.inject(this, rootView);
 
         // Setup dialog itself

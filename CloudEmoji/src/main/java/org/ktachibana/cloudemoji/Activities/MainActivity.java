@@ -306,7 +306,7 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Show toast
-        Toast.makeText(MainActivity.this, getString(R.string.copied), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, copied + "\n" + getString(R.string.copied), Toast.LENGTH_SHORT).show();
         boolean isCloseAfterCopy = mPreferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
 
         // Close if you want

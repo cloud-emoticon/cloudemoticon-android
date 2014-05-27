@@ -77,6 +77,10 @@ public class Repository extends SugarRecord<Repository> implements Constants, Pa
         this.isAvailable = isAvailable;
     }
 
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public FormatType getFormatType() {
         if (formatType == FORMAT_TYPE_XML) return FormatType.XML;
         else return FormatType.JSON;

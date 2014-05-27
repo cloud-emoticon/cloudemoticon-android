@@ -13,8 +13,8 @@ import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.models.Source;
 
 public class SourceFragment extends ListFragment {
-    private static final String ARG_SOURCE = "param1";
-    private Source source;
+    private static final String ARG_SOURCE = "source";
+    private Source mSource;
 
     public SourceFragment() {
         // Required empty public constructor
@@ -32,7 +32,7 @@ public class SourceFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            source = getArguments().getParcelable(ARG_SOURCE);
+            mSource = getArguments().getParcelable(ARG_SOURCE);
         }
     }
 
@@ -40,7 +40,7 @@ public class SourceFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Setup contents
-        setListAdapter(new SourceListViewAdapter(getActivity(), source));
+        setListAdapter(new SourceListViewAdapter(getActivity(), mSource));
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -52,7 +52,7 @@ public class SourceFragment extends ListFragment {
         getListView().setDividerHeight(0);
 
         // Setup information footer
-        for (String information : source.getInformation()) {
+        for (String information : mSource.getInformation()) {
             TextView textView = new TextView(getActivity());
             textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
             textView.setText(information);

@@ -17,8 +17,10 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryEditedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 
 import butterknife.ButterKnife;
@@ -95,8 +97,30 @@ public class RepositoryListFragment extends Fragment implements Constants {
                     + " "
                     + getString(R.string.downloaded), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getActivity(), event.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),
+                    event.getException().getLocalizedMessage(),
+                    Toast.LENGTH_SHORT).show();
         }
+        mAdapter.updateRepositories(Repository.listAll(Repository.class));
+    }
+
+    /**
+     * Listens for repository being edited, namely from repository list view adapter
+     *
+     * @param event repository being edited event
+     */
+    public void onEvent(RepositoryBeginEditingEvent event) {
+        EditRepositoryDialogFragment fragment
+                = EditRepositoryDialogFragment.newInstance(event.getRepository());
+        fragment.show(getFragmentManager(), "edit_repository");
+    }
+
+    /**
+     * Listens for repository edited, namely from repository list view adapter
+     *
+     * @param event repository edited event
+     */
+    public void onEvent(RepositoryEditedEvent event) {
         mAdapter.updateRepositories(Repository.listAll(Repository.class));
     }
 

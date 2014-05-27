@@ -14,6 +14,7 @@ import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
@@ -74,6 +75,9 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                 .getDrawable(
                         item.isAvailable() ? (R.drawable.ic_update) : (R.drawable.ic_download)
                 ));
+        viewHolder.editButton.setImageDrawable(mContext
+                .getResources()
+                .getDrawable(R.drawable.ic_edit));
         viewHolder.deleteButton.setImageDrawable(mContext
                         .getResources()
                         .getDrawable(R.drawable.ic_discard)
@@ -115,6 +119,21 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                         });
             }
         });
+
+        // Setup what happens if edit button is clicked
+        viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /**
+                 * Tell anybody who cares about a repository is started edited
+                 * Namely the anybody would be repository list fragment
+                 */
+                EventBus.getDefault().post(new RepositoryBeginEditingEvent(item));
+            }
+        });
+
+        // Setup what happens if delete button is clicked
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,6 +166,8 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         TextView urlTextView;
         @InjectView(R.id.repositoryDownloadButton)
         ImageButton downloadButton;
+        @InjectView(R.id.repositoryEditButton)
+        ImageButton editButton;
         @InjectView(R.id.repositoryDeleteButton)
         ImageButton deleteButton;
 

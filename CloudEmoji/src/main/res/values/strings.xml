@@ -40,6 +40,7 @@
     <string name="note">Note</string>
     <string name="add_entry">Add entry</string>
     <string name="edit_entry">Edit entry</string>
+    <string name="edit_repository">Edit Repository</string>
     <string name="entry_updated">Entry updated</string>
     <string name="version_code">Version code</string>
     <string name="no_repo_prompt">You do not have any repository</string>
