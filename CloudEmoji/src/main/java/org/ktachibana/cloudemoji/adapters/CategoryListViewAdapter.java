@@ -2,12 +2,14 @@ package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 
@@ -15,7 +17,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class CategoryListViewAdapter implements ListAdapter, View.OnClickListener {
+public class CategoryListViewAdapter implements ListAdapter, View.OnClickListener, Constants {
 
     private List<Entry> mCategory;
     private LayoutInflater mInflater;
@@ -143,7 +145,7 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
                     String string = (String) view.getTag();
                     EventBus.getDefault().post(new EmoticonCopiedEvent(string));
                 } catch (ClassCastException e) {
-                    e.printStackTrace();
+                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 }
             }
         }

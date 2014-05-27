@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,10 +12,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.orm.SugarApp;
+
+import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -27,6 +32,14 @@ import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
+import org.ktachibana.cloudemoji.models.Repository;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -134,7 +147,7 @@ public class MainActivity extends BaseActivity implements
         // If hasn't run before
         if (!hasRunBefore) {
             upgradeFavoriteDatabase();
-            saveDefaultRepo();
+            setupDefaultRepo();
 
             // It has run
             SharedPreferences.Editor editor = mPreferences.edit();
@@ -143,8 +156,36 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void saveDefaultRepo() {
-        // TODO: read default xml from assets
+    private void setupDefaultRepo() {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try {
+            // Save record to database
+            Repository defaultRepository = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
+            defaultRepository.save();
+
+            // Load file from assets and save to file system
+            inputStream = getAssets().open("test.xml");
+            File file = new File(
+                    SugarApp.getSugarContext().getFilesDir(), defaultRepository.getFileName());
+            outputStream = new FileOutputStream(file);
+
+            // Copying
+            IOUtils.copy(inputStream, outputStream);
+
+            // Set available to true and SAVE
+            defaultRepository.setAvailable(true);
+            defaultRepository.save();
+        } catch (FileNotFoundException e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        } catch (IOException e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(outputStream);
+        }
+
     }
 
     private void upgradeFavoriteDatabase() {
@@ -275,7 +316,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void onEvent(LocalRepositoryClickedEvent event) {
-        mCurrentSourceFragment = null; // Force GC
+        mCurrentSourceFragment = null;
 
         long id = event.getId();
         // Favorite
@@ -292,7 +333,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void onEvent(RemoteRepositoryParsedEvent event) {
-        this.mCurrentSourceFragment = SourceFragment.newInstance(event.getSource());
+        mCurrentSourceFragment = SourceFragment.newInstance(event.getSource());
         replaceMainContainer(mCurrentSourceFragment);
     }
 

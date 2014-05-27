@@ -2,6 +2,7 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +120,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                 Toast.makeText(getActivity(), getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
                         .show();
             } catch (IOException e) {
-                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(DEBUG_TAG, e.getLocalizedMessage());
             }
         } catch (FileNotFoundException e) {
             Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

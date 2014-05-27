@@ -27,4 +27,7 @@ public interface Constants {
     public static final String DEFAULT_REPOSITORY_URL = "https://dl.dropboxusercontent.com/u/120725807/test.xml";
     public static final String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
     public static final String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
+
+    // Debug tag
+    public static final String DEBUG_TAG = "CloudEmoticon";
 }
