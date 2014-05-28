@@ -123,9 +123,7 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                                     EventBus.getDefault().post(new RepositoryDownloadedEvent(item, e));
                                 }
                             });
-                }
-                else
-                {
+                } else {
                     Toast.makeText(mContext, mContext.getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
                 }
 

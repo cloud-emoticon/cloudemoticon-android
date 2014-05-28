@@ -34,7 +34,7 @@
     <string name="remove_from_fav">Remove from my favorites</string>
     <string name="removed_from_fav">Entry removed</string>
     <string name="notification_visibility">Notification visibility</string>
-    <string name="show_after_boot_up">Show the notification after boot-up</string>
+    <string name="show_after_boot_up">Show notification after boot-up</string>
     <string name="override_system_font">Override system font</string>
     <string name="string">String</string>
     <string name="note">Note</string>

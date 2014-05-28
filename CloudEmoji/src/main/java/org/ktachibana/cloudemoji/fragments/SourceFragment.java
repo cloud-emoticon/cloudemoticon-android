@@ -45,8 +45,8 @@ public class SourceFragment extends ListFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         // Setup style
         getListView().setDivider(null);
         getListView().setDividerHeight(0);
