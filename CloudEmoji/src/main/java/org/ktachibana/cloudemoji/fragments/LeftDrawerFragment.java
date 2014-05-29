@@ -37,10 +37,32 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class LeftDrawerFragment extends Fragment implements Constants {
+    private static final String PARSE_ON_FIRST_TIME_ID_TAG = "firstTime";
     @InjectView(R.id.leftDrawerSourceListView)
     LinearListView mSourceListView;
     @InjectView(R.id.leftDrawerCategoryListView)
     LinearListView mCategoryListView;
+    private long mParseOnFirstTimeId;
+
+    public LeftDrawerFragment() {
+        // Required public constructor
+    }
+
+    public static LeftDrawerFragment newInstance(long id) {
+        LeftDrawerFragment fragment = new LeftDrawerFragment();
+        Bundle args = new Bundle();
+        args.putLong(PARSE_ON_FIRST_TIME_ID_TAG, id);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParseOnFirstTimeId = getArguments().getLong(PARSE_ON_FIRST_TIME_ID_TAG);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,27 +96,38 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                  * Namely the anyone is main activity
                  */
                 else {
-                    Source source = readSourceFromFile(id);
-                    if (source != null) {
-                        mCategoryListView.setAdapter(
-                                new LeftDrawerListViewAdapter(
-                                        getCategoryListItems(source), getActivity())
-                        );
-                        mCategoryListView.setOnItemClickListener(
-                                new LinearListView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-                                        EventBus.getDefault().post(new CategoryClickedEvent(i));
-                                    }
-                                }
-                        );
-                        EventBus.getDefault().post(new RemoteRepositoryParsedEvent(source));
-                    }
+                    EventBus.getDefault()
+                            .post(new RemoteRepositoryParsedEvent(setupCategoryListView(id), id));
                 }
             }
         });
 
+        // Setup first time category list view if it is valid remote repository
+        if (mParseOnFirstTimeId >= 0) {
+            if (Repository.findById(Repository.class, mParseOnFirstTimeId) != null) {
+                setupCategoryListView(mParseOnFirstTimeId);
+            }
+        }
         return rootView;
+    }
+
+    private Source setupCategoryListView(long repositoryId) {
+        Source source = readSourceFromFile(repositoryId);
+        if (source != null) {
+            mCategoryListView.setAdapter(
+                    new LeftDrawerListViewAdapter(
+                            getCategoryListItems(source), getActivity())
+            );
+            mCategoryListView.setOnItemClickListener(
+                    new LinearListView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+                            EventBus.getDefault().post(new CategoryClickedEvent(i));
+                        }
+                    }
+            );
+        }
+        return source;
     }
 
     private Source readSourceFromFile(long id) {

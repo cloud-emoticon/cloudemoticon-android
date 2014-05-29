@@ -32,6 +32,7 @@ import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
 import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.models.Source;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,18 +50,19 @@ public class MainActivity extends BaseActivity implements
         Constants,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
+    private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
     // Views
     @Optional // Optional because on split view it doesn't exist
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
     private SourceFragment mCurrentSourceFragment;
-
+    // State
+    private long mCurrentRepositoryId;
     // etc
     private SharedPreferences mPreferences;
     private boolean mIsDrawerStatic;
-    private long mCurrentRepositoryId;
-    private long mCurrentCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +84,42 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
-        // If starting fresh new, setup left drawer
-        if (savedInstanceState == null) setupLeftDrawer();
+        // If not starting from refresh new, get which repository is displaying
+        if (savedInstanceState != null) {
+            mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
+        }
+
+        // Else, set it to display default
+        else {
+            mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
+        }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mCurrentRepositoryId < 0) {
+            displayRepository(mCurrentRepositoryId);
+        }
+
+        /**
+         * If coming back from repository manager and id is no longer valid
+         * We need to correct this
+         */
+        else {
+            if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
+                displayRepository(DEFAULT_REPOSITORY_ID);
+            }
+        }
+
+        /**
+         * Then setup the left drawer with current repository id
+         * Left drawer will parse and display categories if it is remote repository
+         */
+        setupLeftDrawer(mCurrentRepositoryId);
+    }
+
 
     private void setupLayout() {
         // Set up UI layout according to user preference for drawer and split view
@@ -191,10 +226,10 @@ public class MainActivity extends BaseActivity implements
         // TODO: upgrade favorite database if exists
     }
 
-    private void setupLeftDrawer() {
+    private void setupLeftDrawer(long repositoryId) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.leftDrawer, new LeftDrawerFragment())
+                .replace(R.id.leftDrawer, LeftDrawerFragment.newInstance(repositoryId))
                 .commit();
     }
 
@@ -315,25 +350,11 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void onEvent(LocalRepositoryClickedEvent event) {
-        mCurrentSourceFragment = null;
-
-        long id = event.getId();
-        // Favorite
-        if (id == LIST_ITEM_FAVORITE_ID) {
-            replaceMainContainer(new FavoriteFragment());
-        }
-
-        // History
-        else if (id == LIST_ITEM_HISTORY_ID) {
-            replaceMainContainer(new HistoryFragment());
-        }
-
-        mDrawerLayout.closeDrawers();
+        displayRepository(event.getId());
     }
 
     public void onEvent(RemoteRepositoryParsedEvent event) {
-        mCurrentSourceFragment = SourceFragment.newInstance(event.getSource());
-        replaceMainContainer(mCurrentSourceFragment);
+        displayRepository(event.getId(), event.getSource());
     }
 
     public void onEvent(CategoryClickedEvent event) {
@@ -342,6 +363,48 @@ public class MainActivity extends BaseActivity implements
             mCurrentSourceFragment.getListView().setSelection(event.getIndex());
             mDrawerLayout.closeDrawers();
         }
+    }
+
+    private void displayRepository(long repositoryId) {
+        displayRepository(repositoryId, null);
+    }
+
+    /**
+     * This works like a FSM and manages changes need to make when displaying a repository
+     * except for categories column
+     *
+     * @param repositoryId repository id
+     * @param source       Source object
+     */
+    private void displayRepository(long repositoryId, Source source) {
+        // If it is a local repository
+        if (repositoryId < 0) {
+            // Nullify source fragment
+            mCurrentSourceFragment = null;
+
+            // Switch to correct fragment
+            if (repositoryId == LIST_ITEM_FAVORITE_ID)
+                replaceMainContainer(new FavoriteFragment());
+            if (repositoryId == LIST_ITEM_HISTORY_ID)
+                replaceMainContainer(new HistoryFragment());
+
+            // Close drawers
+            mDrawerLayout.closeDrawers();
+        }
+
+        // Else it is a remote repository with a parsed source
+        else {
+            // Create source fragment and switch
+            if (source != null) {
+                mCurrentSourceFragment = SourceFragment.newInstance(source);
+                replaceMainContainer(mCurrentSourceFragment);
+            }
+
+            // Do not close drawers
+        }
+
+        // Set current repository id
+        mCurrentRepositoryId = repositoryId;
     }
 
     private void replaceMainContainer(Fragment fragment) {
@@ -357,4 +420,11 @@ public class MainActivity extends BaseActivity implements
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Save current repository ID
+        outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
+
+        super.onSaveInstanceState(outState);
+    }
 }

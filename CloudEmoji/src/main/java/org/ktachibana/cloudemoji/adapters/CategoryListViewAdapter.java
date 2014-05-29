@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.orm.StringUtil;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -19,7 +16,6 @@ import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -28,16 +24,14 @@ import de.greenrobot.event.EventBus;
 
 public class CategoryListViewAdapter extends BaseAdapter implements View.OnClickListener, Constants {
 
-    private Context mContext;
-    private List<Entry> mCategory;
-    private List<Favorite> mFavorites;
-
+    // SQL clauses
+    private static final String FIND_BY_EMOTICON = "emoticon = ? ";
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
-
-    // SQL clauses
-    private static final String FIND_BY_EMOTICON = "emoticon = ? ";
+    private Context mContext;
+    private List<Entry> mCategory;
+    private List<Favorite> mFavorites;
 
     public CategoryListViewAdapter(Context context, List<Entry> category) {
         this.mContext = context;
@@ -120,8 +114,7 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
                 }
 
                 // Else add to db
-                else
-                {
+                else {
                     Favorite savedFavorite
                             = new Favorite(mContext, entry.getEmoticon(), entry.getDescription());
                     savedFavorite.save();
