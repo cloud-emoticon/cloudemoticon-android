@@ -138,7 +138,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         // Add local favorite and history
         items.add(
                 new LeftDrawerListItem(
-                        getString(R.string.my_fav), R.drawable.ic_favorite, LIST_ITEM_FAVORITE_ID)
+                        getString(R.string.fav), R.drawable.ic_favorite, LIST_ITEM_FAVORITE_ID)
         );
         items.add(
                 new LeftDrawerListItem(

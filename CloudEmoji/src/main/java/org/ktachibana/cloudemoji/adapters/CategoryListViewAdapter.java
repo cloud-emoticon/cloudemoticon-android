@@ -1,40 +1,50 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
-import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.orm.StringUtil;
 
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
+import org.ktachibana.cloudemoji.models.Favorite;
 
+import java.util.HashMap;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class CategoryListViewAdapter implements ListAdapter, View.OnClickListener, Constants {
+public class CategoryListViewAdapter extends BaseAdapter implements View.OnClickListener, Constants {
 
+    private Context mContext;
     private List<Entry> mCategory;
-    private LayoutInflater mInflater;
+    private List<Favorite> mFavorites;
+
+    // Constant drawables
+    Drawable mNoStarDrawable;
+    Drawable mStarDrawable;
+
+    // SQL clauses
+    private static final String FIND_BY_EMOTICON = "emoticon = ? ";
 
     public CategoryListViewAdapter(Context context, List<Entry> category) {
+        this.mContext = context;
         this.mCategory = category;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver dataSetObserver) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
-
+        mFavorites = Favorite.listAll(Favorite.class);
+        mNoStarDrawable = mContext.getResources().getDrawable(R.drawable.ic_unfavorite);
+        mStarDrawable = mContext.getResources().getDrawable(R.drawable.ic_favorite);
     }
 
     @Override
@@ -43,8 +53,8 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
     }
 
     @Override
-    public Entry getItem(int position) {
-        return mCategory.get(position);
+    public Object getItem(int i) {
+        return mCategory.get(i);
     }
 
     @Override
@@ -53,88 +63,77 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        // Get string and note
-        Entry entry = mCategory.get(position);
-        String string = entry.getEmoticon();
-        String note = entry.getDescription();
-
-        // If no note included
-        if (note.equals("")) {
-            // Inflate the view if not
-            TextView view = (TextView) convertView;
-            if (view == null) {
-                view = (TextView) mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            }
-
-            // Set text
-            view.setText(string);
-
-            // TODO: hacky!
-            view.setTag(string);
-            view.setOnClickListener(this);
-
-            return view;
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        // Standard view holder pattern
+        final ViewHolder viewHolder;
+        if (view == null) {
+            LayoutInflater inflater
+                    = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.list_item_entry, viewGroup, false);
+            viewHolder = new ViewHolder(view);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
 
-        // Else included
-        else {
-            // Inflate the view if not
-            View view = convertView;
-            if (view == null) {
-                view = mInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+        final Entry entry = mCategory.get(i);
+
+        // Setup emoticon
+        viewHolder.emoticon.setText(entry.getEmoticon());
+
+        // If no description, then hide it, else set it
+        boolean hasDescription = entry.getDescription().equals("");
+        if (hasDescription)
+            // TODO: when it's GONE, favorite star goes to bottom
+            viewHolder.description.setVisibility(View.GONE);
+        else
+            viewHolder.description.setText(entry.getDescription());
+
+        // Setup star
+        // TODO: this is laggy!
+        boolean isStared = false;
+        for (Favorite favorite : mFavorites) {
+            if (favorite.getEmoticon().equals(entry.getEmoticon())) {
+                isStared = true;
+                break;
             }
-
-            // Find views
-            TextView lineOne = (TextView) view.findViewById(android.R.id.text1);
-            TextView lineTwo = (TextView) view.findViewById(android.R.id.text2);
-
-            // Set emoticon text
-            lineOne.setText(string);
-
-            // TODO: hacky!
-            lineOne.setTag(string);
-            lineOne.setOnClickListener(this);
-
-            // Set description text
-            lineTwo.setText(note);
-
-            return view;
         }
+        viewHolder.favorite.setImageDrawable(isStared ? mStarDrawable : mNoStarDrawable);
+
+        // Setup click listener
+        viewHolder.emoticon.setOnClickListener(this);
+        viewHolder.emoticon.setTag(entry.getEmoticon());
+        viewHolder.description.setOnClickListener(this);
+        viewHolder.description.setTag(entry.getEmoticon());
+        viewHolder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Favorite> findFavorite = Favorite.find(
+                        Favorite.class,
+                        FIND_BY_EMOTICON,
+                        new String[]{entry.getEmoticon()});
+
+                // If finds anything, delete it
+                if (findFavorite.size() != 0) {
+                    findFavorite.get(0).delete();
+                    viewHolder.favorite.setImageDrawable(mNoStarDrawable);
+                }
+
+                // Else add to db
+                else
+                {
+                    Favorite savedFavorite
+                            = new Favorite(mContext, entry.getEmoticon(), entry.getDescription());
+                    savedFavorite.save();
+                    viewHolder.favorite.setImageDrawable(mStarDrawable);
+                }
+                int i = 0;
+            }
+        });
+        return view;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return (mCategory.get(position).getDescription().equals("")) ? 0 : 1;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return mCategory.isEmpty();
-    }
-
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled(int i) {
-        return false;
-    }
-
-    // TODO: hacky!
+    // TODO: too hacky!
     @Override
     public void onClick(View view) {
         // If it is the text view containing emoticon pressed
@@ -148,6 +147,19 @@ public class CategoryListViewAdapter implements ListAdapter, View.OnClickListene
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 }
             }
+        }
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.entryEmoticonTextView)
+        TextView emoticon;
+        @InjectView(R.id.entryDescriptionTextView)
+        TextView description;
+        @InjectView(R.id.entryFavoriteImageView)
+        ImageView favorite;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
         }
     }
 }

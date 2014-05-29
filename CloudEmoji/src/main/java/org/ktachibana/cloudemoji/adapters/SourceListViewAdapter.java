@@ -42,7 +42,7 @@ public class SourceListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        // Standard view holder patterm
+        // Standard view holder pattern
         ViewHolder viewHolder;
         if (view == null) {
             LayoutInflater inflater

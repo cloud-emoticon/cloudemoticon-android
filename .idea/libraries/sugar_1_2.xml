@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/CloudEmoji/libs/sugar-1.2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../sugar/library/src" />
+    </SOURCES>
   </library>
 </component>

@@ -10,17 +10,15 @@ import com.orm.SugarRecord;
 public class Favorite extends SugarRecord<Favorite> {
     private String emoticon;
     private String description;
-    private int arrangingOrder;
 
     public Favorite(Context context) {
         super(context);
     }
 
-    public Favorite(Context context, String emoticon, String description, int order) {
+    public Favorite(Context context, String emoticon, String description) {
         super(context);
         this.emoticon = emoticon;
         this.description = description;
-        this.arrangingOrder = order;
     }
 
     public String getEmoticon() {
@@ -31,7 +29,4 @@ public class Favorite extends SugarRecord<Favorite> {
         return description;
     }
 
-    public int getArrangingOrder() {
-        return arrangingOrder;
-    }
 }
