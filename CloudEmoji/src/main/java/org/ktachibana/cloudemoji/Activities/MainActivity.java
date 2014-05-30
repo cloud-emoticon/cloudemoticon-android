@@ -25,18 +25,22 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
+import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.helpers.NotificationHelper;
+import org.ktachibana.cloudemoji.helpers.SourceXmlParser;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -52,14 +56,16 @@ public class MainActivity extends BaseActivity implements
 
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
+    private static final String CURRENT_REPOSITORY_SOURCE_TAG = "currentRepositorySource";
     // Views
     @Optional // Optional because on split view it doesn't exist
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
-    private SourceFragment mCurrentSourceFragment;
     // State
     private long mCurrentRepositoryId;
+    private Source mCurrentSource;
+    private SourceFragment mCurrentSourceFragment;
     // etc
     private SharedPreferences mPreferences;
     private boolean mIsDrawerStatic;
@@ -84,14 +90,16 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
-        // If not starting from refresh new, get which repository is displaying
+        // If not starting from refresh new, get which repository is displaying and its source
         if (savedInstanceState != null) {
             mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
+            mCurrentSource = (Source) savedInstanceState.getSerializable(CURRENT_REPOSITORY_SOURCE_TAG);
         }
 
         // Else, set it to display default
         else {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
+            mCurrentSource = null;
         }
     }
 
@@ -99,25 +107,22 @@ public class MainActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
 
-        if (mCurrentRepositoryId < 0) {
-            displayRepository(mCurrentRepositoryId);
-        }
-
         /**
-         * If coming back from repository manager and id is no longer valid
-         * We need to correct this
+         * If coming back from repository manager, the current id may not be valid
+         * So we want to check for that and set it to default if it is invalid
          */
-        else {
+        if (mCurrentRepositoryId >= 0) {
             if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
-                displayRepository(DEFAULT_REPOSITORY_ID);
+                mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
+                mCurrentSource = null;
             }
         }
 
-        /**
-         * Then setup the left drawer with current repository id
-         * Left drawer will parse and display categories if it is remote repository
-         */
-        setupLeftDrawer(mCurrentRepositoryId);
+        // Setup left drawer with repository id and source
+        setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
+
+        // Switch to the repository
+        displayRepository(mCurrentRepositoryId, mCurrentSource);
     }
 
 
@@ -226,10 +231,10 @@ public class MainActivity extends BaseActivity implements
         // TODO: upgrade favorite database if exists
     }
 
-    private void setupLeftDrawer(long repositoryId) {
+    private void setupLeftDrawer(long repositoryId, Source source) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.leftDrawer, LeftDrawerFragment.newInstance(repositoryId))
+                .replace(R.id.leftDrawer, LeftDrawerFragment.newInstance(repositoryId, source))
                 .commit();
     }
 
@@ -350,23 +355,19 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void onEvent(LocalRepositoryClickedEvent event) {
-        displayRepository(event.getId());
+        displayRepository(event.getId(), null);
     }
 
-    public void onEvent(RemoteRepositoryParsedEvent event) {
-        displayRepository(event.getId(), event.getSource());
+    public void onEvent(RemoteRepositoryClickedEvent event) {
+        displayRepository(event.getId(), readSourceFromFile(event.getId()));
     }
 
     public void onEvent(CategoryClickedEvent event) {
         // ni kan kan ni, you see see you
         if (mCurrentSourceFragment != null) {
             mCurrentSourceFragment.getListView().setSelection(event.getIndex());
-            mDrawerLayout.closeDrawers();
+            closeDrawers();
         }
-    }
-
-    private void displayRepository(long repositoryId) {
-        displayRepository(repositoryId, null);
     }
 
     /**
@@ -389,22 +390,24 @@ public class MainActivity extends BaseActivity implements
                 replaceMainContainer(new HistoryFragment());
 
             // Close drawers
-            mDrawerLayout.closeDrawers();
+            closeDrawers();
         }
 
         // Else it is a remote repository with a parsed source
         else {
-            // Create source fragment and switch
+            // Create source fragment and switch, notify left drawer
             if (source != null) {
                 mCurrentSourceFragment = SourceFragment.newInstance(source);
                 replaceMainContainer(mCurrentSourceFragment);
+                EventBus.getDefault().post(new RemoteRepositoryParsedEvent(repositoryId, source));
             }
 
             // Do not close drawers
         }
 
-        // Set current repository id
+        // Set current repository id and source
         mCurrentRepositoryId = repositoryId;
+        mCurrentSource = source;
     }
 
     private void replaceMainContainer(Fragment fragment) {
@@ -412,6 +415,44 @@ public class MainActivity extends BaseActivity implements
                 .beginTransaction()
                 .replace(R.id.mainContainer, fragment)
                 .commit();
+    }
+
+    private void closeDrawers() {
+        if (!mIsDrawerStatic) mDrawerLayout.closeDrawers();
+    }
+
+    private Source readSourceFromFile(long id) {
+        Source source = null;
+
+        // Get repository file name
+        String fileName = Repository.findById(Repository.class, id).getFileName();
+
+        // Read the file from file system
+        File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
+
+        // Read it
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(file);
+            try {
+                // Parse source from file
+                source = new SourceXmlParser().parse(fileReader);
+            }
+
+            // Parser error
+            catch (XmlPullParserException e) {
+                Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
+                        .show();
+            } catch (IOException e) {
+                Log.e(DEBUG_TAG, e.getLocalizedMessage());
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+            IOUtils.closeQuietly(fileReader);
+        }
+
+        return source;
     }
 
     @Override
@@ -422,8 +463,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // Save current repository ID
+        // Save current repository ID and source
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
+        outState.putSerializable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
 
         super.onSaveInstanceState(outState);
     }

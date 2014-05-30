@@ -3,22 +3,22 @@ package org.ktachibana.cloudemoji.events;
 import org.ktachibana.cloudemoji.models.Source;
 
 /**
- * A repository is read and parsed to source
+ * Remote repository parsed event
  */
 public class RemoteRepositoryParsedEvent {
-    private Source mSource;
     private long mId;
+    private Source mSource;
 
-    public RemoteRepositoryParsedEvent(Source source, long id) {
-        this.mSource = source;
+    public RemoteRepositoryParsedEvent(long id, Source source) {
         this.mId = id;
-    }
-
-    public Source getSource() {
-        return mSource;
+        this.mSource = source;
     }
 
     public long getId() {
         return mId;
+    }
+
+    public Source getSource() {
+        return mSource;
     }
 }
