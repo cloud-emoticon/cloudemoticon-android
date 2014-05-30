@@ -45,7 +45,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         LeftDrawerFragment fragment = new LeftDrawerFragment();
         Bundle args = new Bundle();
         args.putLong(PARSE_ON_FIRST_TIME_ID_TAG, id);
-        args.putSerializable(PARSE_ON_FIRST_TIME_SOURCE_TAG, source);
+        args.putParcelable(PARSE_ON_FIRST_TIME_SOURCE_TAG, source);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +57,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
             mParseOnFirstTimeId
                     = getArguments().getLong(PARSE_ON_FIRST_TIME_ID_TAG);
             mParseOnFirstTimeSource
-                    = (Source) getArguments().getSerializable(PARSE_ON_FIRST_TIME_SOURCE_TAG);
+                    = getArguments().getParcelable(PARSE_ON_FIRST_TIME_SOURCE_TAG);
         }
         EventBus.getDefault().register(this);
     }

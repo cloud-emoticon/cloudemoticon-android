@@ -23,7 +23,7 @@ public class SourceFragment extends ListFragment {
     public static SourceFragment newInstance(Source source) {
         SourceFragment fragment = new SourceFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_SOURCE, source);
+        args.putParcelable(ARG_SOURCE, source);
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,7 +32,7 @@ public class SourceFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mSource = (Source) getArguments().getSerializable(ARG_SOURCE);
+            mSource = getArguments().getParcelable(ARG_SOURCE);
         }
     }
 
