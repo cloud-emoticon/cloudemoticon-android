@@ -43,7 +43,7 @@ public class SourceListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         // Standard view holder pattern
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (view == null) {
             LayoutInflater inflater
                     = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,18 +57,14 @@ public class SourceListViewAdapter extends BaseAdapter {
         // Setup contents
         final Category category = mSource.getCategories().get(i);
         viewHolder.categoryTitleTextView.setText(category.getName());
-        viewHolder.categoryContentsListView.setAdapter(
-                new CategoryListViewAdapter(mContext, category.getEntries()));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                viewHolder.categoryContentsListView.setAdapter(
+                        new CategoryListViewAdapter(mContext, category.getEntries()));
+            }
+        }).run();
 
-
-        viewHolder.categoryContentsListView.setOnItemClickListener(
-                new LinearListView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(LinearListView linearListView, View view, int i, long l) {
-                        // TODO: this is somehow not responding!
-                    }
-                }
-        );
         return view;
     }
 

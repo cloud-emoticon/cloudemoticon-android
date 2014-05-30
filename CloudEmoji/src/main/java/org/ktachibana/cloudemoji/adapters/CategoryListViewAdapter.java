@@ -78,7 +78,6 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
         // If no description, then hide it, else set it
         boolean hasDescription = entry.getDescription().equals("");
         if (hasDescription)
-            // TODO: when it's GONE, favorite star goes to bottom
             viewHolder.description.setVisibility(View.GONE);
         else
             viewHolder.description.setText(entry.getDescription());
@@ -120,7 +119,6 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
                     savedFavorite.save();
                     viewHolder.favorite.setImageDrawable(mStarDrawable);
                 }
-                int i = 0;
             }
         });
         return view;
