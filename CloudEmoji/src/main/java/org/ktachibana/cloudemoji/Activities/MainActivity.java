@@ -24,6 +24,8 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
+import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
@@ -93,7 +95,7 @@ public class MainActivity extends BaseActivity implements
         // If not starting from refresh new, get which repository is displaying and its source
         if (savedInstanceState != null) {
             mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
-            mCurrentSource = (Source) savedInstanceState.getSerializable(CURRENT_REPOSITORY_SOURCE_TAG);
+            mCurrentSource = savedInstanceState.getParcelable(CURRENT_REPOSITORY_SOURCE_TAG);
         }
 
         // Else, set it to display default
@@ -370,6 +372,22 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    public void onEvent(FavoriteAddedEvent event) {
+        Toast.makeText(
+                this,
+                event.getEmoticon() + "\n" + getString(R.string.added_to_fav),
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
+    public void onEvent(FavoriteDeletedEvent event) {
+        Toast.makeText(
+                this,
+                event.getEmoticon() + "\n" + getString(R.string.removed_from_fav),
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
     /**
      * This works like a FSM and manages changes need to make when displaying a repository
      * except for categories column
@@ -465,7 +483,7 @@ public class MainActivity extends BaseActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         // Save current repository ID and source
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
-        outState.putSerializable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
+        outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
 
         super.onSaveInstanceState(outState);
     }

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
+import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 
@@ -110,6 +112,7 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
                 if (findFavorite.size() != 0) {
                     findFavorite.get(0).delete();
                     viewHolder.favorite.setImageDrawable(mNoStarDrawable);
+                    EventBus.getDefault().post(new FavoriteDeletedEvent(entry.getEmoticon()));
                 }
 
                 // Else add to db
@@ -118,6 +121,7 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
                             = new Favorite(mContext, entry.getEmoticon(), entry.getDescription());
                     savedFavorite.save();
                     viewHolder.favorite.setImageDrawable(mStarDrawable);
+                    EventBus.getDefault().post(new FavoriteAddedEvent(entry.getEmoticon()));
                 }
             }
         });
