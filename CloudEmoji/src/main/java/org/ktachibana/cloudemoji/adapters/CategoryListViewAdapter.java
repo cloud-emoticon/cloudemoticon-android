@@ -150,7 +150,7 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
         TextView emoticon;
         @InjectView(R.id.entryDescriptionTextView)
         TextView description;
-        @InjectView(R.id.entryFavoriteImageView)
+        @InjectView(R.id.entryStarImageView)
         ImageView favorite;
 
         ViewHolder(View view) {

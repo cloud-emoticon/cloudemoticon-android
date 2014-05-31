@@ -56,7 +56,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
 
         // Setup contents
         mRepositoryListView.setEmptyView(mRepositoryEmptyView);
-        this.mAdapter = new RepositoryListViewAdapter(Repository.listAll(Repository.class), getActivity());
+        this.mAdapter = new RepositoryListViewAdapter(getActivity());
         mRepositoryListView.setAdapter(mAdapter);
 
         return rootView;
@@ -101,7 +101,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
                     event.getException().getLocalizedMessage(),
                     Toast.LENGTH_SHORT).show();
         }
-        mAdapter.updateRepositories(Repository.listAll(Repository.class));
+        mAdapter.updateRepositories();
     }
 
     /**
@@ -121,16 +121,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
      * @param event repository edited event
      */
     public void onEvent(RepositoryEditedEvent event) {
-        mAdapter.updateRepositories(Repository.listAll(Repository.class));
-    }
-
-    /**
-     * Listens for repository deleted, namely from repository list view adapter
-     *
-     * @param event repository deleted event
-     */
-    public void onEvent(RepositoryDeletedEvent event) {
-        mAdapter.updateRepositories(Repository.listAll(Repository.class));
+        mAdapter.updateRepositories();
     }
 
     /**
@@ -139,6 +130,6 @@ public class RepositoryListFragment extends Fragment implements Constants {
      * @param event repository added event
      */
     public void onEvent(RepositoryAddedEvent event) {
-        mAdapter.updateRepositories(Repository.listAll(Repository.class));
+        mAdapter.updateRepositories();
     }
 }

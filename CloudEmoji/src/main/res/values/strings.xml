@@ -25,6 +25,7 @@
     <string name="version">Version</string>
     <string name="local">Local</string>
     <string name="fav">Favorites</string>
+    <string name="add_to_fav">Add to favorite</string>
     <string name="split_view_title">Navigation drawer/Split view</string>
     <string name="split_view_summary">Need to restart app</string>
     <string name="ui">UI</string>

@@ -30,22 +30,22 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class RepositoryListViewAdapter extends BaseAdapter {
-    private List<Repository> mItems;
+    private List<Repository> mRepositories;
     private Context mContext;
 
-    public RepositoryListViewAdapter(List<Repository> items, Context context) {
-        this.mItems = items;
+    public RepositoryListViewAdapter(Context context) {
+        this.mRepositories = Repository.listAll(Repository.class);
         this.mContext = context;
     }
 
     @Override
     public int getCount() {
-        return mItems.size();
+        return mRepositories.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mItems.get(i);
+        return mRepositories.get(i);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         }
 
         // Get the item
-        final Repository item = mItems.get(i);
+        final Repository item = mRepositories.get(i);
 
         // Setup contents
         viewHolder.aliasTextView.setText(item.getAlias());
@@ -154,19 +154,17 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                         , item.getFileName());
                 deletedFile.delete();
 
-                /**
-                 * Tell anybody who cares about a repository being deleted
-                 * Namely the anybody would be repository list fragment
-                 */
-                EventBus.getDefault().post(new RepositoryDeletedEvent(item));
+                // Update list
+                mRepositories.remove(item);
+                notifyDataSetChanged();
             }
         });
 
         return view;
     }
 
-    public void updateRepositories(List<Repository> repositories) {
-        this.mItems = repositories;
+    public void updateRepositories() {
+        this.mRepositories = Repository.listAll(Repository.class);
         notifyDataSetChanged();
     }
 
