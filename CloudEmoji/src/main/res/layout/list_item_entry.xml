@@ -7,28 +7,7 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/entryEmoticonTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Emoticon"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/entryDescriptionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
-    </LinearLayout>
-
+    <include layout="@layout/view_double_line_emoticon" />
 
     <ImageView
         android:id="@+id/entryStarImageView"

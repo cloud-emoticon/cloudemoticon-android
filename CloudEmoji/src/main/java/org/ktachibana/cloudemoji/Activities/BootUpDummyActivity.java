@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.helpers.NotificationHelper;
+import org.ktachibana.cloudemoji.utils.NotificationHelper;
 
 /**
  * Dummy activity that shows notification after boot up

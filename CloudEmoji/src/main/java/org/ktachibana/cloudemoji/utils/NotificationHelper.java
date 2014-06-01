@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.helpers;
+package org.ktachibana.cloudemoji.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;

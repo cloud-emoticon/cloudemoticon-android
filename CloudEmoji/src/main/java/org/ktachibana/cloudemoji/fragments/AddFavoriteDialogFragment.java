@@ -106,8 +106,7 @@ public class AddFavoriteDialogFragment extends DialogFragment implements Constan
                     EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
 
                     // Notify target fragment about it
-                    try
-                    {
+                    try {
                         ((FavoriteFragment) getTargetFragment()).notifyFavoriteAdded();
                     } catch (ClassCastException e) {
                         Log.e(DEBUG_TAG, e.getLocalizedMessage());

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 
@@ -17,8 +18,11 @@ public class HistoryFragment extends Fragment {
     @InjectView(R.id.historyListView)
     ListView mHistoryListView;
 
-    @InjectView(R.id.historyEmptyView)
+    @InjectView(R.id.emptyView)
     RelativeLayout mHistoryEmptyView;
+
+    @InjectView(R.id.emptyViewTextView)
+    TextView mEmptyViewTextView;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -33,6 +37,7 @@ public class HistoryFragment extends Fragment {
         ButterKnife.inject(this, rootView);
 
         mHistoryListView.setEmptyView(mHistoryEmptyView);
+        mEmptyViewTextView.setText(getString(R.string.no_history_prompt));
         return rootView;
     }
 

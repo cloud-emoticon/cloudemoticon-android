@@ -33,10 +33,10 @@ import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
-import org.ktachibana.cloudemoji.helpers.NotificationHelper;
-import org.ktachibana.cloudemoji.helpers.SourceXmlParser;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.utils.NotificationHelper;
+import org.ktachibana.cloudemoji.utils.SourceXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;

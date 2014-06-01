@@ -146,9 +146,9 @@ public class CategoryListViewAdapter extends BaseAdapter implements View.OnClick
     }
 
     static class ViewHolder {
-        @InjectView(R.id.entryEmoticonTextView)
+        @InjectView(R.id.emoticonTextView)
         TextView emoticon;
-        @InjectView(R.id.entryDescriptionTextView)
+        @InjectView(R.id.descriptionTextView)
         TextView description;
         @InjectView(R.id.entryStarImageView)
         ImageView favorite;

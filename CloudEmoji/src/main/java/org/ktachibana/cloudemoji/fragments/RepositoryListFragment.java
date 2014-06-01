@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
@@ -29,8 +30,11 @@ public class RepositoryListFragment extends Fragment implements Constants {
     @InjectView(R.id.repositoryListView)
     ListView mRepositoryListView;
 
-    @InjectView(R.id.repositoryEmptyView)
+    @InjectView(R.id.emptyView)
     RelativeLayout mRepositoryEmptyView;
+
+    @InjectView(R.id.emptyViewTextView)
+    TextView mEmptyViewTextView;
 
     private RepositoryListViewAdapter mAdapter;
 
@@ -54,6 +58,7 @@ public class RepositoryListFragment extends Fragment implements Constants {
 
         // Setup contents
         mRepositoryListView.setEmptyView(mRepositoryEmptyView);
+        mEmptyViewTextView.setText(getString(R.string.no_repo_prompt));
         this.mAdapter = new RepositoryListViewAdapter(getActivity());
         mRepositoryListView.setAdapter(mAdapter);
 

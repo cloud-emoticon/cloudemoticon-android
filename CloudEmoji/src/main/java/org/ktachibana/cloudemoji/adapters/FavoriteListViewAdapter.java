@@ -86,9 +86,9 @@ public class FavoriteListViewAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @InjectView(R.id.favoriteEmoticonTextView)
+        @InjectView(R.id.emoticonTextView)
         TextView emoticon;
-        @InjectView(R.id.favoriteDescriptionTextView)
+        @InjectView(R.id.descriptionTextView)
         TextView description;
         @InjectView(R.id.favoriteStarImageView)
         ImageView star;

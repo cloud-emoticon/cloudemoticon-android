@@ -11,24 +11,6 @@
         android:divider="@null"
         android:dividerHeight="0dp" />
 
-    <RelativeLayout
-        android:id="@+id/favoriteEmptyView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:text="@string/no_favorite_prompt"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/darker_gray"
-            android:textStyle="bold|italic" />
-    </RelativeLayout>
+    <include layout="@layout/view_empty_view" />
 
 </RelativeLayout>
