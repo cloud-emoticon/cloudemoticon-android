@@ -18,7 +18,6 @@ import com.orm.SugarApp;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
-import org.ktachibana.cloudemoji.events.RepositoryDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 

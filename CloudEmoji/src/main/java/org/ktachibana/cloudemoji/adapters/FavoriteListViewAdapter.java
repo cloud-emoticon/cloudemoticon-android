@@ -16,7 +16,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.internal.ListenerClass;
 import de.greenrobot.event.EventBus;
 
 public class FavoriteListViewAdapter extends BaseAdapter {
@@ -63,9 +62,7 @@ public class FavoriteListViewAdapter extends BaseAdapter {
         viewHolder.emoticon.setText(favorite.getEmoticon());
         if (favorite.getDescription().equals("")) {
             viewHolder.description.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             viewHolder.description.setText(favorite.getDescription());
         }
         viewHolder.star.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +78,11 @@ public class FavoriteListViewAdapter extends BaseAdapter {
         });
 
         return view;
+    }
+
+    public void updateFavorites() {
+        this.mFavorites = Favorite.listAll(Favorite.class);
+        notifyDataSetChanged();
     }
 
     static class ViewHolder {

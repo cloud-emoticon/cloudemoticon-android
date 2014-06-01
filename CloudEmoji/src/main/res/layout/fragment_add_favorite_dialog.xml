@@ -4,26 +4,25 @@
     android:padding="15dp">
 
     <EditText
-        android:id="@+id/addRepositoryUrlEditText"
+        android:id="@+id/addFavoriteEmoticonEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/addRepositoryAliasEditText"
+        android:layout_alignEnd="@+id/addFavoriteDescriptionEditText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/addRepositoryAliasEditText"
-        android:hint="@string/repo_url"
-        android:inputType="textUri" />
+        android:layout_alignRight="@+id/addFavoriteDescriptionEditText"
+        android:hint="@string/emoticon" />
 
     <EditText
-        android:id="@+id/addRepositoryAliasEditText"
+        android:id="@+id/addFavoriteDescriptionEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/addRepositoryUrlEditText"
-        android:hint="@string/alias" />
+        android:layout_below="@+id/addFavoriteEmoticonEditText"
+        android:hint="@string/description" />
 
 </RelativeLayout>

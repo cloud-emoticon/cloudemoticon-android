@@ -9,13 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.models.Favorite;
 
 import java.util.ArrayList;
@@ -31,6 +31,8 @@ public class FavoriteFragment extends Fragment {
 
     @InjectView(R.id.favoriteEmptyView)
     RelativeLayout mFavoriteEmptyView;
+
+    FavoriteListViewAdapter mAdapter;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -56,8 +58,10 @@ public class FavoriteFragment extends Fragment {
         for (Favorite favorite : favorites) {
             strings.add(favorite.getEmoticon() + " " + favorite.getDescription());
         }
+
+        this.mAdapter = new FavoriteListViewAdapter(getActivity());
         mFavoriteListView
-                .setAdapter(new FavoriteListViewAdapter(getActivity()));
+                .setAdapter(mAdapter);
         mFavoriteListView
                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -71,17 +75,23 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_repository_manager, menu);
+        inflater.inflate(R.menu.menu_favorite, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_favorite: {
-                // TODO
+                AddFavoriteDialogFragment fragment = new AddFavoriteDialogFragment();
+                fragment.setTargetFragment(this, 0);
+                fragment.show(getFragmentManager(), "add_favorite");
                 return true;
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void notifyFavoriteAdded() {
+        mAdapter.updateFavorites();
     }
 }

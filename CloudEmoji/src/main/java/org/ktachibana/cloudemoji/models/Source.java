@@ -3,7 +3,6 @@ package org.ktachibana.cloudemoji.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +10,26 @@ import java.util.List;
  * POJO class holding information and a list of categories
  */
 public class Source implements Parcelable {
+    public static Creator<Source> CREATOR = new Creator<Source>() {
+        public Source createFromParcel(Parcel source) {
+            return new Source(source);
+        }
+
+        public Source[] newArray(int size) {
+            return new Source[size];
+        }
+    };
     private List<String> information;
     private List<Category> categories;
 
     public Source(ArrayList<String> information, List<Category> categories) {
         this.information = information;
         this.categories = categories;
+    }
+
+    private Source(Parcel in) {
+        in.readStringList(information);
+        in.readTypedList(categories, Category.CREATOR);
     }
 
     public List<String> getInformation() {
@@ -37,18 +50,4 @@ public class Source implements Parcelable {
         dest.writeStringList(information);
         dest.writeTypedList(categories);
     }
-
-    private Source(Parcel in) {
-        in.readStringList(information);
-        in.readTypedList(categories, Category.CREATOR);
-    }
-
-    public static Creator<Source> CREATOR = new Creator<Source>() {
-        public Source createFromParcel(Parcel source) {
-            return new Source(source);
-        }
-        public Source[] newArray(int size) {
-            return new Source[size];
-        }
-    };
 }
