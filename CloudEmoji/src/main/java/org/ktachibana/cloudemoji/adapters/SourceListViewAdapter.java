@@ -19,10 +19,16 @@ import butterknife.InjectView;
 public class SourceListViewAdapter extends BaseAdapter {
     private Source mSource;
     private Context mContext;
+    private CategoryListViewAdapter[] mAdapters;
 
     public SourceListViewAdapter(Context context, Source source) {
         this.mContext = context;
         this.mSource = source;
+        mAdapters = new CategoryListViewAdapter[source.getCategories().size()];
+
+        for (int i = 0 ; i < mAdapters.length ; ++i) {
+            mAdapters[i] = new CategoryListViewAdapter(mContext, source.getCategories().get(i).getEntries());
+        }
     }
 
     @Override
@@ -57,13 +63,7 @@ public class SourceListViewAdapter extends BaseAdapter {
         // Setup contents
         final Category category = mSource.getCategories().get(i);
         viewHolder.categoryTitleTextView.setText(category.getName());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                viewHolder.categoryContentsListView.setAdapter(
-                        new CategoryListViewAdapter(mContext, category.getEntries()));
-            }
-        }).run();
+        viewHolder.categoryContentsListView.setAdapter(mAdapters[i]);
 
         return view;
     }
