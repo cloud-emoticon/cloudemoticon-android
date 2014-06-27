@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 apply plugin: 'android'
@@ -14,7 +14,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 7
@@ -46,8 +46,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:19.+'
-    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.readystatesoftware.systembartint:systembartint:+'
     compile 'com.koushikdutta.ion:ion:1.2.4'
     compile 'de.greenrobot:eventbus:2.2.0'
