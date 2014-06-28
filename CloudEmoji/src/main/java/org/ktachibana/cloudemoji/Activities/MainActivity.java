@@ -367,7 +367,7 @@ public class MainActivity extends BaseActivity implements
     public void onEvent(CategoryClickedEvent event) {
         // ni kan kan ni, you see see you
         if (mCurrentSourceFragment != null) {
-            mCurrentSourceFragment.getListView().setSelection(event.getIndex());
+            mCurrentSourceFragment.setSelection(event.getIndex());
             closeDrawers();
         }
     }

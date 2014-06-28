@@ -3,18 +3,27 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.models.Source;
 
-public class SourceFragment extends ListFragment {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
+
+public class SourceFragment extends Fragment {
     private static final String ARG_SOURCE = "source";
     private Source mSource;
+    private SourceListViewAdapter mAdapter;
+    @InjectView(R.id.sourceListView)
+    PinnedHeaderListView mSourceListView;
 
     public SourceFragment() {
         // Required empty public constructor
@@ -39,24 +48,24 @@ public class SourceFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Setup contents
-        setListAdapter(new SourceListViewAdapter(getActivity(), mSource));
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Setup style
-        getListView().setDivider(null);
-        getListView().setDividerHeight(0);
+        View rootView = inflater.inflate(R.layout.fragment_source, container, false);
+        ButterKnife.inject(this, rootView);
 
         // Setup information footer
         for (String information : mSource.getInformation()) {
             TextView textView = new TextView(getActivity());
             textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
             textView.setText(information);
-            getListView().addFooterView(textView);
+            mSourceListView.addFooterView(textView);
         }
+
+        // Setup contents
+        mAdapter = new SourceListViewAdapter(getActivity(), mSource);
+        mSourceListView.setAdapter(mAdapter);
+        return rootView;
+    }
+
+    public void setSelection(int index) {
+        mSourceListView.setSelection(mAdapter.getPositionForSection(index));
     }
 }

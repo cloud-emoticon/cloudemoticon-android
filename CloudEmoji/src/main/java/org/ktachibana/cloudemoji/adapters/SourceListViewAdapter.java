@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,72 +12,71 @@ import com.linearlistview.LinearListView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.Category;
+import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
+import org.w3c.dom.Text;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
+import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
-public class SourceListViewAdapter extends BaseAdapter {
+public class SourceListViewAdapter extends SectionedBaseAdapter {
     private Source mSource;
     private Context mContext;
-    private CategoryListViewAdapter[] mAdapters;
+    private LayoutInflater mInflater;
 
     public SourceListViewAdapter(Context context, Source source) {
-        this.mContext = context;
-        this.mSource = source;
-        mAdapters = new CategoryListViewAdapter[source.getCategories().size()];
-
-        for (int i = 0 ; i < mAdapters.length ; ++i) {
-            mAdapters[i] = new CategoryListViewAdapter(mContext, source.getCategories().get(i).getEntries());
-        }
+        mContext = context;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mSource = source;
     }
 
     @Override
-    public int getCount() {
-        return mSource.getCategories().size();
+    public Object getItem(int section, int position) {
+        return mSource.getCategories().get(section).getEntries().get(position);
     }
 
     @Override
-    public Object getItem(int i) {
-        return mSource.getCategories().get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
+    public long getItemId(int section, int position) {
         return 0;
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        // Standard view holder pattern
-        final ViewHolder viewHolder;
-        if (view == null) {
-            LayoutInflater inflater
-                    = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item_category, viewGroup, false);
-            viewHolder = new ViewHolder(view);
-            view.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) view.getTag();
-        }
-
-        // Setup contents
-        final Category category = mSource.getCategories().get(i);
-        viewHolder.categoryTitleTextView.setText(category.getName());
-        viewHolder.categoryContentsListView.setAdapter(mAdapters[i]);
-
-        return view;
+    public int getSectionCount() {
+        return mSource.getCategories().size();
     }
 
-    static class ViewHolder {
-        @InjectView(R.id.categoryTitleTextView)
-        TextView categoryTitleTextView;
+    @Override
+    public int getCountForSection(int section) {
+        return mSource.getCategories().get(section).getEntries().size();
+    }
 
-        @InjectView(R.id.categoryContentsListView)
-        LinearListView categoryContentsListView;
-
-        ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+    @Override
+    public View getItemView(int section, int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
         }
+
+        final Entry entry = (Entry) getItem(section, position);
+        ((TextView) convertView).setText(entry.getEmoticon());
+
+        return convertView;
+    }
+
+    @Override
+    public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            convertView.setBackgroundColor(mContext.getResources().getColor(R.color.holo_blue_light));
+            ((TextView) convertView).setTextAppearance(mContext, android.R.style.TextAppearance_Small);
+            ((TextView) convertView).setTypeface(null, Typeface.BOLD);
+            ((TextView) convertView).setTextColor(mContext.getResources().getColor(android.R.color.white));
+        }
+
+        final Category category = mSource.getCategories().get(section);
+        ((TextView) convertView).setText(category.getName());
+
+        return convertView;
     }
 }
