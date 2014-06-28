@@ -40,7 +40,7 @@
     <string name="edit_repository">Edit Repository</string>
     <string name="entry_updated">Entry updated</string>
     <string name="version_code">Version code</string>
-    <string name="no_repo_prompt">You do not have any repository</string>
+    <string name="no_repo_prompt">You don\&apos;t have any repository</string>
     <string name="repo_manager">Repository Manager</string>
     <string name="add_repo">Add repository</string>
     <string name="alias">Alias</string>
@@ -54,8 +54,8 @@
     <string name="duplicate_emoticon">Duplicate emoticon</string>
     <string name="navbar_gesture_title">Navigation bar gesture</string>
     <string name="navbar_gesture_summary">Swipe-up from the navigation bar to start</string>
-    <string name="no_favorite_prompt">You do not have any favorite</string>
-    <string name="no_history_prompt">You do not have any history</string>
+    <string name="no_favorite_prompt">You don\&apos;t have any favorite</string>
+    <string name="no_history_prompt">You don\&apos;t have any history</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

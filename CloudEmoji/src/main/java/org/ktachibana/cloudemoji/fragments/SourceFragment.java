@@ -8,14 +8,18 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
+import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends Fragment {
@@ -62,6 +66,19 @@ public class SourceFragment extends Fragment {
         // Setup contents
         mAdapter = new SourceListViewAdapter(getActivity(), mSource);
         mSourceListView.setAdapter(mAdapter);
+        mSourceListView.setOnItemClickListener(new PinnedHeaderListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
+                Entry entry = (Entry) mAdapter.getItem(section, position);
+                String emoticon = entry.getEmoticon();
+                EventBus.getDefault().post(new EmoticonCopiedEvent(emoticon));
+            }
+
+            @Override
+            public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
+
+            }
+        });
         return rootView;
     }
 

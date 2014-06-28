@@ -40,6 +40,14 @@ public class Source implements Parcelable {
         return categories;
     }
 
+    public List<Entry> getAllEntries() {
+        List<Entry> entries = new ArrayList<Entry>();
+        for (Category category : categories) {
+            entries.addAll(category.getEntries());
+        }
+        return entries;
+    }
+
     @Override
     public int describeContents() {
         return 0;
