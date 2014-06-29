@@ -16,6 +16,9 @@ import android.widget.TextView;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
+import org.ktachibana.cloudemoji.events.FavoriteEditedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 
@@ -46,6 +49,7 @@ public class FavoriteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setHasOptionsMenu(true);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -93,6 +97,32 @@ public class FavoriteFragment extends Fragment {
     }
 
     public void notifyFavoriteAdded() {
+        mAdapter.updateFavorites();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    /**
+     * Listens for favorite being edited, namely from favorite list view adapter
+     *
+     * @param event favorite being edited event
+     */
+    public void onEvent(FavoriteBeginEditingEvent event) {
+        EditFavoriteDialogFragment fragment
+                = EditFavoriteDialogFragment.newInstance(event.getFavorite());
+        fragment.show(getFragmentManager(), "edit_favorite");
+    }
+
+    /**
+     * Listens for repository edited, namely from repository list view adapter
+     *
+     * @param event repository edited event
+     */
+    public void onEvent(FavoriteEditedEvent event) {
         mAdapter.updateFavorites();
     }
 }

@@ -4,12 +4,11 @@
     android:padding="15dp" >
 
     <EditText
-        android:id="@+id/editRepositoryAliasEditText"
+        android:id="@+id/editFavoriteEditText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:hint="@string/alias"
-        android:inputType="textUri" />
+        android:hint="@string/description"/>
 </RelativeLayout>

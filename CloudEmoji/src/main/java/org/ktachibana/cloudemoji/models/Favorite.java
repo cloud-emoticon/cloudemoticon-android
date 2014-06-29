@@ -7,12 +7,13 @@ import com.orm.dsl.Ignore;
 
 import org.ktachibana.cloudemoji.Constants;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * POJO class holding an entry with arrangingOrder
  */
-public class Favorite extends SugarRecord<Favorite> implements Constants {
+public class Favorite extends SugarRecord<Favorite> implements Constants, Serializable {
     private String emoticon;
     private String description;
 
@@ -41,4 +42,7 @@ public class Favorite extends SugarRecord<Favorite> implements Constants {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

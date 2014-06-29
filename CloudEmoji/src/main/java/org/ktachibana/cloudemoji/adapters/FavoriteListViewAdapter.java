@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.Favorite;
 
@@ -77,6 +78,16 @@ public class FavoriteListViewAdapter extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
+        viewHolder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * Tell anybody who cares about a favorite is being edited
+                 * Namely the favorite fragment
+                 */
+                EventBus.getDefault().post(new FavoriteBeginEditingEvent(favorite));
+            }
+        });
 
         return view;
     }
@@ -93,6 +104,8 @@ public class FavoriteListViewAdapter extends BaseAdapter {
         TextView description;
         @InjectView(R.id.favoriteStarImageView)
         ImageView star;
+        @InjectView(R.id.favoriteEditImageView)
+        ImageView edit;
 
         ViewHolder(View view) {
             ButterKnife.inject(this, view);
