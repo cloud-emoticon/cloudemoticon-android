@@ -23,7 +23,7 @@ import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
-import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
@@ -327,8 +327,8 @@ public class MainActivity extends BaseActivity implements
      * @param event string copied event
      */
     @SuppressWarnings("deprecation")
-    public void onEvent(EmoticonCopiedEvent event) {
-        String copied = event.getEmoticon();
+    public void onEvent(EntryCopiedAndAddedToHistoryEvent event) {
+        String copied = event.getEntry().getEmoticon();
 
         int SDK = Build.VERSION.SDK_INT;
         // Below 3.0

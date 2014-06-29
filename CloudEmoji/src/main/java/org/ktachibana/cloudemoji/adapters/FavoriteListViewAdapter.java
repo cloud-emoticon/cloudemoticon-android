@@ -63,6 +63,7 @@ public class FavoriteListViewAdapter extends BaseAdapter {
         if (favorite.getDescription().equals("")) {
             viewHolder.description.setVisibility(View.GONE);
         } else {
+            viewHolder.description.setVisibility(View.VISIBLE);
             viewHolder.description.setText(favorite.getDescription());
         }
         viewHolder.star.setOnClickListener(new View.OnClickListener() {

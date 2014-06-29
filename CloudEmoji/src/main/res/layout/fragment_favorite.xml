@@ -7,9 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:layout_alignParentTop="true" />
 
     <include layout="@layout/view_empty_view" />
 

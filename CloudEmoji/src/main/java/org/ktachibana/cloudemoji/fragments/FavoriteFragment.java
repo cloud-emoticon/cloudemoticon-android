@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
-import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 
 import java.util.ArrayList;
@@ -57,12 +58,6 @@ public class FavoriteFragment extends Fragment {
         // Setup contents
         mFavoriteListView.setEmptyView(mFavoriteEmptyView);
         mEmptyViewTextView.setText(getString(R.string.no_favorite_prompt));
-        List<Favorite> favorites = Favorite.listAll(Favorite.class);
-        final List<String> strings = new ArrayList<String>();
-        for (Favorite favorite : favorites) {
-            strings.add(favorite.getEmoticon() + " " + favorite.getDescription());
-        }
-
         this.mAdapter = new FavoriteListViewAdapter(getActivity());
         mFavoriteListView
                 .setAdapter(mAdapter);
@@ -70,8 +65,9 @@ public class FavoriteFragment extends Fragment {
                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String emoticon = ((Favorite) mAdapter.getItem(i)).getEmoticon();
-                        EventBus.getDefault().post(new EmoticonCopiedEvent(emoticon));
+                        Favorite favorite = (Favorite) mAdapter.getItem(i);
+                        Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
+                        EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
                     }
                 });
         return rootView;

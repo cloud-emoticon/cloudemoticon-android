@@ -5,15 +5,14 @@ import android.content.Context;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
+import org.ktachibana.cloudemoji.Constants;
+
 import java.util.List;
 
 /**
  * POJO class holding an entry with arrangingOrder
  */
-public class Favorite extends SugarRecord<Favorite> {
-    // Query favorite by emoticon SQL clause
-    @Ignore
-    private static final String FIND_BY_EMOTICON_SQL_CLAUSE = "emoticon = ? ";
+public class Favorite extends SugarRecord<Favorite> implements Constants {
     private String emoticon;
     private String description;
 

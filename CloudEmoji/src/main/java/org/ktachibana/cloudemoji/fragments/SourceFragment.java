@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
-import org.ktachibana.cloudemoji.events.EmoticonCopiedEvent;
+import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
 
@@ -69,8 +69,7 @@ public class SourceFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
                 Entry entry = (Entry) mAdapter.getItem(section, position);
-                String emoticon = entry.getEmoticon();
-                EventBus.getDefault().post(new EmoticonCopiedEvent(emoticon));
+                EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
 
             @Override
