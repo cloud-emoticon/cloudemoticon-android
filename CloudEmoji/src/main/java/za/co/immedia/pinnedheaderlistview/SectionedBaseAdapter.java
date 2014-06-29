@@ -4,6 +4,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView.PinnedSectionedHeaderAdapter;
 
 public abstract class SectionedBaseAdapter extends BaseAdapter implements PinnedSectionedHeaderAdapter {
@@ -128,7 +129,7 @@ public abstract class SectionedBaseAdapter extends BaseAdapter implements Pinned
 
     public int getPositionForSection(int section) {
         int position = 0;
-        for (int i = 0 ; i < section ; ++i) {
+        for (int i = 0; i < section; ++i) {
             position += internalGetCountForSection(i) + 1;
         }
         return position;

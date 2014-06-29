@@ -4,7 +4,6 @@ package org.ktachibana.cloudemoji.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,10 @@ import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends Fragment {
     private static final String ARG_SOURCE = "source";
-    private Source mSource;
-    private SourceListViewAdapter mAdapter;
     @InjectView(R.id.sourceListView)
     PinnedHeaderListView mSourceListView;
+    private Source mSource;
+    private SourceListViewAdapter mAdapter;
 
     public SourceFragment() {
         // Required empty public constructor

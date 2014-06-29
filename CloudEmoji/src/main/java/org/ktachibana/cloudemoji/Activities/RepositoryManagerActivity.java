@@ -5,7 +5,7 @@ import android.view.MenuItem;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.fragments.RepositoryListFragment;
+import org.ktachibana.cloudemoji.fragments.RepositoryFragment;
 
 
 public class RepositoryManagerActivity extends BaseActivity {
@@ -16,7 +16,7 @@ public class RepositoryManagerActivity extends BaseActivity {
         setContentView(R.layout.activity_repository_manager);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.repositoryMainContainer, new RepositoryListFragment())
+                .replace(R.id.repositoryMainContainer, new RepositoryFragment())
                 .commit();
     }
 

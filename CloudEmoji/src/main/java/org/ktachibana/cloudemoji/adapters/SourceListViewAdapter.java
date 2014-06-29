@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,16 +26,14 @@ import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
 public class SourceListViewAdapter extends SectionedBaseAdapter {
-    private Source mSource;
-    private Context mContext;
-    private LayoutInflater mInflater;
-
-    // Save whether an emoticon is in favorite beforehand
-    private HashMap<String, Boolean> mFavoriteByEmoticonCache;
-
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
+    private Source mSource;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    // Save whether an emoticon is in favorite beforehand
+    private HashMap<String, Boolean> mFavoriteByEmoticonCache;
 
     public SourceListViewAdapter(Context context, Source source) {
         mContext = context;
@@ -81,15 +78,13 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
     @Override
     public View getItemView(int section, int position, View convertView, ViewGroup parent) {
         // Standard view holder pattern
-        final ItemViewHolder viewHolder;
+        final EntryViewHolder viewHolder;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_entry, parent, false);
-            viewHolder = new ItemViewHolder(convertView);
+            viewHolder = new EntryViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }
-        else
-        {
-            viewHolder = (ItemViewHolder) convertView.getTag();
+        } else {
+            viewHolder = (EntryViewHolder) convertView.getTag();
         }
 
         // Setup contents
@@ -98,12 +93,9 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
 
         // Set description GONE if no description
         boolean hasDescription = entry.getDescription().equals("");
-        if (hasDescription)
-        {
+        if (hasDescription) {
             viewHolder.description.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             viewHolder.description.setVisibility(View.VISIBLE);
             viewHolder.description.setText(entry.getDescription());
         }
@@ -117,8 +109,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
             @Override
             public void onClick(View v) {
                 // If already in favorite, remove it from favorites
-                if (isStared)
-                {
+                if (isStared) {
                     // Remove from database
                     List<Favorite> favoritesFound = Favorite.queryByEmoticon(entry.getEmoticon());
                     for (Favorite favorite : favoritesFound) {
@@ -134,8 +125,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
                     EventBus.getDefault().post(new FavoriteDeletedEvent(entry.getEmoticon()));
                 }
                 // Else, add to star
-                else
-                {
+                else {
                     // Save to database
                     Favorite savedFavorite
                             = new Favorite(mContext, entry.getEmoticon(), entry.getDescription());
@@ -157,21 +147,23 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
 
     @Override
     public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+        // Standard view holder pattern
+        final SectionHeaderViewHolder viewHolder;
         if (convertView == null) {
-            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            convertView.setBackgroundColor(mContext.getResources().getColor(R.color.holo_blue_light));
-            ((TextView) convertView).setTextAppearance(mContext, android.R.style.TextAppearance_Small);
-            ((TextView) convertView).setTypeface(null, Typeface.BOLD);
-            ((TextView) convertView).setTextColor(mContext.getResources().getColor(android.R.color.white));
+            convertView = mInflater.inflate(R.layout.list_item_section_header, parent, false);
+            viewHolder = new SectionHeaderViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (SectionHeaderViewHolder) convertView.getTag();
         }
 
         final Category category = mSource.getCategories().get(section);
-        ((TextView) convertView).setText(category.getName());
+        viewHolder.text.setText(category.getName());
 
         return convertView;
     }
 
-    static class ItemViewHolder {
+    static class EntryViewHolder {
         @InjectView(R.id.emoticonTextView)
         TextView emoticon;
         @InjectView(R.id.descriptionTextView)
@@ -179,7 +171,16 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
         @InjectView(R.id.entryStarImageView)
         ImageView favorite;
 
-        ItemViewHolder(View view) {
+        EntryViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
+
+    static class SectionHeaderViewHolder {
+        @InjectView(R.id.sectionHeaderTextView)
+        TextView text;
+
+        SectionHeaderViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
     }
