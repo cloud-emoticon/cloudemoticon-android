@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_remove_history"
+        android:icon="@drawable/ic_ab_discard"
+        android:orderInCategory="100"
+        android:title="@string/remove_all_history"
+        app:showAsAction="ifRoom" />
+</menu>

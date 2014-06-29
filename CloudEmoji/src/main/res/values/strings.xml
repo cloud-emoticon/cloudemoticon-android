@@ -57,6 +57,7 @@
     <string name="no_favorite_prompt">You don\&apos;t have any favorite</string>
     <string name="no_history_prompt">You don\&apos;t have any history</string>
     <string name="edit_favorite">Edit Favorite</string>
+    <string name="remove_all_history">Remove all history</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
