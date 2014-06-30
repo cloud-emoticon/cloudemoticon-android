@@ -105,37 +105,49 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
 
     @Override
     public void drop(int from, int to) {
-        // If a valid drop
+        // If a valid drag
         if (from != to) {
-            // Change the id of "from" to the id of "to"
-            Favorite draggedFavorite = (Favorite) getItem(from);
-            draggedFavorite.setId(getItemId(to));
+            // Load all changed favorites
+            int size = Math.abs(from - to) + 1;
+            int lower = Math.min(from, to);
+            Favorite[] changedFavorites = new Favorite[size];
+            for (int i = 0; i < size; i++) {
+                changedFavorites[i] = (Favorite) getItem(lower + i);
+            }
+
+            // Change id of "from" item to id of "to" item
+            boolean fromUpToDown = from < to;
+            int fromIndex = fromUpToDown ? 0 : size - 1;
+            int toIndex = fromUpToDown ? size - 1 : 0;
+            Favorite fromItem = changedFavorites[fromIndex];
+            Favorite toItem = changedFavorites[toIndex];
+            fromItem.setId(toItem.getId());
 
             /**
-             * If dragged from up to down, subtract every favorite's id by one except for the first one
-             * SAVE THEM
+             * If dragged from up to down
+             * Subtract id's of the rest items by one except for fromItem
              */
-            if (from < to) {
-                for (int i = from + 1; i <= to ; ++i) {
-                    Favorite favorite = (Favorite) getItem(i);
-                    favorite.setId(favorite.getId() - 1);
-                    favorite.save();
+            if (fromUpToDown) {
+                for (int i = 1; i < size; i++) {
+                    changedFavorites[i].setId(changedFavorites[i].getId() - 1);
                 }
             }
+
             /**
-             * If dragged from down to up, add every favorite's id by one except for the last one
-             * SAVE THEM
+             * Else dragged from down to up
+             * Add id's of the rest items by one except for toItem
              */
             else
             {
-                for (int i = from; i < to ; ++i) {
-                    Favorite favorite = (Favorite) getItem(i);
-                    favorite.setId(favorite.getId() + 1);
-                    favorite.save();
+                for (int i = 0; i < size - 1; i++) {
+                    changedFavorites[i].setId(changedFavorites[i].getId() + 1);
                 }
             }
 
-            draggedFavorite.save();
+            // SAVE and update
+            for (Favorite favorite : changedFavorites) {
+                favorite.save();
+            }
 
             updateFavorites();
         }
