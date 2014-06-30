@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mobeta.android.dslv.DragSortListView;
+
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
@@ -31,7 +33,7 @@ import de.greenrobot.event.EventBus;
 
 public class FavoriteFragment extends Fragment {
     @InjectView(R.id.favoriteListView)
-    ListView mFavoriteListView;
+    DragSortListView mFavoriteListView;
 
     @InjectView(R.id.emptyView)
     RelativeLayout mFavoriteEmptyView;

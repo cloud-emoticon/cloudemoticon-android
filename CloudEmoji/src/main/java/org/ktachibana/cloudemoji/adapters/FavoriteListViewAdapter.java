@@ -1,25 +1,31 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.FieldAttributes;
+import com.mobeta.android.dslv.DragSortListView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.Favorite;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class FavoriteListViewAdapter extends BaseAdapter {
+public class FavoriteListViewAdapter extends BaseAdapter implements DragSortListView.DropListener {
     private Context mContext;
     private List<Favorite> mFavorites;
 
@@ -40,7 +46,7 @@ public class FavoriteListViewAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return mFavorites.get(i).getId();
     }
 
     @Override
@@ -95,6 +101,44 @@ public class FavoriteListViewAdapter extends BaseAdapter {
     public void updateFavorites() {
         this.mFavorites = Favorite.listAll(Favorite.class);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void drop(int from, int to) {
+        // If a valid drop
+        if (from != to) {
+            // Change the id of "from" to the id of "to"
+            Favorite draggedFavorite = (Favorite) getItem(from);
+            draggedFavorite.setId(getItemId(to));
+
+            /**
+             * If dragged from up to down, subtract every favorite's id by one except for the first one
+             * SAVE THEM
+             */
+            if (from < to) {
+                for (int i = from + 1; i <= to ; ++i) {
+                    Favorite favorite = (Favorite) getItem(i);
+                    favorite.setId(favorite.getId() - 1);
+                    favorite.save();
+                }
+            }
+            /**
+             * If dragged from down to up, add every favorite's id by one except for the last one
+             * SAVE THEM
+             */
+            else
+            {
+                for (int i = from; i < to ; ++i) {
+                    Favorite favorite = (Favorite) getItem(i);
+                    favorite.setId(favorite.getId() + 1);
+                    favorite.save();
+                }
+            }
+
+            draggedFavorite.save();
+
+            updateFavorites();
+        }
     }
 
     static class ViewHolder {

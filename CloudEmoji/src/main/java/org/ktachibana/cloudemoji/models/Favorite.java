@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import org.ktachibana.cloudemoji.Constants;
 
@@ -27,11 +29,12 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
         this.description = description;
     }
 
+    @SuppressWarnings("unchecked")
     public static List<Favorite> queryByEmoticon(String queriedEmoticon) {
-        return Favorite.find(
-                Favorite.class,
-                FIND_BY_EMOTICON_SQL_CLAUSE,
-                new String[]{queriedEmoticon});
+        return Select
+                .from(Favorite.class)
+                .where(Condition.prop("emoticon").eq(queriedEmoticon))
+                .list();
     }
 
     public String getEmoticon() {
@@ -44,5 +47,9 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
