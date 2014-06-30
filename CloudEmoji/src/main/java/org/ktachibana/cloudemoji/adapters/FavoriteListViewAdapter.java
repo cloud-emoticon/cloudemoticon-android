@@ -107,45 +107,63 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
     public void drop(int from, int to) {
         // If a valid drag
         if (from != to) {
-            // Load all changed favorites
+            // Load all shifted favorites
             int size = Math.abs(from - to) + 1;
             int lower = Math.min(from, to);
-            Favorite[] changedFavorites = new Favorite[size];
+            Favorite[] shiftedFavorites = new Favorite[size];
             for (int i = 0; i < size; i++) {
-                changedFavorites[i] = (Favorite) getItem(lower + i);
+                shiftedFavorites[i] = (Favorite) getItem(lower + i);
             }
 
-            // Change id of "from" item to id of "to" item
-            boolean fromUpToDown = from < to;
-            int fromIndex = fromUpToDown ? 0 : size - 1;
-            int toIndex = fromUpToDown ? size - 1 : 0;
-            Favorite fromItem = changedFavorites[fromIndex];
-            Favorite toItem = changedFavorites[toIndex];
-            fromItem.setId(toItem.getId());
+            Favorite firstFavorite = shiftedFavorites[0];
+            Favorite lastFavorite = shiftedFavorites[size - 1];
+            boolean fromUpperToLower = from < to;
 
-            /**
-             * If dragged from up to down
-             * Subtract id's of the rest items by one except for fromItem
-             */
-            if (fromUpToDown) {
+            // If from upper to lower
+            if (fromUpperToLower)
+            {
+                /**
+                 * Those two id's are especially for dragging from up to down
+                 * because we have to "roll up" and previous id is always overwritten
+                 */
+                long replacementId = firstFavorite.getId();
+                long currentId;
+
+                // Change first item's id to last item's
+                firstFavorite.setId(lastFavorite.getId());
+
+                // Change id's for other items to the item's previous id, except for first item
                 for (int i = 1; i < size; i++) {
-                    changedFavorites[i].setId(changedFavorites[i].getId() - 1);
+                    currentId = shiftedFavorites[i].getId();
+                    shiftedFavorites[i].setId(replacementId);
+                    replacementId = currentId;
                 }
             }
-
-            /**
-             * Else dragged from down to up
-             * Add id's of the rest items by one except for toItem
-             */
+            // else from lower to upper
             else
             {
+                /**
+                 * This id is especially for dragging from down to up
+                 * because when we hit the 2nd last item, it's next id has been changed to a lower id
+                 */
+                long lastId = lastFavorite.getId();
+                // Change last item's id to first item's
+                lastFavorite.setId(firstFavorite.getId());
+
+                // Change id's for other items to item's next id, except for last item
                 for (int i = 0; i < size - 1; i++) {
-                    changedFavorites[i].setId(changedFavorites[i].getId() + 1);
+                    if (i != size - 2) {
+                        shiftedFavorites[i].setId(shiftedFavorites[i + 1].getId());
+                    }
+                    else
+                    {
+                        shiftedFavorites[i].setId(lastId);
+                    }
                 }
             }
 
             // SAVE and update
-            for (Favorite favorite : changedFavorites) {
+            for (Favorite favorite : shiftedFavorites) {
                 favorite.save();
             }
 
