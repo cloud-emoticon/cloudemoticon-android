@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteEditedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryEditedEvent;
 import org.ktachibana.cloudemoji.models.Favorite;
 
 import butterknife.ButterKnife;

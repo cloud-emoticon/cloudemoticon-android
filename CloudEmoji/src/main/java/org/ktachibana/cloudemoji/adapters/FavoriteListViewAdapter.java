@@ -1,16 +1,13 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.FieldAttributes;
 import com.mobeta.android.dslv.DragSortListView;
 
 import org.ktachibana.cloudemoji.R;
@@ -18,7 +15,6 @@ import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.Favorite;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -120,8 +116,7 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
             boolean fromUpperToLower = from < to;
 
             // If from upper to lower
-            if (fromUpperToLower)
-            {
+            if (fromUpperToLower) {
                 /**
                  * Those two id's are especially for dragging from up to down
                  * because we have to "roll up" and previous id is always overwritten
@@ -140,8 +135,7 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
                 }
             }
             // else from lower to upper
-            else
-            {
+            else {
                 /**
                  * This id is especially for dragging from down to up
                  * because when we hit the 2nd last item, it's next id has been changed to a lower id
@@ -154,9 +148,7 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
                 for (int i = 0; i < size - 1; i++) {
                     if (i != size - 2) {
                         shiftedFavorites[i].setId(shiftedFavorites[i + 1].getId());
-                    }
-                    else
-                    {
+                    } else {
                         shiftedFavorites[i].setId(lastId);
                     }
                 }

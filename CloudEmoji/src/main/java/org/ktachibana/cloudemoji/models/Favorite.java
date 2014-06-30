@@ -3,7 +3,6 @@ package org.ktachibana.cloudemoji.models;
 import android.content.Context;
 
 import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 

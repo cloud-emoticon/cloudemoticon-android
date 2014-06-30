@@ -23,6 +23,7 @@ public class PinnedHeaderListView extends ListView implements OnScrollListener {
     private int mCurrentSection = 0;
     private int mWidthMode;
     private int mHeightMode;
+
     public PinnedHeaderListView(Context context) {
         super(context);
         super.setOnScrollListener(this);

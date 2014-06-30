@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,12 +19,8 @@ import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteEditedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

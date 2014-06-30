@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +48,7 @@ public class HistoryListViewAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.list_item_history, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }
-        else
-        {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
