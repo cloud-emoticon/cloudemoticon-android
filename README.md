@@ -24,6 +24,18 @@ A cloud solution to your favorite emoticons
 * Navigation drawer / Split view (optimized or manual)
 
 ## Libraries used
+* [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
+* [ion](https://github.com/koush/ion)
+* [EventBus](https://github.com/greenrobot/EventBus)
+* [LinearListView](https://github.com/frankiesardo/LinearListView)
+* [ButterKnife](https://github.com/JakeWharton/butterknife)
+* [ARCA](https://github.com/ACRA/acra)
+* [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
+* [sugar](https://github.com/satyan/sugar)
+* [android-support-v4-preferencefragment](https://github.com/kolavar/android-support-v4-preferencefragment)
+* [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
+* [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
+
 
 ## License
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
