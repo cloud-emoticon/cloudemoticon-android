@@ -9,6 +9,8 @@
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         app:float_background_color="@color/lighter_gray"
         app:drag_handle_id="@+id/favoriteDragHandlerImageView"/>
 
