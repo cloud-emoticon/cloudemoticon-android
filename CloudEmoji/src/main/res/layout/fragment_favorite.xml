@@ -11,8 +11,8 @@
         android:layout_alignParentTop="true"
         android:divider="@null"
         android:dividerHeight="0dp"
-        app:float_background_color="@color/lighter_gray"
-        app:drag_handle_id="@+id/favoriteDragHandlerImageView"/>
+        app:drag_handle_id="@+id/favoriteDragHandlerImageView"
+        app:float_background_color="@color/lighter_gray" />
 
     <include layout="@layout/view_empty_view" />
 

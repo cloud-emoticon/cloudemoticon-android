@@ -32,7 +32,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/favoriteStarImageView"
-            android:src="@drawable/ic_drag_handler"/>
+            android:src="@drawable/ic_drag_handler" />
 
         <ImageView
             android:id="@+id/favoriteStarImageView"

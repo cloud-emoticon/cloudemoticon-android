@@ -27,26 +27,31 @@
                 android:text="@string/alias"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/repositoryDownloadButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/repositoryEditButton" />
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/repositoryEditButton"
+                android:src="@drawable/ic_download" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/repositoryEditButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/repositoryDeleteButton" />
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/repositoryDeleteButton"
+                android:src="@drawable/ic_edit" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/repositoryDeleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_discard" />
         </RelativeLayout>
 
         <TextView

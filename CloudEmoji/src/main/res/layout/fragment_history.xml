@@ -9,7 +9,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:divider="@null"
-        android:dividerHeight="0dp"/>
+        android:dividerHeight="0dp" />
 
     <include layout="@layout/view_empty_view" />
 

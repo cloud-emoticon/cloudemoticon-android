@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,13 +77,6 @@ public class RepositoryListViewAdapter extends BaseAdapter {
                 .getDrawable(
                         item.isAvailable() ? (R.drawable.ic_update) : (R.drawable.ic_download)
                 ));
-        viewHolder.editButton.setImageDrawable(mContext
-                .getResources()
-                .getDrawable(R.drawable.ic_edit));
-        viewHolder.deleteButton.setImageDrawable(mContext
-                        .getResources()
-                        .getDrawable(R.drawable.ic_discard)
-        );
 
         // Setup what happens if download button is clicked
         viewHolder.downloadButton.setOnClickListener(new View.OnClickListener() {
@@ -181,11 +174,11 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         @InjectView(R.id.repositoryUrlTextView)
         TextView urlTextView;
         @InjectView(R.id.repositoryDownloadButton)
-        ImageButton downloadButton;
+        ImageView downloadButton;
         @InjectView(R.id.repositoryEditButton)
-        ImageButton editButton;
+        ImageView editButton;
         @InjectView(R.id.repositoryDeleteButton)
-        ImageButton deleteButton;
+        ImageView deleteButton;
 
         ViewHolder(View view) {
             ButterKnife.inject(this, view);
