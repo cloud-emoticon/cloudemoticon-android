@@ -4,7 +4,13 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,6 +39,7 @@ import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
+import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -46,6 +53,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -185,9 +194,10 @@ public class MainActivity extends BaseActivity implements
     private void firstTimeCheck() {
         boolean hasRunBefore = mPreferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
 
+        upgradeFavoriteDatabase();
+
         // If hasn't run before
         if (!hasRunBefore) {
-            upgradeFavoriteDatabase();
             setupDefaultRepo();
 
             // It has run
@@ -230,7 +240,33 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void upgradeFavoriteDatabase() {
-        // TODO: upgrade favorite database if exists
+        try {
+            SQLiteDatabase oldDatabase
+                    = SQLiteDatabase.openDatabase(getDatabasePath("mydb.db").getPath(), null, 0);
+            Cursor cursor = oldDatabase.query(
+                    "favorites",                    // table name
+                    new String[]{"string", "note"}, // columns
+                    null, null, null, null, null
+            );
+
+            List<Favorite> favorites = new ArrayList<Favorite>();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String emoticon = cursor.getString(0);
+                String description = cursor.getString(1);
+                favorites.add(new Favorite(this, emoticon, description));
+                cursor.moveToNext();
+            }
+            cursor.close();
+
+            for (Favorite favorite : favorites) {
+                favorite.save();
+            }
+
+            SQLiteDatabase.deleteDatabase(getDatabasePath("mydb.db"));
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupLeftDrawer(long repositoryId, Source source) {
