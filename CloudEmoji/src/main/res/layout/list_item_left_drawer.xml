@@ -5,10 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/color_list_item_selector"
     android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:orientation="horizontal"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+    android:minHeight="@dimen/listPreferredItemHeightSmall"
+    android:paddingLeft="@dimen/listPreferredItemPaddingLeft"
+    android:paddingRight="@dimen/listPreferredItemPaddingRight">
 
     <ImageView
         android:id="@+id/leftDrawerListItemImageView"
