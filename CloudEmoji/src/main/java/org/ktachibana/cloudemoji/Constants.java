@@ -28,6 +28,9 @@ public interface Constants {
     public static final String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
     public static final String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
 
+    // Intent
+    public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;
+
     // Debug
     public static final String DEBUG_TAG = "CloudEmoticon";
 }

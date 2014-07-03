@@ -101,31 +101,17 @@ public class MainActivity extends BaseActivity implements
         firstTimeCheck();
 
         // If not starting from refresh new, get which repository is displaying and its source
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
             mCurrentSource = savedInstanceState.getParcelable(CURRENT_REPOSITORY_SOURCE_TAG);
         }
 
         // Else, set it to display default
-        else {
+        else
+        {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
             mCurrentSource = null;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        /**
-         * If coming back from repository manager, the current id may not be valid
-         * So we want to check for that and set it to default if it is invalid
-         */
-        if (mCurrentRepositoryId >= 0) {
-            if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
-                mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
-                mCurrentSource = null;
-            }
         }
 
         // Setup left drawer with repository id and source
@@ -134,7 +120,6 @@ public class MainActivity extends BaseActivity implements
         // Switch to the repository
         displayRepository(mCurrentRepositoryId, mCurrentSource);
     }
-
 
     private void setupLayout() {
         // Set up UI layout according to user preference for drawer and split view
@@ -340,7 +325,7 @@ public class MainActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.action_repository_manager: {
                 Intent intent = new Intent(this, RepositoryManagerActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
                 return true;
             }
             case R.id.action_settings: {
@@ -532,6 +517,29 @@ public class MainActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE) {
+            /**
+             * If coming back from repository manager, the current id may not be valid
+             * So we want to check for that and set it to default if it is invalid
+             */
+            if (mCurrentRepositoryId >= 0) {
+                if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
+                    mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
+                    mCurrentSource = null;
+                }
+            }
+
+            // Setup left drawer with repository id and source
+            setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
+
+            // Switch to the repository
+            displayRepository(mCurrentRepositoryId, mCurrentSource);
+        }
     }
 
     @Override
