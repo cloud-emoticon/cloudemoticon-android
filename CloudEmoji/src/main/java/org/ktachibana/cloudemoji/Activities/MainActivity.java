@@ -4,13 +4,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,6 +20,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.orm.SugarApp;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
@@ -194,12 +193,11 @@ public class MainActivity extends BaseActivity implements
     private void firstTimeCheck() {
         boolean hasRunBefore = mPreferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
 
-        upgradeFavoriteDatabase();
+        upgradeFavoriteDatabaseIfExists();
+        setupDefaultRepoIfNotExists();
 
         // If hasn't run before
         if (!hasRunBefore) {
-            setupDefaultRepo();
-
             // It has run
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
@@ -207,10 +205,21 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void setupDefaultRepo() {
+    @SuppressWarnings("unchecked")
+    private void setupDefaultRepoIfNotExists() {
+        // Find repository with default url
+        List<Repository> kt = Select
+                .from(Repository.class)
+                .where(Condition.prop("url")
+                        .eq(DEFAULT_REPOSITORY_URL))
+                .list();
+        if (kt.size() != 0) {
+            // If found, ignore below
+            return;
+        }
+
         InputStream inputStream = null;
         OutputStream outputStream = null;
-
         try {
             // Save record to database
             Repository defaultRepository = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
@@ -236,19 +245,27 @@ public class MainActivity extends BaseActivity implements
             IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(outputStream);
         }
-
     }
 
-    private void upgradeFavoriteDatabase() {
+    private void upgradeFavoriteDatabaseIfExists() {
+        // Find old database file
+        File oldDatabaseFile = getDatabasePath("mydb.db");
+        if (!oldDatabaseFile.exists()) {
+            // If file does not exist, ignore below
+            return;
+        }
+
         try {
+            // Read the old favorite database and table cursor
             SQLiteDatabase oldDatabase
-                    = SQLiteDatabase.openDatabase(getDatabasePath("mydb.db").getPath(), null, 0);
+                    = SQLiteDatabase.openDatabase(oldDatabaseFile.getPath(), null, 0);
             Cursor cursor = oldDatabase.query(
                     "favorites",                    // table name
                     new String[]{"string", "note"}, // columns
                     null, null, null, null, null
             );
 
+            // Read all favorites
             List<Favorite> favorites = new ArrayList<Favorite>();
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -259,12 +276,14 @@ public class MainActivity extends BaseActivity implements
             }
             cursor.close();
 
+            // SAVE
             for (Favorite favorite : favorites) {
                 favorite.save();
             }
 
-            SQLiteDatabase.deleteDatabase(getDatabasePath("mydb.db"));
-        } catch (SQLiteCantOpenDatabaseException e) {
+            // Remove the database
+            SQLiteDatabase.deleteDatabase(oldDatabaseFile);
+        } catch (SQLiteException e) {
             e.printStackTrace();
         }
     }

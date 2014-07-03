@@ -14,7 +14,5 @@ public class BaseApplication extends SugarApp {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // The following line triggers the initialization of ACRA
     }
 }

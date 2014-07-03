@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/color_list_item_selector"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
     android:minHeight="@dimen/listPreferredItemHeightSmall"
+    android:orientation="horizontal"
     android:paddingLeft="@dimen/listPreferredItemPaddingLeft"
     android:paddingRight="@dimen/listPreferredItemPaddingRight">
 
