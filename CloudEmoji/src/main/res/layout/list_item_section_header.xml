@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
-    android:background="@color/lighter_gray"
+    android:background="@color/section_header_background_color"
     android:orientation="vertical">
 
     <TextView
@@ -13,5 +13,6 @@
         android:layout_height="wrap_content"
         android:text="Section header"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/section_header_text_color"
         android:textStyle="bold" />
 </LinearLayout>

@@ -2,4 +2,6 @@
 <resources>
     <color name="holo_blue_light">#ff33b5e5</color>
     <color name="lighter_gray">#ddd</color>
+    <color name="section_header_background_color">@color/lighter_gray</color>
+    <color name="section_header_text_color">@android:color/black</color>
 </resources>

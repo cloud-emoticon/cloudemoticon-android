@@ -101,15 +101,13 @@ public class MainActivity extends BaseActivity implements
         firstTimeCheck();
 
         // If not starting from refresh new, get which repository is displaying and its source
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
             mCurrentSource = savedInstanceState.getParcelable(CURRENT_REPOSITORY_SOURCE_TAG);
         }
 
         // Else, set it to display default
-        else
-        {
+        else {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
             mCurrentSource = null;
         }
