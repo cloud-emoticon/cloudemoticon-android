@@ -15,6 +15,10 @@ public class LeftDrawerListItem implements Constants {
     // The id for reference in case it is clicked
     private long mId;
 
+    public LeftDrawerListItem(String text, int drawable) {
+        this(text, drawable, 0);
+    }
+
     public LeftDrawerListItem(String text, int drawable, long id) {
         this.mText = text;
         this.mDrawable = drawable;

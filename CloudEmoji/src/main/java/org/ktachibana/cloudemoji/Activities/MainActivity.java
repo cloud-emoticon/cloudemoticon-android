@@ -107,7 +107,8 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Else, set it to display default
-        else {
+        else
+        {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
             mCurrentSource = null;
         }
@@ -116,7 +117,7 @@ public class MainActivity extends BaseActivity implements
         setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
 
         // Switch to the repository
-        displayRepository(mCurrentRepositoryId, mCurrentSource);
+        internalSwitchRepository();
     }
 
     private void setupLayout() {
@@ -395,11 +396,15 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void onEvent(LocalRepositoryClickedEvent event) {
-        displayRepository(event.getId(), null);
+        mCurrentRepositoryId = event.getId();
+        mCurrentSource = null;
+        internalSwitchRepository();
     }
 
     public void onEvent(RemoteRepositoryClickedEvent event) {
-        displayRepository(event.getId(), readSourceFromFile(event.getId()));
+        mCurrentRepositoryId = event.getId();
+        mCurrentSource = readSourceFromFile(event.getId());
+        internalSwitchRepository();
     }
 
     public void onEvent(CategoryClickedEvent event) {
@@ -426,23 +431,16 @@ public class MainActivity extends BaseActivity implements
         ).show();
     }
 
-    /**
-     * This works like a FSM and manages changes need to make when displaying a repository
-     * except for categories column
-     *
-     * @param repositoryId repository id
-     * @param source       Source object
-     */
-    private void displayRepository(long repositoryId, Source source) {
+    private void internalSwitchRepository() {
         // If it is a local repository
-        if (repositoryId < 0) {
+        if (mCurrentRepositoryId < 0) {
             // Nullify source fragment
             mCurrentSourceFragment = null;
 
             // Switch to correct fragment
-            if (repositoryId == LIST_ITEM_FAVORITE_ID)
+            if (mCurrentRepositoryId == LIST_ITEM_FAVORITE_ID)
                 replaceMainContainer(new FavoriteFragment());
-            if (repositoryId == LIST_ITEM_HISTORY_ID)
+            if (mCurrentRepositoryId == LIST_ITEM_HISTORY_ID)
                 replaceMainContainer(new HistoryFragment());
 
             // Close drawers
@@ -452,18 +450,15 @@ public class MainActivity extends BaseActivity implements
         // Else it is a remote repository with a parsed source
         else {
             // Create source fragment and switch, notify left drawer
-            if (source != null) {
-                mCurrentSourceFragment = SourceFragment.newInstance(source);
+            if (mCurrentSource != null) {
+                mCurrentSourceFragment = SourceFragment.newInstance(mCurrentSource);
                 replaceMainContainer(mCurrentSourceFragment);
-                EventBus.getDefault().post(new RemoteRepositoryParsedEvent(repositoryId, source));
+                EventBus.getDefault().post(
+                        new RemoteRepositoryParsedEvent(mCurrentRepositoryId, mCurrentSource));
             }
 
             // Do not close drawers
         }
-
-        // Set current repository id and source
-        mCurrentRepositoryId = repositoryId;
-        mCurrentSource = source;
     }
 
     private void replaceMainContainer(Fragment fragment) {
@@ -526,7 +521,8 @@ public class MainActivity extends BaseActivity implements
              * So we want to check for that and set it to default if it is invalid
              */
             if (mCurrentRepositoryId >= 0) {
-                if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
+                if (Repository.findById(Repository.class, mCurrentRepositoryId) == null)
+                {
                     mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
                     mCurrentSource = null;
                 }
@@ -536,7 +532,7 @@ public class MainActivity extends BaseActivity implements
             setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
 
             // Switch to the repository
-            displayRepository(mCurrentRepositoryId, mCurrentSource);
+            internalSwitchRepository();
         }
     }
 

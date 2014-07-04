@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IconifiedListItemView">
+        <attr name="text" format="string" />
+        <attr name="theIcon" format="reference" />
+        <attr name="style" format="enum">
+            <enum name="primary" value="0" />
+            <enum name="secondary" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

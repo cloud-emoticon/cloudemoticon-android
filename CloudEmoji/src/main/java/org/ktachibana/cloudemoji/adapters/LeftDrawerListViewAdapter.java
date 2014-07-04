@@ -5,23 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.utils.IconifiedListItemView;
 
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class LeftDrawerListViewAdapter extends BaseAdapter {
     private List<LeftDrawerListItem> mItems;
     private Context mContext;
+    private LayoutInflater mInflater;
+    private IconifiedListItemView.Style mStyle;
 
-    public LeftDrawerListViewAdapter(List<LeftDrawerListItem> items, Context context) {
+    public LeftDrawerListViewAdapter(List<LeftDrawerListItem> items, Context context, IconifiedListItemView.Style style) {
         this.mItems = items;
         this.mContext = context;
+        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mStyle = style;
     }
 
     @Override
@@ -44,31 +44,27 @@ public class LeftDrawerListViewAdapter extends BaseAdapter {
         // Standard view holder pattern
         ViewHolder viewHolder;
         if (view == null) {
-            LayoutInflater inflater
-                    = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item_left_drawer, viewGroup, false);
+            view = mInflater.inflate(R.layout.list_item_left_drawer, viewGroup, false);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
+            viewHolder.listItemView.setStyle(mStyle);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
         // Setup contents
-        viewHolder.imageView
-                .setImageDrawable(mContext.getResources().getDrawable(mItems.get(i).getDrawable()));
-        viewHolder.textView.setText(mItems.get(i).getText());
+        final LeftDrawerListItem item = mItems.get(i);
+        viewHolder.listItemView.setIcon(mContext.getResources().getDrawable(item.getDrawable()));
+        viewHolder.listItemView.setText(item.getText());
 
         return view;
     }
 
     static class ViewHolder {
-        @InjectView(R.id.leftDrawerListItemImageView)
-        ImageView imageView;
-        @InjectView(R.id.leftDrawerListItemTextView)
-        TextView textView;
+        IconifiedListItemView listItemView;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            this.listItemView = (IconifiedListItemView) view;
         }
     }
 

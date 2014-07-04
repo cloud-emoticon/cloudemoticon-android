@@ -4,6 +4,9 @@ public interface Constants {
     // Left drawer list item
     public static final long LIST_ITEM_FAVORITE_ID = -1;
     public static final long LIST_ITEM_HISTORY_ID = -2;
+    public static final long LIST_ITEM_REPOSITORY_MANAGER_ID = 0;
+    public static final long LIST_ITEM_SETTINGS_ID = 1;
+    public static final long LIST_ITEM_EXIT_ID = 2;
 
     // Notification
     public static final int PERSISTENT_NOTIFICATION_ID = 0;

@@ -20,6 +20,7 @@
             android:orientation="vertical" />
 
         <TextView
+            android:id="@+id/leftDrawerCategoryDivider"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,6 +31,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"/>
+
+        <com.linearlistview.LinearListView
+            android:id="@+id/leftDrawerSecondaryMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
     </LinearLayout>
 </ScrollView>
 
