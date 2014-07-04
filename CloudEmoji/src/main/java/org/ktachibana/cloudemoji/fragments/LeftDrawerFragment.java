@@ -17,6 +17,7 @@ import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
+import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
@@ -126,7 +127,14 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                         getActivity(),
                         IconifiedListItemView.Style.SECONDARY)
         );
-
+        mSecondaryMenu.setOnItemClickListener(new LinearListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(LinearListView linearListView, View view, int i, long l) {
+                final LeftDrawerListItem item = secondaryMenuListItems.get(i);
+                EventBus.getDefault()
+                        .post(new SecondaryMenuItemClickedEvent(item.getId()));
+            }
+        });
         return rootView;
     }
 

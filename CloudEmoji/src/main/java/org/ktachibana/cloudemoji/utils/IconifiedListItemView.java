@@ -3,10 +3,10 @@ package org.ktachibana.cloudemoji.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -119,6 +119,7 @@ public class IconifiedListItemView extends LinearLayout {
         float paddingRight;
         int textAppearance;
         boolean allCaps;
+        int marginBetweenIconAndText;
 
         Resources resources = getResources();
         switch (mStyle) {
@@ -128,6 +129,7 @@ public class IconifiedListItemView extends LinearLayout {
                 paddingRight = resources.getDimension(R.dimen.listPreferredItemPaddingRight);
                 textAppearance = android.R.style.TextAppearance_Medium;
                 allCaps = false;
+                marginBetweenIconAndText = 15;
                 break;
             }
             case SECONDARY: {
@@ -136,6 +138,7 @@ public class IconifiedListItemView extends LinearLayout {
                 paddingRight = resources.getDimension(R.dimen.listPreferredSecondaryItemPaddingRight);
                 textAppearance = android.R.style.TextAppearance_Small;
                 allCaps = true;
+                marginBetweenIconAndText = 10;
                 break;
             }
             default: {
@@ -144,7 +147,7 @@ public class IconifiedListItemView extends LinearLayout {
                 paddingRight = resources.getDimension(R.dimen.listPreferredItemPaddingRight);
                 textAppearance = android.R.style.TextAppearance_Medium;
                 allCaps = false;
-                break;
+                marginBetweenIconAndText = 15;
             }
         }
 
@@ -152,6 +155,12 @@ public class IconifiedListItemView extends LinearLayout {
         mRoot.setPadding((int) paddingLeft, 0, (int) paddingRight, 0);
         mTextView.setTextAppearance(getContext(), textAppearance);
         mTextView.setAllCaps(allCaps);
+        LayoutParams params
+                = new LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(marginBetweenIconAndText, 0, 0, 0);
+        mTextView.setLayoutParams(params);
     }
 
     private Style intToStyle(int intStyle) {

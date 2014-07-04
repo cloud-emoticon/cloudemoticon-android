@@ -34,6 +34,7 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
+import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
@@ -307,9 +308,6 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu
-        // Adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -321,27 +319,7 @@ public class MainActivity extends BaseActivity implements
                 return true;
             }
         }
-        switch (item.getItemId()) {
-            case R.id.action_repository_manager: {
-                Intent intent = new Intent(this, RepositoryManagerActivity.class);
-                startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
-                return true;
-            }
-            case R.id.action_settings: {
-                Intent intent = new Intent(this, PreferenceActivity.class);
-                startActivity(intent);
-                return true;
-            }
-            case R.id.action_exit: {
-                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                        .cancel(PERSISTENT_NOTIFICATION_ID);
-                finish();
-                return true;
-            }
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
-        }
+        return true;
     }
 
     @Override
@@ -429,6 +407,23 @@ public class MainActivity extends BaseActivity implements
                 event.getEmoticon() + "\n" + getString(R.string.removed_from_fav),
                 Toast.LENGTH_SHORT
         ).show();
+    }
+
+    public void onEvent(SecondaryMenuItemClickedEvent event) {
+        final long id = event.getId();
+        if (id == LIST_ITEM_REPOSITORY_MANAGER_ID) {
+            Intent intent = new Intent(this, RepositoryManagerActivity.class);
+            startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
+        }
+        else if (id == LIST_ITEM_SETTINGS_ID) {
+            Intent intent = new Intent(this, PreferenceActivity.class);
+            startActivity(intent);
+        }
+        else if (id == LIST_ITEM_EXIT_ID) {
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .cancel(PERSISTENT_NOTIFICATION_ID);
+            finish();
+        }
     }
 
     private void internalSwitchRepository() {
@@ -541,7 +536,5 @@ public class MainActivity extends BaseActivity implements
         // Save current repository ID and source
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
         outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
-
-        super.onSaveInstanceState(outState);
     }
 }
