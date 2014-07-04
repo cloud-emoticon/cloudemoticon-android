@@ -40,7 +40,7 @@
     <string name="edit_repository">Edit Repository</string>
     <string name="entry_updated">Entry updated</string>
     <string name="version_code">Version code</string>
-    <string name="no_repo_prompt">You don\&apos;t have any repository</string>
+    <string name="no_repo_prompt">You don\'t have any repository</string>
     <string name="repo_manager">Repository Manager</string>
     <string name="add_repo">Add repository</string>
     <string name="alias">Alias</string>
@@ -54,10 +54,13 @@
     <string name="duplicate_emoticon">Duplicate emoticon</string>
     <string name="navbar_gesture_title">Navigation bar gesture</string>
     <string name="navbar_gesture_summary">Swipe-up from the navigation bar to start</string>
-    <string name="no_favorite_prompt">You don\&apos;t have any favorite</string>
-    <string name="no_history_prompt">You don\&apos;t have any history</string>
+    <string name="no_favorite_prompt">You don\'t have any favorite</string>
+    <string name="no_history_prompt">You don\'t have any history</string>
     <string name="edit_favorite">Edit Favorite</string>
     <string name="remove_all_history">Remove all history</string>
+    <string name="backup_and_restore">Backup and restore</string>
+    <string name="backup_favorites">Backup favorites</string>
+    <string name="restore_favorites">Restore favorites</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
@@ -74,6 +77,5 @@
     <string name="back_button_label">Back</string>
     <string name="next_button_label">Next</string>
     <string name="skip_button_label">Skip</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

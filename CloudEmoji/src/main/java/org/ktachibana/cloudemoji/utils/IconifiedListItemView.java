@@ -127,27 +127,27 @@ public class IconifiedListItemView extends LinearLayout {
                 minHeight = resources.getDimension(R.dimen.listPreferredItemHeightSmall);
                 paddingLeft = resources.getDimension(R.dimen.listPreferredItemPaddingLeft);
                 paddingRight = resources.getDimension(R.dimen.listPreferredItemPaddingRight);
+                marginBetweenIconAndText = resources.getDimensionPixelOffset(R.dimen.listPreferredItemIconAndTextMargin);
                 textAppearance = android.R.style.TextAppearance_Medium;
                 allCaps = false;
-                marginBetweenIconAndText = 15;
                 break;
             }
             case SECONDARY: {
                 minHeight = resources.getDimension(R.dimen.listPreferredSecondaryItemHeightSmall);
                 paddingLeft = resources.getDimension(R.dimen.listPreferredSecondaryItemPaddingLeft);
                 paddingRight = resources.getDimension(R.dimen.listPreferredSecondaryItemPaddingRight);
+                marginBetweenIconAndText = resources.getDimensionPixelOffset(R.dimen.listPreferredSecondaryItemIconAndTextMargin);
                 textAppearance = android.R.style.TextAppearance_Small;
                 allCaps = true;
-                marginBetweenIconAndText = 10;
                 break;
             }
             default: {
                 minHeight = resources.getDimension(R.dimen.listPreferredItemHeightSmall);
                 paddingLeft = resources.getDimension(R.dimen.listPreferredItemPaddingLeft);
                 paddingRight = resources.getDimension(R.dimen.listPreferredItemPaddingRight);
+                marginBetweenIconAndText = resources.getDimensionPixelOffset(R.dimen.listPreferredItemIconAndTextMargin);
                 textAppearance = android.R.style.TextAppearance_Medium;
                 allCaps = false;
-                marginBetweenIconAndText = 15;
             }
         }
 

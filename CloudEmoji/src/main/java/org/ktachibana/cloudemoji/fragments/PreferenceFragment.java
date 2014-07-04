@@ -10,9 +10,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.utils.BackupAndRestoreHelper;
 
 /**
  * This class uses android-support-v4-preferencefragment from https://github.com/kolavar/android-support-v4-preferencefragment
@@ -44,6 +46,23 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
                 packageManager.setComponentEnabledSetting(componentName, componentState,
                         PackageManager.DONT_KILL_APP);
+                return true;
+            }
+        });
+
+        // Backup favorites
+        Preference backupPref = findPreference(PREF_BACKUP_FAV);
+        backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                boolean success = new BackupAndRestoreHelper().backupFavorites();
+                if (success) {
+                    Toast.makeText(getActivity(), FAVORITES_BACKUP_FILE_PATH, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         });

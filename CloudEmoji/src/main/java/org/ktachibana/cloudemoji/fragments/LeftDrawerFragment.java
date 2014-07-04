@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -135,6 +136,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                         .post(new SecondaryMenuItemClickedEvent(item.getId()));
             }
         });
+
         return rootView;
     }
 
@@ -237,7 +239,8 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     }
 
     private void internalSwitchRepository() {
-        if (mCurrentRepositoryId < 0) {
+        if (mCurrentRepositoryId < 0)
+        {
             mCategoryListView.setAdapter(null);
             mCategoryDivider.setVisibility(View.GONE);
         }

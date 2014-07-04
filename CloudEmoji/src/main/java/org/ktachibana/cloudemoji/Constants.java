@@ -1,5 +1,9 @@
 package org.ktachibana.cloudemoji;
 
+import android.os.Environment;
+
+import java.io.File;
+
 public interface Constants {
     // Left drawer list item
     public static final long LIST_ITEM_FAVORITE_ID = -1;
@@ -21,6 +25,8 @@ public interface Constants {
     public static final String PREF_GIT_HUB_REPO = "pref_git_hub_repo";
     public static final String PREF_HAS_RUN_BEFORE = "pref_has_run_before";
     public static final String PREF_NAVBAR_GESTURE = "pref_navbar_gesture";
+    public static final String PREF_BACKUP_FAV = "pref_backup_fav";
+    public static final String PREF_RESTORE_FAV = "pref_restore_fav";
 
     // Repository
     public static final int FORMAT_TYPE_XML = 0;
@@ -33,6 +39,10 @@ public interface Constants {
 
     // Intent
     public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;
+
+    // File
+    public static final String FAVORITES_BACKUP_FILE_PATH
+            = Environment.getExternalStorageDirectory().getPath() + File.separator + "ce.json";
 
     // Debug
     public static final String DEBUG_TAG = "CloudEmoticon";

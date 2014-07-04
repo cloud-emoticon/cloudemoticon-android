@@ -319,7 +319,7 @@ public class MainActivity extends BaseActivity implements
                 return true;
             }
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

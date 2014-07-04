@@ -40,6 +40,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="pref_backup_restore"
+        android:title="@string/backup_and_restore" >
+        <Preference
+            android:key="pref_backup_fav"
+            android:title="@string/backup_favorites" />
+        <Preference
+            android:key="pref_restore_fav"
+            android:title="@string/restore_favorites" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="pref_about"
         android:title="@string/about">
         <Preference

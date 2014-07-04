@@ -10,12 +10,14 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="listPreferredItemHeightSmall">48dip</dimen>
-    <dimen name="listPreferredItemPaddingLeft">8dip</dimen>
-    <dimen name="listPreferredItemPaddingRight">8dip</dimen>
+    <dimen name="listPreferredItemHeightSmall">60dip</dimen>
+    <dimen name="listPreferredItemPaddingLeft">12dip</dimen>
+    <dimen name="listPreferredItemPaddingRight">12dip</dimen>
+    <dimen name="listPreferredItemIconAndTextMargin">15dip</dimen>
 
-    <dimen name="listPreferredSecondaryItemHeightSmall">36dip</dimen>
-    <dimen name="listPreferredSecondaryItemPaddingLeft">5dip</dimen>
-    <dimen name="listPreferredSecondaryItemPaddingRight">5dip</dimen>
+    <dimen name="listPreferredSecondaryItemHeightSmall">48dip</dimen>
+    <dimen name="listPreferredSecondaryItemPaddingLeft">6dip</dimen>
+    <dimen name="listPreferredSecondaryItemPaddingRight">6dip</dimen>
+    <dimen name="listPreferredSecondaryItemIconAndTextMargin">15dip</dimen>
 
 </resources>
