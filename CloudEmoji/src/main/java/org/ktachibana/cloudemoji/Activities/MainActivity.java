@@ -108,8 +108,7 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Else, set it to display default
-        else
-        {
+        else {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
             mCurrentSource = null;
         }
@@ -414,12 +413,10 @@ public class MainActivity extends BaseActivity implements
         if (id == LIST_ITEM_REPOSITORY_MANAGER_ID) {
             Intent intent = new Intent(this, RepositoryManagerActivity.class);
             startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
-        }
-        else if (id == LIST_ITEM_SETTINGS_ID) {
+        } else if (id == LIST_ITEM_SETTINGS_ID) {
             Intent intent = new Intent(this, PreferenceActivity.class);
             startActivity(intent);
-        }
-        else if (id == LIST_ITEM_EXIT_ID) {
+        } else if (id == LIST_ITEM_EXIT_ID) {
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .cancel(PERSISTENT_NOTIFICATION_ID);
             finish();
@@ -516,8 +513,7 @@ public class MainActivity extends BaseActivity implements
              * So we want to check for that and set it to default if it is invalid
              */
             if (mCurrentRepositoryId >= 0) {
-                if (Repository.findById(Repository.class, mCurrentRepositoryId) == null)
-                {
+                if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
                     mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
                     mCurrentSource = null;
                 }

@@ -217,7 +217,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         // Settings
         items.add(new LeftDrawerListItem(
                 getString(R.string.settings),
-                android.R.drawable.ic_menu_preferences,
+                R.drawable.ic_settings,
                 LIST_ITEM_SETTINGS_ID
         ));
 

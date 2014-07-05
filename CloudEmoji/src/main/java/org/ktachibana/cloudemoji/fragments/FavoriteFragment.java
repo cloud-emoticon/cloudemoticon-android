@@ -71,6 +71,12 @@ public class FavoriteFragment extends Fragment {
                         EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
                     }
                 });
+
+        // Add padding to bottom
+        for (int i = 0 ; i < 2 ; ++i) {
+            mFavoriteListView.addFooterView(new TextView(getActivity()));
+        }
+
         return rootView;
     }
 

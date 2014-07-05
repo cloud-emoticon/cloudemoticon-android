@@ -154,7 +154,7 @@ public class IconifiedListItemView extends LinearLayout {
         mRoot.setMinimumHeight((int) minHeight);
         mRoot.setPadding((int) paddingLeft, 0, (int) paddingRight, 0);
         mTextView.setTextAppearance(getContext(), textAppearance);
-        mTextView.setAllCaps(allCaps);
+        setAllCaps(mTextView, allCaps);
         LayoutParams params
                 = new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -171,6 +171,12 @@ public class IconifiedListItemView extends LinearLayout {
                 return Style.SECONDARY;
             default:
                 return Style.PRIMARY;
+        }
+    }
+
+    private void setAllCaps(TextView textView, boolean allCaps) {
+        if (allCaps) {
+            textView.setText(textView.getText().toString().toUpperCase());
         }
     }
 

@@ -54,13 +54,24 @@ public class SourceFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_source, container, false);
         ButterKnife.inject(this, rootView);
 
-        // Setup information footer
-        for (String information : mSource.getInformation()) {
-            TextView textView = new TextView(getActivity());
-            textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
-            textView.setText(information);
-            mSourceListView.addFooterView(textView);
+        // If has information, setup information footer
+        if (mSource.getInformation().size() != 0) {
+            for (String information : mSource.getInformation()) {
+                TextView textView = new TextView(getActivity());
+                textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
+                textView.setText(information);
+                mSourceListView.addFooterView(textView);
+            }
         }
+
+        // Else add padding to bottom
+        else
+        {
+            for (int i = 0; i < 2; i++) {
+                mSourceListView.addFooterView(new TextView(getActivity()));
+            }
+        }
+
 
         // Setup contents
         mAdapter = new SourceListViewAdapter(getActivity(), mSource);
