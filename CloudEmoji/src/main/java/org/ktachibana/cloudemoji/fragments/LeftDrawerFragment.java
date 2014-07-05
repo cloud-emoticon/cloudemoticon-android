@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.fragments;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,6 +31,8 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class LeftDrawerFragment extends Fragment implements Constants {
+    private static final String REPOSITORY_ID_TAG = "firstTimeId";
+    private static final String SOURCE_TAG = "firstTimeSource";
     @InjectView(R.id.leftDrawerSourceListView)
     LinearListView mSourceListView;
     @InjectView(R.id.leftDrawerCategoryListView)
@@ -40,12 +41,9 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     LinearListView mSecondaryMenu;
     @InjectView(R.id.leftDrawerCategoryDivider)
     TextView mCategoryDivider;
-
     // State
     private long mCurrentRepositoryId;
     private Source mCurrentSource;
-    private static final String REPOSITORY_ID_TAG = "firstTimeId";
-    private static final String SOURCE_TAG = "firstTimeSource";
 
     public LeftDrawerFragment() {
         // Required public constructor
@@ -108,8 +106,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                  * Namely the anyone is main activity
                  * Main activity will send back parsed source
                  */
-                else
-                {
+                else {
                     EventBus.getDefault()
                             .post(new RemoteRepositoryClickedEvent(mCurrentRepositoryId));
                 }
@@ -239,13 +236,10 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     }
 
     private void internalSwitchRepository() {
-        if (mCurrentRepositoryId < 0)
-        {
+        if (mCurrentRepositoryId < 0) {
             mCategoryListView.setAdapter(null);
             mCategoryDivider.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             if (Repository.findById(Repository.class, mCurrentRepositoryId) != null) {
                 setupCategoryListView(mCurrentSource);
                 mCategoryDivider.setVisibility(View.VISIBLE);

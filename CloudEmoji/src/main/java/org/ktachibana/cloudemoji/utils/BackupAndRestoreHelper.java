@@ -1,9 +1,8 @@
 package org.ktachibana.cloudemoji.utils;
 
-import android.content.Context;
 import android.os.Environment;
 
-import com.google.gson.Gson;
+import com.orm.SugarApp;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.Constants;
@@ -13,6 +12,7 @@ import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Source;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,6 +43,39 @@ public class BackupAndRestoreHelper implements Constants {
             return false;
         } finally {
             IOUtils.closeQuietly(outputStream);
+        }
+        return true;
+    }
+
+    public boolean restoreFavorites() {
+        // If external storage not readable
+        if (!isExternalStorageReadable()) {
+            return false;
+        }
+
+        // Get backup file
+        File backupFile = new File(FAVORITES_BACKUP_FILE_PATH);
+
+        // Read from file
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(backupFile);
+            String json = IOUtils.toString(inputStream);
+            Source source = new SourceJsonParser().parse(json);
+            List<Entry> entries = source.getCategories().get(0).getEntries();
+
+            for (Entry entry : entries) {
+                String emoticon = entry.getEmoticon();
+                String description = entry.getDescription();
+                Favorite favorite = new Favorite(SugarApp.getSugarContext(), emoticon, description);
+                favorite.save();
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
         return true;
     }

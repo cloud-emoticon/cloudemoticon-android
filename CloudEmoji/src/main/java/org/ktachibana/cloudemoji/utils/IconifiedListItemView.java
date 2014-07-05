@@ -157,8 +157,8 @@ public class IconifiedListItemView extends LinearLayout {
         mTextView.setAllCaps(allCaps);
         LayoutParams params
                 = new LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(marginBetweenIconAndText, 0, 0, 0);
         mTextView.setLayoutParams(params);
     }

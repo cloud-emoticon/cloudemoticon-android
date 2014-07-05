@@ -58,9 +58,22 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
                 boolean success = new BackupAndRestoreHelper().backupFavorites();
                 if (success) {
                     Toast.makeText(getActivity(), FAVORITES_BACKUP_FILE_PATH, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
+                return true;
+            }
+        });
+
+        // Restore favorites
+        Preference restorePref = findPreference(PREF_RESTORE_FAV);
+        restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                boolean success = new BackupAndRestoreHelper().restoreFavorites();
+                if (success) {
+                    Toast.makeText(getActivity(), getString(android.R.string.ok), Toast.LENGTH_SHORT).show();
+                } else {
                     Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
                 }
                 return true;
