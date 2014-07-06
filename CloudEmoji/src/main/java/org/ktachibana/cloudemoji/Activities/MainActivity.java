@@ -483,11 +483,9 @@ public class MainActivity extends BaseActivity implements
                 Repository.FormatType formatType = repository.getFormatType();
 
                 // Parse source from file
-                if (formatType == Repository.FormatType.XML)
-                {
+                if (formatType == Repository.FormatType.XML) {
                     source = new SourceXmlParser().parse(fileReader);
-                }
-                else if (formatType == Repository.FormatType.JSON) {
+                } else if (formatType == Repository.FormatType.JSON) {
                     source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
                 }
             }

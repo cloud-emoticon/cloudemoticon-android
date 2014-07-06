@@ -114,8 +114,7 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                 }
 
                 // Unsupported format, set error in URL edit text
-                else
-                {
+                else {
                     mUrlEditText.setError(getString(R.string.invalid_repo_format));
                 }
             }

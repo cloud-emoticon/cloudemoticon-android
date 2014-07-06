@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
-
-import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -70,8 +67,7 @@ public class SourceFragment extends Fragment {
         }
 
         // Else add padding to bottom
-        else
-        {
+        else {
             for (int i = 0; i < 2; i++) {
                 mSourceListView.addFooterView(new TextView(getActivity()));
             }
@@ -102,8 +98,7 @@ public class SourceFragment extends Fragment {
         if (fastScrollAlwaysVisible) {
             int SDK = Build.VERSION.SDK_INT;
             // Above 3.0
-            if (SDK >= android.os.Build.VERSION_CODES.HONEYCOMB)
-            {
+            if (SDK >= android.os.Build.VERSION_CODES.HONEYCOMB) {
                 listView.setFastScrollAlwaysVisible(true);
             }
         }
