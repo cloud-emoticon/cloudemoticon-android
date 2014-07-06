@@ -84,44 +84,39 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                 // Get URL and extension
                 String url = mUrlEditText.getText().toString();
                 String extension = FilenameUtils.getExtension(url);
-                boolean duplicateUrl = false;
 
                 // Detect duplicate URL
                 List<Repository> repositories = Repository.listAll(Repository.class);
                 for (Repository repository : repositories) {
                     if (url.equals(repository.getUrl())) {
-                        duplicateUrl = true;
+                        mUrlEditText.setError(getString(R.string.duplicate_url));
+                        return;
                     }
                 }
 
-                // If duplicate, set error in URL edit text
-                if (duplicateUrl) {
-                    mUrlEditText.setError(getString(R.string.duplicate_url));
-                } else {
-                    // Detect correct file format
-                    // TODO: support json
-                    if (extension.equals("xml")) {
-                        // Get alias
-                        String alias = mAliasEditText.getText().toString();
+                // Detect correct file format
+                if (extension.equals("xml") || extension.equals("json")) {
+                    // Get alias
+                    String alias = mAliasEditText.getText().toString();
 
-                        // Create and save repository to database
-                        Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
-                        repository.save();
+                    // Create and save repository to database
+                    Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
+                    repository.save();
 
-                        /**
-                         * Tell anybody who cares about a repository added
-                         * The anybody is namely repository list fragment
-                         */
-                        EventBus.getDefault().post(new RepositoryAddedEvent(repository));
+                    /**
+                     * Tell anybody who cares about a repository added
+                     * The anybody is namely repository list fragment
+                     */
+                    EventBus.getDefault().post(new RepositoryAddedEvent(repository));
 
-                        // Dialog dismissed
-                        dialog.dismiss();
-                    }
+                    // Dialog dismissed
+                    dialog.dismiss();
+                }
 
-                    // Unsupported format, set error in URL edit text
-                    else {
-                        mUrlEditText.setError(getString(R.string.invalid_repo_format));
-                    }
+                // Unsupported format, set error in URL edit text
+                else
+                {
+                    mUrlEditText.setError(getString(R.string.invalid_repo_format));
                 }
             }
         });

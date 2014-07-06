@@ -43,6 +43,7 @@ import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
+import org.ktachibana.cloudemoji.utils.SourceJsonParser;
 import org.ktachibana.cloudemoji.utils.SourceXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -468,7 +469,8 @@ public class MainActivity extends BaseActivity implements
         Source source = null;
 
         // Get repository file name
-        String fileName = Repository.findById(Repository.class, id).getFileName();
+        final Repository repository = Repository.findById(Repository.class, id);
+        String fileName = repository.getFileName();
 
         // Read the file from file system
         File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
@@ -478,8 +480,16 @@ public class MainActivity extends BaseActivity implements
         try {
             fileReader = new FileReader(file);
             try {
+                Repository.FormatType formatType = repository.getFormatType();
+
                 // Parse source from file
-                source = new SourceXmlParser().parse(fileReader);
+                if (formatType == Repository.FormatType.XML)
+                {
+                    source = new SourceXmlParser().parse(fileReader);
+                }
+                else if (formatType == Repository.FormatType.JSON) {
+                    source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
+                }
             }
 
             // Parser error
