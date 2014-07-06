@@ -17,6 +17,10 @@ public abstract class SectionedBaseAdapter extends BaseAdapter implements Pinned
      */
     private SparseArray<Integer> mSectionPositionCache;
     /**
+     * Holds the calculated values of @{link getPositionForSection}
+     */
+    private SparseArray<Integer> mSectionStartPositionCache;
+    /**
      * Holds the calculated values of @{link getSectionForPosition}
      */
     private SparseArray<Integer> mSectionCache;
@@ -39,6 +43,7 @@ public abstract class SectionedBaseAdapter extends BaseAdapter implements Pinned
         mSectionCache = new SparseArray<Integer>();
         mSectionPositionCache = new SparseArray<Integer>();
         mSectionCountCache = new SparseArray<Integer>();
+        mSectionStartPositionCache = new SparseArray<Integer>();
         mCount = -1;
         mSectionCount = -1;
     }
@@ -127,11 +132,17 @@ public abstract class SectionedBaseAdapter extends BaseAdapter implements Pinned
         return 0;
     }
 
-    public int getPositionForSection(int section) {
+    public final int getPositionForSection(int section) {
+        // first try to retrieve values from cache
+        Integer cachedPosition = mSectionStartPositionCache.get(section);
+        if (cachedPosition != null) {
+            return cachedPosition;
+        }
         int position = 0;
         for (int i = 0; i < section; ++i) {
             position += internalGetCountForSection(i) + 1;
         }
+        mSectionStartPositionCache.put(section, position);
         return position;
     }
 

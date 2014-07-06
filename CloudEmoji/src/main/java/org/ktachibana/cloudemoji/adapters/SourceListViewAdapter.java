@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
@@ -25,7 +26,7 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
-public class SourceListViewAdapter extends SectionedBaseAdapter {
+public class SourceListViewAdapter extends SectionedBaseAdapter implements SectionIndexer {
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
@@ -34,6 +35,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
     private LayoutInflater mInflater;
     // Save whether an emoticon is in favorite beforehand
     private HashMap<String, Boolean> mFavoriteByEmoticonCache;
+    private String[] mCategoryNameSectionIndexer;
 
     public SourceListViewAdapter(Context context, Source source) {
         mContext = context;
@@ -52,6 +54,11 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
             mFavoriteByEmoticonCache.put(
                     emoticon,
                     Favorite.queryByEmoticon(emoticon).size() != 0);
+        }
+
+        mCategoryNameSectionIndexer = new String[mSource.getCategories().size()];
+        for (int i = 0; i < mCategoryNameSectionIndexer.length; i++) {
+            mCategoryNameSectionIndexer[i] = mSource.getCategories().get(i).getName();
         }
     }
 
@@ -161,6 +168,11 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
         viewHolder.text.setText(category.getName());
 
         return convertView;
+    }
+
+    @Override
+    public Object[] getSections() {
+        return mCategoryNameSectionIndexer;
     }
 
     static class EntryViewHolder {
