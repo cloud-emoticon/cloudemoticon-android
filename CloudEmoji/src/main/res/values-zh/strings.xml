@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">云颜文字</string>
+    <string name="settings">设置</string>
+    <string name="exit">退出</string>
+    <string name="copied">已复制到粘贴板</string>
+    <string name="bad_conn">网络不给力请重试</string>
+    <string name="touch_to_launch">触摸以启动</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="behaviors">行为</string>
+    <string name="close_after_copy">复制之后关闭</string>
+    <string name="repo_url">源URL</string>
+    <string name="about">关于</string>
+    <string name="github_repo">GitHub源</string>
+    <string name="github_release">GitHub发布</string>
+    <string name="version">版本</string>
+    <string name="fav">最爱</string>
+    <string name="add_to_fav">添加到最爱</string>
+    <string name="split_view_title">导航抽屉/分栏</string>
+    <string name="split_view_summary">需要重启应用</string>
+    <string name="ui">UI</string>
+    <string name="added_to_fav">已添加到最爱</string>
+    <string name="removed_from_fav">已从最爱中移除</string>
+    <string name="notification_visibility">通知可见性</string>
+    <string name="show_after_boot_up">启动后显示通知</string>
+    <string name="emoticon">颜文字</string>
+    <string name="description">描述</string>
+    <string name="edit_repository">编辑源</string>
+    <string name="version_code">版本号</string>
+    <string name="no_repo_prompt">你没有任何源</string>
+    <string name="repo_manager">源管理</string>
+    <string name="add_repo">添加源</string>
+    <string name="alias">别名</string>
+    <string name="invalid_repo_format">无效的源</string>
+    <string name="source">源</string>
+    <string name="history">历史</string>
+    <string name="category">类别</string>
+    <string name="downloading">下载中</string>
+    <string name="downloaded">下载完毕</string>
+    <string name="duplicate_url">重复的URL</string>
+    <string name="duplicate_emoticon">重复的颜文字</string>
+    <string name="navbar_gesture_title">导航栏手势</string>
+    <string name="navbar_gesture_summary">从导航栏上划以启动</string>
+    <string name="no_favorite_prompt">你没有任何最爱</string>
+    <string name="no_history_prompt">你没有任何历史</string>
+    <string name="edit_favorite">编辑最爱</string>
+    <string name="remove_all_history">移除所有历史</string>
+    <string name="backup_and_restore">备份和恢复</string>
+    <string name="backup_favorites">备份最爱</string>
+    <string name="restore_favorites">恢复最爱</string>
+
+    <string-array name="notification_options">
+        <item>不显示</item>
+        <item>只在通知面板里显示（只在Android3.0以上有效）</item>
+        <item>同时在通知面板和状态栏里显示</item>
+    </string-array>
+    <string-array name="split_view_options">
+        <item>自动（推荐）</item>
+        <item>竖屏下分栏</item>
+        <item>横屏下分栏</item>
+        <item>始终分栏</item>
+    </string-array>
+
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+    <string name="skip_button_label">Skip</string>
+
+</resources>
