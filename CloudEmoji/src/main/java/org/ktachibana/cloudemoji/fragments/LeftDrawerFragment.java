@@ -98,6 +98,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                 if (mCurrentRepositoryId < 0) {
                     EventBus.getDefault()
                             .post(new LocalRepositoryClickedEvent(mCurrentRepositoryId));
+                    internalSwitchRepository();
                 }
 
                 /**
@@ -110,8 +111,6 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                     EventBus.getDefault()
                             .post(new RemoteRepositoryClickedEvent(mCurrentRepositoryId));
                 }
-
-                internalSwitchRepository();
             }
         });
 
@@ -232,7 +231,8 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     }
 
     public void onEvent(RemoteRepositoryParsedEvent event) {
-        setupCategoryListView(event.getSource());
+        mCurrentSource = event.getSource();
+        internalSwitchRepository();
     }
 
     private void internalSwitchRepository() {

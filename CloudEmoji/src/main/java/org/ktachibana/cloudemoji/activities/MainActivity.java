@@ -390,7 +390,6 @@ public class MainActivity extends BaseActivity implements
 
     public void onEvent(RemoteRepositoryClickedEvent event) {
         mCurrentRepositoryId = event.getId();
-        long before = System.currentTimeMillis();
         mCurrentSource = readSourceFromFile(event.getId());
         internalSwitchRepository();
     }
