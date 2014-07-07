@@ -91,6 +91,13 @@ public class MainActivity extends BaseActivity implements
 
         EventBus.getDefault().register(this);
 
+        // Create Source object cache
+        try {
+            Reservoir.init(this, Integer.MAX_VALUE);
+        } catch (Exception e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        }
+
         // Choose layout to inflate
         setupLayout();
 
@@ -121,12 +128,6 @@ public class MainActivity extends BaseActivity implements
         // Switch to the repository
         internalSwitchRepository();
 
-        // Create Source object cache
-        try {
-            Reservoir.init(this, 2048);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void setupLayout() {
@@ -389,6 +390,7 @@ public class MainActivity extends BaseActivity implements
 
     public void onEvent(RemoteRepositoryClickedEvent event) {
         mCurrentRepositoryId = event.getId();
+        long before = System.currentTimeMillis();
         mCurrentSource = readSourceFromFile(event.getId());
         internalSwitchRepository();
     }
@@ -474,13 +476,15 @@ public class MainActivity extends BaseActivity implements
     }
 
     private Source readSourceFromFile(long id) {
+        String stringId = String.valueOf(id);
+
         // Try to retrieve Source object from cache synchronously
         try {
-            if (Reservoir.contains(String.valueOf(id))) {
-                return Reservoir.get(String.valueOf(id), Source.class);
+            if (Reservoir.contains(stringId)) {
+                return Reservoir.get(stringId, Source.class);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
         }
 
         Source source = null;
@@ -506,8 +510,8 @@ public class MainActivity extends BaseActivity implements
                     source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
                 }
 
-                // Put parsed Object to cache asynchronously
-                Reservoir.putAsync(String.valueOf(id), source, null);
+                // Put parsed Object to cache synchronously
+                Reservoir.put(stringId, source);
             }
 
             // Parser error
@@ -515,6 +519,8 @@ public class MainActivity extends BaseActivity implements
                 Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
                         .show();
             } catch (IOException e) {
+                Log.e(DEBUG_TAG, e.getLocalizedMessage());
+            } catch (Exception e) {
                 Log.e(DEBUG_TAG, e.getLocalizedMessage());
             }
         } catch (FileNotFoundException e) {
@@ -542,7 +548,6 @@ public class MainActivity extends BaseActivity implements
              */
             if (mCurrentRepositoryId >= 0) {
                 if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
-                    Reservoir.deleteAsync(String.valueOf(mCurrentRepositoryId), null);
                     mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
                     mCurrentSource = null;
                 }
@@ -553,8 +558,6 @@ public class MainActivity extends BaseActivity implements
 
             // Switch to the repository
             internalSwitchRepository();
-        } else if (requestCode == FAVORITE_RESTORED_REQUEST_CODE) {
-            Toast.makeText(this, "restored", Toast.LENGTH_SHORT).show();
         }
     }
 
