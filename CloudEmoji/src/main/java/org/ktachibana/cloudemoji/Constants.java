@@ -39,6 +39,7 @@ public interface Constants {
 
     // Intent
     public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;
+    public static final int FAVORITE_RESTORED_REQUEST_CODE = 1;
 
     // File
     public static final String FAVORITES_BACKUP_FILE_PATH

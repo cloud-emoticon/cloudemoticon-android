@@ -35,6 +35,8 @@ A cloud solution to your favorite emoticons
 * [android-support-v4-preferencefragment](https://github.com/kolavar/android-support-v4-preferencefragment)
 * [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
+* [Gson](https://code.google.com/p/google-gson/)
+* [Reservoir](https://github.com/anupcowkur/Reservoir)
 
 
 ## License

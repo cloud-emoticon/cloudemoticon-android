@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.anupcowkur.reservoir.Reservoir;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -119,6 +120,13 @@ public class MainActivity extends BaseActivity implements
 
         // Switch to the repository
         internalSwitchRepository();
+
+        // Create Source object cache
+        try {
+            Reservoir.init(this, 2048);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupLayout() {
@@ -466,6 +474,15 @@ public class MainActivity extends BaseActivity implements
     }
 
     private Source readSourceFromFile(long id) {
+        // Try to retrieve Source object from cache synchronously
+        try {
+            if (Reservoir.contains(String.valueOf(id))) {
+                return Reservoir.get(String.valueOf(id), Source.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Source source = null;
 
         // Get repository file name
@@ -488,6 +505,9 @@ public class MainActivity extends BaseActivity implements
                 } else if (formatType == Repository.FormatType.JSON) {
                     source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
                 }
+
+                // Put parsed Object to cache asynchronously
+                Reservoir.putAsync(String.valueOf(id), source, null);
             }
 
             // Parser error
@@ -522,6 +542,7 @@ public class MainActivity extends BaseActivity implements
              */
             if (mCurrentRepositoryId >= 0) {
                 if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
+                    Reservoir.deleteAsync(String.valueOf(mCurrentRepositoryId), null);
                     mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
                     mCurrentSource = null;
                 }
@@ -532,6 +553,8 @@ public class MainActivity extends BaseActivity implements
 
             // Switch to the repository
             internalSwitchRepository();
+        } else if (requestCode == FAVORITE_RESTORED_REQUEST_CODE) {
+            Toast.makeText(this, "restored", Toast.LENGTH_SHORT).show();
         }
     }
 
