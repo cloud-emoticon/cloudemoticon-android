@@ -33,29 +33,21 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     private Source mSource;
     private Context mContext;
     private LayoutInflater mInflater;
-    // Save whether an emoticon is in favorite beforehand
-    private HashMap<String, Boolean> mFavoriteByEmoticonCache;
+    // Cache stores whether a emoticon is in favorites
+    private HashMap<String, Boolean> mEmoticonInFavoritesCache;
     private String[] mCategoryNameSectionIndexer;
 
     public SourceListViewAdapter(Context context, Source source) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSource = source;
-        mFavoriteByEmoticonCache = new LinkedHashMap<String, Boolean>();
+        mEmoticonInFavoritesCache = new LinkedHashMap<String, Boolean>();
 
         // Constant drawables
         mNoStarDrawable = mContext.getResources().getDrawable(R.drawable.ic_unfavorite);
         mStarDrawable = mContext.getResources().getDrawable(R.drawable.ic_favorite);
 
-        // Setup emoticon to favorite cache
-        List<Entry> entries = mSource.getAllEntries();
-        for (Entry entry : entries) {
-            String emoticon = entry.getEmoticon();
-            mFavoriteByEmoticonCache.put(
-                    emoticon,
-                    Favorite.queryByEmoticon(emoticon).size() != 0);
-        }
-
+        // Set up fast scroll indexer
         mCategoryNameSectionIndexer = new String[mSource.getCategories().size()];
         for (int i = 0; i < mCategoryNameSectionIndexer.length; i++) {
             mCategoryNameSectionIndexer[i] = mSource.getCategories().get(i).getName();
@@ -96,19 +88,28 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
 
         // Setup contents
         final Entry entry = (Entry) getItem(section, position);
-        viewHolder.emoticon.setText(entry.getEmoticon());
+        final String emoticon = entry.getEmoticon();
+        final String description = entry.getDescription();
+        viewHolder.emoticon.setText(emoticon);
 
         // Set description GONE if no description
-        boolean hasDescription = entry.getDescription().equals("");
+        boolean hasDescription = description.equals("");
         if (hasDescription) {
             viewHolder.description.setVisibility(View.GONE);
         } else {
             viewHolder.description.setVisibility(View.VISIBLE);
-            viewHolder.description.setText(entry.getDescription());
+            viewHolder.description.setText(description);
         }
 
         // Setup star
-        final boolean isStared = mFavoriteByEmoticonCache.get(entry.getEmoticon());
+        Boolean isInCache = mEmoticonInFavoritesCache.get(emoticon);
+        // If not in cache, then do query and put into cache
+        if (isInCache == null) {
+            boolean isInFavorites = Favorite.queryByEmoticon(emoticon).size() != 0;
+            mEmoticonInFavoritesCache.put(emoticon, isInFavorites);
+        }
+        // Else it is in cache, retrieve
+        final boolean isStared = mEmoticonInFavoritesCache.get(emoticon);
         viewHolder.favorite.setImageDrawable(isStared ? mStarDrawable : mNoStarDrawable);
 
         // Setup on star clicked
@@ -118,33 +119,33 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
                 // If already in favorite, remove it from favorites
                 if (isStared) {
                     // Remove from database
-                    List<Favorite> favoritesFound = Favorite.queryByEmoticon(entry.getEmoticon());
+                    List<Favorite> favoritesFound = Favorite.queryByEmoticon(emoticon);
                     for (Favorite favorite : favoritesFound) {
                         favorite.delete();
                     }
                     // Update cache
-                    mFavoriteByEmoticonCache.put(entry.getEmoticon(), false);
+                    mEmoticonInFavoritesCache.put(emoticon, false);
                     // Update this star
                     viewHolder.favorite.setImageDrawable(mNoStarDrawable);
                     // Update other stars
                     notifyDataSetChanged();
                     // Notify main activity
-                    EventBus.getDefault().post(new FavoriteDeletedEvent(entry.getEmoticon()));
+                    EventBus.getDefault().post(new FavoriteDeletedEvent(emoticon));
                 }
                 // Else, add to star
                 else {
                     // Save to database
                     Favorite savedFavorite
-                            = new Favorite(mContext, entry.getEmoticon(), entry.getDescription());
+                            = new Favorite(mContext, emoticon, description);
                     savedFavorite.save();
                     // Update cache
-                    mFavoriteByEmoticonCache.put(entry.getEmoticon(), true);
+                    mEmoticonInFavoritesCache.put(emoticon, true);
                     // Update this star
                     viewHolder.favorite.setImageDrawable(mStarDrawable);
                     // Update other stars
                     notifyDataSetChanged();
                     // Notify main activity
-                    EventBus.getDefault().post(new FavoriteAddedEvent(entry.getEmoticon()));
+                    EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
                 }
             }
         });
