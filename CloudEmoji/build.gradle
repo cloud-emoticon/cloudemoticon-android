@@ -1,16 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-    }
-}
 apply plugin: 'com.android.application'
-
-repositories {
-    mavenCentral()
-}
 
 android {
     compileSdkVersion 19
@@ -54,4 +42,6 @@ dependencies {
     compile 'com.github.frankiesardo:linearlistview:1.0.1@aar'
     compile 'com.jakewharton:butterknife:5.0.1'
     compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.github.anupcowkur:reservoir:1.2'
+    compile 'commons-io:commons-io:2.4'
 }
