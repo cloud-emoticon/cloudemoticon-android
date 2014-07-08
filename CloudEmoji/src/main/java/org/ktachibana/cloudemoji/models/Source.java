@@ -58,4 +58,21 @@ public class Source implements Parcelable {
         dest.writeStringList(information);
         dest.writeTypedList(categories);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || !(o instanceof Source))
+            return false;
+
+        Source source = (Source) o;
+
+        if (!categories.equals(source.categories))
+            return false;
+        if (!information.equals(source.information))
+            return false;
+
+        return true;
+    }
 }

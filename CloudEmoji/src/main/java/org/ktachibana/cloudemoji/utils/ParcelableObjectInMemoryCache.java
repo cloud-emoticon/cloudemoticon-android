@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.utils;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Arrays;
@@ -11,24 +12,40 @@ import java.util.Arrays;
  *
  * @param <V> value type is Parcelable objects
  */
-public class ParcelableObjectInMemoryCache<V extends Parcelable> {
+public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parcelable {
+    public static final int INITIAL_CAPACITY = 4;
+    public static final Parcelable.Creator<ParcelableObjectInMemoryCache> CREATOR = new Parcelable.Creator<ParcelableObjectInMemoryCache>() {
+        public ParcelableObjectInMemoryCache createFromParcel(Parcel source) {
+            return new ParcelableObjectInMemoryCache(source);
+        }
+
+        public ParcelableObjectInMemoryCache[] newArray(int size) {
+            return new ParcelableObjectInMemoryCache[size];
+        }
+    };
     private long[] mKeyArray;
     private V[] mValueArray;
     private int mSize;
-    public static final int INITIAL_CAPACITY = 4;
 
     @SuppressWarnings("unchecked")
     public ParcelableObjectInMemoryCache() {
         mKeyArray = new long[INITIAL_CAPACITY];
-        mValueArray = (V[]) new Object[INITIAL_CAPACITY];
+        mValueArray = (V[]) new Parcelable[INITIAL_CAPACITY];
         mSize = 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private ParcelableObjectInMemoryCache(Parcel in) {
+        this.mKeyArray = in.createLongArray();
+        this.mValueArray = (V[]) in.readParcelableArray(Parcelable[].class.getClassLoader());
+        this.mSize = in.readInt();
     }
 
     /**
      * Put the value in the cache according to key
      * Old value would be replaced if key is duplicated
      *
-     * @param key primitive long key
+     * @param key   primitive long key
      * @param value new value
      */
     @SuppressWarnings("unchecked")
@@ -47,8 +64,7 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> {
         }
 
         // Or expand capacity and add to the new slot
-        else
-        {
+        else {
             // Copy over with double capacity
             long[] newKeyArray = Arrays.copyOf(mKeyArray, mKeyArray.length * 2);
             V[] newValueArray = Arrays.copyOf(mValueArray, mValueArray.length * 2);
@@ -80,7 +96,7 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> {
      *
      * @return number of actual entries in the cache
      */
-    public int getSize() {
+    public int size() {
         return mSize;
     }
 
@@ -97,5 +113,17 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> {
             }
         }
         return null;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLongArray(this.mKeyArray);
+        dest.writeParcelableArray(this.mValueArray, flags);
+        dest.writeInt(this.mSize);
     }
 }

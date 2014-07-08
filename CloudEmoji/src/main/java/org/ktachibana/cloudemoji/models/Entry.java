@@ -47,4 +47,23 @@ public class Entry implements Parcelable {
         dest.writeString(this.emoticon);
         dest.writeString(this.description);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || !(o instanceof Entry))
+            return false;
+
+        Entry entry = (Entry) o;
+
+        if (!description.equals(entry.description))
+            return false;
+        if (!emoticon.equals(entry.emoticon))
+            return false;
+
+        return true;
+    }
+
 }

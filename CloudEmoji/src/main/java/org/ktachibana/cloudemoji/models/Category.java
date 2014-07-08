@@ -49,4 +49,22 @@ public class Category implements Parcelable {
         dest.writeString(this.name);
         dest.writeTypedList(entries);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || !(o instanceof Category))
+            return false;
+
+        Category category = (Category) o;
+
+        if (!entries.equals(category.entries))
+            return false;
+        if (!name.equals(category.name))
+            return false;
+
+        return true;
+    }
+
 }

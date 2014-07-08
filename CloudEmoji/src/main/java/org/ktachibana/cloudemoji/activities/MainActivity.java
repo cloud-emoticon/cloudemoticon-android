@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.anupcowkur.reservoir.Reservoir;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -44,6 +43,7 @@ import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
+import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
 import org.ktachibana.cloudemoji.utils.SourceJsonParser;
 import org.ktachibana.cloudemoji.utils.SourceXmlParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity implements
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
     private static final String CURRENT_REPOSITORY_SOURCE_TAG = "currentRepositorySource";
+    private static final String CURRENT_SOURCE_CACHE_TAG = "currentSourceCache";
     // Views
     @Optional // Optional because on split view it doesn't exist
     @InjectView(R.id.drawerLayout)
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity implements
     // State
     private long mCurrentRepositoryId;
     private Source mCurrentSource;
+    private ParcelableObjectInMemoryCache<Source> mCurrentSourceCache;
     private SourceFragment mCurrentSourceFragment;
     // etc
     private SharedPreferences mPreferences;
@@ -91,13 +93,6 @@ public class MainActivity extends BaseActivity implements
 
         EventBus.getDefault().register(this);
 
-        // Create Source object cache
-        try {
-            Reservoir.init(this, Integer.MAX_VALUE);
-        } catch (Exception e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
-        }
-
         // Choose layout to inflate
         setupLayout();
 
@@ -110,16 +105,18 @@ public class MainActivity extends BaseActivity implements
         // Check first time run
         firstTimeCheck();
 
-        // If not starting from refresh new, get which repository is displaying and its source
+        // If not starting from refresh new, get state
         if (savedInstanceState != null) {
             mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
             mCurrentSource = savedInstanceState.getParcelable(CURRENT_REPOSITORY_SOURCE_TAG);
+            mCurrentSourceCache = savedInstanceState.getParcelable(CURRENT_SOURCE_CACHE_TAG);
         }
 
         // Else, set it to display default
         else {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
             mCurrentSource = null;
+            mCurrentSourceCache = new ParcelableObjectInMemoryCache<Source>();
         }
 
         // Setup left drawer with repository id and source
@@ -475,15 +472,9 @@ public class MainActivity extends BaseActivity implements
     }
 
     private Source readSourceFromFile(long id) {
-        String stringId = String.valueOf(id);
-
-        // Try to retrieve Source object from cache synchronously
-        try {
-            if (Reservoir.contains(stringId)) {
-                return Reservoir.get(stringId, Source.class);
-            }
-        } catch (Exception e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        // Try to retrieve Source object from cache
+        if (mCurrentSourceCache.contains(id) != null) {
+            return mCurrentSourceCache.get(id);
         }
 
         Source source = null;
@@ -509,8 +500,8 @@ public class MainActivity extends BaseActivity implements
                     source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
                 }
 
-                // Put parsed Object to cache synchronously
-                Reservoir.put(stringId, source);
+                // Put parsed Source to cache
+                mCurrentSourceCache.put(id, source);
             }
 
             // Parser error
@@ -562,8 +553,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // Save current repository ID and source
+        // Save current state
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
         outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
+        outState.putParcelable(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
     }
 }
