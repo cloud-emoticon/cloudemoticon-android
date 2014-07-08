@@ -42,9 +42,5 @@ dependencies {
     compile 'com.github.frankiesardo:linearlistview:+'
     compile 'com.jakewharton:butterknife:+'
     compile 'com.google.code.gson:gson:+'
-    compile 'com.github.anupcowkur:reservoir:+'
     compile 'commons-io:commons-io:2.4'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.daimajia.easing:library:1.0.0@aar'
-    compile 'com.daimajia.androidanimations:library:1.0.6@aar'
 }
