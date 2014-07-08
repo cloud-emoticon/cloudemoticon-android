@@ -5,7 +5,7 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 8
         targetSdkVersion 19
         versionCode 8
         versionName '0.6.0'
@@ -37,11 +37,14 @@ dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.readystatesoftware.systembartint:systembartint:+'
-    compile 'com.koushikdutta.ion:ion:1.2.4'
-    compile 'de.greenrobot:eventbus:2.2.0'
-    compile 'com.github.frankiesardo:linearlistview:1.0.1@aar'
-    compile 'com.jakewharton:butterknife:5.0.1'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.github.anupcowkur:reservoir:1.2'
+    compile 'com.koushikdutta.ion:ion:+'
+    compile 'de.greenrobot:eventbus:+'
+    compile 'com.github.frankiesardo:linearlistview:+'
+    compile 'com.jakewharton:butterknife:+'
+    compile 'com.google.code.gson:gson:+'
+    compile 'com.github.anupcowkur:reservoir:+'
     compile 'commons-io:commons-io:2.4'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.0@aar'
+    compile 'com.daimajia.androidanimations:library:1.0.6@aar'
 }
