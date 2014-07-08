@@ -36,7 +36,6 @@ A cloud solution to your favorite emoticons
 * [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 * [Gson](https://code.google.com/p/google-gson/)
-* [Reservoir](https://github.com/anupcowkur/Reservoir)
 
 
 ## License
