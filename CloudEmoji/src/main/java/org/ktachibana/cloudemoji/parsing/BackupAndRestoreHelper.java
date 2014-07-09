@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.utils;
+package org.ktachibana.cloudemoji.parsing;
 
 import android.os.Environment;
 
@@ -13,7 +13,6 @@ import org.ktachibana.cloudemoji.models.Source;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,16 +32,10 @@ public class BackupAndRestoreHelper implements Constants {
         if (backupFile.exists()) backupFile.delete();
 
         // Write to file
-        FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(backupFile);
-            IOUtils.write(getBackupString(), outputStream);
-        } catch (FileNotFoundException e) {
-            return false;
+            writeFileToExternalStorage(getBackupString(), backupFile);
         } catch (IOException e) {
             return false;
-        } finally {
-            IOUtils.closeQuietly(outputStream);
         }
         return true;
     }
@@ -70,14 +63,24 @@ public class BackupAndRestoreHelper implements Constants {
                 Favorite favorite = new Favorite(SugarApp.getSugarContext(), emoticon, description);
                 favorite.save();
             }
-        } catch (FileNotFoundException e) {
-            return false;
         } catch (IOException e) {
             return false;
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
         return true;
+    }
+
+    public void writeFileToExternalStorage(String string, File file) throws IOException {
+        // If external storage not writable
+        if (!isExternalStorageWritable()) {
+            return;
+        }
+
+        // Write to file
+        FileOutputStream outputStream = new FileOutputStream(file);
+        IOUtils.write(string, outputStream);
+        IOUtils.closeQuietly(outputStream);
     }
 
     private boolean isExternalStorageWritable() {

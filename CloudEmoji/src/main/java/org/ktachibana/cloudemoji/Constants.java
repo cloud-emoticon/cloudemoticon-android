@@ -39,11 +39,12 @@ public interface Constants {
 
     // Intent
     public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;
-    public static final int FAVORITE_RESTORED_REQUEST_CODE = 1;
 
     // File
     public static final String FAVORITES_BACKUP_FILE_PATH
             = Environment.getExternalStorageDirectory().getPath() + File.separator + "ce.json";
+    public static final String EXPORT_FILE_PATH
+            = Environment.getExternalStorageDirectory().getPath() + File.separator + "%s";
 
     // Debug
     public static final String DEBUG_TAG = "CloudEmoticon";

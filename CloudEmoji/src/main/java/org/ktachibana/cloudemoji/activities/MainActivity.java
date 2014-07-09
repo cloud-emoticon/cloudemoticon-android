@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.gson.JsonParseException;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -42,16 +43,15 @@ import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
-import org.ktachibana.cloudemoji.utils.SourceJsonParser;
-import org.ktachibana.cloudemoji.utils.SourceXmlParser;
+import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -387,7 +387,7 @@ public class MainActivity extends BaseActivity implements
 
     public void onEvent(RemoteRepositoryClickedEvent event) {
         mCurrentRepositoryId = event.getId();
-        mCurrentSource = readSourceFromFile(event.getId());
+        mCurrentSource = readSource(event.getId());
         internalSwitchRepository();
     }
 
@@ -471,52 +471,25 @@ public class MainActivity extends BaseActivity implements
         if (!mIsDrawerStatic) mDrawerLayout.closeDrawers();
     }
 
-    private Source readSourceFromFile(long id) {
+    private Source readSource(long id) {
         // Try to retrieve Source object from cache
         if (mCurrentSourceCache.contains(id) != null) {
             return mCurrentSourceCache.get(id);
         }
 
         Source source = null;
-
-        // Get repository file name
-        final Repository repository = Repository.findById(Repository.class, id);
-        String fileName = repository.getFileName();
-
-        // Read the file from file system
-        File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
-
-        // Read it
-        FileReader fileReader = null;
         try {
-            fileReader = new FileReader(file);
-            try {
-                Repository.FormatType formatType = repository.getFormatType();
-
-                // Parse source from file
-                if (formatType == Repository.FormatType.XML) {
-                    source = new SourceXmlParser().parse(fileReader);
-                } else if (formatType == Repository.FormatType.JSON) {
-                    source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
-                }
-
-                // Put parsed Source to cache
-                mCurrentSourceCache.put(id, source);
-            }
-
-            // Parser error
-            catch (XmlPullParserException e) {
-                Toast.makeText(this, getString(R.string.invalid_repo_format), Toast.LENGTH_SHORT)
-                        .show();
-            } catch (IOException e) {
-                Log.e(DEBUG_TAG, e.getLocalizedMessage());
-            } catch (Exception e) {
-                Log.e(DEBUG_TAG, e.getLocalizedMessage());
-            }
-        } catch (FileNotFoundException e) {
-            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        } finally {
-            IOUtils.closeQuietly(fileReader);
+            source = new SourceReader().readSourceFromDatabaseId(id);
+            mCurrentSourceCache.put(id, source);
+        } catch (SourceParsingException e) {
+            Toast.makeText(
+                    this,
+                    getString(R.string.invalid_repo_format)+ e.getFormatType().toString(),
+                    Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
         }
 
         return source;

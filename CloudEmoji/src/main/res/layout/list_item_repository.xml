@@ -40,10 +40,18 @@
                 android:id="@+id/repositoryEditButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit"
+                android:layout_alignTop="@+id/repositoryAliasTextView"
+                android:layout_toLeftOf="@+id/repositoryExportButton" />
+
+            <ImageView
+                android:id="@+id/repositoryExportButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/repositoryDeleteButton"
-                android:src="@drawable/ic_edit" />
+                android:src="@drawable/ic_export"/>
 
             <ImageView
                 android:id="@+id/repositoryDeleteButton"

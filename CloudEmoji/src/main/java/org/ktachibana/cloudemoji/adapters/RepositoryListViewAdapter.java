@@ -2,8 +2,10 @@ package org.ktachibana.cloudemoji.adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +18,26 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.orm.SugarApp;
 
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
+import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
+import org.ktachibana.cloudemoji.parsing.SourceParsingException;
+import org.ktachibana.cloudemoji.parsing.SourceReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class RepositoryListViewAdapter extends BaseAdapter {
+public class RepositoryListViewAdapter extends BaseAdapter implements Constants {
     private List<Repository> mRepositories;
     private Context mContext;
 
@@ -136,6 +145,37 @@ public class RepositoryListViewAdapter extends BaseAdapter {
             }
         });
 
+        // Setup what happens if export button is clicked
+        viewHolder.exportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // Get Source object
+                    Source source = new SourceReader().readSourceFromDatabaseId(item.getId());
+
+                    // Parse Source
+                    String json = new SourceJsonParser().serialize(source);
+
+                    // Get file and write
+                    String filePath = String.format(EXPORT_FILE_PATH, item.getAlias() + ".json");
+                    File exportFile = new File(filePath);
+                    new BackupAndRestoreHelper().writeFileToExternalStorage(json, exportFile);
+
+                    Toast.makeText(
+                            mContext, filePath, Toast.LENGTH_SHORT).show();
+                } catch (SourceParsingException e) {
+                    Toast.makeText(
+                            mContext,
+                            mContext.getString(R.string.invalid_repo_format)+ e.getFormatType().toString(),
+                            Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                } catch (Exception e) {
+                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                }
+            }
+        });
+
         // Setup what happens if delete button is clicked
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +217,8 @@ public class RepositoryListViewAdapter extends BaseAdapter {
         ImageView downloadButton;
         @InjectView(R.id.repositoryEditButton)
         ImageView editButton;
+        @InjectView(R.id.repositoryExportButton)
+        ImageView exportButton;
         @InjectView(R.id.repositoryDeleteButton)
         ImageView deleteButton;
 

@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.utils;
+package org.ktachibana.cloudemoji.parsing;
 
 import com.google.gson.Gson;
 

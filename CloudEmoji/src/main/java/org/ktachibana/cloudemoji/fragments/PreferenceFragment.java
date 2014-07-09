@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.utils.BackupAndRestoreHelper;
+import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
 
 /**
  * This class uses android-support-v4-preferencefragment from https://github.com/kolavar/android-support-v4-preferencefragment
