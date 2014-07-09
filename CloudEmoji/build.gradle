@@ -15,6 +15,7 @@ android {
         release {
             debuggable false
             runProguard false
+            zipAlign true
         }
     }
 

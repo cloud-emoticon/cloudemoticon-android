@@ -17,11 +17,16 @@ A cloud solution to your favorite emoticons
 * use other cloud based apps that cannot one-click copy
 * use other un-customizable emoticon apps
 
-## Configurable Features
-* Close app after copying
-* Show in notification panel
-* Show notification icon after boot-up
-* Navigation drawer / Split view (optimized or manual)
+## Features
+* Brand new UI, especially for KitKat and above
+* Multi-repository management
+* Re-arrangeable favorites
+* History
+* Fast repository navigation
+* JSON format repository
+* Backup and restore favorites
+* Swipe-up navigation bar icon to replace home
+* More...
 
 ## Libraries used
 * [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)

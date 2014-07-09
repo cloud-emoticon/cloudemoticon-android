@@ -6,7 +6,7 @@
     <string name="exit">Exit</string>
     <string name="copied">Copied to clipboard</string>
     <string name="bad_conn">Bad connection, please retry</string>
-    <string name="fail">ლ(╹◡╹ლ)</string>
+    <string name="fail" translatable="false">ლ(╹◡╹ლ)</string>
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
     <string name="behaviors">Behavior</string>
