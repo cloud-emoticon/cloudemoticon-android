@@ -5,7 +5,6 @@
     <string name="exit">出口</string>
     <string name="copied">クリップボードにコピー</string>
     <string name="bad_conn">悪い接続を再試行してください</string>
-    <string name="fail" translatable="false">ლ(╹◡╹ლ)</string>
     <string name="touch_to_launch">タッチを起動するには</string>
     <string name="title_activity_settings">設定</string>
     <string name="behaviors">動作</string>
