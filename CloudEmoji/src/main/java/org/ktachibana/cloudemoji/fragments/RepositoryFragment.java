@@ -19,6 +19,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
+import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryEditedEvent;
 
@@ -95,16 +96,19 @@ public class RepositoryFragment extends Fragment implements Constants {
      * @param event repository downloaded from Internet event
      */
     public void onEvent(RepositoryDownloadedEvent event) {
-        if (event.getException() == null) {
-            Toast.makeText(getActivity(), event.getRepository().getAlias()
-                    + " "
-                    + getString(R.string.downloaded), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(),
-                    event.getException().getLocalizedMessage(),
-                    Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getActivity(), event.getRepository().getAlias()
+                + " "
+                + getString(R.string.downloaded), Toast.LENGTH_SHORT).show();
         mAdapter.updateRepositories();
+    }
+
+    /**
+     * Listens for repository download from Internet failed, namely from repository list view adapter
+     *
+     * @param event repository download failed from Internet event
+     */
+    public void onEvent(RepositoryDownloadFailedEvent event) {
+        Toast.makeText(getActivity(), event.getThrowable().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
 
     /**

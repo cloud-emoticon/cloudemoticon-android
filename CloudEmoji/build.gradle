@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 19
-        versionCode 8
+        versionCode 9
         versionName '0.6.0'
     }
 
@@ -38,7 +38,7 @@ dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.readystatesoftware.systembartint:systembartint:+'
-    compile 'com.koushikdutta.ion:ion:+'
+    compile 'com.loopj.android:android-async-http:+'
     compile 'de.greenrobot:eventbus:+'
     compile 'com.github.frankiesardo:linearlistview:+'
     compile 'com.jakewharton:butterknife:+'

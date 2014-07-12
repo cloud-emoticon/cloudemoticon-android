@@ -7,18 +7,12 @@ import org.ktachibana.cloudemoji.models.Repository;
  */
 public class RepositoryDownloadedEvent {
     private Repository mRepository;
-    private Exception mException;
 
-    public RepositoryDownloadedEvent(Repository repository, Exception exception) {
+    public RepositoryDownloadedEvent(Repository repository) {
         this.mRepository = repository;
-        this.mException = exception;
     }
 
     public Repository getRepository() {
         return mRepository;
-    }
-
-    public Exception getException() {
-        return mException;
     }
 }
