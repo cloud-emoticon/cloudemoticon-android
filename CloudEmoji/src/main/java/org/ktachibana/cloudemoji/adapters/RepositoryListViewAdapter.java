@@ -32,7 +32,6 @@ import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -105,50 +104,51 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                     dialog.show();
 
                     new AsyncHttpClient().get(
-                        SugarApp.getSugarContext(),
-                        item.getUrl(),
-                        new AsyncHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                // Write to file
-                                File repositoryFile
-                                        = new File(SugarApp.getSugarContext().getFilesDir(), item.getFileName());
-                                FileOutputStream outputStream = null;
-                                try {
-                                    outputStream = new FileOutputStream(repositoryFile);
-                                    IOUtils.write(responseBody, outputStream);
+                            SugarApp.getSugarContext(),
+                            item.getUrl(),
+                            new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    // Write to file
+                                    File repositoryFile
+                                            = new File(SugarApp.getSugarContext().getFilesDir(), item.getFileName());
+                                    FileOutputStream outputStream = null;
+                                    try {
+                                        outputStream = new FileOutputStream(repositoryFile);
+                                        IOUtils.write(responseBody, outputStream);
 
-                                    // Set repository to available and SAVE it
-                                    item.setAvailable(true);
-                                    item.save();
+                                        // Set repository to available and SAVE it
+                                        item.setAvailable(true);
+                                        item.save();
 
+                                        /**
+                                         * Tell anybody who cares about a repository being downloaded
+                                         * Namely the anybody would be repository list fragment
+                                         */
+                                        EventBus.getDefault().post(new RepositoryDownloadedEvent(item));
+                                    } catch (Exception e) {
+                                        Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                                    } finally {
+                                        IOUtils.closeQuietly(outputStream);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                     /**
-                                     * Tell anybody who cares about a repository being downloaded
+                                     * Tell anybody who cares about a repository download fails
                                      * Namely the anybody would be repository list fragment
                                      */
-                                    EventBus.getDefault().post(new RepositoryDownloadedEvent(item));
-                                } catch (Exception e) {
-                                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
-                                } finally {
-                                    IOUtils.closeQuietly(outputStream);
+                                    EventBus.getDefault().post(new RepositoryDownloadFailedEvent(error));
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    // Dismiss the dialog
+                                    dialog.dismiss();
                                 }
                             }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                /**
-                                 * Tell anybody who cares about a repository download fails
-                                 * Namely the anybody would be repository list fragment
-                                 */
-                                EventBus.getDefault().post(new RepositoryDownloadFailedEvent(error));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                // Dismiss the dialog
-                                dialog.dismiss();
-                            }
-                        });
+                    );
 
                 } else {
                     Toast.makeText(mContext, mContext.getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
@@ -192,7 +192,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                 } catch (SourceParsingException e) {
                     Toast.makeText(
                             mContext,
-                            mContext.getString(R.string.invalid_repo_format)+ e.getFormatType().toString(),
+                            mContext.getString(R.string.invalid_repo_format) + e.getFormatType().toString(),
                             Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());

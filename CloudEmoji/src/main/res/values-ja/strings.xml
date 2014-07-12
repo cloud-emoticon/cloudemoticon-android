@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">クラウドの絵文字</string>
+    <string name="settings">設定</string>
+    <string name="exit">出口</string>
+    <string name="copied">クリップボードにコピー</string>
+    <string name="bad_conn">悪い接続を再試行してください</string>
+    <string name="fail" translatable="false">ლ(╹◡╹ლ)</string>
+    <string name="touch_to_launch">タッチを起動するには</string>
+    <string name="title_activity_settings">設定</string>
+    <string name="behaviors">動作</string>
+    <string name="close_after_copy">コピー後に閉じる</string>
+    <string name="repo_url">リポジトリの URL</string>
+    <string name="about">について</string>
+    <string name="github_repo">GitHub のリポジトリ</string>
+    <string name="github_release">GitHub リリース</string>
+    <string name="version">バージョン</string>
+    <string name="fav">お気に入り</string>
+    <string name="add_to_fav">お気に入りに追加します。</string>
+    <string name="split_view_title">ナビゲーション引き出し/分割ビュー</string>
+    <string name="split_view_summary">アプリケーションを再起動する必要があります。</string>
+    <string name="ui">UI</string>
+    <string name="added_to_fav">お気に入りに追加</string>
+    <string name="removed_from_fav">お気に入りから削除</string>
+    <string name="notification_visibility">通知の可視性</string>
+    <string name="show_after_boot_up">起動後の通知を表示します。</string>
+    <string name="emoticon">絵文字</string>
+    <string name="description">説明</string>
+    <string name="edit_repository">リポジトリを編集します。</string>
+    <string name="version_code">バージョン コード</string>
+    <string name="no_repo_prompt">任意のリポジトリを持っていない</string>
+    <string name="repo_manager">リポジトリ マネージャー</string>
+    <string name="add_repo">リポジトリを追加します。</string>
+    <string name="alias">エイリアス</string>
+    <string name="invalid_repo_format">無効なリポジトリ フォーマット</string>
+    <string name="source">ソース</string>
+    <string name="history">歴史</string>
+    <string name="category">カテゴリ</string>
+    <string name="downloading">ダウンロードします。</string>
+    <string name="downloaded">ダウンロード</string>
+    <string name="duplicate_url">重複する URL</string>
+    <string name="duplicate_emoticon">重複する絵文字</string>
+    <string name="navbar_gesture_title">ナビゲーション バーのジェスチャ</string>
+    <string name="navbar_gesture_summary">開始するには、ナビゲーション バーからスワイプ アップ</string>
+    <string name="no_favorite_prompt">あなたはお気に入りのを持っていない</string>
+    <string name="no_history_prompt">あなたは、どんな歴史を持っていない</string>
+    <string name="edit_favorite">お気に入りのを編集します。</string>
+    <string name="remove_all_history">すべての履歴を削除します。</string>
+    <string name="backup_and_restore">バックアップと復元</string>
+    <string name="backup_favorites">お気に入りをバックアップします。</string>
+    <string name="restore_favorites">お気に入りを復元します。</string>
+
+    <string-array name="notification_options">
+        <item>表示しない</item>
+        <item>のみ通知パネル内の（唯一のAndroid3.0上で動作します）</item>
+        <item>通知パネルとステータスバーの両方に</item>
+    </string-array>
+    <string-array name="split_view_options">
+        <item>自動（推奨）</item>
+        <item>肖像に分割</item>
+        <item>景観への分割</item>
+        <item>常に分割</item>
+    </string-array>
+
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+    <string name="skip_button_label">Skip</string>
+</resources>

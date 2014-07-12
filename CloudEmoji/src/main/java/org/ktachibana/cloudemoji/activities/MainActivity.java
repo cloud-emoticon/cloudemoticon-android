@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.gson.JsonParseException;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -44,10 +43,9 @@ import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
+import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
-import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -484,7 +482,7 @@ public class MainActivity extends BaseActivity implements
         } catch (SourceParsingException e) {
             Toast.makeText(
                     this,
-                    getString(R.string.invalid_repo_format)+ e.getFormatType().toString(),
+                    getString(R.string.invalid_repo_format) + e.getFormatType().toString(),
                     Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Log.e(DEBUG_TAG, e.getLocalizedMessage());
