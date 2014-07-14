@@ -23,10 +23,13 @@ A cloud solution to your favorite emoticons
 * Re-arrangeable favorites
 * History
 * Fast repository navigation
-* JSON format repository
+* JSON/XML format repository
 * Backup and restore favorites
 * Swipe-up navigation bar icon to replace home
 * More...
+
+## Screenshot
+![screen_shot](https://github.com/KTachibanaM/cloudemoji/blob/master/screenshots/device-2014-07-12-153244.png)
 
 ## Libraries used
 * [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
