@@ -82,39 +82,38 @@ public class AddFavoriteDialogFragment extends DialogFragment implements Constan
                 final String emoticon = mEmoticonEditText.getText().toString();
                 final String description = mDescriptionEditText.getText().toString();
 
+                // Check if empty emoticon
+                if (emoticon.equals("")) {
+                    mEmoticonEditText.setError(getString(R.string.empty_emoticon));
+                    return;
+                }
+
                 // Check favorite emoticon duplicate
-                boolean duplicate = false;
                 List<Favorite> favorites = Favorite.listAll(Favorite.class);
                 for (Favorite favorite : favorites) {
                     if (favorite.getEmoticon().equals(emoticon)) {
-                        duplicate = true;
-                        break;
+                        mEmoticonEditText.setError(getString(R.string.duplicate_emoticon));
+                        return;
                     }
-                }
-
-                // Notify if duplicate
-                if (duplicate) {
-                    mEmoticonEditText.setError(getString(R.string.duplicate_emoticon));
                 }
 
                 // Else add to favorites
-                else {
-                    Favorite favorite = new Favorite(SugarApp.getSugarContext(), emoticon, description);
-                    favorite.save();
+                Favorite favorite = new Favorite(SugarApp.getSugarContext(), emoticon, description);
+                favorite.save();
 
-                    // Notify main activity about it
-                    EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
+                // Notify main activity about it
+                EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
 
-                    // Notify target fragment about it
-                    try {
-                        ((FavoriteFragment) getTargetFragment()).notifyFavoriteAdded();
-                    } catch (ClassCastException e) {
-                        Log.e(DEBUG_TAG, e.getLocalizedMessage());
-                    }
-
-                    // Dismiss dialog
-                    dialog.dismiss();
+                // Notify target fragment about it
+                try {
+                    ((FavoriteFragment) getTargetFragment()).notifyFavoriteAdded();
+                } catch (ClassCastException e) {
+                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 }
+
+                // Dismiss dialog
+                dialog.dismiss();
+
             }
         });
     }
