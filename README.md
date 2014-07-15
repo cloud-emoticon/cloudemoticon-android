@@ -29,7 +29,7 @@ A cloud solution to your favorite emoticons
 * More...
 
 ## Screenshot
-![screenshot](https://github.com/KTachibanaM/cloudemoji/blob/master/screenshots/device-2014-07-12-153244.png)
+![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/device-2014-07-12-153244.png)
 
 ## Libraries used
 * [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
