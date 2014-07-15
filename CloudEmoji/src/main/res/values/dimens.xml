@@ -15,7 +15,7 @@
     <dimen name="listPreferredItemPaddingRight">12dip</dimen>
     <dimen name="listPreferredItemIconAndTextMargin">15dip</dimen>
 
-    <dimen name="listPreferredSecondaryItemHeightSmall">40dip</dimen>
+    <dimen name="listPreferredSecondaryItemHeightSmall">45dip</dimen>
     <dimen name="listPreferredSecondaryItemPaddingLeft">12dip</dimen>
     <dimen name="listPreferredSecondaryItemPaddingRight">12dip</dimen>
     <dimen name="listPreferredSecondaryItemIconAndTextMargin">15dip</dimen>

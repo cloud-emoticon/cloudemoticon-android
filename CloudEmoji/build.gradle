@@ -35,6 +35,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.readystatesoftware.systembartint:systembartint:+'
@@ -44,4 +45,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:+'
     compile 'com.google.code.gson:gson:+'
     compile 'commons-io:commons-io:2.4'
+    compile 'com.squareup.retrofit:retrofit:+'
 }

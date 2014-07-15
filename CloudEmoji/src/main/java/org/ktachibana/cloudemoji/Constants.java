@@ -11,6 +11,7 @@ public interface Constants {
     public static final long LIST_ITEM_REPOSITORY_MANAGER_ID = 0;
     public static final long LIST_ITEM_SETTINGS_ID = 1;
     public static final long LIST_ITEM_EXIT_ID = 2;
+    public static final long LIST_ITEM_ACCOUNT_ID = 3;
 
     // Notification
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
@@ -36,9 +37,11 @@ public interface Constants {
     public static final String DEFAULT_REPOSITORY_URL = "https://dl.dropboxusercontent.com/u/120725807/test.xml";
     public static final String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
     public static final String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
+    public static final String CLOUD_API_HOST = "ce.catofes.com";
 
     // Intent
     public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;
+    public static final int PREFERENCE_REQUEST_CODE = 1;
 
     // File
     public static final String FAVORITES_BACKUP_FILE_PATH

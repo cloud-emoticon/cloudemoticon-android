@@ -51,6 +51,7 @@
     <string name="backup_favorites">Backup favorites</string>
     <string name="restore_favorites">Restore favorites</string>
     <string name="empty_emoticon">Empty emoticon</string>
+    <string name="account">Account</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

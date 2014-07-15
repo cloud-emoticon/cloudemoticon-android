@@ -420,11 +420,14 @@ public class MainActivity extends BaseActivity implements
             startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
         } else if (id == LIST_ITEM_SETTINGS_ID) {
             Intent intent = new Intent(this, PreferenceActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, PREFERENCE_REQUEST_CODE);
         } else if (id == LIST_ITEM_EXIT_ID) {
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .cancel(PERSISTENT_NOTIFICATION_ID);
             finish();
+        } else if (id == LIST_ITEM_ACCOUNT_ID) {
+            Intent intent = new Intent(this, AccountActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -519,6 +522,10 @@ public class MainActivity extends BaseActivity implements
 
             // Switch to the repository
             internalSwitchRepository();
+        } else if (requestCode == PREFERENCE_REQUEST_CODE) {
+            if (mCurrentRepositoryId == LIST_ITEM_FAVORITE_ID) {
+                internalSwitchRepository();
+            }
         }
     }
 
