@@ -1,9 +1,11 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
@@ -42,15 +44,15 @@ public class AccountActivity extends BaseActivity {
                         , new Callback<Void>() {
                             @Override
                             public void success(Void aVoid, Response response) {
-                                if (response.getStatus() == 101)
-                                    register.setText("YOLO");
-                                else
-                                    register.setText("WTF");
+                                int i = 1;
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                int i = 1;
+                                Toast.makeText(
+                                        AccountActivity.this,
+                                        getString(R.string.fail),
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                 );
