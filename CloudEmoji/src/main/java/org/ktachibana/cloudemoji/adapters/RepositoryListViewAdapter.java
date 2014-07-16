@@ -2,8 +2,6 @@ package org.ktachibana.cloudemoji.adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +28,7 @@ import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
+import org.ktachibana.cloudemoji.utils.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -95,7 +94,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
             @Override
             public void onClick(View view) {
                 // If network is available
-                if (isNetworkConnectionAvailable()) {
+                if (Utils.isNetworkConnectionAvailable(SugarApp.getSugarContext())) {
 
                     // Show a dialog progress dialog
                     final ProgressDialog dialog = new ProgressDialog(mContext);
@@ -224,14 +223,6 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
     public void updateRepositories() {
         this.mRepositories = Repository.listAll(Repository.class);
         notifyDataSetChanged();
-    }
-
-    private boolean isNetworkConnectionAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
-        if (info == null) return false;
-        NetworkInfo.State network = info.getState();
-        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 
     static class ViewHolder {

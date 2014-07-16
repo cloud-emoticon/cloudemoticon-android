@@ -52,6 +52,11 @@
     <string name="restore_favorites">Restore favorites</string>
     <string name="empty_emoticon">Empty emoticon</string>
     <string name="account">Account</string>
+    <string name="register_successful">You have registered</string>
+    <string name="illegal_username">Illegal username</string>
+    <string name="existing_username">Existing username</string>
+    <string name="illegal_email_address">Illegal email address</string>
+    <string name="existing_email_address">Existing email address</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
