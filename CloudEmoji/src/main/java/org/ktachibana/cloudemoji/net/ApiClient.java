@@ -6,11 +6,11 @@ import com.loopj.android.http.RequestParams;
 
 import org.ktachibana.cloudemoji.Constants;
 
-public class CloudApiClient implements Constants {
+public class ApiClient implements Constants {
     private static final String REGISTER = "/api/account.php?f=register";
     private AsyncHttpClient mClient;
 
-    public CloudApiClient() {
+    public ApiClient() {
         mClient = new AsyncHttpClient();
     }
 

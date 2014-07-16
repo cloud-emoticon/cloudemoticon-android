@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +16,7 @@ import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.net.CloudApiClient;
+import org.ktachibana.cloudemoji.net.ApiClient;
 import org.ktachibana.cloudemoji.utils.Utils;
 
 import butterknife.ButterKnife;
@@ -57,11 +56,11 @@ public class AccountActivity extends BaseActivity implements Constants {
                     }
 
                     // Convert status
-                    CloudApiClient.Status status
-                            = CloudApiClient.getRegisterStatus(code);
+                    ApiClient.Status status
+                            = ApiClient.getRegisterStatus(code);
 
                     // Traverse status
-                    if (status == CloudApiClient.Status.OK) {
+                    if (status == ApiClient.Status.OK) {
                         Toast.makeText(
                                 AccountActivity.this,
                                 getString(R.string.register_successful) + "\n" + userNameString,
@@ -69,16 +68,16 @@ public class AccountActivity extends BaseActivity implements Constants {
                         ).show();
                         userName.setText("");
                         emailAddress.setText("");
-                    } else if (status == CloudApiClient.Status.ILLEGAL_USERNAME) {
+                    } else if (status == ApiClient.Status.ILLEGAL_USERNAME) {
                         userName.setError(getString(R.string.illegal_username));
                         userName.setText("");
-                    } else if (status == CloudApiClient.Status.EXISTING_USERNAME) {
+                    } else if (status == ApiClient.Status.EXISTING_USERNAME) {
                         userName.setError(getString(R.string.existing_username));
                         userName.setText("");
-                    } else if (status == CloudApiClient.Status.ILLEGAL_EMAIL_ADDRESS) {
+                    } else if (status == ApiClient.Status.ILLEGAL_EMAIL_ADDRESS) {
                         emailAddress.setError(getString(R.string.illegal_email_address));
                         emailAddress.setText("");
-                    } else if (status == CloudApiClient.Status.EXISTING_EMAIL_ADDRESS) {
+                    } else if (status == ApiClient.Status.EXISTING_EMAIL_ADDRESS) {
                         emailAddress.setError(getString(R.string.existing_email_address));
                         emailAddress.setText("");
                     } else {
@@ -111,7 +110,7 @@ public class AccountActivity extends BaseActivity implements Constants {
                 if (Utils.isNetworkConnectionAvailable(AccountActivity.this)) {
                     mProgressDialog.setMessage(getString(R.string.registering));
                     mProgressDialog.show();
-                    new CloudApiClient()
+                    new ApiClient()
                             .register(
                                     userName.getText().toString(),
                                     password.getText().toString(),
