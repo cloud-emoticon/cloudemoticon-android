@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.accounts.Account;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,12 +32,15 @@ public class AccountActivity extends BaseActivity implements Constants {
     EditText emailAddress;
     @InjectView(R.id.register)
     Button register;
+    ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         ButterKnife.inject(this);
+
+        mProgressDialog = new ProgressDialog(this);
 
         // Create handlers
         final JsonHttpResponseHandler onRegisteredHandler = new JsonHttpResponseHandler() {
@@ -63,14 +67,20 @@ public class AccountActivity extends BaseActivity implements Constants {
                                 getString(R.string.register_successful) + "\n" + userNameString,
                                 Toast.LENGTH_SHORT
                         ).show();
+                        userName.setText("");
+                        emailAddress.setText("");
                     } else if (status == CloudApiClient.Status.ILLEGAL_USERNAME) {
                         userName.setError(getString(R.string.illegal_username));
+                        userName.setText("");
                     } else if (status == CloudApiClient.Status.EXISTING_USERNAME) {
                         userName.setError(getString(R.string.existing_username));
+                        userName.setText("");
                     } else if (status == CloudApiClient.Status.ILLEGAL_EMAIL_ADDRESS) {
                         emailAddress.setError(getString(R.string.illegal_email_address));
+                        emailAddress.setText("");
                     } else if (status == CloudApiClient.Status.EXISTING_EMAIL_ADDRESS) {
                         emailAddress.setError(getString(R.string.existing_email_address));
+                        emailAddress.setText("");
                     } else {
                         Log.e(DEBUG_TAG, String.format(("Illegal code %d"), code));
                     }
@@ -87,6 +97,11 @@ public class AccountActivity extends BaseActivity implements Constants {
                         Toast.LENGTH_SHORT
                 ).show();
             }
+
+            @Override
+            public void onFinish() {
+                mProgressDialog.dismiss();
+            }
         };
 
         // Register listeners
@@ -94,6 +109,8 @@ public class AccountActivity extends BaseActivity implements Constants {
             @Override
             public void onClick(View v) {
                 if (Utils.isNetworkConnectionAvailable(AccountActivity.this)) {
+                    mProgressDialog.setMessage(getString(R.string.registering));
+                    mProgressDialog.show();
                     new CloudApiClient()
                             .register(
                                     userName.getText().toString(),
