@@ -4,3 +4,6 @@
 /.idea/libraries
 .DS_Store
 build
+Gemfile
+Gemfile.lock
+_site/
