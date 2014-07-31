@@ -426,7 +426,6 @@ public class MainActivity extends BaseActivity implements
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .cancel(PERSISTENT_NOTIFICATION_ID);
             finish();
-
         } else if (id == LIST_ITEM_ACCOUNT_ID) {
             Intent intent = new Intent(this, AccountActivity.class);
             startActivity(intent);

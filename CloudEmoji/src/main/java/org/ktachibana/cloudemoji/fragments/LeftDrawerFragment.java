@@ -207,13 +207,13 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
 
         /**
-        // Account
-        items.add(new LeftDrawerListItem(
-                getString(R.string.account),
-                R.drawable.ic_account,
-                LIST_ITEM_ACCOUNT_ID
-        ));
-        **/
+         // Account
+         items.add(new LeftDrawerListItem(
+         getString(R.string.account),
+         R.drawable.ic_account,
+         LIST_ITEM_ACCOUNT_ID
+         ));
+         **/
 
         // Repository manager
         items.add(new LeftDrawerListItem(

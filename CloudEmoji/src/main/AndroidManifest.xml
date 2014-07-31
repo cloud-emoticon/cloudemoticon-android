@@ -67,6 +67,23 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="cloudemoticon" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="cloudemoticons" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.BootUpDummyActivity"
@@ -92,8 +109,7 @@
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
 
-        <service
-            android:name=".net.AccountAuthenticationService">
+        <service android:name=".net.AccountAuthenticationService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>

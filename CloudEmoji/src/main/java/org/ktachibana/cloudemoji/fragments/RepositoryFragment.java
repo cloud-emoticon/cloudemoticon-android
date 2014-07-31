@@ -76,8 +76,7 @@ public class RepositoryFragment extends Fragment implements Constants {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_repository: {
-                AddRepositoryDialogFragment fragment = new AddRepositoryDialogFragment();
-                fragment.show(getFragmentManager(), "add_repository");
+                popupAddRepositoryDialog("");
                 return true;
             }
         }
@@ -88,6 +87,11 @@ public class RepositoryFragment extends Fragment implements Constants {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    public void popupAddRepositoryDialog(String passedInUrl) {
+        AddRepositoryDialogFragment fragment = AddRepositoryDialogFragment.newInstance(passedInUrl);
+        fragment.show(getFragmentManager(), "add_repository");
     }
 
     /**

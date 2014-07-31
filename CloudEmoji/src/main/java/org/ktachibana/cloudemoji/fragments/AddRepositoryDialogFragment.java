@@ -25,13 +25,31 @@ import de.greenrobot.event.EventBus;
  * Dialog fragment to add a repository to database
  */
 public class AddRepositoryDialogFragment extends DialogFragment implements Constants {
+    public static final String ARG_PASSED_IN_URL = "mPassedInUrl";
     @InjectView(R.id.addRepositoryUrlEditText)
     EditText mUrlEditText;
     @InjectView(R.id.addRepositoryAliasEditText)
     EditText mAliasEditText;
+    private String mPassedInUrl;
 
     public AddRepositoryDialogFragment() {
         // Required empty constructor
+    }
+
+    public static AddRepositoryDialogFragment newInstance(String passedInUrl) {
+        AddRepositoryDialogFragment fragment = new AddRepositoryDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PASSED_IN_URL, passedInUrl);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mPassedInUrl = getArguments().getString(ARG_PASSED_IN_URL);
+        }
     }
 
     @Override
@@ -65,6 +83,10 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                 dialog.dismiss();
             }
         });
+
+
+        // Setup passed in url
+        mUrlEditText.setText(mPassedInUrl);
 
         return builder.create();
     }
