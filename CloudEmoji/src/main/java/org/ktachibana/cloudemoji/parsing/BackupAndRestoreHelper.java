@@ -33,7 +33,7 @@ public class BackupAndRestoreHelper implements Constants {
 
         // Write to file
         try {
-            writeFileToExternalStorage(getBackupString(), backupFile);
+            writeFileToExternalStorage(new SourceJsonParser().serialize(getFavoritesAsSource()), backupFile);
         } catch (IOException e) {
             return false;
         }
@@ -94,7 +94,7 @@ public class BackupAndRestoreHelper implements Constants {
                 || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
-    private String getBackupString() {
+    public Source getFavoritesAsSource() {
         // Get all favorite entries
         List<Favorite> favorites = Favorite.listAll(Favorite.class);
         List<Entry> favoriteEntries = new ArrayList<Entry>();
@@ -107,8 +107,6 @@ public class BackupAndRestoreHelper implements Constants {
         ArrayList<String> information = new ArrayList<String>();
         information.add("favorites");
         List<Category> categories = Arrays.asList(favoriteCategory);
-        Source favoriteSource = new Source(information, categories);
-
-        return new SourceJsonParser().serialize(favoriteSource);
+        return new Source(information, categories);
     }
 }

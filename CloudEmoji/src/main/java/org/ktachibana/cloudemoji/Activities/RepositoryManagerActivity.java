@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 

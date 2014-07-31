@@ -43,6 +43,7 @@ import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity implements
         else {
             mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
             mCurrentSource = null;
-            mCurrentSourceCache = new ParcelableObjectInMemoryCache<Source>();
+            initializeCache();
         }
 
         // Setup left drawer with repository id and source
@@ -272,9 +273,43 @@ public class MainActivity extends BaseActivity implements
             }
 
             // Remove the database
-            SQLiteDatabase.deleteDatabase(oldDatabaseFile);
+            if (oldDatabaseFile.delete()) {
+                Toast.makeText(this, getString(R.string.old_favorites_merged), Toast.LENGTH_SHORT).show();
+            }
         } catch (SQLiteException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Put every source in cache
+     */
+    private void initializeCache() {
+        mCurrentSourceCache = new ParcelableObjectInMemoryCache<Source>();
+
+        // Put favorites
+        Source favoritesSource = new BackupAndRestoreHelper().getFavoritesAsSource();
+        mCurrentSourceCache.put(LIST_ITEM_FAVORITE_ID, favoritesSource);
+
+        // Put all available repositories
+        List<Repository> allRepositories = Repository.listAll(Repository.class);
+        for (Repository repository : allRepositories) {
+            if (repository.isAvailable()) {
+                try {
+                    long id = repository.getId();
+                    Source source = new SourceReader().readSourceFromDatabaseId(id);
+                    mCurrentSourceCache.put(id, source);
+                } catch (SourceParsingException e) {
+                    Toast.makeText(
+                            this,
+                            getString(R.string.invalid_repo_format) + e.getFormatType().toString(),
+                            Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                } catch (Exception e) {
+                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                }
+            }
         }
     }
 
@@ -478,27 +513,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private Source readSource(long id) {
-        // Try to retrieve Source object from cache
-        if (mCurrentSourceCache.contains(id) != null) {
-            return mCurrentSourceCache.get(id);
-        }
-
-        Source source = null;
-        try {
-            source = new SourceReader().readSourceFromDatabaseId(id);
-            mCurrentSourceCache.put(id, source);
-        } catch (SourceParsingException e) {
-            Toast.makeText(
-                    this,
-                    getString(R.string.invalid_repo_format) + e.getFormatType().toString(),
-                    Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
-        }
-
-        return source;
+        return mCurrentSourceCache.get(id);
     }
 
     @Override
@@ -510,6 +525,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Coming back from repository manager, repositories may be changed
         if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE) {
             /**
              * If coming back from repository manager, the current id may not be valid
@@ -522,12 +539,19 @@ public class MainActivity extends BaseActivity implements
                 }
             }
 
+            // Re-initialize cache
+            initializeCache();
+
             // Setup left drawer with repository id and source
             setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
 
             // Switch to the repository
             internalSwitchRepository();
-        } else if (requestCode == PREFERENCE_REQUEST_CODE) {
+        }
+
+        // Coming back from preference, favorites may be changed
+        else if (requestCode == PREFERENCE_REQUEST_CODE)
+        {
             if (mCurrentRepositoryId == LIST_ITEM_FAVORITE_ID) {
                 internalSwitchRepository();
             }

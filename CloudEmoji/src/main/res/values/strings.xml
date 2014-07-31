@@ -59,6 +59,7 @@
     <string name="illegal_email_address">Illegal email address</string>
     <string name="existing_email_address">Existing email address</string>
     <string name="repository_store">Repository Store</string>
+    <string name="old_favorites_merged">Old favorites merged</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
