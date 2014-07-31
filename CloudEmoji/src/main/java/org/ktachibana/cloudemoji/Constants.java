@@ -8,10 +8,12 @@ public interface Constants {
     // Left drawer list item
     public static final long LIST_ITEM_FAVORITE_ID = -1;
     public static final long LIST_ITEM_HISTORY_ID = -2;
+
     public static final long LIST_ITEM_REPOSITORY_MANAGER_ID = 0;
     public static final long LIST_ITEM_SETTINGS_ID = 1;
     public static final long LIST_ITEM_EXIT_ID = 2;
     public static final long LIST_ITEM_ACCOUNT_ID = 3;
+    public static final long LIST_ITEM_STORE_ID = 4;
 
     // Notification
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
@@ -38,6 +40,7 @@ public interface Constants {
     public static final String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
     public static final String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
     public static final String CLOUD_API_HOST = "http://ce.catofes.com";
+    public static final String STORE_URL = "http://www.heartunlock.com/soft/cloud_emoticon/store/";
 
     // Intent
     public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;

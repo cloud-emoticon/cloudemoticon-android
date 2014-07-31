@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -425,8 +426,13 @@ public class MainActivity extends BaseActivity implements
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .cancel(PERSISTENT_NOTIFICATION_ID);
             finish();
+
         } else if (id == LIST_ITEM_ACCOUNT_ID) {
             Intent intent = new Intent(this, AccountActivity.class);
+            startActivity(intent);
+        } else if (id == LIST_ITEM_STORE_ID) {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(STORE_URL));
             startActivity(intent);
         }
     }
