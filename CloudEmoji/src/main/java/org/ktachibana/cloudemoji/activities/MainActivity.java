@@ -505,7 +505,7 @@ public class MainActivity extends BaseActivity implements
 
             // New version available, show dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.new_version_available);
+            builder.setTitle(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode));
             builder.setPositiveButton(R.string.go_to_play_store, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -605,8 +605,7 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Coming back from preference, favorites may be changed
-        else if (requestCode == PREFERENCE_REQUEST_CODE)
-        {
+        else if (requestCode == PREFERENCE_REQUEST_CODE) {
             if (mCurrentRepositoryId == LIST_ITEM_FAVORITE_ID) {
                 internalSwitchRepository();
             }

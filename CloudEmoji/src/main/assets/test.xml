@@ -1,247 +1,250 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <emoji>
-	<infoos>
-		<info>KTachibana</info>
-		<info>https://dl.dropboxusercontent.com/u/120725807/test.xml</info>
-	</infoos>
-	<category name="Trending on Google+">
-		<entry>
-			<string>(*•̀ᴗ•́ *)و ̑̑﻿</string>
-			<note>kee</note>
-		</entry>
-		<entry>
-			<string>(っ╹ ◡ ╹ )っ💊﻿</string>
-			<note>吃药</note>
-		</entry>
-		<entry>
-			<string>(ノ ﾟ∀。)ノ﻿</string>
-			<note>YK</note>
-		</entry>
-		<entry>
-			<string>ԅ(╹﹃╹ԅ)</string>
-			<note>破威利</note>
-		</entry>
-		<entry>
-			<string>( ´◔ ‸◔`)</string>
-			<note>Aroes Litvyak</note>
-		</entry>
-		<entry>
-			<string>✌(´◓ｑ◔｀)✌</string>
-		</entry>
-		<entry>
-			<string>ლ(*´Д｀*ლ)ﾓﾐﾓﾐ﻿</string>
-			<note>Nano Cuei</note>
-		</entry>
-	</category>
-	<category name="ლ">
-		<entry>
-			<string>ლ(╹◡╹ლ)</string>
-		</entry>
-		<entry>
-			<string>(൬╹◡╹)൬</string>
-		</entry>
-		<entry>
-			<string>□(╹◡╹□)﻿</string>
-		</entry>
-		<entry>
-			<string>ლ (￣▽￣ლ )﻿</string>
-		</entry>
-		<entry>
-			<string>(っ╹ ◡ ╹ )っ﻿</string>
-		</entry>
-	</category>
-	<category name="╮">
-		<entry>
-			<string>╮(￣▽￣")╭</string>
-		</entry>
-		<entry>
-			<string>╮( ๑╹,◡╹ ๑) ╭</string>
-		</entry>
-		<entry>
-			<string>╭(๑╹,◡╹๑)╮﻿</string>
-		</entry>
-		<entry>
-			<string>ㄟ(￣▽￣ㄟ)</string>
-		</entry>
-		<entry>
-			<string>ㄟ( ▔∀▔ )ㄏ</string>
-		</entry>
-		<entry>
-			<string>(〜￣△￣)〜</string>
-		</entry>
-		<entry>
-			<string>↖(￣▽￣")﻿</string>
-		</entry>
-		<entry>
-			<string>(￣ε(#￣)☆╰╮(￣▽￣///)</string>
-		</entry>
-	</category>
-	<category name="ω">
-		<entry>
-			<string>=ω=</string>
-		</entry>
-		<entry>
-			<string>=￣ω￣=</string>
-		</entry>
-		<entry>
-			<string>_ (:3」∠)_</string>
-		</entry>
-		<entry>
-			<string>(´ ・ω・｀)</string>
-		</entry>
-		<entry>
-			<string>(｢･ω･)｢</string>
-		</entry>
-		<entry>
-			<string>(´ ；ω ；｀)</string>
-		</entry>
-		<entry>
-			<string>( っ*'ω'*c)</string>
-		</entry>
-		<entry>
-			<string>( っ´ω`c)♡</string>
-		</entry>
-		<entry>
-			<string>(｡･ω･｡)</string>
-		</entry>
-		<entry>
-			<string>(/ω＼)</string>
-		</entry>
-		<entry>
-			<string>─=≡Σ((( つ•̀ω•́)つ</string>
-			<note>突袭 +陆西园</note>
-		</entry>
-		<entry>
-			<string>( ,,ÒωÓ,, )﻿</string>
-		</entry>
-		<entry>
-			<string>_( •́ ​ω •̀ 」∠)/_﻿</string>
-		</entry>
-	</category>
-	<category name="Ծ">
-		<entry>
-			<string>,,Ծ‸Ծ,,</string>
-		</entry>
-		<entry>
-			<string>ԾωԾ</string>
-		</entry>
-		<entry>
-			<string>ю┐(ԾωԾ)</string>
-		</entry>
-	</category>
-	<category name="v">
-		<entry>
-			<string>( ´∀`)σ)Д`)</string>
-		</entry>
-		<entry>
-			<string>(((( ；ﾟДﾟ)))))))</string>
-		</entry>
-		<entry>
-			<string>(;´ ༎ຶ Д ༎ຶ`)</string>
-		</entry>
-		<entry>
-			<string>(;´ ༎ຶ Д ༎ຶ`)σ</string>
-		</entry>
-		<entry>
-			<string>(σ≧∀≦)σ</string>
-		</entry>
-		<entry>
-			<string>☜(ﾟ∀ﾟ(ﾟ∀ﾟ☜)</string>
-		</entry>
-		<entry>
-			<string>(''　　　v　'')</string>
-		</entry>
-		<entry>
-			<string>\(''　　　v　'')/</string>
-		</entry>
-		<entry>
-			<string>Σ( ° △ °|||)</string>
-		</entry>
-		<entry>
-			<string>(つдC)</string>
-		</entry>
-		<entry>
-			<string>Σ(っ°Д°;)っ</string>
-		</entry>
-		<entry>
-			<string>( ° ▽、° )</string>
-		</entry>
-		<entry>
-			<string>( ´∀`)</string>
-		</entry>
-	</category>
-	<category name="Misc.">
-		<entry>
-			<string>♂</string>
-		</entry>
-		<entry>
-			<string>♀</string>
-		</entry>
-		<entry>
-			<string>(っ^///^)っ</string>
-		</entry>
-		<entry>
-			<string>( っ'〜') づ</string>
-		</entry>
-		<entry>
-			<string>(┙&gt;∧&lt;)┙へ┻┻</string>
-		</entry>
-		<entry>
-			<string>눈_눈</string>
-		</entry>
-		<entry>
-			<string>(屮눈皿눈)</string>
-		</entry>
-		<entry>
-			<string>_(눈_ 눈」∠)_﻿</string>
-		</entry>
-		<entry>
-			<string>(๑´ڡ`๑)</string>
-		</entry>
-	</category>
-	<category name="Huge">
-		<entry>
-			<string>
-			　／￣￣＼
-			＜ ´   ⊙　　＼
-			　|　３　　　ヽ
-			＜ 、⊙　　　　＼
-			　＼＿＿／(∪ ＿∪)
-			　　　　　 Ｕ　Ｕ
-			</string>
-			<note>啪啪咔</note>
-		</entry>
-		<entry>
-			<string>
-			 ／￣￣＼
-			(;;;;_   'ω',,)
-		    	 丿　!       
-			（_,,ノ﻿
-			</string>
-			<note>啪啪咔的小蘑菇</note>
-		</entry>
-		<entry>
-			<string>
-			    ∧＿∧
-　　　　（〃｀д´ )∧∧
-　　　　〃/　＼) (   ´ｪ`)
-　　　　((　（(　⌒つつ
-　　　　　Ｕ`＼)Ｊ´﻿
-			</string>
-			<note>副部级</note>
-		</entry>
-		<entry>
-			<string>
-			. .: : : : : : : : :: :::: :: :: : :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-			　　　　. . : : : :: : : :: : ::: :: : :::: :: ::: ::: ::::::::::::::::::::::::::::::::::::::
-			　　　.　. .... ..: : :: :: ::: :::::: :::::::::::: : :::::::::::::::::::::::::::::::::::::::::::::
-			　　　　　　　 Λ＿Λ . . . .: : : ::: : :: ::::::::: :::::::::::::::::::::::::::::
-			　　　　　 　/:彡ミ゛ヽ;）ー､　. . .: : : :::::: :::::::::::::::::::::::::::::::::
-			　　　　　 / :::/:: ヽ、ヽ、 ::i . .:: :.: ::: . :::::::::::::::::::::::::::::::::::::::
-			　　 　　 / :::/;;: 　 ヽ　ヽ ::ｌ　. :. :. .:: : :: :: :::::::: : ::::::::::::::::::
-			￣￣￣（_,ノ ￣￣￣ヽ､_ノ￣￣￣￣
-			</string>
-			<note>H酱</note>
-		</entry>
-	</category>
+    <infoos>
+        <info>KTachibana</info>
+        <info>https://dl.dropboxusercontent.com/u/120725807/test.xml</info>
+    </infoos>
+    <category name="Trending on Google+">
+        <entry>
+            <string>(*•̀ᴗ•́ *)و ̑̑﻿</string>
+            <note>kee</note>
+        </entry>
+        <entry>
+            <string>(っ╹ ◡ ╹ )っ💊﻿</string>
+            <note>吃药</note>
+        </entry>
+        <entry>
+            <string>(ノ ﾟ∀。)ノ﻿</string>
+            <note>YK</note>
+        </entry>
+        <entry>
+            <string>ԅ(╹﹃╹ԅ)</string>
+            <note>破威利</note>
+        </entry>
+        <entry>
+            <string>( ´◔ ‸◔`)</string>
+            <note>Aroes Litvyak</note>
+        </entry>
+        <entry>
+            <string>✌(´◓ｑ◔｀)✌</string>
+        </entry>
+        <entry>
+            <string>ლ(*´Д｀*ლ)ﾓﾐﾓﾐ﻿</string>
+            <note>Nano Cuei</note>
+        </entry>
+    </category>
+    <category name="ლ">
+        <entry>
+            <string>ლ(╹◡╹ლ)</string>
+        </entry>
+        <entry>
+            <string>(൬╹◡╹)൬</string>
+        </entry>
+        <entry>
+            <string>□(╹◡╹□)﻿</string>
+        </entry>
+        <entry>
+            <string>ლ (￣▽￣ლ )﻿</string>
+        </entry>
+        <entry>
+            <string>(っ╹ ◡ ╹ )っ﻿</string>
+        </entry>
+    </category>
+    <category name="╮">
+        <entry>
+            <string>╮(￣▽￣")╭</string>
+        </entry>
+        <entry>
+            <string>╮( ๑╹,◡╹ ๑) ╭</string>
+        </entry>
+        <entry>
+            <string>╭(๑╹,◡╹๑)╮﻿</string>
+        </entry>
+        <entry>
+            <string>ㄟ(￣▽￣ㄟ)</string>
+        </entry>
+        <entry>
+            <string>ㄟ( ▔∀▔ )ㄏ</string>
+        </entry>
+        <entry>
+            <string>(〜￣△￣)〜</string>
+        </entry>
+        <entry>
+            <string>↖(￣▽￣")﻿</string>
+        </entry>
+        <entry>
+            <string>(￣ε(#￣)☆╰╮(￣▽￣///)</string>
+        </entry>
+    </category>
+    <category name="ω">
+        <entry>
+            <string>=ω=</string>
+        </entry>
+        <entry>
+            <string>=￣ω￣=</string>
+        </entry>
+        <entry>
+            <string>_ (:3」∠)_</string>
+        </entry>
+        <entry>
+            <string>(´ ・ω・｀)</string>
+        </entry>
+        <entry>
+            <string>(｢･ω･)｢</string>
+        </entry>
+        <entry>
+            <string>(´ ；ω ；｀)</string>
+        </entry>
+        <entry>
+            <string>( っ*'ω'*c)</string>
+        </entry>
+        <entry>
+            <string>( っ´ω`c)♡</string>
+        </entry>
+        <entry>
+            <string>(｡･ω･｡)</string>
+        </entry>
+        <entry>
+            <string>(/ω＼)</string>
+        </entry>
+        <entry>
+            <string>─=≡Σ((( つ•̀ω•́)つ</string>
+            <note>突袭 +陆西园</note>
+        </entry>
+        <entry>
+            <string>( ,,ÒωÓ,, )﻿</string>
+        </entry>
+        <entry>
+            <string>_( •́ ​ω •̀ 」∠)/_﻿</string>
+        </entry>
+    </category>
+    <category name="Ծ">
+        <entry>
+            <string>,,Ծ‸Ծ,,</string>
+        </entry>
+        <entry>
+            <string>ԾωԾ</string>
+        </entry>
+        <entry>
+            <string>ю┐(ԾωԾ)</string>
+        </entry>
+    </category>
+    <category name="v">
+        <entry>
+            <string>( ´∀`)σ)Д`)</string>
+        </entry>
+        <entry>
+            <string>(((( ；ﾟДﾟ)))))))</string>
+        </entry>
+        <entry>
+            <string>(;´ ༎ຶ Д ༎ຶ`)</string>
+        </entry>
+        <entry>
+            <string>(;´ ༎ຶ Д ༎ຶ`)σ</string>
+        </entry>
+        <entry>
+            <string>(σ≧∀≦)σ</string>
+        </entry>
+        <entry>
+            <string>☜(ﾟ∀ﾟ(ﾟ∀ﾟ☜)</string>
+        </entry>
+        <entry>
+            <string>(''　　　v　'')</string>
+        </entry>
+        <entry>
+            <string>\(''　　　v　'')/</string>
+        </entry>
+        <entry>
+            <string>Σ( ° △ °|||)</string>
+        </entry>
+        <entry>
+            <string>(つдC)</string>
+        </entry>
+        <entry>
+            <string>Σ(っ°Д°;)っ</string>
+        </entry>
+        <entry>
+            <string>( ° ▽、° )</string>
+        </entry>
+        <entry>
+            <string>( ´∀`)</string>
+        </entry>
+    </category>
+    <category name="Misc.">
+        <entry>
+            <string>♂</string>
+        </entry>
+        <entry>
+            <string>♀</string>
+        </entry>
+        <entry>
+            <string>(っ^///^)っ</string>
+        </entry>
+        <entry>
+            <string>( っ'〜') づ</string>
+        </entry>
+        <entry>
+            <string>(┙&gt;∧&lt;)┙へ┻┻</string>
+        </entry>
+        <entry>
+            <string>눈_눈</string>
+        </entry>
+        <entry>
+            <string>(屮눈皿눈)</string>
+        </entry>
+        <entry>
+            <string>_(눈_ 눈」∠)_﻿</string>
+        </entry>
+        <entry>
+            <string>(๑´ڡ`๑)</string>
+        </entry>
+    </category>
+    <category name="Huge">
+        <entry>
+            <string>
+                　／￣￣＼
+                ＜ ´ ⊙　　＼
+                　|　３　　　ヽ
+                ＜ 、⊙　　　　＼
+                　＼＿＿／(∪ ＿∪)
+                　　　　　 Ｕ　Ｕ
+            </string>
+            <note>啪啪咔</note>
+        </entry>
+        <entry>
+            <string>
+                ／￣￣＼
+                (;;;;_ 'ω',,)
+                丿　!
+                （_,,ノ﻿
+            </string>
+            <note>啪啪咔的小蘑菇</note>
+        </entry>
+        <entry>
+            <string>
+                ∧＿∧
+                　　　　（〃｀д´ )∧∧
+                　　　　〃/　＼) ( ´ｪ`)
+                　　　　((　（(　⌒つつ
+                　　　　　Ｕ`＼)Ｊ´﻿
+            </string>
+            <note>副部级</note>
+        </entry>
+        <entry>
+            <string>
+                . .: : : : : : : : :: :::: :: :: :
+                :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+                　　　　. . : : : :: : : :: : ::: :: : :::: :: ::: :::
+                ::::::::::::::::::::::::::::::::::::::
+                　　　.　. .... ..: : :: :: ::: :::::: :::::::::::: :
+                :::::::::::::::::::::::::::::::::::::::::::::
+                　　　　　　　 Λ＿Λ . . . .: : : ::: : :: ::::::::: :::::::::::::::::::::::::::::
+                　　　　　 　/:彡ミ゛ヽ;）ー､　. . .: : : :::::: :::::::::::::::::::::::::::::::::
+                　　　　　 / :::/:: ヽ、ヽ、 ::i . .:: :.: ::: . :::::::::::::::::::::::::::::::::::::::
+                　　 　　 / :::/;;: 　 ヽ　ヽ ::ｌ　. :. :. .:: : :: :: :::::::: : ::::::::::::::::::
+                ￣￣￣（_,ノ ￣￣￣ヽ､_ノ￣￣￣￣
+            </string>
+            <note>H酱</note>
+        </entry>
+    </category>
 </emoji>

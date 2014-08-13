@@ -231,7 +231,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
 
         // Update checker
         items.add(new LeftDrawerListItem(
-            getString(R.string.update_checker),
+                getString(R.string.update_checker),
                 R.drawable.ic_update_checker,
                 LIST_ITEM_UPDATE_CHECKER_ID
         ));
