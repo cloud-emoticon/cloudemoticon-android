@@ -222,11 +222,18 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                 LIST_ITEM_REPOSITORY_MANAGER_ID
         ));
 
-        // Repository shop
+        // Repository store
         items.add(new LeftDrawerListItem(
                 getString(R.string.repository_store),
                 R.drawable.ic_store,
                 LIST_ITEM_STORE_ID
+        ));
+
+        // Update checker
+        items.add(new LeftDrawerListItem(
+            getString(R.string.update_checker),
+                R.drawable.ic_update_checker,
+                LIST_ITEM_UPDATE_CHECKER_ID
         ));
 
         // Settings

@@ -1,9 +1,13 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,6 +41,7 @@ import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
 import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
+import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
@@ -44,6 +49,7 @@ import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.net.UpdateChecker;
 import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
@@ -472,6 +478,51 @@ public class MainActivity extends BaseActivity implements
             Intent intent = new Intent();
             intent.setData(Uri.parse(STORE_URL));
             startActivity(intent);
+        } else if (id == LIST_ITEM_UPDATE_CHECKER_ID) {
+            new UpdateChecker().checkForLatestVercode();
+        }
+    }
+
+    public void onEvent(UpdateCheckedEvent event) {
+        int latestVersionCode = event.getVercode();
+
+        // If failed
+        if (latestVersionCode == 0) {
+            Toast.makeText(this, R.string.update_checker_failed, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Get current version and compare
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            int versionCode = pInfo.versionCode;
+
+            // Already latest
+            if (latestVersionCode == versionCode) {
+                Toast.makeText(this, R.string.already_latest_version, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // New version available, show dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.new_version_available);
+            builder.setPositiveButton(R.string.go_to_play_store, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent();
+                    intent.setData(Uri.parse(PLAY_STORE_URL));
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.create().show();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

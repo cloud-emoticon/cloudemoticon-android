@@ -14,6 +14,7 @@ public interface Constants {
     public static final long LIST_ITEM_EXIT_ID = 2;
     public static final long LIST_ITEM_ACCOUNT_ID = 3;
     public static final long LIST_ITEM_STORE_ID = 4;
+    public static final long LIST_ITEM_UPDATE_CHECKER_ID = 5;
 
     // Notification
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
@@ -41,6 +42,8 @@ public interface Constants {
     public static final String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
     public static final String CLOUD_API_HOST = "http://ce.catofes.com";
     public static final String STORE_URL = "http://emoticon.uuu.moe/?cat=2";
+    public static final String UPDATE_CHECKER_URL = "https://gist.githubusercontent.com/KTachibanaM/66a7331c1035a50ba2c7/raw/9a037142aa3c1b4c490e1a38251620f113465330/ce_vercode";
+    public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
 
     // Intent
     public static final int REPOSITORY_MANAGER_REQUEST_CODE = 0;

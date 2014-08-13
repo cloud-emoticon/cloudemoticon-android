@@ -49,6 +49,21 @@
     <string name="backup_and_restore">备份和恢复</string>
     <string name="backup_favorites">备份收藏</string>
     <string name="restore_favorites">恢复收藏</string>
+    <string name="empty_emoticon">空颜文字</string>
+    <string name="account">账号</string>
+    <string name="registering">注册中</string>
+    <string name="register_successful">注册成功</string>
+    <string name="illegal_username">无效用户名</string>
+    <string name="existing_username">用户名已存在</string>
+    <string name="illegal_email_address">无效电子邮箱</string>
+    <string name="existing_email_address">电子邮箱已存在</string>
+    <string name="repository_store">源商店</string>
+    <string name="old_favorites_merged">旧收藏已合并</string>
+    <string name="update_checker">检查新版本</string>
+    <string name="update_checker_failed">检查新版本失败</string>
+    <string name="already_latest_version">已经是最新版本</string>
+    <string name="new_version_available">有新版本辣！</string>
+    <string name="go_to_play_store">去Play Store看看</string>
 
     <string-array name="notification_options">
         <item>不显示</item>

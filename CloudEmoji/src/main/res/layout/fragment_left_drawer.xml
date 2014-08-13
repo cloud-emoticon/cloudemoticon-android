@@ -41,7 +41,7 @@
             android:divider="@color/lighter_gray"
             android:orientation="vertical"
             android:showDividers="beginning|end"
-            app:dividerThickness="1dp" />
+            app:dividerThickness="2dp" />
 
         <TextView
             android:layout_width="fill_parent"
