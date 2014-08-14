@@ -159,7 +159,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
     private List<LeftDrawerListItem> getSourceListItems() {
         List<LeftDrawerListItem> items = new ArrayList<LeftDrawerListItem>();
 
-        // Add local favorite and history
+        // Add local favorite, history and built-in emoji
         items.add(
                 new LeftDrawerListItem(
                         getString(R.string.fav),
@@ -171,6 +171,13 @@ public class LeftDrawerFragment extends Fragment implements Constants {
                         getString(R.string.history),
                         R.drawable.ic_history,
                         LIST_ITEM_HISTORY_ID)
+        );
+        items.add(
+                new LeftDrawerListItem(
+                        getString(R.string.built_in_emoji),
+                        R.drawable.ic_built_in_emoji,
+                        LIST_ITEM_BUILT_IN_EMOJI_ID
+                )
         );
 
         // Add remote repositories

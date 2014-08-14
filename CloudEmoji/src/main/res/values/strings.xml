@@ -65,6 +65,7 @@
     <string name="already_latest_version">Already latest version</string>
     <string name="new_version_available">New version is available！</string>
     <string name="go_to_play_store">Go to Play Store</string>
+    <string name="built_in_emoji">Built-in emoji</string>
 
     <string-array name="notification_options">
         <item>Don\'t show</item>

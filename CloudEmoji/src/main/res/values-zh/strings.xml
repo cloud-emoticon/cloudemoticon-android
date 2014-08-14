@@ -64,6 +64,7 @@
     <string name="already_latest_version">已经是最新版本</string>
     <string name="new_version_available">有新版本辣！</string>
     <string name="go_to_play_store">去Play Store看看</string>
+    <string name="built_in_emoji">自带表情符号</string>
 
     <string-array name="notification_options">
         <item>不显示</item>
