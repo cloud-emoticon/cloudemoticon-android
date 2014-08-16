@@ -1,7 +1,5 @@
 package org.ktachibana.cloudemoji.models;
 
-import android.content.Context;
-
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
@@ -13,12 +11,10 @@ public class History extends SugarRecord<History> implements Serializable {
     private String emoticon;
     private String description;
 
-    public History(Context context) {
-        super(context);
+    public History() {
     }
 
-    public History(Context context, String emoticon, String description) {
-        super(context);
+    public History(String emoticon, String description) {
         this.emoticon = emoticon;
         this.description = description;
     }

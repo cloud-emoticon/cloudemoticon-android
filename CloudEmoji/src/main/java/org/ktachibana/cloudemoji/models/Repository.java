@@ -1,7 +1,5 @@
 package org.ktachibana.cloudemoji.models;
 
-import android.content.Context;
-
 import com.orm.SugarRecord;
 
 import org.apache.commons.io.FilenameUtils;
@@ -20,12 +18,10 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
     private boolean isAvailable;
     private boolean isVisible;
 
-    public Repository(Context context) {
-        super(context);
+    public Repository() {
     }
 
-    public Repository(Context context, String url, String alias) {
-        super(context);
+    public Repository(String url, String alias) {
         this.url = url;
         this.alias = alias;
         String extension = FilenameUtils.getExtension(url);

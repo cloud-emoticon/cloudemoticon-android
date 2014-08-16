@@ -122,7 +122,7 @@ public class AddRepositoryDialogFragment extends DialogFragment implements Const
                     String alias = mAliasEditText.getText().toString();
 
                     // Create and save repository to database
-                    Repository repository = new Repository(getActivity().getBaseContext(), url, alias);
+                    Repository repository = new Repository(url, alias);
                     repository.save();
 
                     /**

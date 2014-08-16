@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity implements
         OutputStream outputStream = null;
         try {
             // Save record to database
-            Repository defaultRepository = new Repository(this, DEFAULT_REPOSITORY_URL, "KT");
+            Repository defaultRepository = new Repository(DEFAULT_REPOSITORY_URL, "KT");
             defaultRepository.save();
 
             // Load file from assets and save to file system
@@ -272,7 +272,7 @@ public class MainActivity extends BaseActivity implements
             while (!cursor.isAfterLast()) {
                 String emoticon = cursor.getString(0);
                 String description = cursor.getString(1);
-                favorites.add(new Favorite(this, emoticon, description));
+                favorites.add(new Favorite(emoticon, description));
                 cursor.moveToNext();
             }
             cursor.close();

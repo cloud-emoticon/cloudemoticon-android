@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.orm.SugarApp;
-
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
@@ -98,7 +96,7 @@ public class AddFavoriteDialogFragment extends DialogFragment implements Constan
                 }
 
                 // Else add to favorites
-                Favorite favorite = new Favorite(SugarApp.getSugarContext(), emoticon, description);
+                Favorite favorite = new Favorite(emoticon, description);
                 favorite.save();
 
                 // Notify main activity about it

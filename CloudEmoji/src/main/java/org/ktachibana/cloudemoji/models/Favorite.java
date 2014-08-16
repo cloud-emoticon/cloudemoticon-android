@@ -1,7 +1,5 @@
 package org.ktachibana.cloudemoji.models;
 
-import android.content.Context;
-
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -18,12 +16,10 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
     private String emoticon;
     private String description;
 
-    public Favorite(Context context) {
-        super(context);
+    public Favorite() {
     }
 
-    public Favorite(Context context, String emoticon, String description) {
-        super(context);
+    public Favorite(String emoticon, String description) {
         this.emoticon = emoticon;
         this.description = description;
     }

@@ -2,8 +2,6 @@ package org.ktachibana.cloudemoji.parsing;
 
 import android.os.Environment;
 
-import com.orm.SugarApp;
-
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.Category;
@@ -60,7 +58,7 @@ public class BackupAndRestoreHelper implements Constants {
             for (Entry entry : entries) {
                 String emoticon = entry.getEmoticon();
                 String description = entry.getDescription();
-                Favorite favorite = new Favorite(SugarApp.getSugarContext(), emoticon, description);
+                Favorite favorite = new Favorite(emoticon, description);
                 favorite.save();
             }
         } catch (IOException e) {

@@ -44,6 +44,7 @@ A cloud solution to your favorite emoticons
 * [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 * [Gson](https://code.google.com/p/google-gson/)
+* [emojicon] (https://github.com/rockerhieu/emojicon)
 
 
 ## License

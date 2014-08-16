@@ -1,7 +1,5 @@
 package org.ktachibana.cloudemoji.events;
 
-import com.orm.SugarApp;
-
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.History;
 
@@ -15,7 +13,7 @@ public class EntryCopiedAndAddedToHistoryEvent {
         mEntry = entry;
         // When copied, also add to history
         History newHistory
-                = new History(SugarApp.getSugarContext(), entry.getEmoticon(), entry.getDescription());
+                = new History(entry.getEmoticon(), entry.getDescription());
         newHistory.save();
     }
 

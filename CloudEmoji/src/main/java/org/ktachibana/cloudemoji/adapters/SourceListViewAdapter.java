@@ -31,21 +31,19 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
     private Source mSource;
-    private Context mContext;
     private LayoutInflater mInflater;
     // Cache stores whether a emoticon is in favorites
     private HashMap<String, Boolean> mEmoticonInFavoritesCache;
     private String[] mCategoryNameSectionIndexer;
 
     public SourceListViewAdapter(Context context, Source source) {
-        mContext = context;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSource = source;
         mEmoticonInFavoritesCache = new LinkedHashMap<String, Boolean>();
 
         // Constant drawables
-        mNoStarDrawable = mContext.getResources().getDrawable(R.drawable.ic_unfavorite);
-        mStarDrawable = mContext.getResources().getDrawable(R.drawable.ic_favorite);
+        mNoStarDrawable = context.getResources().getDrawable(R.drawable.ic_unfavorite);
+        mStarDrawable = context.getResources().getDrawable(R.drawable.ic_favorite);
 
         // Set up fast scroll indexer
         mCategoryNameSectionIndexer = new String[mSource.getCategories().size()];
@@ -136,7 +134,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
                 else {
                     // Save to database
                     Favorite savedFavorite
-                            = new Favorite(mContext, emoticon, description);
+                            = new Favorite(emoticon, description);
                     savedFavorite.save();
                     // Update cache
                     mEmoticonInFavoritesCache.put(emoticon, true);
