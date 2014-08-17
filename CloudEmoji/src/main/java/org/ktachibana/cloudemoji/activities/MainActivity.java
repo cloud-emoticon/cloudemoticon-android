@@ -23,12 +23,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.EmojiconsFragment;
 import com.rockerhieu.emojicon.emoji.Emojicon;
 
 import org.apache.commons.io.IOUtils;
@@ -75,7 +77,8 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends BaseActivity implements
         Constants,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        EmojiconGridFragment.OnEmojiconClickedListener {
+        EmojiconGridFragment.OnEmojiconClickedListener,
+        EmojiconsFragment.OnEmojiconBackspaceClickedListener {
 
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
@@ -541,12 +544,10 @@ public class MainActivity extends BaseActivity implements
             if (mCurrentRepositoryId == LIST_ITEM_HISTORY_ID)
                 replaceMainContainer(new HistoryFragment());
             if (mCurrentRepositoryId == LIST_ITEM_BUILT_IN_EMOJI_ID)
-                replaceMainContainer(new EmojiconGridFragment());
+                replaceMainContainer(new EmojiconsFragment());
 
             // Close drawers
             closeDrawers();
-
-            EmojiconGridFragment fragment = new EmojiconGridFragment();
         }
 
         // Else it is a remote repository with a parsed source
@@ -630,5 +631,10 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onEmojiconClicked(Emojicon emojicon) {
         Toast.makeText(this, emojicon.getEmoji(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEmojiconBackspaceClicked(View view) {
+
     }
 }

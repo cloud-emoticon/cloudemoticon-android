@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- the theme applied to the application or activity -->
-    <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light" />
+    <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light">
+        <!-- ActionBar -->
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+        <item name="actionBarStyle">@style/CustomActionBar</item>
+        <!-- ActionBar overflow button -->
+        <item name="android:actionOverflowButtonStyle">@style/CustomOverFlowButton</item>
+        <item name="actionOverflowButtonStyle">@style/CustomOverFlowButton</item>
+        <!-- ActionBar home as up indicator -->
+        <item name="android:homeAsUpIndicator">@drawable/ic_ab_home_as_up</item>
+        <item name="homeAsUpIndicator">@drawable/ic_ab_home_as_up</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/holo_blue_light</item>
+    </style>
+
+    <!-- ActionBar overflow button styles-->
+    <style name="CustomOverFlowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_ab_core_overflow</item>
+    </style>
 </resources>

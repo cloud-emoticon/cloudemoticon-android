@@ -54,16 +54,14 @@
 
         <activity
             android:name=".activities.PreferenceActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.MainActivity">
+            android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.MainActivity" />
         </activity>
         <activity
             android:name=".activities.RepositoryManagerActivity"
-            android:label="@string/repo_manager"
-            android:parentActivityName=".activities.MainActivity">
+            android:label="@string/repo_manager">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.MainActivity" />
@@ -102,8 +100,7 @@
 
         <activity
             android:name=".activities.AccountActivity"
-            android:label="@string/account"
-            android:parentActivityName=".activities.MainActivity">
+            android:label="@string/account">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
