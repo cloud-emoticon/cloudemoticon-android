@@ -2,6 +2,7 @@ package org.ktachibana.cloudemoji.activities;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.orm.SugarApp;
@@ -68,6 +70,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -138,6 +141,22 @@ public class MainActivity extends BaseActivity implements
         // Switch to the repository
         internalSwitchRepository();
 
+        // Handles search intent
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent != null) {
+            // Handles search intent
+            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                Toast.makeText(this, "Searching for " + intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void setupLayout() {
@@ -364,6 +383,17 @@ public class MainActivity extends BaseActivity implements
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        // Associate searchable configuration with the SearchView
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            SearchManager searchManager =
+                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView =
+                    (SearchView) menu.findItem(R.id.search).getActionView();
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(getComponentName()));
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -375,6 +405,7 @@ public class MainActivity extends BaseActivity implements
                 return true;
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
