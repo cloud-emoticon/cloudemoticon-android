@@ -51,6 +51,7 @@ import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
+import org.ktachibana.cloudemoji.fragments.SearchResultFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
@@ -154,7 +155,8 @@ public class MainActivity extends BaseActivity implements
         if (intent != null) {
             // Handles search intent
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-                Toast.makeText(this, "Searching for " + intent.getStringExtra(SearchManager.QUERY), Toast.LENGTH_SHORT).show();
+                String query = intent.getStringExtra(SearchManager.QUERY);
+                replaceMainContainer(SearchResultFragment.newInstance(query));
             }
         }
     }
