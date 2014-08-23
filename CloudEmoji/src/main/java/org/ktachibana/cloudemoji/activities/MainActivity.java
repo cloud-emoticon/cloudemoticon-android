@@ -66,6 +66,7 @@ import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
+import org.ktachibana.cloudemoji.utils.SearchViewFormatter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -75,7 +76,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -398,6 +398,13 @@ public class MainActivity extends BaseActivity implements
                     (SearchView) menu.findItem(R.id.search).getActionView();
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
+
+            // Customize search view
+            new SearchViewFormatter()
+                    .setSearchTextColorResource(android.R.color.white)
+                    .setSearchIconResource(R.drawable.ic_ab_search, true, false)
+                    .setSearchCloseIconResource(R.drawable.ic_ab_search_close)
+                    .format(searchView);
         }
 
         return super.onCreateOptionsMenu(menu);
