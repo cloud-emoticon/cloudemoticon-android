@@ -46,6 +46,8 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
+import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
+import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
@@ -53,6 +55,8 @@ import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SearchResultFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
+import org.ktachibana.cloudemoji.models.Category;
+import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
@@ -563,6 +567,33 @@ public class MainActivity extends BaseActivity implements
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onEvent(SearchInitiatedEvent e) {
+        String searchQuery = e.getSearchQuery();
+        List<Entry> results = new ArrayList<Entry>();
+
+        // Traverse all sources
+        List<Source> sources = mCurrentSourceCache.getAllValues();
+        for (Source source : sources) {
+
+            // Traverse all categories
+            for (Category category : source.getCategories()) {
+
+                // Traverse all entries
+                for (Entry entry : category.getEntries()) {
+                    String emoticon = entry.getEmoticon();
+                    String description = entry.getDescription();
+
+                    if (emoticon.contains(searchQuery) || description.contains(searchQuery)) {
+                        results.add(entry);
+                    }
+                }
+            }
+        }
+
+        // Search finished
+        EventBus.getDefault().post(new SearchFinishedEvent(results));
     }
 
     private void internalSwitchRepository() {

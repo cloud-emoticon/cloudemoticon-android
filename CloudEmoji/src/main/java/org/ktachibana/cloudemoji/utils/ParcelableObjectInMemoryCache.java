@@ -3,7 +3,9 @@ package org.ktachibana.cloudemoji.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A key/value in-memory cache for parcelable objects
@@ -89,6 +91,21 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parc
     public V get(long key) {
         Integer i = contains(key);
         return (i == null) ? null : mValueArray[i];
+    }
+
+    /**
+     * Get all valid values in the cache
+     * @return all valid values in the cache
+     */
+    @SuppressWarnings("unchecked")
+    public List<V> getAllValues() {
+        List<V> values = new ArrayList<V>();
+        for (V value : mValueArray) {
+            if (value != null) {
+                values.add(value);
+            }
+        }
+        return values;
     }
 
     /**

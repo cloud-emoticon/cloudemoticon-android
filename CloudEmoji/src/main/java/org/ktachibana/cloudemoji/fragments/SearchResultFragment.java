@@ -5,14 +5,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
+import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
+import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
+import org.ktachibana.cloudemoji.models.Entry;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 public class SearchResultFragment extends Fragment {
     private static final String SEARCH_QUERY_KEY = "mSearchQuery";
@@ -45,6 +53,7 @@ public class SearchResultFragment extends Fragment {
         if (getArguments() != null) {
             mSearchQuery = getArguments().getString(SEARCH_QUERY_KEY);
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -58,7 +67,19 @@ public class SearchResultFragment extends Fragment {
         mSearchResultListView.setEmptyView(mSearchResultEmptyView);
         mSearchResultEmptyViewTextView.setText(R.string.search_result_not_found);
 
+        // Initiate search
+        EventBus.getDefault().post(new SearchInitiatedEvent(mSearchQuery));
+
         return rootView;
     }
 
+    public void onEvent(SearchFinishedEvent e) {
+        mSearchResultListView.setAdapter(new SearchResultListViewAdapter(getActivity(), e.getResults()));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
