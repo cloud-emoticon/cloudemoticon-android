@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,9 +13,6 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
 import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
-import org.ktachibana.cloudemoji.models.Entry;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,16 +20,13 @@ import de.greenrobot.event.EventBus;
 
 public class SearchResultFragment extends Fragment {
     private static final String SEARCH_QUERY_KEY = "mSearchQuery";
-    private String mSearchQuery;
-
     @InjectView(R.id.searchResultListView)
     ListView mSearchResultListView;
-
     @InjectView(R.id.emptyView)
     RelativeLayout mSearchResultEmptyView;
-
     @InjectView(R.id.emptyViewTextView)
     TextView mSearchResultEmptyViewTextView;
+    private String mSearchQuery;
 
     public SearchResultFragment() {
         // Required empty public constructor

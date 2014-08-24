@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.History;
 
 import java.util.List;
 
@@ -77,4 +76,4 @@ public class SearchResultListViewAdapter extends BaseAdapter {
             ButterKnife.inject(this, view);
         }
     }
-    }
+}
