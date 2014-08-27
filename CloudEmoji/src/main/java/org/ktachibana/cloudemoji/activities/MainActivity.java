@@ -701,7 +701,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onEmojiconClicked(Emojicon emojicon) {
-        Toast.makeText(this, emojicon.getEmoji(), Toast.LENGTH_SHORT).show();
+        EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(new Entry(emojicon.getEmoji(), "")));
     }
 
     @Override
