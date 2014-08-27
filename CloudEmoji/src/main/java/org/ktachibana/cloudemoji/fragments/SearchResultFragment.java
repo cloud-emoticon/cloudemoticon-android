@@ -5,14 +5,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
+import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
+import org.ktachibana.cloudemoji.models.Entry;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -68,6 +71,13 @@ public class SearchResultFragment extends Fragment {
 
     public void onEvent(SearchFinishedEvent e) {
         mSearchResultListView.setAdapter(new SearchResultListViewAdapter(getActivity(), e.getResults()));
+        mSearchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Entry entry = (Entry) parent.getAdapter().getItem(position);
+                EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+            }
+        });
     }
 
     @Override
