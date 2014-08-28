@@ -23,6 +23,8 @@ A cloud solution to your favorite emoticons
 * Re-arrangeable favorites
 * History
 * Fast repository navigation
+* Search
+* Repository store
 * JSON/XML format repository
 * Backup and restore favorites
 * Swipe-up navigation bar icon to replace home
