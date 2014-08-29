@@ -19,18 +19,35 @@ package org.ktachibana.cloudemoji.utils.emojicon;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)
  */
 public class Emojicon implements Parcelable {
+    public static final Creator<Emojicon> CREATOR = new Creator<Emojicon>() {
+        public Emojicon createFromParcel(Parcel source) {
+            return new Emojicon(source);
+        }
+
+        public Emojicon[] newArray(int size) {
+            return new Emojicon[size];
+        }
+    };
     private static final long serialVersionUID = 1L;
     private int icon;
     private char value;
     private String emoji;
 
     private Emojicon() {
+    }
+
+    public Emojicon(String emoji) {
+        this.emoji = emoji;
+    }
+
+    private Emojicon(Parcel in) {
+        this.icon = in.readInt();
+        this.value = (char) in.readInt();
+        this.emoji = in.readString();
     }
 
     public static Emojicon fromResource(int icon, int value) {
@@ -58,8 +75,12 @@ public class Emojicon implements Parcelable {
         return emoji;
     }
 
-    public Emojicon(String emoji) {
-        this.emoji = emoji;
+    public static final String newString(int codePoint) {
+        if (Character.charCount(codePoint) == 1) {
+            return String.valueOf(codePoint);
+        } else {
+            return new String(Character.toChars(codePoint));
+        }
     }
 
     public char getValue() {
@@ -84,14 +105,6 @@ public class Emojicon implements Parcelable {
         return emoji.hashCode();
     }
 
-    public static final String newString(int codePoint) {
-        if (Character.charCount(codePoint) == 1) {
-            return String.valueOf(codePoint);
-        } else {
-            return new String(Character.toChars(codePoint));
-        }
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -103,20 +116,4 @@ public class Emojicon implements Parcelable {
         dest.writeInt((int) this.value);
         dest.writeString(this.emoji);
     }
-
-    private Emojicon(Parcel in) {
-        this.icon = in.readInt();
-        this.value = (char) in.readInt();
-        this.emoji = in.readString();
-    }
-
-    public static final Creator<Emojicon> CREATOR = new Creator<Emojicon>() {
-        public Emojicon createFromParcel(Parcel source) {
-            return new Emojicon(source);
-        }
-
-        public Emojicon[] newArray(int size) {
-            return new Emojicon[size];
-        }
-    };
 }

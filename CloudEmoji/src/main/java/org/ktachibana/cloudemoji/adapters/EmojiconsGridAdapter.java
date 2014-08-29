@@ -66,9 +66,7 @@ public class EmojiconsGridAdapter implements ListAdapter {
             viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) convertView;
             convertView.setTag(viewHolder);
-        }
-        else
-        {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 

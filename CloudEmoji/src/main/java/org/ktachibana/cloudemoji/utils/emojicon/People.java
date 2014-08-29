@@ -19,7 +19,7 @@ package org.ktachibana.cloudemoji.utils.emojicon;
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)
  */
-public class People implements EmojiconOfferable{
+public class People implements EmojiconOfferable {
     public static final Emojicon[] DATA = new Emojicon[]{
             Emojicon.fromCodePoint(0x1f604),
             Emojicon.fromCodePoint(0x1f603),
