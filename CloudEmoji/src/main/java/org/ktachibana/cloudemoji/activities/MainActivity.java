@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.SearchManager;
@@ -31,9 +32,6 @@ import android.widget.Toast;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
-import com.rockerhieu.emojicon.EmojiconGridFragment;
-import com.rockerhieu.emojicon.EmojiconsFragment;
-import com.rockerhieu.emojicon.emoji.Emojicon;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
@@ -50,6 +48,7 @@ import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
+import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
@@ -84,9 +83,7 @@ import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements
         Constants,
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        EmojiconGridFragment.OnEmojiconClickedListener,
-        EmojiconsFragment.OnEmojiconBackspaceClickedListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
@@ -697,15 +694,5 @@ public class MainActivity extends BaseActivity implements
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
         outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
         outState.putParcelable(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
-    }
-
-    @Override
-    public void onEmojiconClicked(Emojicon emojicon) {
-        EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(new Entry(emojicon.getEmoji(), "")));
-    }
-
-    @Override
-    public void onEmojiconBackspaceClicked(View view) {
-
     }
 }

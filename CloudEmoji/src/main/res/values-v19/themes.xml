@@ -15,7 +15,7 @@
 
     <!-- ActionBar styles -->
     <style name="CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/holo_blue_light</item>
+        <item name="android:background">@color/accent</item>
     </style>
 
     <!-- ActionBar overflow button styles-->

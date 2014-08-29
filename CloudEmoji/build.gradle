@@ -45,5 +45,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:+'
     compile 'com.google.code.gson:gson:+'
     compile 'commons-io:commons-io:2.4'
-    compile 'com.rockerhieu.emojicon:library:+@aar'
+    compile 'com.astuetz:pagerslidingtabstrip:+'
 }
