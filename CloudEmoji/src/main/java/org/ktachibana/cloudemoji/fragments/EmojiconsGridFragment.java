@@ -6,15 +6,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsGridAdapter;
+import org.ktachibana.cloudemoji.events.EmptyEvent;
+import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.utils.emojicon.Emojicon;
 import org.ktachibana.cloudemoji.utils.emojicon.People;
 
+import java.util.EventListener;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 public class EmojiconsGridFragment extends Fragment {
     private static final String EMOJICONS_KEY = "emojicons";
@@ -42,6 +49,7 @@ public class EmojiconsGridFragment extends Fragment {
         } else {
             mEmojicons = new People().offer();
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -51,9 +59,25 @@ public class EmojiconsGridFragment extends Fragment {
         ButterKnife.inject(this, rootView);
 
         grid.setAdapter(new EmojiconsGridAdapter(getActivity(), mEmojicons));
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String emojicon = mEmojicons[position].getEmoji();
+
+                EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(new Entry(emojicon, "")));
+            }
+        });
 
         return rootView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
+    public void onEvent(EmptyEvent event) {
+
+    }
 }
