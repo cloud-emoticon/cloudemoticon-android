@@ -17,8 +17,6 @@ import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.utils.emojicon.Emojicon;
 import org.ktachibana.cloudemoji.utils.emojicon.People;
 
-import java.util.EventListener;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
