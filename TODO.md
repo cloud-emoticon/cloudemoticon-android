@@ -1,2 +1,2 @@
-#0.6.2
-Use system default emoijicon
+#0.6.3
+Material Design
