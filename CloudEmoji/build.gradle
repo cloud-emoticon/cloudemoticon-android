@@ -35,7 +35,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.readystatesoftware.systembartint:systembartint:+'
     compile 'com.loopj.android:android-async-http:+'
     compile 'de.greenrobot:eventbus:+'
     compile 'com.github.frankiesardo:linearlistview:+'

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="section_header_background_color">@color/accent</color>
-    <color name="section_header_text_color">@android:color/white</color>
-</resources>

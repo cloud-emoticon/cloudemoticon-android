@@ -34,7 +34,6 @@ A cloud solution to your favorite emoticons
 ![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/device-2014-07-12-153244.png)
 
 ## Libraries used
-* [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
 * [ion](https://github.com/koush/ion)
 * [EventBus](https://github.com/greenrobot/EventBus)
 * [LinearListView](https://github.com/frankiesardo/LinearListView)
