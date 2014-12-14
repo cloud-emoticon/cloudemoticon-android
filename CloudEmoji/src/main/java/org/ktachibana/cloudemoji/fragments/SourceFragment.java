@@ -66,14 +66,6 @@ public class SourceFragment extends Fragment {
             }
         }
 
-        // Else add padding to bottom
-        else {
-            for (int i = 0; i < 2; i++) {
-                mSourceListView.addFooterView(new TextView(getActivity()));
-            }
-        }
-
-
         // Setup contents
         mAdapter = new SourceListViewAdapter(getActivity(), mSource);
         mSourceListView.setAdapter(mAdapter);

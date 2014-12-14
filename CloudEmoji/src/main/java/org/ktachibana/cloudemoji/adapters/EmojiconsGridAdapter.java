@@ -18,12 +18,6 @@ public class EmojiconsGridAdapter implements ListAdapter {
 
     public EmojiconsGridAdapter(Context context, Emojicon[] objects) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // Trick to add more items than needed, to offset the transparent navigation bar
-        for (int i = 0; i < 9; i++) {
-            objects = ArrayUtils.appendElement(Emojicon.class, objects, new Emojicon(""));
-        }
-
         mData = objects;
     }
 

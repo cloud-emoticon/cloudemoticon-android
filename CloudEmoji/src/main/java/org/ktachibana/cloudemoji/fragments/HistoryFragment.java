@@ -84,12 +84,6 @@ public class HistoryFragment extends Fragment {
                 mAdapter.updateHistory();
             }
         });
-
-        // Add padding to bottom
-        for (int i = 0; i < 2; i++) {
-            mHistoryListView.addFooterView(new TextView(getActivity()));
-        }
-
         return rootView;
     }
 }

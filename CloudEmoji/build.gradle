@@ -14,7 +14,8 @@ android {
     buildTypes {
         release {
             debuggable false
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -35,11 +36,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.loopj.android:android-async-http:+'
-    compile 'de.greenrobot:eventbus:+'
-    compile 'com.github.frankiesardo:linearlistview:+'
-    compile 'com.jakewharton:butterknife:+'
-    compile 'com.google.code.gson:gson:+'
+    compile 'com.loopj.android:android-async-http:1.4.6'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.github.frankiesardo:linearlistview:1.0.1@aar'
+    compile 'com.jakewharton:butterknife:6.0.0'
+    compile 'com.google.code.gson:gson:2.3.1'
     compile 'commons-io:commons-io:2.4'
-    compile 'com.astuetz:pagerslidingtabstrip:+'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }

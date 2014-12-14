@@ -42,18 +42,6 @@
             android:orientation="vertical"
             android:showDividers="beginning|end"
             app:dividerThickness="2dp" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Cloud emoticon for Android"
-            android:textStyle="italic" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="By KTachibana"
-            android:textStyle="italic" />
     </LinearLayout>
 </ScrollView>
 
