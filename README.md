@@ -46,6 +46,7 @@ A cloud solution to your favorite emoticons
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 * [Gson](https://code.google.com/p/google-gson/)
 * [PagerSlidingTabStrip] (https://github.com/astuetz/PagerSlidingTabStrip)
+* [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
 
 
 ## License

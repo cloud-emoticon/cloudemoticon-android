@@ -43,4 +43,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'commons-io:commons-io:2.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.melnykov:floatingactionbutton:1.1.0'
 }

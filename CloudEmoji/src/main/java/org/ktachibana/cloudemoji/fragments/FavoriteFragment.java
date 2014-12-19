@@ -3,15 +3,13 @@ package org.ktachibana.cloudemoji.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.mobeta.android.dslv.DragSortListView;
 
 import org.ktachibana.cloudemoji.R;
@@ -36,6 +34,9 @@ public class FavoriteFragment extends Fragment {
     @InjectView(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
+    @InjectView(R.id.fab)
+    FloatingActionButton mFab;
+
     FavoriteListViewAdapter mAdapter;
 
     public FavoriteFragment() {
@@ -45,7 +46,6 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        setHasOptionsMenu(true);
         EventBus.getDefault().register(this);
     }
 
@@ -71,26 +71,17 @@ public class FavoriteFragment extends Fragment {
                         EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
                     }
                 });
-        return rootView;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_favorite, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_favorite: {
+        mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));
+        mFab.attachToListView(mFavoriteListView);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 AddFavoriteDialogFragment fragment = new AddFavoriteDialogFragment();
-                fragment.setTargetFragment(this, 0);
+                fragment.setTargetFragment(FavoriteFragment.this, 0);
                 fragment.show(getFragmentManager(), "add_favorite");
-                return true;
             }
-        }
-        return super.onOptionsItemSelected(item);
+        });
+        return rootView;
     }
 
     public void notifyFavoriteAdded() {

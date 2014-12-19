@@ -3,15 +3,14 @@ package org.ktachibana.cloudemoji.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.melnykov.fab.FloatingActionButton;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.HistoryListViewAdapter;
@@ -33,6 +32,9 @@ public class HistoryFragment extends Fragment {
     @InjectView(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
+    @InjectView(R.id.fab)
+    FloatingActionButton mFab;
+
     private HistoryListViewAdapter mAdapter;
 
     public HistoryFragment() {
@@ -42,25 +44,6 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_history, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_remove_history: {
-                History.deleteAll(History.class);
-                mAdapter.updateHistory();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -81,6 +64,15 @@ public class HistoryFragment extends Fragment {
                 History history = (History) mAdapter.getItem(position);
                 Entry entry = new Entry(history.getEmoticon(), history.getDescription());
                 EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                mAdapter.updateHistory();
+            }
+        });
+        mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_discard));
+        mFab.attachToListView(mHistoryListView);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                History.deleteAll(History.class);
                 mAdapter.updateHistory();
             }
         });
