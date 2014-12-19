@@ -72,10 +72,14 @@ public class HistoryFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                History.deleteAll(History.class);
-                mAdapter.updateHistory();
+                removeAllHistory();
             }
         });
         return rootView;
+    }
+
+    private void removeAllHistory() {
+        History.deleteAll(History.class);
+        mAdapter.updateHistory();
     }
 }

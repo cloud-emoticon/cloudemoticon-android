@@ -76,9 +76,7 @@ public class FavoriteFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddFavoriteDialogFragment fragment = new AddFavoriteDialogFragment();
-                fragment.setTargetFragment(FavoriteFragment.this, 0);
-                fragment.show(getFragmentManager(), "add_favorite");
+                popupAddFavoriteDialog();
             }
         });
         return rootView;
@@ -86,6 +84,12 @@ public class FavoriteFragment extends Fragment {
 
     public void notifyFavoriteAdded() {
         mAdapter.updateFavorites();
+    }
+
+    private void popupAddFavoriteDialog() {
+        AddFavoriteDialogFragment fragment = new AddFavoriteDialogFragment();
+        fragment.setTargetFragment(FavoriteFragment.this, 0);
+        fragment.show(getFragmentManager(), "add_favorite");
     }
 
     @Override

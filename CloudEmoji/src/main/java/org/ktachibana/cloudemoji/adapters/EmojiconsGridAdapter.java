@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import org.ktachibana.cloudemoji.utils.ArrayUtils;
 import org.ktachibana.cloudemoji.utils.emojicon.Emojicon;
 
 
