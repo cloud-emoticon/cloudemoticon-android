@@ -36,7 +36,7 @@ public class EmojiconsFragment extends Fragment {
         // Setup contents
         mPager.setAdapter(new EmojiconsPagerAdapter(getChildFragmentManager()));
         mTabs.setViewPager(mPager);
-        mTabs.setIndicatorColorResource(R.color.accent);
+        mTabs.setIndicatorColorResource(R.color.primary);
 
         return rootView;
     }

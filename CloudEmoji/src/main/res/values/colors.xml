@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="accent">#ff33b5e5</color>
+    <color name="primary">#2196F3</color>
+    <color name="primaryDark">#1976D2</color>
     <color name="lighter_gray">#ddd</color>
     <color name="section_header_background_color">@color/lighter_gray</color>
     <color name="section_header_text_color">@android:color/black</color>
