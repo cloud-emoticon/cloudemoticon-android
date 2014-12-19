@@ -17,7 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -205,7 +205,6 @@ public class MainActivity extends BaseActivity implements
             toggle = new ActionBarDrawerToggle(
                     this,
                     mDrawerLayout,
-                    R.drawable.ic_ab_navigation_drawer,
                     R.string.app_name,
                     R.string.app_name);
             mDrawerLayout.setDrawerListener(toggle);
