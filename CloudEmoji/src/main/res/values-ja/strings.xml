@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">クラウドの絵文字</string>
+    <string name="app_name">Cloud Emoticon</string>
     <string name="settings">設定</string>
     <string name="exit">出口</string>
     <string name="copied">クリップボードにコピー</string>

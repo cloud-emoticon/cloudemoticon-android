@@ -61,7 +61,9 @@ public class SearchResultFragment extends Fragment {
 
         // Setup contents
         mSearchResultListView.setEmptyView(mSearchResultEmptyView);
-        mSearchResultEmptyViewTextView.setText(R.string.search_result_not_found);
+        mSearchResultEmptyViewTextView.setText(mSearchQuery
+                + "\n"
+                + this.getResources().getString(R.string.search_result_not_found));
 
         // Initiate search
         EventBus.getDefault().post(new SearchInitiatedEvent(mSearchQuery));
