@@ -18,6 +18,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="italic" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 </LinearLayout>
