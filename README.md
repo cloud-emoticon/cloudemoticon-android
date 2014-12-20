@@ -18,7 +18,7 @@ A cloud solution to your favorite emoticons
 * use other un-customizable emoticon apps
 
 ## Features
-* Brand new UI, especially for KitKat and above
+* Material Design
 * Multi-repository management
 * Re-arrangeable favorites
 * History
@@ -31,23 +31,28 @@ A cloud solution to your favorite emoticons
 * More...
 
 ## Screenshot
-![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/device-2014-07-12-153244.png)
+![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
 
-## Libraries used
-* [ion](https://github.com/koush/ion)
+## Libraries via Gradle
+* [appcompat-v7](https://developer.android.com/tools/support-library/features.html#v7)
+* [android-async-http](https://github.com/loopj/android-async-http)
 * [EventBus](https://github.com/greenrobot/EventBus)
 * [LinearListView](https://github.com/frankiesardo/LinearListView)
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
-* [ARCA](https://github.com/ACRA/acra)
-* [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
-* [sugar](https://github.com/satyan/sugar)
-* [android-support-v4-preferencefragment](https://github.com/kolavar/android-support-v4-preferencefragment)
-* [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
-* [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 * [Gson](https://code.google.com/p/google-gson/)
+* [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
 * [PagerSlidingTabStrip] (https://github.com/astuetz/PagerSlidingTabStrip)
 * [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
 
+## Libraries via Jar balls
+* [ARCA](https://github.com/ACRA/acra)
+* [sugar](https://github.com/satyan/sugar)
+
+## Libraries via direct code uses
+* [android-support-v4-preferencefragment](https://github.com/kolavar/android-support-v4-preferencefragment)
+* [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
+* [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
+* [emojicon](https://github.com/rockerhieu/emojicon)
 
 ## License
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
