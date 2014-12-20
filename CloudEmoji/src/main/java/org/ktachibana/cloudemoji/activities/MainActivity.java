@@ -63,7 +63,6 @@ import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
-import org.ktachibana.cloudemoji.utils.SearchViewFormatter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
