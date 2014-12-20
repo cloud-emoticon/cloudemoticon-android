@@ -7,7 +7,17 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:orientation="vertical"
+    android:background="@color/primaryFaint"
     android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:text="@string/empty"
+        android:textColor="@android:color/white"
+        android:layout_above="@+id/emptyViewTextView"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/emptyViewTextView"
@@ -15,8 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
+        android:layout_marginTop="12dp"
         android:text="Empty"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/darker_gray"
-        android:textStyle="bold|italic" />
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
 </RelativeLayout>
