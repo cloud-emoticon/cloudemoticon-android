@@ -8,12 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/source" />
-
         <com.linearlistview.LinearListView
             android:id="@+id/leftDrawerSourceListView"
             android:layout_width="match_parent"
@@ -40,8 +34,8 @@
             android:layout_height="wrap_content"
             android:divider="@color/lighter_gray"
             android:orientation="vertical"
-            android:showDividers="beginning|end"
-            app:dividerThickness="2dp" />
+            android:showDividers="beginning"
+            app:dividerThickness="1dp" />
     </LinearLayout>
 </ScrollView>
 
