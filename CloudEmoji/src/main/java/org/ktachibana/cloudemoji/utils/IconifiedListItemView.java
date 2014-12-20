@@ -17,9 +17,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class IconifiedListItemView extends LinearLayout {
-    // Constants
-    private static final int PRIMARY_STYLE_INT = 0;
-    private static final int SECONDARY_STYLE_INT = 1;
     // Members
     @InjectView(R.id.root)
     LinearLayout mRoot;
@@ -30,13 +27,11 @@ public class IconifiedListItemView extends LinearLayout {
     // Attributes
     private String mText;
     private Drawable mIcon;
-    private Style mStyle;
 
     public IconifiedListItemView(Context context) {
         super(context);
         mText = "Hi";
         mIcon = getResources().getDrawable(android.R.drawable.ic_menu_preferences);
-        mStyle = Style.PRIMARY;
         init();
     }
 
@@ -61,7 +56,6 @@ public class IconifiedListItemView extends LinearLayout {
         try {
             mText = array.getString(R.styleable.IconifiedListItemView_text);
             mIcon = array.getDrawable(R.styleable.IconifiedListItemView_theIcon);
-            mStyle = intToStyle(array.getInteger(R.styleable.IconifiedListItemView_style, PRIMARY_STYLE_INT));
         } finally {
             array.recycle();
         }
@@ -74,7 +68,6 @@ public class IconifiedListItemView extends LinearLayout {
 
         internalSetIcon();
         internalSetText();
-        internalSetStyle();
     }
 
     public String getText() {
@@ -84,15 +77,6 @@ public class IconifiedListItemView extends LinearLayout {
     public void setText(String text) {
         this.mText = text;
         internalSetText();
-    }
-
-    public Style getStyle() {
-        return mStyle;
-    }
-
-    public void setStyle(Style style) {
-        this.mStyle = style;
-        internalSetStyle();
     }
 
     public Drawable getIcon() {
@@ -111,73 +95,4 @@ public class IconifiedListItemView extends LinearLayout {
     private void internalSetIcon() {
         mImageView.setImageDrawable(mIcon);
     }
-
-    private void internalSetStyle() {
-        // Setup style
-        float minHeight;
-        float paddingLeft;
-        float paddingRight;
-        int textAppearance;
-        boolean allCaps;
-        int marginBetweenIconAndText;
-
-        Resources resources = getResources();
-        switch (mStyle) {
-            case PRIMARY: {
-                minHeight = resources.getDimension(R.dimen.listPreferredItemHeightSmall);
-                paddingLeft = resources.getDimension(R.dimen.listPreferredItemPaddingLeft);
-                paddingRight = resources.getDimension(R.dimen.listPreferredItemPaddingRight);
-                marginBetweenIconAndText = resources.getDimensionPixelOffset(R.dimen.listPreferredItemIconAndTextMargin);
-                textAppearance = android.R.style.TextAppearance_Medium;
-                allCaps = false;
-                break;
-            }
-            case SECONDARY: {
-                minHeight = resources.getDimension(R.dimen.listPreferredSecondaryItemHeightSmall);
-                paddingLeft = resources.getDimension(R.dimen.listPreferredSecondaryItemPaddingLeft);
-                paddingRight = resources.getDimension(R.dimen.listPreferredSecondaryItemPaddingRight);
-                marginBetweenIconAndText = resources.getDimensionPixelOffset(R.dimen.listPreferredSecondaryItemIconAndTextMargin);
-                textAppearance = android.R.style.TextAppearance_Small;
-                allCaps = true;
-                break;
-            }
-            default: {
-                minHeight = resources.getDimension(R.dimen.listPreferredItemHeightSmall);
-                paddingLeft = resources.getDimension(R.dimen.listPreferredItemPaddingLeft);
-                paddingRight = resources.getDimension(R.dimen.listPreferredItemPaddingRight);
-                marginBetweenIconAndText = resources.getDimensionPixelOffset(R.dimen.listPreferredItemIconAndTextMargin);
-                textAppearance = android.R.style.TextAppearance_Medium;
-                allCaps = false;
-            }
-        }
-
-        mRoot.setMinimumHeight((int) minHeight);
-        mRoot.setPadding((int) paddingLeft, 0, (int) paddingRight, 0);
-        mTextView.setTextAppearance(getContext(), textAppearance);
-        if (allCaps) setAllCaps(mTextView);
-        LayoutParams params
-                = new LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(marginBetweenIconAndText, 0, 0, 0);
-        mTextView.setLayoutParams(params);
-    }
-
-    private Style intToStyle(int intStyle) {
-        switch (intStyle) {
-            case PRIMARY_STYLE_INT:
-                return Style.PRIMARY;
-            case SECONDARY_STYLE_INT:
-                return Style.SECONDARY;
-            default:
-                return Style.PRIMARY;
-        }
-    }
-
-    private void setAllCaps(TextView textView) {
-        String text = textView.getText().toString();
-        textView.setText(text.toUpperCase());
-    }
-
-    public enum Style {PRIMARY, SECONDARY}
 }

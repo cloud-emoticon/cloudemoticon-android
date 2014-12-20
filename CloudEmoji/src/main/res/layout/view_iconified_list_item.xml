@@ -6,6 +6,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/color_list_item_selector"
     android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+
     android:orientation="horizontal">
 
     <ImageView
@@ -15,6 +19,8 @@
 
     <TextView
         android:id="@+id/text"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="32dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

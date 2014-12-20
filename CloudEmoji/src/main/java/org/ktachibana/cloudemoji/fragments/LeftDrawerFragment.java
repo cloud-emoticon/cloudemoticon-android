@@ -82,8 +82,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         mSourceListView.setAdapter(
                 new LeftDrawerListViewAdapter(
                         sourceListItems,
-                        getActivity(),
-                        IconifiedListItemView.Style.PRIMARY)
+                        getActivity())
         );
         mSourceListView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
@@ -121,8 +120,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
         mSecondaryMenu.setAdapter(
                 new LeftDrawerListViewAdapter(
                         secondaryMenuListItems,
-                        getActivity(),
-                        IconifiedListItemView.Style.SECONDARY)
+                        getActivity())
         );
         mSecondaryMenu.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
@@ -141,8 +139,7 @@ public class LeftDrawerFragment extends Fragment implements Constants {
             mCategoryListView.setAdapter(
                     new LeftDrawerListViewAdapter(
                             getCategoryListItems(source),
-                            getActivity(),
-                            IconifiedListItemView.Style.PRIMARY)
+                            getActivity())
             );
             mCategoryListView.setOnItemClickListener(
                     new LinearListView.OnItemClickListener() {

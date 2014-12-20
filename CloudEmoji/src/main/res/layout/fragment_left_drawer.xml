@@ -8,6 +8,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/account_place_holder"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
+
         <com.linearlistview.LinearListView
             android:id="@+id/leftDrawerSourceListView"
             android:layout_width="match_parent"

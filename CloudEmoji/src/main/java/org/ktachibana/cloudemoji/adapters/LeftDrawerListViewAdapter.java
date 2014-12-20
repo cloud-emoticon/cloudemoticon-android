@@ -15,13 +15,11 @@ public class LeftDrawerListViewAdapter extends BaseAdapter {
     private List<LeftDrawerListItem> mItems;
     private Context mContext;
     private LayoutInflater mInflater;
-    private IconifiedListItemView.Style mStyle;
 
-    public LeftDrawerListViewAdapter(List<LeftDrawerListItem> items, Context context, IconifiedListItemView.Style style) {
+    public LeftDrawerListViewAdapter(List<LeftDrawerListItem> items, Context context) {
         this.mItems = items;
         this.mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.mStyle = style;
     }
 
     @Override
@@ -47,7 +45,6 @@ public class LeftDrawerListViewAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.list_item_left_drawer, viewGroup, false);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
-            viewHolder.listItemView.setStyle(mStyle);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
