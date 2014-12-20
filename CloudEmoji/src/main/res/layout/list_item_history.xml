@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="72dp"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/card_background"
-        android:orientation="vertical">
+    <include layout="@layout/view_double_line_emoticon" />
 
-        <include layout="@layout/view_double_line_emoticon" />
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
