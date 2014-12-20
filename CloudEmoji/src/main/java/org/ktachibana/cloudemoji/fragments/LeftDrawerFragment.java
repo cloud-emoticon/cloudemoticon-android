@@ -21,7 +21,6 @@ import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
-import org.ktachibana.cloudemoji.utils.IconifiedListItemView;
 
 import java.util.ArrayList;
 import java.util.List;

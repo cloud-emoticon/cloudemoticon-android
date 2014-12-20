@@ -11,9 +11,9 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/account_place_holder"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/account_place_holder" />
 
         <com.linearlistview.LinearListView
             android:id="@+id/leftDrawerSourceListView"

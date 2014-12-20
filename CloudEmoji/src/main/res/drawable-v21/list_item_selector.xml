@@ -2,5 +2,5 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/listItemRipple">
-    <item android:drawable="@drawable/list_item_background"/>
+    <item android:drawable="@drawable/list_item_background" />
 </ripple>
