@@ -16,7 +16,7 @@
     <string name="github_release">GitHub发布</string>
     <string name="version">版本</string>
     <string name="fav">收藏</string>
-    <string name="add_to_fav">添加到最爱</string>
+    <string name="add_to_fav">添加到收藏</string>
     <string name="split_view_title">导航抽屉/分栏</string>
     <string name="split_view_summary">需要重启应用</string>
     <string name="ui">UI</string>

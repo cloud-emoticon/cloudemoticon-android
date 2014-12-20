@@ -61,7 +61,7 @@
     <string name="update_checker">Check for update</string>
     <string name="update_checker_failed">Failed to check for update</string>
     <string name="already_latest_version">Already latest version</string>
-    <string name="new_version_available">New version is available！</string>
+    <string name="new_version_available">New version is available!</string>
     <string name="go_to_play_store">Go to Play Store</string>
     <string name="built_in_emoji">Built-in emoji</string>
     <string name="search_hint">Search emoticon</string>
