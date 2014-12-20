@@ -11,8 +11,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="listPreferredItemMinHeight">60dip</dimen>
-    <dimen name="listPreferredSecondaryItemPaddingLeft">16dip</dimen>
-    <dimen name="listPreferredSecondaryItemPaddingRight">16dip</dimen>
-    <dimen name="listPreferredSecondaryItemIconAndTextMargin">32dip</dimen>
+    <dimen name="listPreferredItemPaddingLeft">16dip</dimen>
+    <dimen name="listPreferredItemPaddingRight">16dip</dimen>
+    <dimen name="listPreferredItemIconAndTextMargin">32dip</dimen>
 
 </resources>

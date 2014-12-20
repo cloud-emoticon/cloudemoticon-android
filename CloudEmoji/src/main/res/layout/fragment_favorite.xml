@@ -8,8 +8,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         app:drag_handle_id="@+id/favoriteDragHandlerImageView"
         app:float_background_color="@android:color/white" />
 
