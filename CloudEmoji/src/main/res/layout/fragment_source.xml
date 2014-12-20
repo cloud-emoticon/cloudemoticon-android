@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -6,9 +6,8 @@
         android:id="@+id/sourceListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@android:color/white"
         android:fastScrollEnabled="true" />
-</RelativeLayout>
+</FrameLayout>
