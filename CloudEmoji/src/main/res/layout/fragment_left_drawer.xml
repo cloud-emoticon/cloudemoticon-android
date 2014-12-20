@@ -39,7 +39,7 @@
             android:id="@+id/leftDrawerSecondaryMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/lighter_gray"
+            android:divider="@color/listItemPressed"
             android:orientation="vertical"
             android:showDividers="beginning"
             app:dividerThickness="1dp" />

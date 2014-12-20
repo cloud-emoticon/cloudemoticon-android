@@ -4,7 +4,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/color_list_item_selector"
+    android:background="@drawable/list_item_selector"
     android:gravity="center_vertical"
     android:minHeight="48dp"
     android:paddingLeft="16dp"
