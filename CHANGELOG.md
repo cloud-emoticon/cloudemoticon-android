@@ -1,2 +1,2 @@
-## v0.6.2
-* Use system default emoijicon
+## v0.6.3
+* Material design overhaul (more to come)

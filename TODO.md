@@ -11,6 +11,3 @@ Pull to refresh in Source
 Contextual immersion mode/Wipe to discard for Bookmarks, Source and Repo Manager
 Replace Toast with Snackbar
 Category expansion animation
-
-#0.6.3
-Material Design overhaul
