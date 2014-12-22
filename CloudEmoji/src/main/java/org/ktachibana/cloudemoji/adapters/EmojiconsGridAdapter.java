@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.utils.emojicon.Emojicon;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class EmojiconsGridAdapter implements ListAdapter {
@@ -54,12 +58,17 @@ public class EmojiconsGridAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Standard view holder pattern
+        final ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = new TextView(mContext);
+            convertView = mInflater.inflate(R.layout.list_item_emojicon, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ((TextView) convertView).setTextAppearance(mContext, android.R.style.TextAppearance_Large);
-        ((TextView) convertView).setText(mData[position].getEmoji());
+        viewHolder.textView.setText(mData[position].getEmoji());
 
         return convertView;
     }
@@ -87,5 +96,14 @@ public class EmojiconsGridAdapter implements ListAdapter {
     @Override
     public boolean isEnabled(int position) {
         return true;
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.textView)
+        TextView textView;
+
+        ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

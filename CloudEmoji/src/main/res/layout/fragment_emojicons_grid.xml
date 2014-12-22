@@ -6,7 +6,7 @@
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="40dip"
+        android:columnWidth="72dp"
         android:horizontalSpacing="0dip"
         android:numColumns="auto_fit"
         android:scrollbars="vertical"
