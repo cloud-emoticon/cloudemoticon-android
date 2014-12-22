@@ -14,8 +14,10 @@ import org.ktachibana.cloudemoji.utils.emojicon.Emojicon;
 public class EmojiconsGridAdapter implements ListAdapter {
     private Emojicon[] mData;
     private LayoutInflater mInflater;
+    private Context mContext;
 
     public EmojiconsGridAdapter(Context context, Emojicon[] objects) {
+        mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = objects;
     }
@@ -63,6 +65,7 @@ public class EmojiconsGridAdapter implements ListAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        viewHolder.textView.setTextAppearance(mContext, android.R.style.TextAppearance_Large);
         viewHolder.textView.setText(mData[position].getEmoji());
         return convertView;
     }
