@@ -54,19 +54,13 @@ public class EmojiconsGridAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-
         if (convertView == null) {
-            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) convertView;
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            convertView = new TextView(mContext);
         }
 
-        viewHolder.textView.setTextAppearance(mContext, android.R.style.TextAppearance_Large);
-        viewHolder.textView.setText(mData[position].getEmoji());
+        ((TextView) convertView).setTextAppearance(mContext, android.R.style.TextAppearance_Large);
+        ((TextView) convertView).setText(mData[position].getEmoji());
+
         return convertView;
     }
 
@@ -93,9 +87,5 @@ public class EmojiconsGridAdapter implements ListAdapter {
     @Override
     public boolean isEnabled(int position) {
         return true;
-    }
-
-    static class ViewHolder {
-        TextView textView;
     }
 }
