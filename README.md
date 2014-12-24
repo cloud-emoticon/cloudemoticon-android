@@ -49,7 +49,6 @@ A cloud solution to your favorite emoticons
 * [sugar](https://github.com/satyan/sugar)
 
 ## Libraries via direct code uses
-* [android-support-v4-preferencefragment](https://github.com/kolavar/android-support-v4-preferencefragment)
 * [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 * [emojicon](https://github.com/rockerhieu/emojicon)

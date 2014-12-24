@@ -78,8 +78,4 @@
         <item>景観への分割</item>
         <item>常に分割</item>
     </string-array>
-
-    <string name="back_button_label">Back</string>
-    <string name="next_button_label">Next</string>
-    <string name="skip_button_label">Skip</string>
 </resources>
