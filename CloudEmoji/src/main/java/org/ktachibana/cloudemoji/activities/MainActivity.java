@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -87,9 +88,10 @@ public class MainActivity extends BaseActivity implements
     private static final String CURRENT_REPOSITORY_SOURCE_TAG = "currentRepositorySource";
     private static final String CURRENT_SOURCE_CACHE_TAG = "currentSourceCache";
     // Views
-    @Optional // Optional because on split view it doesn't exist
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     // State
     private long mCurrentRepositoryId;
@@ -157,17 +159,15 @@ public class MainActivity extends BaseActivity implements
 
     private void setupViews() {
         setContentView(R.layout.activity_main);
-
         ButterKnife.inject(this);
 
+        setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
                 R.string.app_name,
                 R.string.app_name);
         mDrawerLayout.setDrawerListener(toggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     private void firstTimeCheck() {

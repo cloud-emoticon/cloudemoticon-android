@@ -1,20 +1,32 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerLayout"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_parent_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <!-- The mainContainer -->
-    <FrameLayout
-        android:id="@+id/mainContainer"
+    <include layout="@layout/view_toolbar"/>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <!-- The leftDrawer -->
-    <FrameLayout
-        android:id="@+id/leftDrawer"
-        android:layout_width="@dimen/drawer_size"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/background_light" />
+        <!-- The mainContainer -->
+        <FrameLayout
+            android:id="@+id/mainContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-</android.support.v4.widget.DrawerLayout>
+        <!-- The leftDrawer -->
+        <FrameLayout
+            android:id="@+id/leftDrawer"
+            android:layout_width="@dimen/drawer_size"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/background_light" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>
+
