@@ -98,7 +98,6 @@ public class MainActivity extends BaseActivity implements
     private SourceFragment mCurrentSourceFragment;
     // etc
     private SharedPreferences mPreferences;
-    private boolean mIsDrawerStatic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +106,6 @@ public class MainActivity extends BaseActivity implements
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         EventBus.getDefault().register(this);
-
-        // Choose layout to inflate
-        setupLayout();
 
         // Setup views
         setupViews();
@@ -159,57 +155,19 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void setupLayout() {
-        // Set up UI layout according to user preference for drawer and split view
-        String uiPreference = mPreferences.getString(PREF_SPLIT_VIEW, "auto");
-        int orientation = getResources().getConfiguration().orientation;
-
-        // If auto, set up the default layout optimized for landscape and tablets
-        if (uiPreference.equals("auto")) {
-            setContentView(R.layout.activity_main);
-        }
-
-        // If split_in_port, only manually set up split view if detected portrait
-        else if (uiPreference.equals("split_in_port")) {
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                setContentView(R.layout.activity_main_manual_split_view);
-            } else {
-                setContentView(R.layout.activity_main_manual_navigation_drawer);
-            }
-        }
-
-        // If split_in_land, only manually set up split view if detected landscape
-        else if (uiPreference.equals("split_in_land")) {
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                setContentView(R.layout.activity_main_manual_split_view);
-            } else {
-                setContentView((R.layout.activity_main_manual_navigation_drawer));
-            }
-        }
-
-        // Else split_in_both, manually set up split view for both orientations
-        else {
-            setContentView(R.layout.activity_main_manual_split_view);
-        }
-    }
-
     private void setupViews() {
+        setContentView(R.layout.activity_main);
+
         ButterKnife.inject(this);
 
-        // If mDrawerLayout not found, then the drawer is static
-        mIsDrawerStatic = (mDrawerLayout == null);
-
-        // Set up toggle
-        if (!mIsDrawerStatic) {
-            toggle = new ActionBarDrawerToggle(
-                    this,
-                    mDrawerLayout,
-                    R.string.app_name,
-                    R.string.app_name);
-            mDrawerLayout.setDrawerListener(toggle);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        toggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                R.string.app_name,
+                R.string.app_name);
+        mDrawerLayout.setDrawerListener(toggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     private void firstTimeCheck() {
@@ -399,10 +357,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (!mIsDrawerStatic) {
-            if (toggle.onOptionsItemSelected(item)) {
-                return true;
-            }
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -411,17 +367,13 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (!mIsDrawerStatic) {
-            toggle.syncState();
-        }
+        toggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (!mIsDrawerStatic) {
-            toggle.onConfigurationChanged(newConfig);
-        }
+        toggle.onConfigurationChanged(newConfig);
     }
 
     /**
@@ -629,7 +581,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void closeDrawers() {
-        if (!mIsDrawerStatic) mDrawerLayout.closeDrawers();
+        mDrawerLayout.closeDrawers();
     }
 
     private Source readSource(long id) {
