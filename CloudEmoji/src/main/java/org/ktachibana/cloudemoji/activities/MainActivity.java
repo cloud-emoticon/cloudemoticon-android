@@ -168,7 +168,6 @@ public class MainActivity extends BaseActivity implements
                 R.string.app_name,
                 R.string.app_name);
         mDrawerLayout.setDrawerListener(toggle);
-        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary));
     }
 
     private void firstTimeCheck() {
