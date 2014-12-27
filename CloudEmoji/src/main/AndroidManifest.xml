@@ -64,14 +64,14 @@
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.ktachibana.cloudemoji.MainActivity" />
+                android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.RepositoryManagerActivity"
             android:label="@string/repo_manager">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.ktachibana.cloudemoji.MainActivity" />
+                android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -121,6 +121,17 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <service android:name=".ime.InputMethod"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
     </application>
 
 </manifest>

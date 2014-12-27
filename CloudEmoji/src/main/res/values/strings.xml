@@ -81,4 +81,5 @@
         <item>Split view on landscape</item>
         <item>Always split view</item>
     </string-array>
+    <string name="ime_name">Cloud Emoticon IME</string>
 </resources>

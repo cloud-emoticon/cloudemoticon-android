@@ -80,4 +80,5 @@
         <item>横屏下分栏</item>
         <item>始终分栏</item>
     </string-array>
+    <string name="ime_name">云颜文字输入法</string>
 </resources>
