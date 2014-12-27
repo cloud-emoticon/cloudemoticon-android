@@ -76,7 +76,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Optional;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements
