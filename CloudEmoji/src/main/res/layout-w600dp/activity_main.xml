@@ -17,15 +17,15 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="@dimen/secondaryToolbarMinHeight"
-            android:background="@color/primary" >
-            
+            android:background="@color/primary">
+
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="@dimen/secondaryToolbarMargin"
                 android:layout_marginRight="@dimen/secondaryToolbarMargin">
 
-                <include layout="@layout/view_secondary_toolbar"/>
+                <include layout="@layout/view_secondary_toolbar" />
 
             </FrameLayout>
 
