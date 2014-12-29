@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.ktachibana.cloudemoji.utils.emojicon;
+package com.rockerhieu.emojicon.emoji;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)

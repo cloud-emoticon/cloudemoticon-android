@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.utils.emojicon;
+package com.rockerhieu.emojicon.emoji;
 
 public interface EmojiconOfferable {
     public Emojicon[] offer();

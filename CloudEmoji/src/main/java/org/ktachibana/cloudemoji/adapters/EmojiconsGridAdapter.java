@@ -9,7 +9,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.utils.emojicon.Emojicon;
+import com.rockerhieu.emojicon.emoji.Emojicon;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

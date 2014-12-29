@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.ktachibana.cloudemoji.utils.emojicon;
+package com.rockerhieu.emojicon.emoji;
 
 import android.os.Parcel;
 import android.os.Parcelable;
