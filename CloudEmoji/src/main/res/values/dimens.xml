@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="drawerSize">300dp</dimen>
+    <dimen name="primaryToolbarMinHeight">56dp</dimen>
 
     <dimen name="listPreferredItemMinHeight">60dip</dimen>
     <dimen name="listPreferredItemPaddingLeft">16dip</dimen>

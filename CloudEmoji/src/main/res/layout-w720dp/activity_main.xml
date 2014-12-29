@@ -13,11 +13,25 @@
         <!-- The primary toolbar -->
         <include layout="@layout/view_primary_toolbar" />
 
-        <!-- The mainContainer -->
+        <!-- The white sheet -->
         <FrameLayout
-            android:id="@+id/mainContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginEnd="64dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="56dp"
+            android:background="@android:color/white">
+
+            <!-- The secondary toolbar -->
+            <include layout="@layout/view_secondary_toolbar" />
+
+            <!-- The mainContainer -->
+            <FrameLayout
+                android:id="@+id/mainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
 
     </LinearLayout>
 
