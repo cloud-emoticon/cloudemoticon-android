@@ -122,18 +122,6 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <service
-            android:name=".ime.InputMethod"
-            android:label="@string/ime_name"
-            android:permission="android.permission.BIND_INPUT_METHOD">
-            <intent-filter>
-                <action android:name="android.view.InputMethod" />
-            </intent-filter>
-            <meta-data
-                android:name="android.view.im"
-                android:resource="@xml/ime" />
-        </service>
-
     </application>
 
 </manifest>
