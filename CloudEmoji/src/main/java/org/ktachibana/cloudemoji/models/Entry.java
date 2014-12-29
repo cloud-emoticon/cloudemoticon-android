@@ -58,12 +58,11 @@ public class Entry implements Parcelable {
 
         Entry entry = (Entry) o;
 
-        if (!description.equals(entry.description))
-            return false;
-        if (!emoticon.equals(entry.emoticon))
-            return false;
-
-        return true;
+        return emoticon.equals(entry.emoticon) && description.equals(entry.description);
     }
 
+    @Override
+    public int hashCode() {
+        return emoticon.hashCode() + description.hashCode();
+    }
 }

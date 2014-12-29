@@ -15,7 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BackupAndRestoreHelper implements Constants {
 
@@ -50,15 +52,32 @@ public class BackupAndRestoreHelper implements Constants {
         // Read from file
         FileInputStream inputStream = null;
         try {
+            // Get backed up favorites
             inputStream = new FileInputStream(backupFile);
             String json = IOUtils.toString(inputStream);
             Source source = new SourceJsonParser().parse(json);
-            List<Entry> entries = source.getCategories().get(0).getEntries();
+            List<Entry> backedUpFavorites = source.getCategories().get(0).getEntries();
 
-            for (Entry entry : entries) {
-                String emoticon = entry.getEmoticon();
-                String description = entry.getDescription();
-                Favorite favorite = new Favorite(emoticon, description);
+            // Get current favorites
+            List<Favorite> favorites = Favorite.listAll(Favorite.class);
+            List<Entry> currentFavorites = new ArrayList<Entry>();
+            for (Favorite favorite : favorites) {
+                currentFavorites.add(new Entry(favorite.getEmoticon(), favorite.getDescription()));
+            }
+
+            // Merge backed up and current favorites
+            Set<Entry> mergedFavorites = new HashSet<Entry>();
+            for (Entry backedUp : backedUpFavorites) {
+                mergedFavorites.add(backedUp);
+            }
+            for (Entry current : currentFavorites) {
+                mergedFavorites.add(current);
+            }
+
+            // Remove all current favorites and add back merged favorites
+            Favorite.deleteAll(Favorite.class);
+            for (Entry entry : mergedFavorites) {
+                Favorite favorite = new Favorite(entry.getEmoticon(), entry.getDescription());
                 favorite.save();
             }
         } catch (IOException e) {
