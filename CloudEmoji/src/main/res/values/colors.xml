@@ -5,6 +5,7 @@
     <color name="primaryFaint">#64B5F6</color>
     <color name="primaryFab">#E91E63</color>
     <color name="primaryFabPressed">#E91E63</color>
-    <color name="listItemPressed">#ddd</color>
+    <color name="listItemPressed">#DDD</color>
     <color name="listItemRipple">#9E9E9E</color>
+    <color name="secondaryToolbarColor">#FFF</color>
 </resources>

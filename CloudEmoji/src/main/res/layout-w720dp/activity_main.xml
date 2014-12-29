@@ -13,24 +13,43 @@
         <!-- The primary toolbar -->
         <include layout="@layout/view_primary_toolbar" />
 
-        <!-- The white sheet -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="64dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="56dp"
-            android:background="@android:color/white">
+        <!-- The secondary toolbar with background color and padding -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/secondaryToolbarMinHeight"
+            android:background="@color/primary" >
+            
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/secondaryToolbarMargin"
+                android:layout_marginRight="@dimen/secondaryToolbarMargin">
 
-            <!-- The secondary toolbar -->
-            <include layout="@layout/view_secondary_toolbar" />
+                <include layout="@layout/view_secondary_toolbar"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="@dimen/secondaryToolbarMargin"
+            android:layout_marginRight="@dimen/secondaryToolbarMargin"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
 
             <!-- The mainContainer -->
             <FrameLayout
                 android:id="@+id/mainContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </FrameLayout>
+
+        </LinearLayout>
 
 
     </LinearLayout>

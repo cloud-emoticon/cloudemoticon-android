@@ -3,5 +3,5 @@
     android:id="@+id/secondaryToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/darker_gray"
-    android:minHeight="72dp" />
+    android:background="@color/secondaryToolbarColor"
+    android:minHeight="@dimen/secondaryToolbarMinHeight" />
