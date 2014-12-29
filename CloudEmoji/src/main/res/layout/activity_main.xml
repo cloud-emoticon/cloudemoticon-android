@@ -23,7 +23,7 @@
     <!-- The leftDrawer -->
     <FrameLayout
         android:id="@+id/leftDrawer"
-        android:layout_width="@dimen/drawer_size"
+        android:layout_width="@dimen/drawerSize"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@android:color/background_light"
