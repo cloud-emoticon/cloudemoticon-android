@@ -16,6 +16,8 @@
 
 package com.rockerhieu.emojicon.emoji;
 
+import org.ktachibana.cloudemoji.utils.EmojiconOfferable;
+
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)
  */

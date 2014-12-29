@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import org.ktachibana.cloudemoji.fragments.EmojiconsGridFragment;
 import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.rockerhieu.emojicon.emoji.EmojiconOfferable;
 import com.rockerhieu.emojicon.emoji.Nature;
@@ -13,6 +12,8 @@ import com.rockerhieu.emojicon.emoji.Objects;
 import com.rockerhieu.emojicon.emoji.People;
 import com.rockerhieu.emojicon.emoji.Places;
 import com.rockerhieu.emojicon.emoji.Symbols;
+
+import org.ktachibana.cloudemoji.fragments.EmojiconsGridFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import org.ktachibana.cloudemoji.R;
 import com.rockerhieu.emojicon.emoji.Emojicon;
+
+import org.ktachibana.cloudemoji.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

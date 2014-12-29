@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.rockerhieu.emojicon.emoji.Emojicon;
+import com.rockerhieu.emojicon.emoji.People;
+
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsGridAdapter;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.Entry;
-import com.rockerhieu.emojicon.emoji.Emojicon;
-import com.rockerhieu.emojicon.emoji.People;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
