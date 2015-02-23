@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="primaryToolbarMinHeight">64dp</dimen>
-    <dimen name="secondaryToolbarMinHeight">64dp</dimen>
-    <dimen name="secondaryToolbarMargin">24dp</dimen>
-
-</resources>

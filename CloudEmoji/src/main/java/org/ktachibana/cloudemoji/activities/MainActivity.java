@@ -89,8 +89,8 @@ public class MainActivity extends BaseActivity implements
     // Views
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
-    @InjectView(R.id.primaryToolbar)
-    Toolbar primaryToolbar;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
     // State
     private long mCurrentRepositoryId;
@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        setSupportActionBar(primaryToolbar);
+        setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,

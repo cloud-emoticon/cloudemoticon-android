@@ -2,10 +2,6 @@
 <resources>
     <dimen name="drawerSize">300dp</dimen>
 
-    <dimen name="primaryToolbarMinHeight">56dp</dimen>
-    <dimen name="secondaryToolbarMinHeight">72dp</dimen>
-    <dimen name="secondaryToolbarMargin">16dp</dimen>
-
     <dimen name="listPreferredItemMinHeight">60dip</dimen>
     <dimen name="listPreferredItemPaddingLeft">16dip</dimen>
     <dimen name="listPreferredItemPaddingRight">16dip</dimen>
