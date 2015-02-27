@@ -1,7 +1,5 @@
 #0.6.5
-Bookmarks on notification
-Quick editbox
-Input method
+Add to user dictionary
 
 #0.6.4
 Favorite drag and sort elevation
