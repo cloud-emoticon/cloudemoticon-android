@@ -74,6 +74,6 @@
         <item>Both in notification panel and status bar</item>
     </string-array>
     <string name="ime">IME</string>
-    <string name="import_into_ime">Import favorites into IME</string>
-    <string name="revoke_from_ime">Revoke favorites from IME</string>
+    <string name="import_into_ime">Import bookmarks into IME</string>
+    <string name="revoke_from_ime">Revoke bookmarks from IME</string>
 </resources>
