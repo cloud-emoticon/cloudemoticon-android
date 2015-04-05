@@ -28,18 +28,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_ui"
-        android:title="@string/ui">
-        <ListPreference
-            android:defaultValue="auto"
-            android:entries="@array/split_view_options"
-            android:entryValues="@array/split_view_options_alias"
-            android:key="pref_split_view_new"
-            android:summary="@string/split_view_summary"
-            android:title="@string/split_view_title" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="pref_backup_restore"
         android:title="@string/backup_and_restore">
         <Preference

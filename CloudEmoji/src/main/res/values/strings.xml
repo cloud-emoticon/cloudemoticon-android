@@ -19,8 +19,6 @@
     <string name="version">Version</string>
     <string name="fav">Bookmarks</string>
     <string name="add_to_fav">Add to bookmarks</string>
-    <string name="split_view_title">Navigation drawer/Split view</string>
-    <string name="split_view_summary">Need to restart app</string>
     <string name="ui">UI</string>
     <string name="added_to_fav">Added to bookmarks</string>
     <string name="removed_from_fav">Removed from bookmarks</string>
@@ -75,11 +73,4 @@
         <item>Only in notification panel(Only works above Android 3.0)</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
-    <string-array name="split_view_options">
-        <item>Automatic (recommended)</item>
-        <item>Split view on portrait</item>
-        <item>Split view on landscape</item>
-        <item>Always split view</item>
-    </string-array>
-    <string name="ime_name">Cloud Emoticon IME</string>
 </resources>

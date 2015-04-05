@@ -16,8 +16,6 @@
     <string name="version">バージョン</string>
     <string name="fav">お気に入り</string>
     <string name="add_to_fav">お気に入りに追加します。</string>
-    <string name="split_view_title">ナビゲーション引き出し/分割ビュー</string>
-    <string name="split_view_summary">アプリケーションを再起動する必要があります。</string>
     <string name="ui">UI</string>
     <string name="added_to_fav">お気に入りに追加</string>
     <string name="removed_from_fav">お気に入りから削除</string>
@@ -72,11 +70,4 @@
         <item>のみ通知パネル内の（唯一のAndroid3.0上で動作します）</item>
         <item>通知パネルとステータスバーの両方に</item>
     </string-array>
-    <string-array name="split_view_options">
-        <item>自動（推奨）</item>
-        <item>肖像に分割</item>
-        <item>景観への分割</item>
-        <item>常に分割</item>
-    </string-array>
-    <string name="ime_name">Cloud Emoticon IME</string>
 </resources>

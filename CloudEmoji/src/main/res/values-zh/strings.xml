@@ -17,8 +17,6 @@
     <string name="version">版本</string>
     <string name="fav">收藏</string>
     <string name="add_to_fav">添加到收藏</string>
-    <string name="split_view_title">导航抽屉/分栏</string>
-    <string name="split_view_summary">需要重启应用</string>
     <string name="ui">UI</string>
     <string name="added_to_fav">已添加到收藏</string>
     <string name="removed_from_fav">已从收藏中移除</string>
@@ -74,11 +72,4 @@
         <item>只在通知面板里显示（只在Android3.0以上有效）</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
-    <string-array name="split_view_options">
-        <item>自动（推荐）</item>
-        <item>竖屏下分栏</item>
-        <item>横屏下分栏</item>
-        <item>始终分栏</item>
-    </string-array>
-    <string name="ime_name">云颜文字输入法</string>
 </resources>
