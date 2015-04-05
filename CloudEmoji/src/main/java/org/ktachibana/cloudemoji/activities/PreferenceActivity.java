@@ -47,6 +47,26 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
             }
         });
 
+        // Import favorites into IME
+        Preference importImePref = findPreference(PREF_IMPORT_IME);
+        importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(PreferenceActivity.this, "import", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        // Revoke favorite from IME
+        Preference revokeImePref = findPreference(PREF_REVOKE_IME);
+        revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(PreferenceActivity.this, "revoke", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
         // Backup favorites
         Preference backupPref = findPreference(PREF_BACKUP_FAV);
         backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

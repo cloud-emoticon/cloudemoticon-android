@@ -28,6 +28,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="pref_ime"
+        android:title="@string/ime">
+        <Preference
+            android:key="pref_import_into_ime"
+            android:title="@string/import_into_ime" />
+        <Preference
+            android:key="pref_revoke_from_ime"
+            android:title="@string/revoke_from_ime" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="pref_backup_restore"
         android:title="@string/backup_and_restore">
         <Preference

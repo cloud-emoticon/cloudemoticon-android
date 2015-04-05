@@ -72,4 +72,7 @@
         <item>只在通知面板里显示（只在Android3.0以上有效）</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
+    <string name="ime">输入法</string>
+    <string name="import_into_ime">将收藏导入输入法</string>
+    <string name="revoke_from_ime">将收藏从输入法中撤回</string>
 </resources>

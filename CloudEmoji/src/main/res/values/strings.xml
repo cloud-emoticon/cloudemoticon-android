@@ -73,4 +73,7 @@
         <item>Only in notification panel(Only works above Android 3.0)</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
+    <string name="ime">IME</string>
+    <string name="import_into_ime">Import favorites into IME</string>
+    <string name="revoke_from_ime">Revoke favorites from IME</string>
 </resources>

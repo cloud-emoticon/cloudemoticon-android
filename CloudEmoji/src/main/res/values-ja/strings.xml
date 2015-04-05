@@ -70,4 +70,7 @@
         <item>のみ通知パネル内の（唯一のAndroid3.0上で動作します）</item>
         <item>通知パネルとステータスバーの両方に</item>
     </string-array>
+    <string name="ime">IME</string>
+    <string name="import_into_ime">Import favorites into IME</string>
+    <string name="revoke_from_ime">Revoke favorites from IME</string>
 </resources>
