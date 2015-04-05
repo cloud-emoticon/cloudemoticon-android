@@ -1,5 +1,7 @@
 package org.ktachibana.cloudemoji.net;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -28,8 +30,9 @@ public class UpdateChecker implements Constants {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                int vercode = Integer.valueOf(responseString);
-                EventBus.getDefault().post(new UpdateCheckedEvent(vercode));
+                JsonObject object = (JsonObject) new JsonParser().parse(responseString);
+                int versionCode = object.get("version").getAsInt();
+                EventBus.getDefault().post(new UpdateCheckedEvent(versionCode));
             }
 
             @Override

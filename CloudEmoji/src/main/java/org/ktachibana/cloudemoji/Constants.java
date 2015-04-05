@@ -44,7 +44,7 @@ public interface Constants {
     public static final String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
     public static final String CLOUD_API_HOST = "http://ce.catofes.com";
     public static final String STORE_URL = "http://emoticon.moe/?cat=2";
-    public static final String UPDATE_CHECKER_URL = "http://plum.moe/ce_version";
+    public static final String UPDATE_CHECKER_URL = "https://cloudemoticonbackend.herokuapp.com/version";
     public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
 
     // Intent
