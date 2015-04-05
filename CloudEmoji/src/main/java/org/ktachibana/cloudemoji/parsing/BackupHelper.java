@@ -4,7 +4,6 @@ import android.os.Environment;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Source;
@@ -14,14 +13,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BackupAndRestoreHelper implements Constants {
+public class BackupHelper implements Constants {
 
-    public boolean backupFavorites() {
+    public static boolean backupFavorites() {
         // If external storage not writable
         if (!isExternalStorageWritable()) {
             return false;
@@ -33,14 +31,15 @@ public class BackupAndRestoreHelper implements Constants {
 
         // Write to file
         try {
-            writeFileToExternalStorage(new SourceJsonParser().serialize(getFavoritesAsSource()), backupFile);
+            String json = new SourceJsonParser().serialize(FavoritesHelper.getFavoritesAsSource());
+            writeFileToExternalStorage(json, backupFile);
         } catch (IOException e) {
             return false;
         }
         return true;
     }
 
-    public boolean restoreFavorites() {
+    public static boolean restoreFavorites() {
         // If external storage not readable
         if (!isExternalStorageReadable()) {
             return false;
@@ -88,7 +87,7 @@ public class BackupAndRestoreHelper implements Constants {
         return true;
     }
 
-    public void writeFileToExternalStorage(String string, File file) throws IOException {
+    public static void writeFileToExternalStorage(String string, File file) throws IOException {
         // If external storage not writable
         if (!isExternalStorageWritable()) {
             return;
@@ -100,30 +99,14 @@ public class BackupAndRestoreHelper implements Constants {
         IOUtils.closeQuietly(outputStream);
     }
 
-    private boolean isExternalStorageWritable() {
+    private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
-    private boolean isExternalStorageReadable() {
+    private static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state)
                 || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
-
-    public Source getFavoritesAsSource() {
-        // Get all favorite entries
-        List<Favorite> favorites = Favorite.listAll(Favorite.class);
-        List<Entry> favoriteEntries = new ArrayList<Entry>();
-        for (Favorite favorite : favorites) {
-            favoriteEntries.add(new Entry(favorite.getEmoticon(), favorite.getDescription()));
-        }
-        Category favoriteCategory = new Category("favorites", favoriteEntries);
-
-        // Build source
-        ArrayList<String> information = new ArrayList<String>();
-        information.add("favorites");
-        List<Category> categories = Arrays.asList(favoriteCategory);
-        return new Source(information, categories);
     }
 }

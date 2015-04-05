@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
+import org.ktachibana.cloudemoji.parsing.BackupHelper;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity implements Constants {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
@@ -72,7 +72,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
         backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                boolean success = new BackupAndRestoreHelper().backupFavorites();
+                boolean success = BackupHelper.backupFavorites();
                 if (success) {
                     Toast.makeText(PreferenceActivity.this, FAVORITES_BACKUP_FILE_PATH, Toast.LENGTH_SHORT).show();
                 } else {
@@ -87,7 +87,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
         restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                boolean success = new BackupAndRestoreHelper().restoreFavorites();
+                boolean success = BackupHelper.restoreFavorites();
                 if (success) {
                     Toast.makeText(PreferenceActivity.this, getString(android.R.string.ok), Toast.LENGTH_SHORT).show();
                 } else {

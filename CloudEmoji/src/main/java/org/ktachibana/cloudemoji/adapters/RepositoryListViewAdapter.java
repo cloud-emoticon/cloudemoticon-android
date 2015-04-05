@@ -24,7 +24,7 @@ import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
-import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
+import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
@@ -184,7 +184,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                     // Get file and write
                     String filePath = String.format(EXPORT_FILE_PATH, item.getAlias() + ".json");
                     File exportFile = new File(filePath);
-                    new BackupAndRestoreHelper().writeFileToExternalStorage(json, exportFile);
+                    BackupHelper.writeFileToExternalStorage(json, exportFile);
 
                     Toast.makeText(
                             mContext, filePath, Toast.LENGTH_SHORT).show();

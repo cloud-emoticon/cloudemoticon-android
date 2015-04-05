@@ -59,7 +59,7 @@ import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.net.UpdateChecker;
-import org.ktachibana.cloudemoji.parsing.BackupAndRestoreHelper;
+import org.ktachibana.cloudemoji.parsing.FavoritesHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -276,7 +276,7 @@ public class MainActivity extends BaseActivity implements
         mCurrentSourceCache = new ParcelableObjectInMemoryCache<Source>();
 
         // Put favorites
-        Source favoritesSource = new BackupAndRestoreHelper().getFavoritesAsSource();
+        Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
         mCurrentSourceCache.put(LIST_ITEM_FAVORITE_ID, favoritesSource);
 
         // Put all available repositories
