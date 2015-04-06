@@ -1,7 +1,4 @@
 #0.6.5
-Add to user dictionary
-
-#0.6.4
 Favorite drag and sort elevation
 Replace ActionBar with Toolbar
 Nav drawer overlays Toolbar
