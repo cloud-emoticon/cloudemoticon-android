@@ -18,8 +18,10 @@ import de.greenrobot.event.EventBus;
 
 public class EditFavoriteDialogFragment extends DialogFragment {
     private static final String ARG_FAVORITE = "favorite";
-    @InjectView(R.id.editFavoriteEditText)
-    EditText mFavoriteEditText;
+    @InjectView(R.id.description)
+    EditText mDescription;
+    @InjectView(R.id.shortcut)
+    EditText mShortcut;
     private Favorite mFavorite;
 
     public EditFavoriteDialogFragment() {
@@ -53,15 +55,17 @@ public class EditFavoriteDialogFragment extends DialogFragment {
         builder.setTitle(getString(R.string.edit_favorite));
         builder.setView(rootView);
 
-        // Setup alias edit text
-        mFavoriteEditText.setText(mFavorite.getDescription());
+        // Setup EditTexts
+        mDescription.setText(mFavorite.getDescription());
+        mShortcut.setText(mFavorite.getShortcut());
 
         // Setup positive button
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Get the new favorite and SAVE
-                mFavorite.setDescription(mFavoriteEditText.getText().toString());
+                mFavorite.setDescription(mDescription.getText().toString());
+                mFavorite.setShortcut(mShortcut.getText().toString());
                 mFavorite.save();
 
                 /**

@@ -134,7 +134,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
                 else {
                     // Save to database
                     Favorite savedFavorite
-                            = new Favorite(emoticon, description);
+                            = new Favorite(emoticon, description, "");
                     savedFavorite.save();
                     // Update cache
                     mEmoticonInFavoritesCache.put(emoticon, true);

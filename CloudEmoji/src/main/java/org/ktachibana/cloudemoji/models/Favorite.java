@@ -15,13 +15,15 @@ import java.util.List;
 public class Favorite extends SugarRecord<Favorite> implements Constants, Serializable {
     private String emoticon;
     private String description;
+    private String shortcut = "";
 
     public Favorite() {
     }
 
-    public Favorite(String emoticon, String description) {
+    public Favorite(String emoticon, String description, String shortcut) {
         this.emoticon = emoticon;
         this.description = description;
+        this.shortcut = shortcut;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,5 +48,13 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getShortcut() {
+        return shortcut;
+    }
+
+    public void setShortcut(String shortcut) {
+        this.shortcut = shortcut;
     }
 }

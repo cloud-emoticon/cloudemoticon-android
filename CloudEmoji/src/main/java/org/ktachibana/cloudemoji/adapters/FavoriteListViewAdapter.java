@@ -63,11 +63,19 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
 
         // Setup contents
         viewHolder.emoticon.setText(favorite.getEmoticon());
-        if (favorite.getDescription().equals("")) {
+        if (favorite.getDescription().equals("") && favorite.getShortcut().equals("")) {
             viewHolder.description.setVisibility(View.GONE);
         } else {
             viewHolder.description.setVisibility(View.VISIBLE);
-            viewHolder.description.setText(favorite.getDescription());
+            String descriptionText =
+                    favorite.getDescription().equals("")
+                            ? "(" + mContext.getString(R.string.no_description) + ")"
+                            : favorite.getDescription();
+            String shortcutText =
+                    favorite.getShortcut().equals("")
+                            ? "(" + mContext.getString(R.string.no_shortcut) + ")"
+                            : favorite.getShortcut();
+            viewHolder.description.setText(descriptionText + " -> " + shortcutText);
         }
         viewHolder.star.setOnClickListener(new View.OnClickListener() {
             @Override

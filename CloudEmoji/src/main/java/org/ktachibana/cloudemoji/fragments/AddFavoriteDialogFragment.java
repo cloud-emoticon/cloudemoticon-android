@@ -22,10 +22,12 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class AddFavoriteDialogFragment extends DialogFragment implements Constants {
-    @InjectView(R.id.addFavoriteEmoticonEditText)
-    EditText mEmoticonEditText;
-    @InjectView(R.id.addFavoriteDescriptionEditText)
-    EditText mDescriptionEditText;
+    @InjectView(R.id.emoticon)
+    EditText mEmoticon;
+    @InjectView(R.id.description)
+    EditText mDescription;
+    @InjectView(R.id.shortcut)
+    EditText mShortcut;
 
     public AddFavoriteDialogFragment() {
         // Required empty public constructor
@@ -77,12 +79,13 @@ public class AddFavoriteDialogFragment extends DialogFragment implements Constan
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String emoticon = mEmoticonEditText.getText().toString();
-                final String description = mDescriptionEditText.getText().toString();
+                final String emoticon = mEmoticon.getText().toString();
+                final String description = mDescription.getText().toString();
+                final String shortcut = mShortcut.getText().toString();
 
                 // Check if empty emoticon
                 if (emoticon.equals("")) {
-                    mEmoticonEditText.setError(getString(R.string.empty_emoticon));
+                    mEmoticon.setError(getString(R.string.empty_emoticon));
                     return;
                 }
 
@@ -90,13 +93,13 @@ public class AddFavoriteDialogFragment extends DialogFragment implements Constan
                 List<Favorite> favorites = Favorite.listAll(Favorite.class);
                 for (Favorite favorite : favorites) {
                     if (favorite.getEmoticon().equals(emoticon)) {
-                        mEmoticonEditText.setError(getString(R.string.duplicate_emoticon));
+                        mEmoticon.setError(getString(R.string.duplicate_emoticon));
                         return;
                     }
                 }
 
                 // Else add to favorites
-                Favorite favorite = new Favorite(emoticon, description);
+                Favorite favorite = new Favorite(emoticon, description, shortcut);
                 favorite.save();
 
                 // Notify main activity about it

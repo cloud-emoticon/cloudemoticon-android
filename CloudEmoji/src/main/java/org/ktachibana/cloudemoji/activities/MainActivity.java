@@ -250,7 +250,7 @@ public class MainActivity extends BaseActivity implements
             while (!cursor.isAfterLast()) {
                 String emoticon = cursor.getString(0);
                 String description = cursor.getString(1);
-                favorites.add(new Favorite(emoticon, description));
+                favorites.add(new Favorite(emoticon, description, ""));
                 cursor.moveToNext();
             }
             cursor.close();

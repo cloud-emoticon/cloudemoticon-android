@@ -1,7 +1,7 @@
 package org.ktachibana.cloudemoji.events;
 
 /**
- * Favorite deleted event
+ * Favorite added event
  */
 public class FavoriteAddedEvent {
     private String mEmoticon;

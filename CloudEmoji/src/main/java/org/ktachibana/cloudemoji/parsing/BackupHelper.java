@@ -76,7 +76,7 @@ public class BackupHelper implements Constants {
             // Remove all current favorites and add back merged favorites
             Favorite.deleteAll(Favorite.class);
             for (Entry entry : mergedFavorites) {
-                Favorite favorite = new Favorite(entry.getEmoticon(), entry.getDescription());
+                Favorite favorite = new Favorite(entry.getEmoticon(), entry.getDescription(), "");
                 favorite.save();
             }
         } catch (IOException e) {

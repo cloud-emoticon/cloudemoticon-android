@@ -4,25 +4,36 @@
     android:padding="15dp">
 
     <EditText
-        android:id="@+id/addFavoriteEmoticonEditText"
+        android:id="@+id/emoticon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/addFavoriteDescriptionEditText"
+        android:layout_alignEnd="@+id/description"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/addFavoriteDescriptionEditText"
+        android:layout_alignRight="@+id/description"
         android:hint="@string/emoticon" />
 
     <EditText
-        android:id="@+id/addFavoriteDescriptionEditText"
+        android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/addFavoriteEmoticonEditText"
+        android:layout_below="@+id/emoticon"
         android:hint="@string/description" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shortcut"
+        android:layout_below="@+id/description"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/description"
+        android:layout_alignEnd="@+id/description"
+        android:hint="@string/shortcut"/>
 
 </RelativeLayout>
