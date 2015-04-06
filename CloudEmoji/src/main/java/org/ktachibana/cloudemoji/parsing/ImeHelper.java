@@ -6,7 +6,6 @@ import android.os.Build;
 import android.provider.UserDictionary;
 
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public class ImeHelper implements Constants {
 
         // Add all favorites into user dictionary
         int counter = 0;
-        for (Favorite favorite: favorites) {
+        for (Favorite favorite : favorites) {
             if (!favorite.getShortcut().equals("")) {
                 ContentValues newValue = new ContentValues();
                 newValue.put(UserDictionary.Words.APP_ID, USER_DICTIONARY_APP_ID);

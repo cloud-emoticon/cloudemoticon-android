@@ -39,7 +39,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile fileTree(dir: 'libs', include: ['*.aar'])
+    compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'de.greenrobot:eventbus:2.4.0'
