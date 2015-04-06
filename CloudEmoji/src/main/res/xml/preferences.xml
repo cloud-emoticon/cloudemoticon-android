@@ -32,7 +32,8 @@
         android:title="@string/ime">
         <Preference
             android:key="pref_import_into_ime"
-            android:title="@string/import_into_ime" />
+            android:title="@string/import_into_ime"
+            android:summary="@string/import_into_ime_summary"/>
         <!--
         <Preference
             android:key="pref_revoke_from_ime"

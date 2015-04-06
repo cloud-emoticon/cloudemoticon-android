@@ -77,4 +77,5 @@
     <string name="revoke_from_ime">将全部收藏从用户词典中移除</string>
     <string name="imported_into_ime">已将%d个收藏导入用户词典</string>
     <string name="revoked_from_ime">已将%d个收藏从用户词典中移除</string>
+    <string name="import_into_ime_summary">只对描述是英文和数字的收藏有效</string>
 </resources>

@@ -75,4 +75,5 @@
     <string name="revoke_from_ime">Revoke all bookmarks from user dictionary</string>
     <string name="imported_into_ime">Imported %d bookmarks into user dictionary</string>
     <string name="revoked_from_ime">Revoked %d bookmarks from user dictionary</string>
+    <string name="import_into_ime_summary">Only works for description in English letters and numbers</string>
 </resources>
