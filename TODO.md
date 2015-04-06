@@ -1,5 +1,7 @@
 #0.6.6
 
+Search Activity
+
 Replace hard copied dependencies
 
 Favorite drag and sort elevation
