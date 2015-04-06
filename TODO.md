@@ -1,4 +1,4 @@
-#0.6.5
+#0.6.6
 
 Favorite drag and sort elevation
 
