@@ -27,4 +27,8 @@ public class FavoritesHelper {
         }
         return new Category("favorites", favoriteEntries);
     }
+
+    public static List<Favorite> getFavoritesAsList() {
+        return Favorite.listAll(Favorite.class);
+    }
 }

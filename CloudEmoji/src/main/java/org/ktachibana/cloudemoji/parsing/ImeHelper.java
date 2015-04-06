@@ -7,22 +7,23 @@ import android.provider.UserDictionary;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.Entry;
+import org.ktachibana.cloudemoji.models.Favorite;
 
 import java.util.List;
 
 public class ImeHelper implements Constants {
     public static int importAllFavoritesIntoIme(ContentResolver contentResolver) {
-        List<Entry> favorites = FavoritesHelper.getFavoritesAsCategory().getEntries();
+        List<Favorite> favorites = FavoritesHelper.getFavoritesAsList();
 
         // Add all favorites into user dictionary
         int counter = 0;
-        for (Entry entry : favorites) {
-            if (!entry.getDescription().equals("")) {
+        for (Favorite favorite: favorites) {
+            if (!favorite.getShortcut().equals("")) {
                 ContentValues newValue = new ContentValues();
                 newValue.put(UserDictionary.Words.APP_ID, USER_DICTIONARY_APP_ID);
-                newValue.put(UserDictionary.Words.WORD, entry.getEmoticon());
+                newValue.put(UserDictionary.Words.WORD, favorite.getEmoticon());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    newValue.put(UserDictionary.Words.SHORTCUT, entry.getDescription());
+                    newValue.put(UserDictionary.Words.SHORTCUT, favorite.getShortcut());
                 }
                 contentResolver.insert(UserDictionary.Words.CONTENT_URI, newValue);
                 counter++;
