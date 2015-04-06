@@ -90,8 +90,8 @@ public class MainActivity extends BaseActivity implements
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
     @InjectView(R.id.toolbar)
-    Toolbar toolbar;
-    private ActionBarDrawerToggle toggle;
+    Toolbar mToolbar;
+    private ActionBarDrawerToggle mToggle;
     // State
     private long mCurrentRepositoryId;
     private Source mCurrentSource;
@@ -160,13 +160,13 @@ public class MainActivity extends BaseActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        setSupportActionBar(toolbar);
-        toggle = new ActionBarDrawerToggle(
+        setSupportActionBar(mToolbar);
+        mToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
                 R.string.app_name,
                 R.string.app_name);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.setDrawerListener(mToggle);
     }
 
     private void firstTimeCheck() {
@@ -356,7 +356,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if (toggle.onOptionsItemSelected(item)) {
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -366,13 +366,13 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toggle.syncState();
+        mToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        toggle.onConfigurationChanged(newConfig);
+        mToggle.onConfigurationChanged(newConfig);
     }
 
     /**
