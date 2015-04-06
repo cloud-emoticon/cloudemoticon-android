@@ -73,9 +73,9 @@
         <item>Only in notification panel(Only works above Android 3.0)</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
-    <string name="ime">IME</string>
-    <string name="import_into_ime">Import all bookmarks into IME</string>
-    <string name="revoke_from_ime">Revoke all bookmarks from IME</string>
-    <string name="imported_into_ime">Imported %d bookmarks into IME</string>
-    <string name="revoked_from_ime">Revoked %d bookmarks from IME</string>
+    <string name="ime">User dictionary</string>
+    <string name="import_into_ime">Import all bookmarks into user dictionary</string>
+    <string name="revoke_from_ime">Revoke all bookmarks from user dictionary</string>
+    <string name="imported_into_ime">Imported %d bookmarks into user dictionary</string>
+    <string name="revoked_from_ime">Revoked %d bookmarks from user dictionary</string>
 </resources>

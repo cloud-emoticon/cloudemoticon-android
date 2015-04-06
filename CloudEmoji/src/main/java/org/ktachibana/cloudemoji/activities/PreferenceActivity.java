@@ -63,6 +63,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
         });
 
         // Revoke favorite from IME
+        /**
         Preference revokeImePref = findPreference(PREF_REVOKE_IME);
         revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -75,6 +76,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
                 return true;
             }
         });
+        **/
 
         // Backup favorites
         Preference backupPref = findPreference(PREF_BACKUP_FAV);
