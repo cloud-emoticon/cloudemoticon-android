@@ -5,6 +5,9 @@ import android.os.Environment;
 import java.io.File;
 
 public interface Constants {
+    // General
+    public static final String USER_DICTIONARY_APP_ID = "cloudemoji";
+
     // Left drawer list item
     public static final long LIST_ITEM_FAVORITE_ID = -1;
     public static final long LIST_ITEM_HISTORY_ID = -2;
@@ -59,4 +62,5 @@ public interface Constants {
 
     // Debug
     public static final String DEBUG_TAG = "CloudEmoticon";
+
 }

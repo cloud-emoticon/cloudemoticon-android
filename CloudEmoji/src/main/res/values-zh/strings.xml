@@ -73,6 +73,8 @@
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
     <string name="ime">输入法</string>
-    <string name="import_into_ime">将收藏导入输入法</string>
-    <string name="revoke_from_ime">将收藏从输入法中撤回</string>
+    <string name="import_into_ime">将全部收藏导入输入法</string>
+    <string name="revoke_from_ime">将全部收藏从输入法中移除</string>
+    <string name="imported_into_ime">已将%d个收藏导入输入法</string>
+    <string name="revoked_from_ime">已将%d个收藏从输入法中移除</string>
 </resources>

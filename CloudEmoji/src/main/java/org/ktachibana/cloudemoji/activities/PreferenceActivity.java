@@ -15,6 +15,7 @@ import android.widget.Toast;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
+import org.ktachibana.cloudemoji.parsing.ImeHelper;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity implements Constants {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
@@ -52,7 +53,11 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
         importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(PreferenceActivity.this, "import", Toast.LENGTH_SHORT).show();
+                int numberAdded = ImeHelper.importAllFavoritesIntoIme(getContentResolver());
+                Toast.makeText(
+                        PreferenceActivity.this,
+                        String.format(getString(R.string.imported_into_ime), numberAdded),
+                        Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -62,7 +67,11 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
         revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(PreferenceActivity.this, "revoke", Toast.LENGTH_SHORT).show();
+                int numberRevoked = ImeHelper.revokeAllFavoritesFromIme(getContentResolver());
+                Toast.makeText(
+                        PreferenceActivity.this,
+                        String.format(getString(R.string.revoked_from_ime), numberRevoked),
+                        Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
