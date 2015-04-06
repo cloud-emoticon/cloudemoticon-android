@@ -575,7 +575,7 @@ public class MainActivity extends BaseActivity implements
     private void replaceMainContainer(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.mainContainer, fragment)
+                .replace(R.id.main_container, fragment)
                 .commit();
     }
 

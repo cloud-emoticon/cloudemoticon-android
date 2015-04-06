@@ -29,7 +29,7 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
         RepositoryFragment fragment = new RepositoryFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.repositoryMainContainer, fragment)
+                .replace(R.id.main_container, fragment)
                 .commit();
 
         // Pop up add repository dialog if from store scheme

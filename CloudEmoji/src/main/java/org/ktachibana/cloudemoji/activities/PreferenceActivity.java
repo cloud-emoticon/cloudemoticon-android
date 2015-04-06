@@ -64,19 +64,18 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 
         // Revoke favorite from IME
         /**
-        Preference revokeImePref = findPreference(PREF_REVOKE_IME);
-        revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                int numberRevoked = ImeHelper.revokeAllFavoritesFromIme(getContentResolver());
-                Toast.makeText(
-                        PreferenceActivity.this,
-                        String.format(getString(R.string.revoked_from_ime), numberRevoked),
-                        Toast.LENGTH_SHORT).show();
-                return true;
-            }
+         Preference revokeImePref = findPreference(PREF_REVOKE_IME);
+         revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        @Override public boolean onPreferenceClick(Preference preference) {
+        int numberRevoked = ImeHelper.revokeAllFavoritesFromIme(getContentResolver());
+        Toast.makeText(
+        PreferenceActivity.this,
+        String.format(getString(R.string.revoked_from_ime), numberRevoked),
+        Toast.LENGTH_SHORT).show();
+        return true;
+        }
         });
-        **/
+         **/
 
         // Backup favorites
         Preference backupPref = findPreference(PREF_BACKUP_FAV);

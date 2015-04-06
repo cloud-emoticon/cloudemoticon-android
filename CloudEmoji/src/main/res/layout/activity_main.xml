@@ -14,7 +14,7 @@
 
         <!-- The mainContainer -->
         <FrameLayout
-            android:id="@+id/mainContainer"
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

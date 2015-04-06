@@ -6,7 +6,7 @@
     <include layout="@layout/view_toolbar" />
 
     <FrameLayout
-        android:id="@+id/repositoryMainContainer"
+        android:id="@+id/main_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
