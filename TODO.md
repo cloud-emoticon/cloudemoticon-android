@@ -4,6 +4,8 @@ Search Activity
 
 Replace hard copied dependencies
 
+Use Material dialog
+
 Favorite drag and sort elevation
 
 Pull to refresh in Source
