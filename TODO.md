@@ -1,5 +1,7 @@
 #0.6.7
 
+Use Material Design icon (currently Holo ones)
+
 Use Material dialog
 
 Search Activity
