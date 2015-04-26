@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.ktachibana.cloudemoji">
+    package="org.ktachibana.cloudemoji" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -10,13 +10,12 @@
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
 
-
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="DATABASE"
             android:value="ce.db" />
@@ -33,16 +32,11 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+            android:launchMode="singleTop" >
 
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -50,7 +44,7 @@
         <activity-alias
             android:name=".activities.AssistActivity"
             android:enabled="false"
-            android:targetActivity=".activities.MainActivity">
+            android:targetActivity=".activities.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />
 
@@ -64,14 +58,14 @@
 
         <activity
             android:name=".activities.PreferenceActivity"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.RepositoryManagerActivity"
-            android:label="@string/repo_manager">
+            android:label="@string/repo_manager" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
@@ -102,7 +96,7 @@
             android:name=".receivers.BootUpReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="StartMyServiceAtBootReceiver">
+            android:label="StartMyServiceAtBootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -110,21 +104,28 @@
 
         <activity
             android:name=".activities.AccountActivity"
-            android:label="@string/account">
+            android:label="@string/account" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
 
-        <service android:name=".net.AccountAuthenticationService">
+        <service android:name=".net.AccountAuthenticationService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
 
+        <activity
+            android:name=".activities.SearchActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
