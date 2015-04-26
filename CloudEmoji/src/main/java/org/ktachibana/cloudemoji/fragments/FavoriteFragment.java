@@ -11,13 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.melnykov.fab.FloatingActionButton;
 import com.mobeta.android.dslv.DragSortListView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
-import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteEditedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
@@ -93,20 +93,13 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void popupAddFavoriteDialog() {
-        /**
-        AddFavoriteDialogFragment fragment = new AddFavoriteDialogFragment();
-        fragment.setTargetFragment(FavoriteFragment.this, 0);
-        fragment.show(getFragmentManager(), "add_favorite");
-         **/
         new MultiInputMaterialDialogBuilder(getActivity())
                 .addInput(null, getString(R.string.emoticon), new MultiInputMaterialDialogBuilder.InputValidator() {
                     @Override
                     public CharSequence validate(CharSequence input) {
                         if (TextUtils.isEmpty(input)) {
                             return getString(R.string.empty_emoticon);
-                        }
-                        else
-                        {
+                        } else {
                             List<Favorite> favorites = Favorite.listAll(Favorite.class);
                             for (Favorite favorite : favorites) {
                                 if (TextUtils.equals(favorite.getEmoticon(), input)) {
@@ -129,9 +122,9 @@ public class FavoriteFragment extends Fragment {
 
                             Favorite favorite = new Favorite(emoticon, description, shortcut);
                             favorite.save();
-                            notifyFavoriteAdded();
 
-                            EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
+                            notifyFavoriteAdded();
+                            showSnackBar(emoticon + "\n" + getString(R.string.added_to_fav));
                         }
                     }
                 })
@@ -165,5 +158,16 @@ public class FavoriteFragment extends Fragment {
      */
     public void onEvent(FavoriteEditedEvent event) {
         mAdapter.updateFavorites();
+    }
+
+    private void showSnackBar(String message) {
+        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
+                .withMessage(message)
+                .withDuration(SnackBar.SHORT_SNACK)
+                .show();
+    }
+
+    private void showSnackBar(int resId) {
+        showSnackBar(getString(resId));
     }
 }

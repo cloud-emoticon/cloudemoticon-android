@@ -10,20 +10,25 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.melnykov.fab.FloatingActionButton;
 
+import org.apache.commons.io.FilenameUtils;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.NetworkUnavailableEvent;
-import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryEditedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryInvalidFormatEvent;
+import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -85,8 +90,54 @@ public class RepositoryFragment extends Fragment implements Constants {
     }
 
     public void popupAddRepositoryDialog(String passedInUrl) {
-        AddRepositoryDialogFragment fragment = AddRepositoryDialogFragment.newInstance(passedInUrl);
-        fragment.show(getFragmentManager(), "add_repository");
+        /**
+         AddRepositoryDialogFragment fragment = AddRepositoryDialogFragment.newInstance(passedInUrl);
+         fragment.show(getFragmentManager(), "add_repository");
+         **/
+        new MultiInputMaterialDialogBuilder(getActivity())
+                .addInput(passedInUrl, getString(R.string.repo_url), new MultiInputMaterialDialogBuilder.InputValidator() {
+                    @Override
+                    public CharSequence validate(CharSequence input) {
+                        // Get URL and extension
+                        String url = input.toString();
+                        String extension = FilenameUtils.getExtension(url);
+
+                        // Detect duplicate URL
+                        List<Repository> repositories = Repository.listAll(Repository.class);
+                        for (Repository repository : repositories) {
+                            if (url.equals(repository.getUrl())) {
+                                return getString(R.string.duplicate_url);
+                            }
+                        }
+
+                        // Detect incorrect file format
+                        if (!(extension.equals("xml") || extension.equals("json"))) {
+                            return getString(R.string.invalid_repo_format);
+                        } else {
+                            return null;
+                        }
+                    }
+                })
+                .addInput(null, getString(R.string.alias))
+                .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
+                    @Override
+                    public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
+                        if (allInputsValidated) {
+                            String url = inputs.get(0).toString();
+                            String alias = inputs.get(1).toString();
+
+                            // Create and save repository to database
+                            Repository repository = new Repository(url, alias);
+                            repository.save();
+
+                            mAdapter.updateRepositories();
+                        }
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .title(R.string.add_repo)
+                .show();
     }
 
     /**
@@ -125,15 +176,6 @@ public class RepositoryFragment extends Fragment implements Constants {
      * @param event repository edited event
      */
     public void onEvent(RepositoryEditedEvent event) {
-        mAdapter.updateRepositories();
-    }
-
-    /**
-     * Listens for repository added, namely from add repository dialog fragment
-     *
-     * @param event repository added event
-     */
-    public void onEvent(RepositoryAddedEvent event) {
         mAdapter.updateRepositories();
     }
 
