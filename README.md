@@ -44,13 +44,13 @@ A cloud solution to your favorite emoticons
 * [PagerSlidingTabStrip] (https://github.com/astuetz/PagerSlidingTabStrip)
 * [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
 
-## Libraries via Jar balls
+## Libraries via Jar/Aar balls
 * [ARCA](https://github.com/ACRA/acra)
 * [sugar](https://github.com/satyan/sugar)
+* [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 
 ## Libraries via direct code uses
 * [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
-* [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 * [emojicon](https://github.com/rockerhieu/emojicon)
 
 ## License

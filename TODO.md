@@ -1,7 +1,5 @@
 #0.6.7
 
-Replace hard copied dependencies
-
 Use Material dialog
 
 Use SmartTabLayout
