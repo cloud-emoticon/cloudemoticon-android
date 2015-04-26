@@ -1,7 +1,5 @@
 #0.6.7
 
-Use Material Design icon (currently Holo ones)
-
 Search Activity
 
 Favorite drag and sort elevation
