@@ -63,6 +63,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
+
         <activity
             android:name=".activities.RepositoryManagerActivity"
             android:label="@string/repo_manager" >
@@ -109,16 +110,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
-
-        <service android:name=".net.AccountAuthenticationService" >
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
 
         <activity
             android:name=".activities.SearchActivity" >
