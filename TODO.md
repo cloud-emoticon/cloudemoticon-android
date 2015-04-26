@@ -2,10 +2,6 @@
 
 Use Material dialog
 
-Replace Toast with Snackbar
-
-Update libraries used
-
 Search Activity
 
 Favorite drag and sort elevation

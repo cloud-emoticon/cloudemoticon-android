@@ -43,13 +43,14 @@ A cloud solution to your favorite emoticons
 * [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
 * [SmartTabLayout] (https://github.com/ogaclejapan/SmartTabLayout)
 * [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
+* [SnackBar] (https://github.com/MrEngineer13/SnackBar)
 
 ## Libraries via Jar/Aar balls
 * [ARCA](https://github.com/ACRA/acra)
 * [sugar](https://github.com/satyan/sugar)
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 
-## Libraries via direct code uses
+## Libraries via direct code usage
 * [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
 * [emojicon](https://github.com/rockerhieu/emojicon)
 
