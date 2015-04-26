@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsPagerAdapter;
@@ -20,7 +20,7 @@ public class EmojiconsFragment extends Fragment {
     @InjectView(R.id.pager)
     ViewPager mPager;
     @InjectView(R.id.tabs)
-    PagerSlidingTabStrip mTabs;
+    SmartTabLayout mTabs;
 
     public EmojiconsFragment() {
         // Required empty public constructor
@@ -36,7 +36,6 @@ public class EmojiconsFragment extends Fragment {
         // Setup contents
         mPager.setAdapter(new EmojiconsPagerAdapter(getChildFragmentManager()));
         mTabs.setViewPager(mPager);
-        mTabs.setIndicatorColorResource(R.color.primary);
 
         return rootView;
     }
