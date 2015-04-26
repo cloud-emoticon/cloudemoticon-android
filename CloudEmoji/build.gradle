@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode 16
         versionName '0.6.7'
     }
@@ -39,7 +39,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.github.frankiesardo:linearlistview:1.0.1@aar'

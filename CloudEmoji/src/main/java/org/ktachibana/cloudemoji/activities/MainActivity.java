@@ -162,6 +162,7 @@ public class MainActivity extends BaseActivity implements
         ButterKnife.inject(this);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
