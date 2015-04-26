@@ -2,12 +2,12 @@
 
 Search Activity
 
-Pull to refresh in Source
-
 # Future
+
+Nav drawer rewrite
 
 Better looking list items in Favorite/Repo Manager
 
 Emoticon wrapping
 
-Nav drawer rewrite
+Pull to refresh in Source
