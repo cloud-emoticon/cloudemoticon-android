@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.loopj.android:android-async-http:1.4.6'
@@ -49,4 +48,7 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile files('libs/acra-4.5.0.jar')
+    compile files('libs/PinnedHeaderListView.jar')
+    compile files('libs/sugar-1.3.jar')
 }

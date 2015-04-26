@@ -35,6 +35,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     // Cache stores whether a emoticon is in favorites
     private HashMap<String, Boolean> mEmoticonInFavoritesCache;
     private String[] mCategoryNameSectionIndexer;
+    private int[] mSectionToPositionMap;
 
     public SourceListViewAdapter(Context context, Source source) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,6 +50,14 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         mCategoryNameSectionIndexer = new String[mSource.getCategories().size()];
         for (int i = 0; i < mCategoryNameSectionIndexer.length; i++) {
             mCategoryNameSectionIndexer[i] = mSource.getCategories().get(i).getName();
+        }
+
+        // Set up section to position map
+        mSectionToPositionMap = new int[mSource.getCategories().size()];
+        int runningTotal = 0;
+        for (int i = 0; i < mSource.getCategories().size(); i++) {
+            mSectionToPositionMap[i] = runningTotal;
+            runningTotal += mSource.getCategories().get(i).getEntries().size();
         }
     }
 
@@ -172,6 +181,11 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     @Override
     public Object[] getSections() {
         return mCategoryNameSectionIndexer;
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return mSectionToPositionMap[sectionIndex];
     }
 
     static class EntryViewHolder {
