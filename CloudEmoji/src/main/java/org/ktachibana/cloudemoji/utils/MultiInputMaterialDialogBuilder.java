@@ -2,15 +2,19 @@ package org.ktachibana.cloudemoji.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.util.List;
+
 
 public class MultiInputMaterialDialogBuilder extends MaterialDialog.Builder {
     private Context mContext;
     private LinearLayout mRootView;
+    private InputsCallback mCallback;
 
     public MultiInputMaterialDialogBuilder(@NonNull Context context) {
         super(context);
@@ -30,12 +34,21 @@ public class MultiInputMaterialDialogBuilder extends MaterialDialog.Builder {
         return this;
     }
 
-    public MultiInputMaterialDialogBuilder addInput(int title, int preFill, int hint, int type) {
+    public MultiInputMaterialDialogBuilder addInput(@StringRes int title, @StringRes int preFill, @StringRes int hint, int type) {
         return addInput(
                 title == 0 ? null : mContext.getString(title),
                 preFill == 0 ? null : mContext.getString(preFill),
                 hint == 0 ? null : mContext.getString(hint),
                 type
         );
+    }
+
+    public MultiInputMaterialDialogBuilder inputs(@NonNull InputsCallback callback) {
+        mCallback = callback;
+        return this;
+    }
+
+    public interface InputsCallback {
+        void onInput(MaterialDialog dialog, List<CharSequence> inputs);
     }
 }
