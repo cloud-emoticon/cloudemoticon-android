@@ -10,7 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
+
+import com.github.mrengineer13.snackbar.SnackBar;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -54,10 +55,7 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 int numberAdded = ImeHelper.importAllFavoritesIntoIme(getActivity().getContentResolver());
-                Toast.makeText(
-                        getActivity(),
-                        String.format(getString(R.string.imported_into_ime), numberAdded),
-                        Toast.LENGTH_SHORT).show();
+                showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
                 return true;
             }
         });
@@ -84,9 +82,9 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
             public boolean onPreferenceClick(Preference preference) {
                 boolean success = BackupHelper.backupFavorites();
                 if (success) {
-                    Toast.makeText(getActivity(), FAVORITES_BACKUP_FILE_PATH, Toast.LENGTH_SHORT).show();
+                    showSnackBar(FAVORITES_BACKUP_FILE_PATH);
                 } else {
-                    Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                    showSnackBar(R.string.fail);
                 }
                 return true;
             }
@@ -99,9 +97,9 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
             public boolean onPreferenceClick(Preference preference) {
                 boolean success = BackupHelper.restoreFavorites();
                 if (success) {
-                    Toast.makeText(getActivity(), getString(android.R.string.ok), Toast.LENGTH_SHORT).show();
+                    showSnackBar(android.R.string.ok);
                 } else {
-                    Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                    showSnackBar(R.string.fail);
                 }
                 return true;
             }
@@ -148,5 +146,16 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
     public void onDestroy() {
         super.onDestroy();
         mPreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+    }
+
+    private void showSnackBar(String message) {
+        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
+                .withMessage(message)
+                .withDuration(SnackBar.SHORT_SNACK)
+                .show();
+    }
+
+    private void showSnackBar(int resId) {
+        showSnackBar(getString(resId));
     }
 }

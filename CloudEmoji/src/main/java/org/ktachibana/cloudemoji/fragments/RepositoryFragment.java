@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.ktachibana.cloudemoji.Constants;
@@ -92,9 +92,7 @@ public class RepositoryFragment extends Fragment implements Constants {
      * @param event repository downloaded from Internet event
      */
     public void onEvent(RepositoryDownloadedEvent event) {
-        Toast.makeText(getActivity(), event.getRepository().getAlias()
-                + " "
-                + getString(R.string.downloaded), Toast.LENGTH_SHORT).show();
+        showSnackBar(event.getRepository().getAlias() + " " + getString(R.string.downloaded));
         mAdapter.updateRepositories();
     }
 
@@ -104,7 +102,7 @@ public class RepositoryFragment extends Fragment implements Constants {
      * @param event repository download failed from Internet event
      */
     public void onEvent(RepositoryDownloadFailedEvent event) {
-        Toast.makeText(getActivity(), event.getThrowable().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        showSnackBar(event.getThrowable().getLocalizedMessage());
     }
 
     /**
@@ -134,5 +132,16 @@ public class RepositoryFragment extends Fragment implements Constants {
      */
     public void onEvent(RepositoryAddedEvent event) {
         mAdapter.updateRepositories();
+    }
+
+    private void showSnackBar(String message) {
+        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
+                .withMessage(message)
+                .withDuration(SnackBar.SHORT_SNACK)
+                .show();
+    }
+
+    private void showSnackBar(int resId) {
+        showSnackBar(getString(resId));
     }
 }

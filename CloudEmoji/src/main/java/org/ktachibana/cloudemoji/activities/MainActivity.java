@@ -28,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -262,7 +263,7 @@ public class MainActivity extends BaseActivity implements
 
             // Remove the database
             if (oldDatabaseFile.delete()) {
-                Toast.makeText(this, getString(R.string.old_favorites_merged), Toast.LENGTH_SHORT).show();
+                showSnackBar(R.string.old_favorites_merged);
             }
         } catch (SQLiteException e) {
             e.printStackTrace();
@@ -288,10 +289,7 @@ public class MainActivity extends BaseActivity implements
                     Source source = new SourceReader().readSourceFromDatabaseId(id);
                     mCurrentSourceCache.put(id, source);
                 } catch (SourceParsingException e) {
-                    Toast.makeText(
-                            this,
-                            getString(R.string.invalid_repo_format) + e.getFormatType().toString(),
-                            Toast.LENGTH_SHORT).show();
+                    showSnackBar(getString(R.string.invalid_repo_format) + e.getFormatType().toString());
                 } catch (IOException e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {
@@ -401,12 +399,15 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Show toast
-        Toast.makeText(MainActivity.this, copied + "\n" + getString(R.string.copied), Toast.LENGTH_SHORT).show();
         boolean isCloseAfterCopy = mPreferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
 
-        // Close if you want
+        // Show toast if close after copy, otherwise snackbar
+        String message = copied + "\n" + getString(R.string.copied);
         if (isCloseAfterCopy) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
             finish();
+        } else {
+            showSnackBar(message);
         }
     }
 
@@ -431,19 +432,11 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void onEvent(FavoriteAddedEvent event) {
-        Toast.makeText(
-                this,
-                event.getEmoticon() + "\n" + getString(R.string.added_to_fav),
-                Toast.LENGTH_SHORT
-        ).show();
+        showSnackBar(event.getEmoticon() + "\n" + getString(R.string.added_to_fav));
     }
 
     public void onEvent(FavoriteDeletedEvent event) {
-        Toast.makeText(
-                this,
-                event.getEmoticon() + "\n" + getString(R.string.removed_from_fav),
-                Toast.LENGTH_SHORT
-        ).show();
+        showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
     }
 
     public void onEvent(SecondaryMenuItemClickedEvent event) {
@@ -475,7 +468,7 @@ public class MainActivity extends BaseActivity implements
 
         // If failed
         if (latestVersionCode == 0) {
-            Toast.makeText(this, R.string.update_checker_failed, Toast.LENGTH_SHORT).show();
+            showSnackBar(R.string.update_checker_failed);
             return;
         }
 
@@ -486,7 +479,7 @@ public class MainActivity extends BaseActivity implements
 
             // Already latest
             if (latestVersionCode == versionCode) {
-                Toast.makeText(this, R.string.already_latest_version, Toast.LENGTH_SHORT).show();
+                showSnackBar(R.string.already_latest_version);
                 return;
             }
 
@@ -634,5 +627,16 @@ public class MainActivity extends BaseActivity implements
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
         outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
         outState.putParcelable(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
+    }
+
+    private void showSnackBar(String message) {
+        new SnackBar.Builder(this)
+                .withMessage(message)
+                .withDuration(SnackBar.SHORT_SNACK)
+                .show();
+    }
+
+    private void showSnackBar(int resId) {
+        showSnackBar(getString(resId));
     }
 }

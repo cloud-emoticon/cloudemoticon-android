@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -61,11 +61,7 @@ public class AccountActivity extends BaseActivity implements Constants {
 
                     // Traverse status
                     if (status == ApiClient.Status.OK) {
-                        Toast.makeText(
-                                AccountActivity.this,
-                                getString(R.string.register_successful) + "\n" + userNameString,
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showSnackBar(getString(R.string.register_successful) + "\n" + userNameString);
                         userName.setText("");
                         emailAddress.setText("");
                     } else if (status == ApiClient.Status.ILLEGAL_USERNAME) {
@@ -90,11 +86,7 @@ public class AccountActivity extends BaseActivity implements Constants {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(
-                        AccountActivity.this,
-                        throwable.getLocalizedMessage(),
-                        Toast.LENGTH_SHORT
-                ).show();
+                showSnackBar(throwable.getLocalizedMessage());
             }
 
             @Override
@@ -117,12 +109,20 @@ public class AccountActivity extends BaseActivity implements Constants {
                                     emailAddress.getText().toString(),
                                     onRegisteredHandler);
                 } else {
-                    Toast.makeText(
-                            AccountActivity.this,
-                            getString(R.string.bad_conn),
-                            Toast.LENGTH_SHORT).show();
+                    showSnackBar(R.string.bad_conn);
                 }
             }
         });
+    }
+
+    private void showSnackBar(String message) {
+        new SnackBar.Builder(this)
+                .withMessage(message)
+                .withDuration(SnackBar.SHORT_SNACK)
+                .show();
+    }
+
+    private void showSnackBar(int resId) {
+        showSnackBar(getString(resId));
     }
 }
