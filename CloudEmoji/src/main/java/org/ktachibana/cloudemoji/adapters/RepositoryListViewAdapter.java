@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -19,9 +18,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.NetworkUnavailableEvent;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
@@ -150,7 +151,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                     );
 
                 } else {
-                    Toast.makeText(mContext, mContext.getString(R.string.bad_conn), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new NetworkUnavailableEvent());
                 }
 
 
@@ -186,13 +187,9 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                     File exportFile = new File(filePath);
                     BackupHelper.writeFileToExternalStorage(json, exportFile);
 
-                    Toast.makeText(
-                            mContext, filePath, Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new RepositoryExportedEvent(filePath));
                 } catch (SourceParsingException e) {
-                    Toast.makeText(
-                            mContext,
-                            mContext.getString(R.string.invalid_repo_format) + e.getFormatType().toString(),
-                            Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(e.getFormatType().toString());
                 } catch (IOException e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {

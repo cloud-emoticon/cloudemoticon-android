@@ -16,11 +16,14 @@ import com.melnykov.fab.FloatingActionButton;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
+import org.ktachibana.cloudemoji.events.NetworkUnavailableEvent;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryEditedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryInvalidFormatEvent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -132,6 +135,18 @@ public class RepositoryFragment extends Fragment implements Constants {
      */
     public void onEvent(RepositoryAddedEvent event) {
         mAdapter.updateRepositories();
+    }
+
+    public void onEvent(NetworkUnavailableEvent event) {
+        showSnackBar(R.string.bad_conn);
+    }
+
+    public void onEvent(RepositoryExportedEvent exportedEvent) {
+        showSnackBar(exportedEvent.getPath());
+    }
+
+    public void onEvent(RepositoryInvalidFormatEvent event) {
+        showSnackBar(getString(R.string.invalid_repo_format) + event.getType());
     }
 
     private void showSnackBar(String message) {
