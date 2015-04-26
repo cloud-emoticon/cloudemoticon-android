@@ -22,7 +22,6 @@ import org.ktachibana.cloudemoji.events.NetworkUnavailableEvent;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryEditedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryInvalidFormatEvent;
 import org.ktachibana.cloudemoji.models.Repository;
@@ -165,18 +164,30 @@ public class RepositoryFragment extends Fragment implements Constants {
      * @param event repository being edited event
      */
     public void onEvent(RepositoryBeginEditingEvent event) {
-        EditRepositoryDialogFragment fragment
-                = EditRepositoryDialogFragment.newInstance(event.getRepository());
-        fragment.show(getFragmentManager(), "edit_repository");
-    }
+        /**
+         EditRepositoryDialogFragment fragment
+         = EditRepositoryDialogFragment.newInstance(event.getRepository());
+         fragment.show(getFragmentManager(), "edit_repository");
+         **/
+        final Repository repository = event.getRepository();
+        new MultiInputMaterialDialogBuilder(getActivity())
+                .addInput(repository.getAlias(), getString(R.string.alias))
+                .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
+                    @Override
+                    public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
+                        String alias = inputs.get(0).toString();
 
-    /**
-     * Listens for repository edited, namely from repository list view adapter
-     *
-     * @param event repository edited event
-     */
-    public void onEvent(RepositoryEditedEvent event) {
-        mAdapter.updateRepositories();
+                        // Get the new alias and SAVE
+                        repository.setAlias(alias);
+                        repository.save();
+
+                        mAdapter.updateRepositories();
+                    }
+                })
+                .title(R.string.edit_repository)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
     }
 
     public void onEvent(NetworkUnavailableEvent event) {

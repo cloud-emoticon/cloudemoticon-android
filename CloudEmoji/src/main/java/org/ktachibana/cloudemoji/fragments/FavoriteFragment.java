@@ -19,7 +19,6 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
-import org.ktachibana.cloudemoji.events.FavoriteEditedEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
@@ -147,9 +146,9 @@ public class FavoriteFragment extends Fragment {
      */
     public void onEvent(FavoriteBeginEditingEvent event) {
         /**
-        EditFavoriteDialogFragment fragment
-                = EditFavoriteDialogFragment.newInstance(event.getFavorite());
-        fragment.show(getFragmentManager(), "edit_favorite");
+         EditFavoriteDialogFragment fragment
+         = EditFavoriteDialogFragment.newInstance(event.getFavorite());
+         fragment.show(getFragmentManager(), "edit_favorite");
          **/
         final Favorite favorite = event.getFavorite();
         new MultiInputMaterialDialogBuilder(getActivity())
