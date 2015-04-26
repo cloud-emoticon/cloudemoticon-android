@@ -146,18 +146,33 @@ public class FavoriteFragment extends Fragment {
      * @param event favorite being edited event
      */
     public void onEvent(FavoriteBeginEditingEvent event) {
+        /**
         EditFavoriteDialogFragment fragment
                 = EditFavoriteDialogFragment.newInstance(event.getFavorite());
         fragment.show(getFragmentManager(), "edit_favorite");
-    }
+         **/
+        final Favorite favorite = event.getFavorite();
+        new MultiInputMaterialDialogBuilder(getActivity())
+                .addInput(favorite.getDescription(), getString(R.string.description))
+                .addInput(favorite.getShortcut(), getString(R.string.shortcut))
+                .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
+                    @Override
+                    public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
+                        String description = inputs.get(0).toString();
+                        String shortcut = inputs.get(1).toString();
 
-    /**
-     * Listens for repository edited, namely from repository list view adapter
-     *
-     * @param event repository edited event
-     */
-    public void onEvent(FavoriteEditedEvent event) {
-        mAdapter.updateFavorites();
+                        // Get the new favorite and SAVE
+                        favorite.setDescription(description);
+                        favorite.setShortcut(shortcut);
+                        favorite.save();
+
+                        mAdapter.updateFavorites();
+                    }
+                })
+                .title(R.string.edit_favorite)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .show();
     }
 
     private void showSnackBar(String message) {
