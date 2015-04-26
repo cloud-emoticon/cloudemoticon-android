@@ -2,8 +2,6 @@
 
 Use Material dialog
 
-Use SmartTabLayout
-
 Replace Toast with Snackbar
 
 Update libraries used

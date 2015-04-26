@@ -41,7 +41,7 @@ A cloud solution to your favorite emoticons
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
 * [Gson](https://code.google.com/p/google-gson/)
 * [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
-* [PagerSlidingTabStrip] (https://github.com/astuetz/PagerSlidingTabStrip)
+* [SmartTabLayout] (https://github.com/ogaclejapan/SmartTabLayout)
 * [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
 
 ## Libraries via Jar/Aar balls
