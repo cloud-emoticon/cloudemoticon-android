@@ -2,8 +2,6 @@
 
 Use Material Design icon (currently Holo ones)
 
-Use Material dialog
-
 Search Activity
 
 Favorite drag and sort elevation
