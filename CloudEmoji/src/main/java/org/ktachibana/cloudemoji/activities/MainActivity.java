@@ -1,10 +1,8 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -28,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
@@ -484,24 +483,38 @@ public class MainActivity extends BaseActivity implements
                 return;
             }
 
+            /**
+             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+             builder.setTitle(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode));
+             builder.setPositiveButton(R.string.go_to_play_store, new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(PLAY_STORE_URL));
+            startActivity(intent);
+            }
+            });
+             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.dismiss();
+            }
+            });
+             builder.create().show();
+             **/
+
             // New version available, show dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode));
-            builder.setPositiveButton(R.string.go_to_play_store, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent();
-                    intent.setData(Uri.parse(PLAY_STORE_URL));
-                    startActivity(intent);
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            builder.create().show();
+            new MaterialDialog.Builder(MainActivity.this)
+                    .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
+                    .positiveText(R.string.go_to_play_store)
+                    .negativeText(android.R.string.cancel)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            Intent intent = new Intent();
+                            intent.setData(Uri.parse(PLAY_STORE_URL));
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
