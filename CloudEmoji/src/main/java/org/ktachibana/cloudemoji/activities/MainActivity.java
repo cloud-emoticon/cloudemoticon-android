@@ -350,7 +350,7 @@ public class MainActivity extends BaseActivity implements
          return super.onCreateOptionsMenu(menu);
          **/
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

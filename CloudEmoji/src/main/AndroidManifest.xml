@@ -112,7 +112,8 @@
         </activity>
 
         <activity
-            android:name=".activities.SearchActivity" >
+            android:name=".activities.SearchActivity"
+            android:label="" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
