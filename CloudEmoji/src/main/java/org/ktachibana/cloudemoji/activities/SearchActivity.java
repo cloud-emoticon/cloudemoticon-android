@@ -43,7 +43,7 @@ public class SearchActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.CURRENT_SOURCE_CACHE_TAG);
+        mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG);
         handleIntent(getIntent());
     }
 

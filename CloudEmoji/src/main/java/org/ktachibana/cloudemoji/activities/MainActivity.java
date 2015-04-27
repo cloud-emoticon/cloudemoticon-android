@@ -27,9 +27,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
-import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
-import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
 import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
@@ -62,17 +59,14 @@ public class MainActivity extends BaseActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
-    private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
-    private static final String CURRENT_REPOSITORY_SOURCE_TAG = "currentRepositorySource";
-    public static final String CURRENT_SOURCE_CACHE_TAG = "currentSourceCache";
+    private static final String STATE_TAG = "state";
+    public static final String SOURCE_CACHE_TAG = "source_cache";
     // Views
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
     private Drawer.Result mDrawer;
     // State
-    private long mCurrentRepositoryId;
-    private Source mCurrentSource;
-    private SourceInMemoryCache mCurrentSourceCache;
+    private MainActivityState mState;
     private SourceFragment mCurrentSourceFragment;
 
 
@@ -92,20 +86,16 @@ public class MainActivity extends BaseActivity implements
 
         // If not starting from refresh new, get state
         if (savedInstanceState != null) {
-            mCurrentRepositoryId = savedInstanceState.getLong(CURRENT_REPOSITORY_ID_TAG);
-            mCurrentSource = savedInstanceState.getParcelable(CURRENT_REPOSITORY_SOURCE_TAG);
-            mCurrentSourceCache = savedInstanceState.getParcelable(CURRENT_SOURCE_CACHE_TAG);
+            mState = savedInstanceState.getParcelable(STATE_TAG);
         }
 
         // Else, set it to display default
         else {
-            mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
-            mCurrentSource = null;
-            initializeCache();
+            mState = new MainActivityState(DEFAULT_REPOSITORY_ID, null, initializeCache());
         }
 
         // Setup left drawer with repository id and source
-        setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
+        setupLeftDrawer(mState);
 
         // Switch to the repository
         internalSwitchRepository();
@@ -127,12 +117,12 @@ public class MainActivity extends BaseActivity implements
     /**
      * Put every source in cache
      */
-    private void initializeCache() {
-        mCurrentSourceCache = new SourceInMemoryCache();
+    private SourceInMemoryCache initializeCache() {
+        SourceInMemoryCache cache = new SourceInMemoryCache();
 
         // Put favorites
         Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
-        mCurrentSourceCache.put(LIST_ITEM_FAVORITE_ID, favoritesSource);
+        cache.put(LIST_ITEM_FAVORITE_ID, favoritesSource);
 
         // Put all available repositories
         List<Repository> allRepositories = Repository.listAll(Repository.class);
@@ -141,7 +131,7 @@ public class MainActivity extends BaseActivity implements
                 try {
                     long id = repository.getId();
                     Source source = new SourceReader().readSourceFromDatabaseId(id);
-                    mCurrentSourceCache.put(id, source);
+                    cache.put(id, source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format) + e.getFormatType().toString());
                 } catch (IOException e) {
@@ -151,9 +141,11 @@ public class MainActivity extends BaseActivity implements
                 }
             }
         }
+
+        return cache;
     }
 
-    private void setupLeftDrawer(long repositoryId, Source source) {
+    private void setupLeftDrawer(MainActivityState state) {
         // TODO
     }
 
@@ -200,24 +192,12 @@ public class MainActivity extends BaseActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            intent.putExtra(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
+            intent.putExtra(SOURCE_CACHE_TAG, mState.getSourceCache());
             startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onEvent(LocalRepositoryClickedEvent event) {
-        mCurrentRepositoryId = event.getId();
-        mCurrentSource = null;
-        internalSwitchRepository();
-    }
-
-    public void onEvent(RemoteRepositoryClickedEvent event) {
-        mCurrentRepositoryId = event.getId();
-        mCurrentSource = readSource(event.getId());
-        internalSwitchRepository();
     }
 
     public void onEvent(FavoriteAddedEvent event) {
@@ -269,16 +249,16 @@ public class MainActivity extends BaseActivity implements
 
     private void internalSwitchRepository() {
         // If it is a local repository
-        if (mCurrentRepositoryId < 0) {
+        if (mState.getRepositoryId() < 0) {
             // Nullify source fragment
             mCurrentSourceFragment = null;
 
             // Switch to correct fragment
-            if (mCurrentRepositoryId == LIST_ITEM_FAVORITE_ID)
+            if (mState.getRepositoryId() == LIST_ITEM_FAVORITE_ID)
                 replaceMainContainer(new FavoriteFragment());
-            if (mCurrentRepositoryId == LIST_ITEM_HISTORY_ID)
+            if (mState.getRepositoryId() == LIST_ITEM_HISTORY_ID)
                 replaceMainContainer(new HistoryFragment());
-            if (mCurrentRepositoryId == LIST_ITEM_BUILT_IN_EMOJI_ID)
+            if (mState.getRepositoryId() == LIST_ITEM_BUILT_IN_EMOJI_ID)
                 replaceMainContainer(new EmojiconsFragment());
 
             // Close drawers
@@ -288,11 +268,9 @@ public class MainActivity extends BaseActivity implements
         // Else it is a remote repository with a parsed source
         else {
             // Create source fragment and switch, notify left drawer
-            if (mCurrentSource != null) {
-                mCurrentSourceFragment = SourceFragment.newInstance(mCurrentSource);
+            if (mState.getSource() != null) {
+                mCurrentSourceFragment = SourceFragment.newInstance(mState.getSource());
                 replaceMainContainer(mCurrentSourceFragment);
-                EventBus.getDefault().post(
-                        new RemoteRepositoryParsedEvent(mCurrentRepositoryId, mCurrentSource));
             }
 
             // Do not close drawers
@@ -310,10 +288,6 @@ public class MainActivity extends BaseActivity implements
         // TODO
     }
 
-    private Source readSource(long id) {
-        return mCurrentSourceCache.get(id);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -326,41 +300,19 @@ public class MainActivity extends BaseActivity implements
 
         // Coming back from repository manager, repositories may be changed
         if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE) {
-            /**
-             * If coming back from repository manager, the current id may not be valid
-             * So we want to check for that and set it to default if it is invalid
-             */
-            if (mCurrentRepositoryId >= 0) {
-                if (Repository.findById(Repository.class, mCurrentRepositoryId) == null) {
-                    mCurrentRepositoryId = DEFAULT_REPOSITORY_ID;
-                    mCurrentSource = null;
-                }
-            }
-
-            // Re-initialize cache
-            initializeCache();
-
-            // Setup left drawer with repository id and source
-            setupLeftDrawer(mCurrentRepositoryId, mCurrentSource);
-
-            // Switch to the repository
-            internalSwitchRepository();
+            // TODO
         }
 
         // Coming back from preference, favorites may be changed
         else if (requestCode == PREFERENCE_REQUEST_CODE) {
-            if (mCurrentRepositoryId == LIST_ITEM_FAVORITE_ID) {
-                internalSwitchRepository();
-            }
+            // TODO
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // Save current state
-        outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
-        outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
-        outState.putParcelable(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
+        outState.putParcelable(STATE_TAG, mState);
     }
 
     private void firstTimeCheck() {
