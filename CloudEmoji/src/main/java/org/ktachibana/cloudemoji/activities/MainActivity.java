@@ -17,7 +17,6 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -124,105 +123,6 @@ public class MainActivity extends BaseActivity implements
                 .build();
     }
 
-    private void firstTimeCheck() {
-        boolean hasRunBefore = mPreferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
-
-        upgradeFavoriteDatabaseIfExists();
-        setupDefaultRepoIfNotExists();
-
-        // If hasn't run before
-        if (!hasRunBefore) {
-            // It has run
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
-            editor.commit();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void setupDefaultRepoIfNotExists() {
-        // Find repository with default url
-        List<Repository> kt = Select
-                .from(Repository.class)
-                .where(Condition.prop("url")
-                        .eq(DEFAULT_REPOSITORY_URL))
-                .list();
-        if (kt.size() != 0) {
-            // If found, ignore below
-            return;
-        }
-
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
-            // Save record to database
-            Repository defaultRepository = new Repository(DEFAULT_REPOSITORY_URL, "KT");
-            defaultRepository.save();
-
-            // Load file from assets and save to file system
-            inputStream = getAssets().open("test.xml");
-            File file = new File(
-                    SugarApp.getSugarContext().getFilesDir(), defaultRepository.getFileName());
-            outputStream = new FileOutputStream(file);
-
-            // Copying
-            IOUtils.copy(inputStream, outputStream);
-
-            // Set available to true and SAVE
-            defaultRepository.setAvailable(true);
-            defaultRepository.save();
-        } catch (FileNotFoundException e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
-        } catch (IOException e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-            IOUtils.closeQuietly(outputStream);
-        }
-    }
-
-    private void upgradeFavoriteDatabaseIfExists() {
-        // Find old database file
-        File oldDatabaseFile = getDatabasePath("mydb.db");
-        if (!oldDatabaseFile.exists()) {
-            // If file does not exist, ignore below
-            return;
-        }
-
-        try {
-            // Read the old favorite database and table cursor
-            SQLiteDatabase oldDatabase
-                    = SQLiteDatabase.openDatabase(oldDatabaseFile.getPath(), null, 0);
-            Cursor cursor = oldDatabase.query(
-                    "favorites",                    // table name
-                    new String[]{"string", "note"}, // columns
-                    null, null, null, null, null
-            );
-
-            // Read all favorites
-            List<Favorite> favorites = new ArrayList<Favorite>();
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                String emoticon = cursor.getString(0);
-                String description = cursor.getString(1);
-                favorites.add(new Favorite(emoticon, description, ""));
-                cursor.moveToNext();
-            }
-            cursor.close();
-
-            // SAVE
-            for (Favorite favorite : favorites) {
-                favorite.save();
-            }
-
-            // Remove the database
-            if (oldDatabaseFile.delete()) {
-                showSnackBar(R.string.old_favorites_merged);
-            }
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Put every source in cache
@@ -348,24 +248,6 @@ public class MainActivity extends BaseActivity implements
                 return;
             }
 
-            /**
-             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-             builder.setTitle(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode));
-             builder.setPositiveButton(R.string.go_to_play_store, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialogInterface, int i) {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse(PLAY_STORE_URL));
-            startActivity(intent);
-            }
-            });
-             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialogInterface, int i) {
-            dialogInterface.dismiss();
-            }
-            });
-             builder.create().show();
-             **/
-
             // New version available, show dialog
             new MaterialDialog.Builder(MainActivity.this)
                     .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
@@ -479,5 +361,105 @@ public class MainActivity extends BaseActivity implements
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
         outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
         outState.putParcelable(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
+    }
+
+    private void firstTimeCheck() {
+        boolean hasRunBefore = mPreferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
+
+        upgradeFavoriteDatabaseIfExists();
+        setupDefaultRepoIfNotExists();
+
+        // If hasn't run before
+        if (!hasRunBefore) {
+            // It has run
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
+            editor.commit();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setupDefaultRepoIfNotExists() {
+        // Find repository with default url
+        List<Repository> kt = Select
+                .from(Repository.class)
+                .where(Condition.prop("url")
+                        .eq(DEFAULT_REPOSITORY_URL))
+                .list();
+        if (kt.size() != 0) {
+            // If found, ignore below
+            return;
+        }
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            // Save record to database
+            Repository defaultRepository = new Repository(DEFAULT_REPOSITORY_URL, "KT");
+            defaultRepository.save();
+
+            // Load file from assets and save to file system
+            inputStream = getAssets().open("test.xml");
+            File file = new File(
+                    SugarApp.getSugarContext().getFilesDir(), defaultRepository.getFileName());
+            outputStream = new FileOutputStream(file);
+
+            // Copying
+            IOUtils.copy(inputStream, outputStream);
+
+            // Set available to true and SAVE
+            defaultRepository.setAvailable(true);
+            defaultRepository.save();
+        } catch (FileNotFoundException e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        } catch (IOException e) {
+            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(outputStream);
+        }
+    }
+
+    private void upgradeFavoriteDatabaseIfExists() {
+        // Find old database file
+        File oldDatabaseFile = getDatabasePath("mydb.db");
+        if (!oldDatabaseFile.exists()) {
+            // If file does not exist, ignore below
+            return;
+        }
+
+        try {
+            // Read the old favorite database and table cursor
+            SQLiteDatabase oldDatabase
+                    = SQLiteDatabase.openDatabase(oldDatabaseFile.getPath(), null, 0);
+            Cursor cursor = oldDatabase.query(
+                    "favorites",                    // table name
+                    new String[]{"string", "note"}, // columns
+                    null, null, null, null, null
+            );
+
+            // Read all favorites
+            List<Favorite> favorites = new ArrayList<Favorite>();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String emoticon = cursor.getString(0);
+                String description = cursor.getString(1);
+                favorites.add(new Favorite(emoticon, description, ""));
+                cursor.moveToNext();
+            }
+            cursor.close();
+
+            // SAVE
+            for (Favorite favorite : favorites) {
+                favorite.save();
+            }
+
+            // Remove the database
+            if (oldDatabaseFile.delete()) {
+                showSnackBar(R.string.old_favorites_merged);
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
     }
 }
