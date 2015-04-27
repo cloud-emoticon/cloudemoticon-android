@@ -28,8 +28,8 @@ public class Source implements Parcelable {
     }
 
     private Source(Parcel in) {
-        this.information = in.createStringArrayList();
-        this.categories = in.createTypedArrayList(Category.CREATOR);
+        in.readStringList(this.information);
+        in.readTypedList(this.categories, Category.CREATOR);
     }
 
     public List<String> getInformation() {
@@ -55,8 +55,8 @@ public class Source implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringList(information);
-        dest.writeTypedList(categories);
+        dest.writeStringList(this.information);
+        dest.writeTypedList(this.categories);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class Category implements Parcelable {
 
     private Category(Parcel in) {
         this.name = in.readString();
-        in.readTypedList(entries, Entry.CREATOR);
+        in.readTypedList(this.entries, Entry.CREATOR);
     }
 
     public String getName() {
@@ -47,7 +47,7 @@ public class Category implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
-        dest.writeTypedList(entries);
+        dest.writeTypedList(this.entries);
     }
 
     @Override

@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ParcelableSourceInMemoryCacheTest extends AndroidTestCase {
-    protected SourceInMemoryCache<Source> mCache;
+public class SourceInMemoryCacheTest extends AndroidTestCase {
+    protected SourceInMemoryCache mCache;
 
     @Override
     protected void setUp() throws Exception {
-        mCache = new SourceInMemoryCache<Source>();
+        mCache = new SourceInMemoryCache();
         super.setUp();
     }
 
@@ -66,7 +66,7 @@ public class ParcelableSourceInMemoryCacheTest extends AndroidTestCase {
     }
 
     public void testAddingManyPairs() {
-        int numberToExceed = SourceInMemoryCache.INITIAL_CAPACITY;
+        int numberToExceed = 4;
         Map<Long, Source> pairs = new HashMap<Long, Source>();
         for (int i = 0; i < numberToExceed * 2; i++) {
             pairs.put(generateRandomLong(), generateRandomSource());
