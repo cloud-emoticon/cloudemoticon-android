@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.github.mrengineer13.snackbar.SnackBar;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -113,16 +112,5 @@ public class AccountActivity extends BaseActivity implements Constants {
                 }
             }
         });
-    }
-
-    private void showSnackBar(String message) {
-        new SnackBar.Builder(this)
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
-    }
-
-    private void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
     }
 }

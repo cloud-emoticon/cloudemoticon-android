@@ -113,7 +113,8 @@
 
         <activity
             android:name=".activities.SearchActivity"
-            android:label="" >
+            android:label=""
+            android:launchMode="singleTop" >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

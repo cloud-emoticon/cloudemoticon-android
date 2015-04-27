@@ -44,6 +44,7 @@ public class SearchActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.CURRENT_SOURCE_CACHE_TAG);
+        handleIntent(getIntent());
     }
 
     @Override
@@ -88,6 +89,8 @@ public class SearchActivity extends BaseActivity {
                     (SearchView) menu.findItem(R.id.search).getActionView();
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
+        } else {
+
         }
 
         return true;
@@ -101,15 +104,10 @@ public class SearchActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.search) {
-            return true;
-        }
-
         if (id == android.R.id.home) {
             finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.mrengineer13.snackbar.SnackBar;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -589,16 +588,5 @@ public class MainActivity extends BaseActivity implements
         outState.putLong(CURRENT_REPOSITORY_ID_TAG, mCurrentRepositoryId);
         outState.putParcelable(CURRENT_REPOSITORY_SOURCE_TAG, mCurrentSource);
         outState.putParcelable(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
-    }
-
-    private void showSnackBar(String message) {
-        new SnackBar.Builder(this)
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
-    }
-
-    private void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
     }
 }

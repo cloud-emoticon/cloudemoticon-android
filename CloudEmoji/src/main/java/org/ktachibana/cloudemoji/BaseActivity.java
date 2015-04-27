@@ -1,20 +1,21 @@
 package org.ktachibana.cloudemoji;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.github.mrengineer13.snackbar.SnackBar;
 
 /**
  * Base activity for all activities with UI to extend
  */
 public class BaseActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void showSnackBar(String message) {
+        new SnackBar.Builder(this)
+                .withMessage(message)
+                .withDuration(SnackBar.SHORT_SNACK)
+                .show();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    protected void showSnackBar(int resId) {
+        showSnackBar(getString(resId));
     }
-
 }

@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import org.ktachibana.cloudemoji.models.Source;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
