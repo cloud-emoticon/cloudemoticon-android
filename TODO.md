@@ -1,7 +1,3 @@
-#0.6.7
-
-Search Activity
-
 # Future
 
 Nav drawer rewrite

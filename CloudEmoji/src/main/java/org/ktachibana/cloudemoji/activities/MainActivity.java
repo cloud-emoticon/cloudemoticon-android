@@ -11,9 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.orm.SugarApp;
@@ -33,7 +30,6 @@ import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
-import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
@@ -88,14 +84,11 @@ public class MainActivity extends BaseActivity implements
     private Source mCurrentSource;
     private SourceInMemoryCache mCurrentSourceCache;
     private SourceFragment mCurrentSourceFragment;
-    // etc
-    private SharedPreferences mPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         EventBus.getDefault().register(this);
 
@@ -345,44 +338,6 @@ public class MainActivity extends BaseActivity implements
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mToggle.onConfigurationChanged(newConfig);
-    }
-
-    /**
-     * Listens for any string copied and send it to clipboard
-     *
-     * @param event string copied event
-     */
-    @SuppressWarnings("deprecation")
-    public void onEvent(EntryCopiedAndAddedToHistoryEvent event) {
-        String copied = event.getEntry().getEmoticon();
-
-        int SDK = Build.VERSION.SDK_INT;
-        // Below 3.0
-        if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard
-                    = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(copied);
-        }
-
-        // Above 3.0
-        else {
-            android.content.ClipboardManager clipboard
-                    = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
-            clipboard.setPrimaryClip(clip);
-        }
-
-        // Show toast
-        boolean isCloseAfterCopy = mPreferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
-
-        // Show toast if close after copy, otherwise snackbar
-        String message = copied + "\n" + getString(R.string.copied);
-        if (isCloseAfterCopy) {
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            showSnackBar(message);
-        }
     }
 
     public void onEvent(LocalRepositoryClickedEvent event) {
