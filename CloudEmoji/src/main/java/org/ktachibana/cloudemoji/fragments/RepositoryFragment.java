@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.mrengineer13.snackbar.SnackBar;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.apache.commons.io.FilenameUtils;
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
@@ -33,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class RepositoryFragment extends Fragment implements Constants {
+public class RepositoryFragment extends BaseFragment implements Constants {
     @InjectView(R.id.repositoryListView)
     ListView mRepositoryListView;
 
@@ -200,16 +199,5 @@ public class RepositoryFragment extends Fragment implements Constants {
 
     public void onEvent(RepositoryInvalidFormatEvent event) {
         showSnackBar(getString(R.string.invalid_repo_format) + event.getType());
-    }
-
-    private void showSnackBar(String message) {
-        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
-    }
-
-    private void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
     }
 }

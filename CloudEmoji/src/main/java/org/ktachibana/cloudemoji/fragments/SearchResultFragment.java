@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class SearchResultFragment extends Fragment {
+public class SearchResultFragment extends BaseFragment {
     private static final String SEARCH_QUERY_KEY = "mSearchQuery";
     @InjectView(R.id.searchResultListView)
     ListView mSearchResultListView;

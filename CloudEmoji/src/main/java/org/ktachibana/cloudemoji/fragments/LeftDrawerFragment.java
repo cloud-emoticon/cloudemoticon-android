@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 
 import com.linearlistview.LinearListView;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.LeftDrawerListItem;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class LeftDrawerFragment extends Fragment implements Constants {
+public class LeftDrawerFragment extends BaseFragment implements Constants {
     private static final String REPOSITORY_ID_TAG = "firstTimeId";
     private static final String SOURCE_TAG = "firstTimeSource";
     @InjectView(R.id.leftDrawerSourceListView)

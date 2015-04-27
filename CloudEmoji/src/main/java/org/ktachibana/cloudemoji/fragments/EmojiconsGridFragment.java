@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.GridView;
 import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.rockerhieu.emojicon.emoji.People;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsGridAdapter;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class EmojiconsGridFragment extends Fragment {
+public class EmojiconsGridFragment extends BaseFragment {
     private static final String EMOJICONS_KEY = "emojicons";
     @InjectView(R.id.grid)
     GridView grid;

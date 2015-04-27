@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.HistoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends BaseFragment {
     @InjectView(R.id.historyListView)
     ListView mHistoryListView;
 

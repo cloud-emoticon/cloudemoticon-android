@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,14 @@ import android.view.ViewGroup;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsPagerAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EmojiconsFragment extends Fragment {
+public class EmojiconsFragment extends BaseFragment {
     @InjectView(R.id.pager)
     ViewPager mPager;
     @InjectView(R.id.tabs)

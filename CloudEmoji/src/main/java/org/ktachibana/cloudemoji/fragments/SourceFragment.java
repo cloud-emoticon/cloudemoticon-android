@@ -3,13 +3,13 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
@@ -21,7 +21,7 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
-public class SourceFragment extends Fragment {
+public class SourceFragment extends BaseFragment {
     private static final String ARG_SOURCE = "source";
     @InjectView(R.id.sourceListView)
     PinnedHeaderListView mSourceListView;

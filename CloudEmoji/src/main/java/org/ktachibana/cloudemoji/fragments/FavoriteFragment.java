@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.mrengineer13.snackbar.SnackBar;
 import com.melnykov.fab.FloatingActionButton;
 import com.mobeta.android.dslv.DragSortListView;
 
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
@@ -29,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends BaseFragment {
     @InjectView(R.id.favoriteListView)
     DragSortListView mFavoriteListView;
 
@@ -172,16 +171,5 @@ public class FavoriteFragment extends Fragment {
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
                 .show();
-    }
-
-    private void showSnackBar(String message) {
-        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
-    }
-
-    private void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
     }
 }
