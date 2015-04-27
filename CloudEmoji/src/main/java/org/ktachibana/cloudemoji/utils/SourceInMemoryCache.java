@@ -16,31 +16,13 @@ import java.util.List;
  */
 public class SourceInMemoryCache implements Parcelable {
     public static final int INITIAL_CAPACITY = 4;
-    public static final Parcelable.Creator<SourceInMemoryCache> CREATOR = new Parcelable.Creator<SourceInMemoryCache>() {
-        public SourceInMemoryCache createFromParcel(Parcel source) {
-            return new SourceInMemoryCache(source);
-        }
-
-        public SourceInMemoryCache[] newArray(int size) {
-            return new SourceInMemoryCache[size];
-        }
-    };
-    private long[] mKeyArray;
-    private Source[] mValueArray;
-    private int mSize;
+    private List<Long> mKeyArray;
+    private List<Source> mValueArray;
 
     @SuppressWarnings("unchecked")
     public SourceInMemoryCache() {
-        mKeyArray = new long[INITIAL_CAPACITY];
-        mValueArray = new Source[INITIAL_CAPACITY];
-        mSize = 0;
-    }
-
-    @SuppressWarnings("unchecked")
-    private SourceInMemoryCache(Parcel in) {
-        this.mKeyArray = in.createLongArray();
-        this.mValueArray = in.createTypedArray(Source.CREATOR);
-        this.mSize = in.readInt();
+        mKeyArray = new ArrayList<>();
+        mValueArray = new ArrayList<>();
     }
 
     /**
@@ -55,31 +37,13 @@ public class SourceInMemoryCache implements Parcelable {
         // If cache contains the key, replace value
         Integer i = contains(key);
         if (i != null) {
-            mValueArray[i] = value;
+            mValueArray.set(i, value);
             return;
         }
 
         // Else add to a new slot if enough capacity
-        if (mSize < mKeyArray.length) {
-            mKeyArray[mSize] = key;
-            mValueArray[mSize] = value;
-        }
-
-        // Or expand capacity and add to the new slot
-        else {
-            // Copy over with double capacity
-            long[] newKeyArray = Arrays.copyOf(mKeyArray, mKeyArray.length * 2);
-            Source[] newValueArray = Arrays.copyOf(mValueArray, mValueArray.length * 2);
-
-            // Add to the new slot
-            newKeyArray[mSize] = key;
-            newValueArray[mSize] = value;
-
-            // Reset pointers
-            mKeyArray = newKeyArray;
-            mValueArray = newValueArray;
-        }
-        mSize++;
+        mKeyArray.add(key);
+        mValueArray.add(value);
     }
 
     /**
@@ -90,7 +54,7 @@ public class SourceInMemoryCache implements Parcelable {
      */
     public Source get(long key) {
         Integer i = contains(key);
-        return (i == null) ? null : mValueArray[i];
+        return (i == null) ? null : mValueArray.get(i);
     }
 
     /**
@@ -115,7 +79,7 @@ public class SourceInMemoryCache implements Parcelable {
      * @return number of actual entries in the cache
      */
     public int size() {
-        return mSize;
+        return mKeyArray.size();
     }
 
     /**
@@ -125,8 +89,8 @@ public class SourceInMemoryCache implements Parcelable {
      * @return null if value does not exists, position in cache if exists
      */
     public Integer contains(long key) {
-        for (int i = 0; i < mKeyArray.length; i++) {
-            if (key == mKeyArray[i]) {
+        for (int i = 0; i < mKeyArray.size(); i++) {
+            if (key == mKeyArray.get(i)) {
                 return i;
             }
         }
@@ -140,8 +104,24 @@ public class SourceInMemoryCache implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLongArray(this.mKeyArray);
-        dest.writeParcelableArray(this.mValueArray, flags);
-        dest.writeInt(this.mSize);
+        dest.writeList(this.mKeyArray);
+        dest.writeTypedList(mValueArray);
     }
+
+    private SourceInMemoryCache(Parcel in) {
+        this.mKeyArray = new ArrayList<>();
+        in.readList(this.mKeyArray, List.class.getClassLoader());
+        this.mValueArray = new ArrayList<>();
+        in.readTypedList(mValueArray, Source.CREATOR);
+    }
+
+    public static final Parcelable.Creator<SourceInMemoryCache> CREATOR = new Parcelable.Creator<SourceInMemoryCache>() {
+        public SourceInMemoryCache createFromParcel(Parcel source) {
+            return new SourceInMemoryCache(source);
+        }
+
+        public SourceInMemoryCache[] newArray(int size) {
+            return new SourceInMemoryCache[size];
+        }
+    };
 }
