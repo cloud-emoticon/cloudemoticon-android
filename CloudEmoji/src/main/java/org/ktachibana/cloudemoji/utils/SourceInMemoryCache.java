@@ -3,6 +3,8 @@ package org.ktachibana.cloudemoji.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.ktachibana.cloudemoji.models.Source;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,35 +13,33 @@ import java.util.List;
  * A key/value in-memory cache for parcelable objects
  * Intended to be stored by Android Parcelable mechanism
  * key will be primitive long
- *
- * @param <V> value type is Parcelable objects
  */
-public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parcelable {
+public class SourceInMemoryCache implements Parcelable {
     public static final int INITIAL_CAPACITY = 4;
-    public static final Parcelable.Creator<ParcelableObjectInMemoryCache> CREATOR = new Parcelable.Creator<ParcelableObjectInMemoryCache>() {
-        public ParcelableObjectInMemoryCache createFromParcel(Parcel source) {
-            return new ParcelableObjectInMemoryCache(source);
+    public static final Parcelable.Creator<SourceInMemoryCache> CREATOR = new Parcelable.Creator<SourceInMemoryCache>() {
+        public SourceInMemoryCache createFromParcel(Parcel source) {
+            return new SourceInMemoryCache(source);
         }
 
-        public ParcelableObjectInMemoryCache[] newArray(int size) {
-            return new ParcelableObjectInMemoryCache[size];
+        public SourceInMemoryCache[] newArray(int size) {
+            return new SourceInMemoryCache[size];
         }
     };
     private long[] mKeyArray;
-    private V[] mValueArray;
+    private Source[] mValueArray;
     private int mSize;
 
     @SuppressWarnings("unchecked")
-    public ParcelableObjectInMemoryCache() {
+    public SourceInMemoryCache() {
         mKeyArray = new long[INITIAL_CAPACITY];
-        mValueArray = (V[]) new Parcelable[INITIAL_CAPACITY];
+        mValueArray = new Source[INITIAL_CAPACITY];
         mSize = 0;
     }
 
     @SuppressWarnings("unchecked")
-    private ParcelableObjectInMemoryCache(Parcel in) {
+    private SourceInMemoryCache(Parcel in) {
         this.mKeyArray = in.createLongArray();
-        this.mValueArray = (V[]) in.readParcelableArray(Parcelable[].class.getClassLoader());
+        this.mValueArray = in.createTypedArray(Source.CREATOR);
         this.mSize = in.readInt();
     }
 
@@ -51,7 +51,7 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parc
      * @param value new value
      */
     @SuppressWarnings("unchecked")
-    public void put(long key, V value) {
+    public void put(long key, Source value) {
         // If cache contains the key, replace value
         Integer i = contains(key);
         if (i != null) {
@@ -69,7 +69,7 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parc
         else {
             // Copy over with double capacity
             long[] newKeyArray = Arrays.copyOf(mKeyArray, mKeyArray.length * 2);
-            V[] newValueArray = Arrays.copyOf(mValueArray, mValueArray.length * 2);
+            Source[] newValueArray = Arrays.copyOf(mValueArray, mValueArray.length * 2);
 
             // Add to the new slot
             newKeyArray[mSize] = key;
@@ -88,7 +88,7 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parc
      * @param key primitive long key
      * @return value according to key, or null if not exists
      */
-    public V get(long key) {
+    public Source get(long key) {
         Integer i = contains(key);
         return (i == null) ? null : mValueArray[i];
     }
@@ -99,9 +99,9 @@ public class ParcelableObjectInMemoryCache<V extends Parcelable> implements Parc
      * @return all valid values in the cache
      */
     @SuppressWarnings("unchecked")
-    public List<V> getAllValues() {
-        List<V> values = new ArrayList<V>();
-        for (V value : mValueArray) {
+    public List<Source> getAllValues() {
+        List<Source> values = new ArrayList<>();
+        for (Source value : mValueArray) {
             if (value != null) {
                 values.add(value);
             }

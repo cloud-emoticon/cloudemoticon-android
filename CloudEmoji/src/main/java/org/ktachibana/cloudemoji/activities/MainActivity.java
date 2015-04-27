@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.app.NotificationManager;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,18 +40,13 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
-import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
-import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
-import org.ktachibana.cloudemoji.fragments.SearchResultFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
@@ -61,7 +55,7 @@ import org.ktachibana.cloudemoji.parsing.FavoritesHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
-import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
+import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -83,7 +77,7 @@ public class MainActivity extends BaseActivity implements
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String CURRENT_REPOSITORY_ID_TAG = "currentRepositoryId";
     private static final String CURRENT_REPOSITORY_SOURCE_TAG = "currentRepositorySource";
-    private static final String CURRENT_SOURCE_CACHE_TAG = "currentSourceCache";
+    public static final String CURRENT_SOURCE_CACHE_TAG = "currentSourceCache";
     // Views
     @InjectView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
@@ -93,7 +87,7 @@ public class MainActivity extends BaseActivity implements
     // State
     private long mCurrentRepositoryId;
     private Source mCurrentSource;
-    private ParcelableObjectInMemoryCache<Source> mCurrentSourceCache;
+    private SourceInMemoryCache mCurrentSourceCache;
     private SourceFragment mCurrentSourceFragment;
     // etc
     private SharedPreferences mPreferences;
@@ -134,24 +128,6 @@ public class MainActivity extends BaseActivity implements
 
         // Switch to the repository
         internalSwitchRepository();
-
-        // Handles search intent
-        handleIntent(getIntent());
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (intent != null) {
-            // Handles search intent
-            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-                String query = intent.getStringExtra(SearchManager.QUERY);
-                replaceMainContainer(SearchResultFragment.newInstance(query));
-            }
-        }
     }
 
     private void setupViews() {
@@ -272,7 +248,7 @@ public class MainActivity extends BaseActivity implements
      * Put every source in cache
      */
     private void initializeCache() {
-        mCurrentSourceCache = new ParcelableObjectInMemoryCache<Source>();
+        mCurrentSourceCache = new SourceInMemoryCache();
 
         // Put favorites
         Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
@@ -332,23 +308,6 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /**
-         // Inflate the menu items for use in the action bar
-         MenuInflater inflater = getMenuInflater();
-         inflater.inflate(R.menu.menu_main, menu);
-
-         // Associate searchable configuration with the SearchView
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-         SearchManager searchManager =
-         (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-         SearchView searchView =
-         (SearchView) menu.findItem(R.id.search).getActionView();
-         searchView.setSearchableInfo(
-         searchManager.getSearchableInfo(getComponentName()));
-         }
-
-         return super.onCreateOptionsMenu(menu);
-         **/
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -369,6 +328,7 @@ public class MainActivity extends BaseActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            intent.putExtra(CURRENT_SOURCE_CACHE_TAG, mCurrentSourceCache);
             startActivity(intent);
             return true;
         }
@@ -533,33 +493,6 @@ public class MainActivity extends BaseActivity implements
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public void onEvent(SearchInitiatedEvent e) {
-        String searchQuery = e.getSearchQuery();
-        List<Entry> results = new ArrayList<Entry>();
-
-        // Traverse all sources
-        List<Source> sources = mCurrentSourceCache.getAllValues();
-        for (Source source : sources) {
-
-            // Traverse all categories
-            for (Category category : source.getCategories()) {
-
-                // Traverse all entries
-                for (Entry entry : category.getEntries()) {
-                    String emoticon = entry.getEmoticon();
-                    String description = entry.getDescription();
-
-                    if (emoticon.contains(searchQuery) || description.contains(searchQuery)) {
-                        results.add(entry);
-                    }
-                }
-            }
-        }
-
-        // Search finished
-        EventBus.getDefault().post(new SearchFinishedEvent(results));
     }
 
     private void internalSwitchRepository() {

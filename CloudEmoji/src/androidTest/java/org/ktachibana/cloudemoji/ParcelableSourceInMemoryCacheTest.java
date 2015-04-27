@@ -5,7 +5,7 @@ import android.test.AndroidTestCase;
 import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
-import org.ktachibana.cloudemoji.utils.ParcelableObjectInMemoryCache;
+import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.Random;
 
 public class ParcelableSourceInMemoryCacheTest extends AndroidTestCase {
-    protected ParcelableObjectInMemoryCache<Source> mCache;
+    protected SourceInMemoryCache<Source> mCache;
 
     @Override
     protected void setUp() throws Exception {
-        mCache = new ParcelableObjectInMemoryCache<Source>();
+        mCache = new SourceInMemoryCache<Source>();
         super.setUp();
     }
 
@@ -66,7 +66,7 @@ public class ParcelableSourceInMemoryCacheTest extends AndroidTestCase {
     }
 
     public void testAddingManyPairs() {
-        int numberToExceed = ParcelableObjectInMemoryCache.INITIAL_CAPACITY;
+        int numberToExceed = SourceInMemoryCache.INITIAL_CAPACITY;
         Map<Long, Source> pairs = new HashMap<Long, Source>();
         for (int i = 0; i < numberToExceed * 2; i++) {
             pairs.put(generateRandomLong(), generateRandomSource());

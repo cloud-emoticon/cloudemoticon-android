@@ -28,8 +28,8 @@ public class Source implements Parcelable {
     }
 
     private Source(Parcel in) {
-        in.readStringList(information);
-        in.readTypedList(categories, Category.CREATOR);
+        this.information = in.createStringArrayList();
+        this.categories = in.createTypedArrayList(Category.CREATOR);
     }
 
     public List<String> getInformation() {
