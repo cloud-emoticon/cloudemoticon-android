@@ -1,26 +1,23 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -29,23 +26,19 @@ import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.CategoryClickedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.LocalRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryClickedEvent;
 import org.ktachibana.cloudemoji.events.RemoteRepositoryParsedEvent;
-import org.ktachibana.cloudemoji.events.SecondaryMenuItemClickedEvent;
 import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
-import org.ktachibana.cloudemoji.fragments.LeftDrawerFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
 import org.ktachibana.cloudemoji.models.Favorite;
 import org.ktachibana.cloudemoji.models.Repository;
 import org.ktachibana.cloudemoji.models.Source;
-import org.ktachibana.cloudemoji.net.UpdateChecker;
 import org.ktachibana.cloudemoji.parsing.FavoritesHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
@@ -74,11 +67,9 @@ public class MainActivity extends BaseActivity implements
     private static final String CURRENT_REPOSITORY_SOURCE_TAG = "currentRepositorySource";
     public static final String CURRENT_SOURCE_CACHE_TAG = "currentSourceCache";
     // Views
-    @InjectView(R.id.drawerLayout)
-    DrawerLayout mDrawerLayout;
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
-    private ActionBarDrawerToggle mToggle;
+    private Drawer.Result mDrawer;
     // State
     private long mCurrentRepositoryId;
     private Source mCurrentSource;
@@ -89,7 +80,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         EventBus.getDefault().register(this);
 
         // Setup views
@@ -128,12 +118,10 @@ public class MainActivity extends BaseActivity implements
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                R.string.app_name,
-                R.string.app_name);
-        mDrawerLayout.setDrawerListener(mToggle);
+        mDrawer = new Drawer()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .build();
     }
 
     private void firstTimeCheck() {
@@ -266,10 +254,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setupLeftDrawer(long repositoryId, Source source) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.leftDrawer, LeftDrawerFragment.newInstance(repositoryId, source))
-                .commit();
+        // TODO
     }
 
     private void switchNotificationState() {
@@ -307,11 +292,6 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -328,18 +308,6 @@ public class MainActivity extends BaseActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mToggle.onConfigurationChanged(newConfig);
-    }
-
     public void onEvent(LocalRepositoryClickedEvent event) {
         mCurrentRepositoryId = event.getId();
         mCurrentSource = null;
@@ -352,44 +320,12 @@ public class MainActivity extends BaseActivity implements
         internalSwitchRepository();
     }
 
-    public void onEvent(CategoryClickedEvent event) {
-        // ni kan kan ni, you see see you
-        if (mCurrentSourceFragment != null) {
-            mCurrentSourceFragment.setSelection(event.getIndex());
-            closeDrawers();
-        }
-    }
-
     public void onEvent(FavoriteAddedEvent event) {
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.added_to_fav));
     }
 
     public void onEvent(FavoriteDeletedEvent event) {
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
-    }
-
-    public void onEvent(SecondaryMenuItemClickedEvent event) {
-        final long id = event.getId();
-        if (id == LIST_ITEM_REPOSITORY_MANAGER_ID) {
-            Intent intent = new Intent(this, RepositoryManagerActivity.class);
-            startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
-        } else if (id == LIST_ITEM_SETTINGS_ID) {
-            Intent intent = new Intent(this, PreferenceActivity.class);
-            startActivityForResult(intent, PREFERENCE_REQUEST_CODE);
-        } else if (id == LIST_ITEM_EXIT_ID) {
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                    .cancel(PERSISTENT_NOTIFICATION_ID);
-            finish();
-        } else if (id == LIST_ITEM_ACCOUNT_ID) {
-            Intent intent = new Intent(this, AccountActivity.class);
-            startActivity(intent);
-        } else if (id == LIST_ITEM_STORE_ID) {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse(STORE_URL));
-            startActivity(intent);
-        } else if (id == LIST_ITEM_UPDATE_CHECKER_ID) {
-            new UpdateChecker().checkForLatestVercode();
-        }
     }
 
     public void onEvent(UpdateCheckedEvent event) {
@@ -489,7 +425,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void closeDrawers() {
-        mDrawerLayout.closeDrawers();
+        // TODO
     }
 
     private Source readSource(long id) {
