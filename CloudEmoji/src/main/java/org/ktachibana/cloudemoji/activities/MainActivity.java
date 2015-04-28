@@ -14,9 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -107,9 +112,16 @@ public class MainActivity extends BaseActivity implements
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AccountHeader.Result accountHeader = new AccountHeader()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.account_place_holder)
+                .build();
+
         mDrawer = new Drawer()
                 .withActivity(this)
                 .withToolbar(mToolbar)
+                .withAccountHeader(accountHeader)
                 .build();
     }
 
@@ -147,6 +159,17 @@ public class MainActivity extends BaseActivity implements
 
     private void setupLeftDrawer(MainActivityState state) {
         // TODO
+        mDrawer.addItems(
+                new PrimaryDrawerItem().withName(R.string.fav).withIcon(R.drawable.ic_favorite),
+                new PrimaryDrawerItem().withName(R.string.history).withIcon(R.drawable.ic_history),
+                new PrimaryDrawerItem().withName(R.string.built_in_emoji).withIcon(R.drawable.ic_built_in_emoji)
+        );
+        mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
+
+            }
+        });
     }
 
     private void switchNotificationState() {
