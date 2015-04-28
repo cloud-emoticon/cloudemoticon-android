@@ -20,7 +20,9 @@ import android.widget.AdapterView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
@@ -95,12 +97,13 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Else, set it to display default
-        else {
+        else
+        {
             mState = new MainActivityState(DEFAULT_REPOSITORY_ID, null, initializeCache());
         }
 
-        // Setup left drawer with repository id and source
-        setupLeftDrawer(mState);
+        // Setup left drawer
+        setupLeftDrawer();
 
         // Switch to the repository
         internalSwitchRepository();
@@ -157,17 +160,66 @@ public class MainActivity extends BaseActivity implements
         return cache;
     }
 
-    private void setupLeftDrawer(MainActivityState state) {
+    private void setupLeftDrawer() {
         // TODO
         mDrawer.addItems(
-                new PrimaryDrawerItem().withName(R.string.fav).withIcon(R.drawable.ic_favorite),
-                new PrimaryDrawerItem().withName(R.string.history).withIcon(R.drawable.ic_history),
-                new PrimaryDrawerItem().withName(R.string.built_in_emoji).withIcon(R.drawable.ic_built_in_emoji)
+                new PrimaryDrawerItem()
+                        .withName(R.string.fav)
+                        .withIcon(R.drawable.ic_favorite)
+                        .withTag(Long.valueOf(LIST_ITEM_FAVORITE_ID)),
+                new PrimaryDrawerItem()
+                        .withName(R.string.history)
+                        .withIcon(R.drawable.ic_history)
+                        .withTag(Long.valueOf(LIST_ITEM_HISTORY_ID)),
+                new PrimaryDrawerItem()
+                        .withName(R.string.built_in_emoji)
+                        .withIcon(R.drawable.ic_built_in_emoji)
+                        .withTag(Long.valueOf(LIST_ITEM_BUILT_IN_EMOJI_ID)),
+                new DividerDrawerItem()
         );
+
+        List<Repository> repositories = Repository.listAll(Repository.class);
+        for (Repository repository : repositories) {
+            if (repository.isAvailable()) {
+                mDrawer.addItem(new PrimaryDrawerItem()
+                        .withName(repository.getAlias())
+                        .withIcon(R.drawable.ic_repository)
+                        .withTag(repository.getId())
+                );
+            }
+        }
+
+        mDrawer.addItem(new DividerDrawerItem());
+
+        mDrawer.addItem(
+                new SecondaryDrawerItem()
+                        .withName(R.string.repo_manager)
+                        .withIcon(R.drawable.ic_repository_manager)
+        );
+        mDrawer.addItem(
+                new SecondaryDrawerItem()
+                        .withName(R.string.repository_store)
+                        .withIcon(R.drawable.ic_store)
+        );
+        mDrawer.addItem(
+                new SecondaryDrawerItem()
+                        .withName(R.string.update_checker)
+                        .withIcon(R.drawable.ic_update_checker)
+        );
+        mDrawer.addItem(
+                new SecondaryDrawerItem()
+                        .withName(R.string.settings)
+                        .withIcon(R.drawable.ic_settings)
+        );
+        mDrawer.addItem(
+                new SecondaryDrawerItem()
+                        .withName(R.string.exit)
+                        .withIcon(R.drawable.ic_exit)
+        );
+
         mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
-
             }
         });
     }
