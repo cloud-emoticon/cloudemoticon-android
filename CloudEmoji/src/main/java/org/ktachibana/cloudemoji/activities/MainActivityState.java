@@ -67,6 +67,7 @@ public class MainActivityState implements Parcelable {
         this.repositoryId = in.readLong();
         this.source = in.readParcelable(Source.class.getClassLoader());
         this.sourceCache = in.readParcelable(SourceInMemoryCache.class.getClassLoader());
+        this.drawerItems = new ArrayList<>();
         in.readTypedList(drawerItems, MainActivityDrawerItem.CREATOR);
     }
 

@@ -1,9 +1,15 @@
-# Future
+# 0.6.8 (17)
 
 Nav drawer rewrite
 
+Abstract BaseActivity with default toolbar
+
+Fix bug in fast scroll
+
 Better looking list items in Favorite/Repo Manager
 
-Emoticon wrapping
-
 Pull to refresh in Source
+
+# Future
+
+Emoticon wrapping
