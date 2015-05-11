@@ -2,11 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <include layout="@layout/view_toolbar" />
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/repositoryListView"
@@ -15,7 +13,8 @@
             android:background="@android:color/white" />
 
         <include layout="@layout/view_empty_view" />
-    </LinearLayout>
+
+    </FrameLayout>
 
     <include layout="@layout/view_fab" />
 

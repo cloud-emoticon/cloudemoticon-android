@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.activities;
 
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -44,9 +43,6 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
     @InjectView(R.id.fab)
     FloatingActionButton mFab;
 
-    @InjectView(R.id.toolbar)
-    Toolbar mToolbar;
-
     private RepositoryListViewAdapter mAdapter;
 
     @Override
@@ -55,9 +51,6 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_repository_manager);
         ButterKnife.inject(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Setup contents
         mRepositoryListView.setEmptyView(mRepositoryEmptyView);

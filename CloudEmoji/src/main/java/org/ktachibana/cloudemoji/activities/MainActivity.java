@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,7 +60,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements
@@ -71,9 +69,6 @@ public class MainActivity extends BaseActivity implements
     private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String STATE_TAG = "state";
     public static final String SOURCE_CACHE_TAG = "source_cache";
-    // Views
-    @InjectView(R.id.toolbar)
-    Toolbar mToolbar;
     private Drawer.Result mDrawer;
     // State
     private MainActivityState mState;
@@ -99,8 +94,7 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Else, set it to display default
-        else
-        {
+        else {
             SourceInMemoryCache cache = initializeCache();
             mState = new MainActivityState(DEFAULT_REPOSITORY_ID, cache.get(DEFAULT_REPOSITORY_ID), cache);
         }
@@ -115,9 +109,6 @@ public class MainActivity extends BaseActivity implements
     private void setupViews() {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AccountHeader.Result accountHeader = new AccountHeader()
                 .withActivity(this)
@@ -204,8 +195,8 @@ public class MainActivity extends BaseActivity implements
         for (Repository repository : repositories) {
             if (repository.isAvailable()) {
                 mDrawer.addItem(new PrimaryDrawerItem()
-                        .withName(repository.getAlias())
-                        .withIcon(R.drawable.ic_repository)
+                                .withName(repository.getAlias())
+                                .withIcon(R.drawable.ic_repository)
                 );
                 mState.addToDrawerItems(
                         new MainActivityDrawerItem(

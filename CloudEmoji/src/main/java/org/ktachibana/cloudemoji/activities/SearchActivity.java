@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,13 +23,9 @@ import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 public class SearchActivity extends BaseActivity {
-    @InjectView(R.id.toolbar)
-    Toolbar mToolbar;
     private SourceInMemoryCache mCurrentSourceCache;
 
     @Override
@@ -38,10 +33,6 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_search);
-        ButterKnife.inject(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG);
         handleIntent(getIntent());
