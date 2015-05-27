@@ -23,7 +23,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.SugarApp;
 import com.orm.query.Condition;
@@ -49,6 +48,7 @@ import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
+import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements
     private Drawer.Result mDrawer;
     // State
     private MainActivityState mState;
-    private SourceFragment mCurrentSourceFragment;
+    //private SourceFragment mCurrentSourceFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +142,6 @@ public class MainActivity extends BaseActivity implements
                     cache.put(id, source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format) + e.getFormatType().toString());
-                } catch (IOException e) {
-                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 }
@@ -218,7 +216,7 @@ public class MainActivity extends BaseActivity implements
 
         // Add repo manager
         mDrawer.addItem(
-                new SecondaryDrawerItem()
+                new UncheckableSecondaryDrawerItem()
                         .withName(R.string.repo_manager)
                         .withIcon(R.drawable.ic_repository_manager)
         );
@@ -231,7 +229,7 @@ public class MainActivity extends BaseActivity implements
 
         // Add repo store
         mDrawer.addItem(
-                new SecondaryDrawerItem()
+                new UncheckableSecondaryDrawerItem()
                         .withName(R.string.repository_store)
                         .withIcon(R.drawable.ic_store)
         );
@@ -244,7 +242,7 @@ public class MainActivity extends BaseActivity implements
 
         // Add update checker
         mDrawer.addItem(
-                new SecondaryDrawerItem()
+                new UncheckableSecondaryDrawerItem()
                         .withName(R.string.update_checker)
                         .withIcon(R.drawable.ic_update_checker)
         );
@@ -257,7 +255,7 @@ public class MainActivity extends BaseActivity implements
 
         // Add settings
         mDrawer.addItem(
-                new SecondaryDrawerItem()
+                new UncheckableSecondaryDrawerItem()
                         .withName(R.string.settings)
                         .withIcon(R.drawable.ic_settings)
         );
@@ -270,7 +268,7 @@ public class MainActivity extends BaseActivity implements
 
         // Add exit
         mDrawer.addItem(
-                new SecondaryDrawerItem()
+                new UncheckableSecondaryDrawerItem()
                         .withName(R.string.exit)
                         .withIcon(R.drawable.ic_exit)
         );
@@ -387,7 +385,7 @@ public class MainActivity extends BaseActivity implements
         // If it is a local repository
         if (mState.getRepositoryId() < 0) {
             // Nullify source fragment
-            mCurrentSourceFragment = null;
+            //mCurrentSourceFragment = null;
 
             // Switch to correct fragment
             long id = mState.getRepositoryId();
@@ -404,11 +402,10 @@ public class MainActivity extends BaseActivity implements
 
         // Else it is a remote repository with a parsed source
         else {
-            // Create source fragment and switch
-            mCurrentSourceFragment = SourceFragment.newInstance(mState.getSource());
-            replaceMainContainer(mCurrentSourceFragment);
+            //mCurrentSourceFragment = SourceFragment.newInstance(mState.getSource());
 
-            // TODO: add categories to drawer
+            // Create source fragment and switch
+            replaceMainContainer(SourceFragment.newInstance(mState.getSource()));
 
             // Do not close drawers
         }
@@ -564,10 +561,11 @@ public class MainActivity extends BaseActivity implements
         }
 
         // If category
-        if (item.getItemType() == MainActivityDrawerItem.ITEM_TYPE_CATEGORY) {
-            // TODO
-            return;
-        }
+        /**
+         if (item.getItemType() == MainActivityDrawerItem.ITEM_TYPE_CATEGORY) {
+         return;
+         }
+         **/
 
         // If options
         if (item.getItemType() == MainActivityDrawerItem.ITEM_TYPE_OPTIONS) {
