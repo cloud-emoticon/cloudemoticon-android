@@ -10,4 +10,6 @@ Pull to refresh in Source
 
 # Future
 
+Add info in SourceFragment
+
 Emoticon wrapping
