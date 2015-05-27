@@ -2,6 +2,8 @@
 
 Nav drawer rewrite
 
+Fix bug in Repo manager launched by external link
+
 Fix bug in fast scroll
 
 Better looking list items in Favorite/Repo Manager
