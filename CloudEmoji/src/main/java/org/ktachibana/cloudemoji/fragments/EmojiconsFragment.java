@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.astuetz.PagerSlidingTabStrip;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
@@ -20,7 +20,7 @@ public class EmojiconsFragment extends BaseFragment {
     @InjectView(R.id.pager)
     ViewPager mPager;
     @InjectView(R.id.tabs)
-    SmartTabLayout mTabs;
+    PagerSlidingTabStrip mTabs;
 
     public EmojiconsFragment() {
         // Required empty public constructor

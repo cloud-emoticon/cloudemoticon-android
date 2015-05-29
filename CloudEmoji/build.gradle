@@ -47,8 +47,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'commons-io:commons-io:2.4'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
-    compile 'com.ogaclejapan.smarttablayout:library:1.1.2@aar'
-    compile 'com.ogaclejapan.smarttablayout:utils-v4:1.1.2@aar'
+    compile 'com.jpardogo.materialtabstrip:library:1.0.9'
     compile 'com.github.mrengineer13:snackbar:1.1.0'
     compile 'com.afollestad:material-dialogs:0.7.2.8'
     compile('com.mikepenz.materialdrawer:library:2.8.2@aar') {
