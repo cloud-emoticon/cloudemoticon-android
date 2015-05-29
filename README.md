@@ -8,26 +8,30 @@ A cloud solution to your favorite emoticons
 </a>
 
 ## This app
-* downloads emoticon repository from a server
-* shows it on categorized lists
-* is capable of one-click copy
+* downloads emoticon repositories from remote servers
+* shows them on categorized lists
+* is one-click copy capable
+
+## You only need to
+* host your emoticons (Json or XML) on a remote server, e.g.
+    * Dropbox public shared folder
+    * your own server
+* add others' repositories from our repository store
 
 ## So that you don't have to
-* hack IME's and make changes manually
-* use other cloud based apps that cannot one-click copy
+* hack IME's and make changes manually when you need to
+* use other cloud apps that is not one-click copy capable
 * use other un-customizable emoticon apps
 
 ## Features
-* Material Design
 * Multi-repository management
-* Re-arrangeable favorites
+* Favorites
 * History
-* Fast repository navigation
 * Search
 * Repository store
-* JSON/XML format repository
 * Backup and restore favorites
 * Swipe-up navigation bar icon to replace home
+* Add your favorites to your user dictionary (some IME's can use it!)
 * More...
 
 ## Screenshot
