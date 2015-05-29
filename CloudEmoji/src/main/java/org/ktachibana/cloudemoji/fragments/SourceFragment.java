@@ -83,8 +83,4 @@ public class SourceFragment extends BaseFragment {
             }
         }
     }
-
-    public void setSelection(int index) {
-        mSourceListView.setSelection(mAdapter.getPositionForSection(index));
-    }
 }
