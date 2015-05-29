@@ -27,7 +27,7 @@
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="org.ktachibana.cloudemoji.models" />
+            android:value="org.ktachibana.cloudemoji.models.persistence" />
 
         <activity
             android:name=".activities.MainActivity"

@@ -4,8 +4,8 @@ import com.google.gson.JsonParseException;
 import com.orm.SugarApp;
 
 import org.apache.commons.io.IOUtils;
-import org.ktachibana.cloudemoji.models.Repository;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.persistence.Repository;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;

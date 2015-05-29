@@ -1,6 +1,6 @@
 package org.ktachibana.cloudemoji.parsing;
 
-import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.models.persistence.Repository;
 
 public class SourceParsingException extends Exception {
     private Repository.FormatType mFormatType;

@@ -2,7 +2,7 @@ package org.ktachibana.cloudemoji.parsing;
 
 import com.google.gson.Gson;
 
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 
 public class SourceJsonParser {
 

@@ -1,7 +1,7 @@
 package org.ktachibana.cloudemoji.events;
 
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.History;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.persistence.History;
 
 /**
  * An emoticon is copied

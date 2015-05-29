@@ -2,9 +2,9 @@ package org.ktachibana.cloudemoji.parsing;
 
 import android.util.Xml;
 
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Category;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

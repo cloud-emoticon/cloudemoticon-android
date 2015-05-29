@@ -12,18 +12,38 @@ import com.astuetz.PagerSlidingTabStrip;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsPagerAdapter;
+import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EmojiconsFragment extends BaseFragment {
+public class RepositoriesFragment extends BaseFragment {
+    private static final String ARG_CACHE = "cache";
     @InjectView(R.id.pager)
     ViewPager mPager;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip mTabs;
 
-    public EmojiconsFragment() {
+    private SourceInMemoryCache mCache;
+
+    public static RepositoriesFragment newInstance(SourceInMemoryCache cache) {
+        RepositoriesFragment fragment = new RepositoriesFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_CACHE, cache);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public RepositoriesFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mCache = getArguments().getParcelable(ARG_CACHE);
+        }
     }
 
     @Override

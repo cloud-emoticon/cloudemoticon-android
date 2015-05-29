@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.models;
+package org.ktachibana.cloudemoji.models.inmemory;
 
 import android.os.Parcel;
 import android.os.Parcelable;

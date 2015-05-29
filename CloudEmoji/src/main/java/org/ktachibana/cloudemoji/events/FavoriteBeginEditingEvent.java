@@ -1,6 +1,6 @@
 package org.ktachibana.cloudemoji.events;
 
-import org.ktachibana.cloudemoji.models.Favorite;
+import org.ktachibana.cloudemoji.models.persistence.Favorite;
 
 /**
  * When favorite is being edited

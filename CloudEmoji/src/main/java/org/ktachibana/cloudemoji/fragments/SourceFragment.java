@@ -13,8 +13,8 @@ import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.utils.Utils;
 
 import butterknife.ButterKnife;

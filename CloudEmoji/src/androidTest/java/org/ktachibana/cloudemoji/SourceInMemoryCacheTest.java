@@ -2,9 +2,9 @@ package org.ktachibana.cloudemoji;
 
 import android.test.AndroidTestCase;
 
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Category;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 import java.util.ArrayList;

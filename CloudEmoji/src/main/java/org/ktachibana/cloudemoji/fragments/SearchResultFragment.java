@@ -15,7 +15,7 @@ import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
-import org.ktachibana.cloudemoji.models.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
