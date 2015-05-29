@@ -39,7 +39,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
-    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.github.frankiesardo:linearlistview:1.0.1@aar'

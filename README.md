@@ -48,6 +48,8 @@ A cloud solution to your favorite emoticons
 * [SmartTabLayout] (https://github.com/ogaclejapan/SmartTabLayout)
 * [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
 * [SnackBar] (https://github.com/MrEngineer13/SnackBar)
+* [material-dialogs] (https://github.com/afollestad/material-dialogs)
+* [MaterialDrawer] (https://github.com/mikepenz/MaterialDrawer)
 
 ## Libraries via Jar/Aar balls
 * [ARCA](https://github.com/ACRA/acra)
