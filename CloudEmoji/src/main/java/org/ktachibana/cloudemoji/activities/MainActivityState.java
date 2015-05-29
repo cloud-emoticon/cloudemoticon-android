@@ -3,51 +3,29 @@ package org.ktachibana.cloudemoji.activities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivityState implements Parcelable {
-    private long repositoryId;
-    private Source source;
+    private int itemId;
     private SourceInMemoryCache sourceCache;
-    private List<MainActivityDrawerItem> drawerItems;
 
     public MainActivityState(
-            long repositoryId,
-            Source source,
+            int itemId,
             SourceInMemoryCache sourceCache) {
-        this.repositoryId = repositoryId;
-        this.source = source;
+        this.itemId = itemId;
         this.sourceCache = sourceCache;
-        this.drawerItems = new ArrayList<>();
     }
 
-    public long getRepositoryId() {
-        return repositoryId;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setRepositoryId(long repositoryId) {
-        this.repositoryId = repositoryId;
-        this.source = sourceCache.get(repositoryId);
-    }
-
-    public Source getSource() {
-        return source;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public SourceInMemoryCache getSourceCache() {
         return sourceCache;
-    }
-
-    public void addToDrawerItems(MainActivityDrawerItem item) {
-        drawerItems.add(item);
-    }
-
-    public MainActivityDrawerItem getDrawerItem(int i) {
-        return drawerItems.get(i);
     }
 
     @Override
@@ -57,18 +35,13 @@ public class MainActivityState implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.repositoryId);
-        dest.writeParcelable(this.source, 0);
+        dest.writeInt(this.itemId);
         dest.writeParcelable(this.sourceCache, 0);
-        dest.writeTypedList(drawerItems);
     }
 
     private MainActivityState(Parcel in) {
-        this.repositoryId = in.readLong();
-        this.source = in.readParcelable(Source.class.getClassLoader());
+        this.itemId = in.readInt();
         this.sourceCache = in.readParcelable(SourceInMemoryCache.class.getClassLoader());
-        this.drawerItems = new ArrayList<>();
-        in.readTypedList(drawerItems, MainActivityDrawerItem.CREATOR);
     }
 
     public static final Parcelable.Creator<MainActivityState> CREATOR = new Parcelable.Creator<MainActivityState>() {

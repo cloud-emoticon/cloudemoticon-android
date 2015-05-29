@@ -81,4 +81,5 @@
     <string name="no_description">没有描述</string>
     <string name="no_shortcut">没有快捷输入</string>
     <string name="shortcut">快捷输入</string>
+    <string name="repositories">源</string>
 </resources>
