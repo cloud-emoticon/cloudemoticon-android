@@ -95,7 +95,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
             @Override
             public void onClick(View view) {
                 // If network is available
-                if (Utils.isNetworkConnectionAvailable(SugarApp.getSugarContext())) {
+                if (Utils.networkAvailable(SugarApp.getSugarContext())) {
 
                     // Show a dialog progress dialog
                     final ProgressDialog dialog = new ProgressDialog(mContext);

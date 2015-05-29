@@ -98,7 +98,7 @@ public class AccountActivity extends BaseActivity implements Constants {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.isNetworkConnectionAvailable(AccountActivity.this)) {
+                if (Utils.networkAvailable(AccountActivity.this)) {
                     mProgressDialog.setMessage(getString(R.string.registering));
                     mProgressDialog.show();
                     new ApiClient()

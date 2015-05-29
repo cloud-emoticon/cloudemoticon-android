@@ -1,8 +1,8 @@
 package org.ktachibana.cloudemoji;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.github.mrengineer13.snackbar.SnackBar;
 
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.utils.Utils;
 
 /**
  * Base activity for all activities with UI to extend
@@ -66,19 +67,15 @@ public class BaseActivity extends AppCompatActivity implements Constants {
      * @param event string copied event
      */
     @SuppressWarnings("deprecation")
+    @TargetApi(11)
     public void onEvent(EntryCopiedAndAddedToHistoryEvent event) {
         String copied = event.getEntry().getEmoticon();
 
-        int SDK = Build.VERSION.SDK_INT;
-        // Below 3.0
-        if (SDK < android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (Utils.belowHoneycomb()) {
             android.text.ClipboardManager clipboard
                     = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setText(copied);
-        }
-
-        // Above 3.0
-        else {
+        } else {
             android.content.ClipboardManager clipboard
                     = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);

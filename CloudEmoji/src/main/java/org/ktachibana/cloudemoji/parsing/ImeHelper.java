@@ -2,11 +2,11 @@ package org.ktachibana.cloudemoji.parsing;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.os.Build;
 import android.provider.UserDictionary;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.Favorite;
+import org.ktachibana.cloudemoji.utils.Utils;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ImeHelper implements Constants {
                 ContentValues newValue = new ContentValues();
                 newValue.put(UserDictionary.Words.APP_ID, USER_DICTIONARY_APP_ID);
                 newValue.put(UserDictionary.Words.WORD, favorite.getEmoticon());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (Utils.aboveJellybean()) {
                     newValue.put(UserDictionary.Words.SHORTCUT, favorite.getShortcut());
                 }
                 contentResolver.insert(UserDictionary.Words.CONTENT_URI, newValue);

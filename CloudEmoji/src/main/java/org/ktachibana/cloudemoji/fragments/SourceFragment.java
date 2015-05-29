@@ -1,7 +1,7 @@
 package org.ktachibana.cloudemoji.fragments;
 
 
-import android.os.Build;
+import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -74,11 +75,10 @@ public class SourceFragment extends BaseFragment {
         return rootView;
     }
 
+    @TargetApi(11)
     private void setFastScrollAlwaysVisible(ListView listView, boolean fastScrollAlwaysVisible) {
         if (fastScrollAlwaysVisible) {
-            int SDK = Build.VERSION.SDK_INT;
-            // Above 3.0
-            if (SDK >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            if (Utils.aboveHoneycomb()) {
                 listView.setFastScrollAlwaysVisible(true);
             }
         }

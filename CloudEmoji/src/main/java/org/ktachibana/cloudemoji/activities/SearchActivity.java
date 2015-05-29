@@ -1,9 +1,9 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -19,6 +19,7 @@ import org.ktachibana.cloudemoji.models.Category;
 import org.ktachibana.cloudemoji.models.Entry;
 import org.ktachibana.cloudemoji.models.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
+import org.ktachibana.cloudemoji.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,20 +69,19 @@ public class SearchActivity extends BaseActivity {
     }
 
     @Override
+    @TargetApi(11)
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         // Associate searchable configuration with the SearchView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Utils.aboveHoneycomb()) {
             SearchManager searchManager =
                     (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             SearchView searchView =
                     (SearchView) menu.findItem(R.id.search).getActionView();
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
-        } else {
-
         }
 
         return true;

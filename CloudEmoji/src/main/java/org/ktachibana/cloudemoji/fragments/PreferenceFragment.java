@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -17,6 +16,7 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
+import org.ktachibana.cloudemoji.utils.Utils;
 
 public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment implements Constants {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
@@ -33,7 +33,7 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
 
         // Navbar Gesture
         Preference navbarGesturePref = findPreference(PREF_NAVBAR_GESTURE);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+        if (Utils.belowJellybean())
             navbarGesturePref.setEnabled(false);
         navbarGesturePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
