@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.github.mrengineer13.snackbar.SnackBar;
@@ -15,15 +18,35 @@ import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 
 /**
  * Base activity for all activities with UI to extend
+ * It includes a default toolbar
  */
 public class BaseActivity extends AppCompatActivity implements Constants {
     protected SharedPreferences mPreferences;
+    protected Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(R.layout.activity_base);
+
+        // Find toolbar and main view
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        FrameLayout mainView = (FrameLayout) findViewById(R.id.mainView);
+
+        // Setup toolbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Add subclass view to main view
+        View subclassView = getLayoutInflater().inflate(layoutResID, null);
+        mainView.removeAllViews();
+        mainView.addView(subclassView);
     }
 
     protected void showSnackBar(String message) {

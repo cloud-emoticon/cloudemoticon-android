@@ -12,13 +12,12 @@ public interface Constants {
     public static final long LIST_ITEM_FAVORITE_ID = -1;
     public static final long LIST_ITEM_HISTORY_ID = -2;
     public static final long LIST_ITEM_BUILT_IN_EMOJI_ID = -3;
-
-    public static final long LIST_ITEM_REPOSITORY_MANAGER_ID = 0;
-    public static final long LIST_ITEM_SETTINGS_ID = 1;
-    public static final long LIST_ITEM_EXIT_ID = 2;
-    public static final long LIST_ITEM_ACCOUNT_ID = 3;
-    public static final long LIST_ITEM_STORE_ID = 4;
-    public static final long LIST_ITEM_UPDATE_CHECKER_ID = 5;
+    public static final long LIST_ITEM_REPO_MANAGER_ID = -1;
+    public static final long LIST_ITEM_REPO_STORE_ID = -2;
+    public static final long LIST_ITEM_UPDATE_CHECKER_ID = -3;
+    public static final long LIST_ITEM_SETTINGS_ID = -4;
+    public static final long LIST_ITEM_EXIT_ID = -5;
+    public static final long LIST_ITEM_ACCOUNT_ID = -6;
 
     // Notification
     public static final int PERSISTENT_NOTIFICATION_ID = 0;
