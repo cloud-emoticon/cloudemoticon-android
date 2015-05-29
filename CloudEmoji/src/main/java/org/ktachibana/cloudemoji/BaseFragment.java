@@ -4,6 +4,10 @@ import android.support.v4.app.Fragment;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 
+/**
+ * Base fragment for all fragments to extend
+ * It includes SnackBar
+ */
 public class BaseFragment extends Fragment {
     protected void showSnackBar(String message) {
         new SnackBar.Builder(getActivity().getApplicationContext(), getView())

@@ -14,8 +14,8 @@ import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.Category;
 import org.ktachibana.cloudemoji.models.inmemory.Entry;
-import org.ktachibana.cloudemoji.models.persistence.Favorite;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
+import org.ktachibana.cloudemoji.models.persistence.Favorite;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

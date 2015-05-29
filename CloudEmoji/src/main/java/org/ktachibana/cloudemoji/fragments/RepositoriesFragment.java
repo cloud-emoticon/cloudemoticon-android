@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.astuetz.PagerSlidingTabStrip;
 
 import org.ktachibana.cloudemoji.BaseFragment;
+import org.ktachibana.cloudemoji.BaseTabsPagerFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.EmojiconsPagerAdapter;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
@@ -17,13 +18,8 @@ import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class RepositoriesFragment extends BaseFragment {
+public class RepositoriesFragment extends BaseTabsPagerFragment {
     private static final String ARG_CACHE = "cache";
-    @InjectView(R.id.pager)
-    ViewPager mPager;
-    @InjectView(R.id.tabs)
-    PagerSlidingTabStrip mTabs;
-
     private SourceInMemoryCache mCache;
 
     public static RepositoriesFragment newInstance(SourceInMemoryCache cache) {
@@ -50,8 +46,7 @@ public class RepositoriesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Setup views
-        View rootView = inflater.inflate(R.layout.fragment_tab_and_pager, container, false);
-        ButterKnife.inject(this, rootView);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         // Setup contents
         mPager.setAdapter(new EmojiconsPagerAdapter(getChildFragmentManager()));

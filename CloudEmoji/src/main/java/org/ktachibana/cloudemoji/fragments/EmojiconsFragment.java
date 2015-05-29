@@ -2,26 +2,14 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.astuetz.PagerSlidingTabStrip;
-
-import org.ktachibana.cloudemoji.BaseFragment;
-import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.BaseTabsPagerFragment;
 import org.ktachibana.cloudemoji.adapters.EmojiconsPagerAdapter;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
-public class EmojiconsFragment extends BaseFragment {
-    @InjectView(R.id.pager)
-    ViewPager mPager;
-    @InjectView(R.id.tabs)
-    PagerSlidingTabStrip mTabs;
-
+public class EmojiconsFragment extends BaseTabsPagerFragment {
     public EmojiconsFragment() {
         // Required empty public constructor
     }
@@ -30,8 +18,7 @@ public class EmojiconsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Setup views
-        View rootView = inflater.inflate(R.layout.fragment_tab_and_pager, container, false);
-        ButterKnife.inject(this, rootView);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         // Setup contents
         mPager.setAdapter(new EmojiconsPagerAdapter(getChildFragmentManager()));
@@ -39,6 +26,4 @@ public class EmojiconsFragment extends BaseFragment {
 
         return rootView;
     }
-
-
 }

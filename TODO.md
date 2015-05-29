@@ -6,6 +6,8 @@ Use Android Support Design Library (Fab, Snackbar, Tabs)
 
 Bump up library versions
 
+Try lower required version
+
 Fix bug in Repo manager launched by external link
 
 Better looking list items in Favorite/Repo Manager
@@ -19,3 +21,7 @@ Add info in SourceFragment
 Use Android Support Design Library (Nav drawer)
 
 Emoticon wrapping
+
+Abstract out EventBus
+
+Try lower required version
