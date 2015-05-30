@@ -3,7 +3,7 @@ package org.ktachibana.cloudemoji.utils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,21 @@ public class SourceInMemoryCache implements Parcelable {
     public Source get(long key) {
         Integer i = contains(key);
         return (i == null) ? null : mValueArray.get(i);
+    }
+
+    /**
+     * Get all valid keys in the cache
+     *
+     * @return all valid keys in the cache
+     */
+    public List<Long> getAllKeys() {
+        List<Long> keys = new ArrayList<>();
+        for (Long key : mKeyArray) {
+            if (key != null) {
+                keys.add(key);
+            }
+        }
+        return keys;
     }
 
     /**

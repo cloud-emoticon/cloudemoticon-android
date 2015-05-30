@@ -15,9 +15,9 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.fragments.SearchResultFragment;
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Category;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.Utils;
 

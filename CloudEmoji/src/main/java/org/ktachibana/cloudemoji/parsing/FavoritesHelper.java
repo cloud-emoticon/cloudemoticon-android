@@ -1,9 +1,9 @@
 package org.ktachibana.cloudemoji.parsing;
 
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Favorite;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Category;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
+import org.ktachibana.cloudemoji.models.persistence.Favorite;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ public class FavoritesHelper {
         ArrayList<String> information = new ArrayList<String>();
         information.add("favorites");
         List<Category> categories = Arrays.asList(getFavoritesAsCategory());
-        return new Source(information, categories);
+        return new Source("favorites", information, categories);
     }
 
     public static Category getFavoritesAsCategory() {

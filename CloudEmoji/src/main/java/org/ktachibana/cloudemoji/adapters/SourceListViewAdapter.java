@@ -12,10 +12,10 @@ import android.widget.TextView;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Favorite;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Category;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
+import org.ktachibana.cloudemoji.models.persistence.Favorite;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

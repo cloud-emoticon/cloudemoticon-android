@@ -2,9 +2,9 @@ package org.ktachibana.cloudemoji.parsing;
 
 import android.util.Xml;
 
-import org.ktachibana.cloudemoji.models.Category;
-import org.ktachibana.cloudemoji.models.Entry;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Category;
+import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -15,9 +15,11 @@ import java.util.List;
 
 public class SourceXmlParser {
     private static final String ns = null;
+    private String alias;
 
-    public Source parse(Reader reader) throws XmlPullParserException,
+    public Source parse(String alias, Reader reader) throws XmlPullParserException,
             IOException {
+        this.alias = alias;
         XmlPullParser parser = Xml.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
         parser.setInput(reader);
@@ -44,7 +46,7 @@ public class SourceXmlParser {
                 categories.add(readCategory(parser));
             }
         }
-        return new Source(information, categories);
+        return new Source(alias, information, categories);
     }
 
     /**

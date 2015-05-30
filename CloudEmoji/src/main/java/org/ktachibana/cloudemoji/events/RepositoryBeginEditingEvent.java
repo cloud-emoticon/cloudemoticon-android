@@ -1,6 +1,6 @@
 package org.ktachibana.cloudemoji.events;
 
-import org.ktachibana.cloudemoji.models.Repository;
+import org.ktachibana.cloudemoji.models.persistence.Repository;
 
 /**
  * When a repository is being edited

@@ -23,8 +23,8 @@ import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
-import org.ktachibana.cloudemoji.models.Repository;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
+import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
@@ -177,7 +177,8 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
             public void onClick(View v) {
                 try {
                     // Get Source object
-                    Source source = new SourceReader().readSourceFromDatabaseId(item.getId());
+                    Source source =
+                            new SourceReader().readSourceFromDatabaseId(item.getAlias(), item.getId());
 
                     // Parse Source
                     String json = new SourceJsonParser().serialize(source);

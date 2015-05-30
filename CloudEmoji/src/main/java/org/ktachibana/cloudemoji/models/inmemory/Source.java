@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.models;
+package org.ktachibana.cloudemoji.models.inmemory;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,10 +10,12 @@ import java.util.List;
  * POJO class holding information and a list of categories
  */
 public class Source implements Parcelable {
+    private String alias;
     private List<String> information;
     private List<Category> categories;
 
-    public Source(ArrayList<String> information, List<Category> categories) {
+    public Source(String alias, ArrayList<String> information, List<Category> categories) {
+        this.alias = alias;
         this.information = information;
         this.categories = categories;
     }
@@ -34,6 +36,14 @@ public class Source implements Parcelable {
         return entries;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -47,6 +57,8 @@ public class Source implements Parcelable {
             return false;
         if (!information.equals(source.information))
             return false;
+        if (!alias.equals(source.alias))
+            return false;
 
         return true;
     }
@@ -58,11 +70,13 @@ public class Source implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(alias);
         dest.writeList(this.information);
         dest.writeTypedList(categories);
     }
 
     private Source(Parcel in) {
+        this.alias = in.readString();
         this.information = new ArrayList<>();
         in.readList(this.information, List.class.getClassLoader());
         this.categories = new ArrayList<>();

@@ -19,7 +19,7 @@ import org.ktachibana.cloudemoji.utils.Utils;
 
 /**
  * Base activity for all activities with UI to extend
- * It includes a default toolbar
+ * It includes a default toolbar, SnackBar and copy to clipboard
  */
 public class BaseActivity extends AppCompatActivity implements Constants {
     protected SharedPreferences mPreferences;

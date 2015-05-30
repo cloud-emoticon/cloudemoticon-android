@@ -13,7 +13,7 @@ import com.mobeta.android.dslv.DragSortListView;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.models.Favorite;
+import org.ktachibana.cloudemoji.models.persistence.Favorite;
 
 import java.util.List;
 

@@ -3,51 +3,41 @@ package org.ktachibana.cloudemoji.activities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivityState implements Parcelable {
-    private long repositoryId;
-    private Source source;
+public class MainActivityState implements Parcelable, Constants {
+    private int itemId;
+    private int previousItemId;
     private SourceInMemoryCache sourceCache;
-    private List<MainActivityDrawerItem> drawerItems;
 
-    public MainActivityState(
-            long repositoryId,
-            Source source,
-            SourceInMemoryCache sourceCache) {
-        this.repositoryId = repositoryId;
-        this.source = source;
+    public MainActivityState(SourceInMemoryCache sourceCache) {
+        this.itemId = DEFAULT_LIST_ITEM_ID;
+        this.previousItemId = DEFAULT_LIST_ITEM_ID;
         this.sourceCache = sourceCache;
-        this.drawerItems = new ArrayList<>();
     }
 
-    public long getRepositoryId() {
-        return repositoryId;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setRepositoryId(long repositoryId) {
-        this.repositoryId = repositoryId;
-        this.source = sourceCache.get(repositoryId);
+    public void setItemId(int newItemId) {
+        this.previousItemId = this.itemId;
+        this.itemId = newItemId;
     }
 
-    public Source getSource() {
-        return source;
+    public void revertToPreviousId() {
+        this.itemId = this.previousItemId;
+        int i = 0;
     }
 
     public SourceInMemoryCache getSourceCache() {
         return sourceCache;
     }
 
-    public void addToDrawerItems(MainActivityDrawerItem item) {
-        drawerItems.add(item);
-    }
-
-    public MainActivityDrawerItem getDrawerItem(int i) {
-        return drawerItems.get(i);
+    public void setSourceCache(SourceInMemoryCache cache) {
+        sourceCache = null;
+        sourceCache = cache;
     }
 
     @Override
@@ -57,18 +47,13 @@ public class MainActivityState implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.repositoryId);
-        dest.writeParcelable(this.source, 0);
+        dest.writeInt(this.itemId);
         dest.writeParcelable(this.sourceCache, 0);
-        dest.writeTypedList(drawerItems);
     }
 
     private MainActivityState(Parcel in) {
-        this.repositoryId = in.readLong();
-        this.source = in.readParcelable(Source.class.getClassLoader());
+        this.itemId = in.readInt();
         this.sourceCache = in.readParcelable(SourceInMemoryCache.class.getClassLoader());
-        this.drawerItems = new ArrayList<>();
-        in.readTypedList(drawerItems, MainActivityDrawerItem.CREATOR);
     }
 
     public static final Parcelable.Creator<MainActivityState> CREATOR = new Parcelable.Creator<MainActivityState>() {

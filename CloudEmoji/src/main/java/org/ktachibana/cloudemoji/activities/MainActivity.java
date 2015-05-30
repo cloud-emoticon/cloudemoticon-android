@@ -38,12 +38,11 @@ import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
-import org.ktachibana.cloudemoji.fragments.SourceFragment;
-import org.ktachibana.cloudemoji.models.Favorite;
-import org.ktachibana.cloudemoji.models.Repository;
-import org.ktachibana.cloudemoji.models.Source;
+import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
+import org.ktachibana.cloudemoji.models.inmemory.Source;
+import org.ktachibana.cloudemoji.models.persistence.Favorite;
+import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.ktachibana.cloudemoji.net.UpdateChecker;
-import org.ktachibana.cloudemoji.parsing.FavoritesHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -66,13 +65,10 @@ public class MainActivity extends BaseActivity implements
         Constants,
         SharedPreferences.OnSharedPreferenceChangeListener, Drawer.OnDrawerItemClickListener {
 
-    private static final long DEFAULT_REPOSITORY_ID = LIST_ITEM_FAVORITE_ID;
     private static final String STATE_TAG = "state";
     public static final String SOURCE_CACHE_TAG = "source_cache";
     private Drawer.Result mDrawer;
-    // State
     private MainActivityState mState;
-    //private SourceFragment mCurrentSourceFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +78,11 @@ public class MainActivity extends BaseActivity implements
         // Setup views
         setupViews();
 
-        // Toggle notification state
-        switchNotificationState();
+        // Setup left drawer
+        setupLeftDrawer();
+
+        // Setup notification state
+        setupNotificationState();
 
         // Check first time run
         firstTimeCheck();
@@ -93,17 +92,13 @@ public class MainActivity extends BaseActivity implements
             mState = savedInstanceState.getParcelable(STATE_TAG);
         }
 
-        // Else, set it to display default
+        // Else, initialize
         else {
-            SourceInMemoryCache cache = initializeCache();
-            mState = new MainActivityState(DEFAULT_REPOSITORY_ID, cache.get(DEFAULT_REPOSITORY_ID), cache);
+            mState = new MainActivityState(initializeCache());
         }
 
-        // Setup left drawer
-        initializeLeftDrawer();
-
-        // Switch to the repository
-        internalSwitchRepository();
+        // Adjust to the current state
+        refreshUiWithCurrentState();
     }
 
     private void setupViews() {
@@ -128,9 +123,11 @@ public class MainActivity extends BaseActivity implements
     private SourceInMemoryCache initializeCache() {
         SourceInMemoryCache cache = new SourceInMemoryCache();
 
-        // Put favorites
-        Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
-        cache.put(LIST_ITEM_FAVORITE_ID, favoritesSource);
+        /**
+         // Put favorites
+         Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
+         cache.put(-1, favoritesSource);
+         **/
 
         // Put all available repositories
         List<Repository> allRepositories = Repository.listAll(Repository.class);
@@ -138,7 +135,8 @@ public class MainActivity extends BaseActivity implements
             if (repository.isAvailable()) {
                 try {
                     long id = repository.getId();
-                    Source source = new SourceReader().readSourceFromDatabaseId(id);
+                    Source source =
+                            new SourceReader().readSourceFromDatabaseId(repository.getAlias(), id);
                     cache.put(id, source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format) + e.getFormatType().toString());
@@ -151,17 +149,13 @@ public class MainActivity extends BaseActivity implements
         return cache;
     }
 
-    private void initializeLeftDrawer() {
+    private void setupLeftDrawer() {
         // Add favorite
         mDrawer.addItem(
                 new PrimaryDrawerItem()
                         .withName(R.string.fav)
                         .withIcon(R.drawable.ic_favorite)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_REPOSITORY,
-                        Constants.LIST_ITEM_FAVORITE_ID)
+                        .withIdentifier(LIST_ITEM_FAVORITE_ID)
         );
 
         // Add history
@@ -169,11 +163,7 @@ public class MainActivity extends BaseActivity implements
                 new PrimaryDrawerItem()
                         .withName(R.string.history)
                         .withIcon(R.drawable.ic_history)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_REPOSITORY,
-                        Constants.LIST_ITEM_HISTORY_ID)
+                        .withIdentifier(LIST_ITEM_HISTORY_ID)
         );
 
         // Add built in emoji
@@ -181,50 +171,26 @@ public class MainActivity extends BaseActivity implements
                 new PrimaryDrawerItem()
                         .withName(R.string.built_in_emoji)
                         .withIcon(R.drawable.ic_built_in_emoji)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_REPOSITORY,
-                        Constants.LIST_ITEM_BUILT_IN_EMOJI_ID)
+                        .withIdentifier(LIST_ITEM_BUILT_IN_EMOJI_ID)
         );
 
-        // Add all available repositories
-        List<Repository> repositories = Repository.listAll(Repository.class);
-        for (Repository repository : repositories) {
-            if (repository.isAvailable()) {
-                mDrawer.addItem(new PrimaryDrawerItem()
-                                .withName(repository.getAlias())
-                                .withIcon(R.drawable.ic_repository)
-                );
-                mState.addToDrawerItems(
-                        new MainActivityDrawerItem(
-                                MainActivityDrawerItem.ITEM_TYPE_REPOSITORY,
-                                repository.getId()
-                        )
-                );
-            }
-        }
+        // Add repositories
+        mDrawer.addItem(
+                new PrimaryDrawerItem()
+                        .withName(R.string.repositories)
+                        .withIcon(R.drawable.ic_repository)
+                        .withIdentifier(LIST_ITEM_REPOSITORIES)
+        );
 
         // Divider
         mDrawer.addItem(new DividerDrawerItem());
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_DIVIDER,
-                        0
-                )
-        );
 
         // Add repo manager
         mDrawer.addItem(
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.repo_manager)
                         .withIcon(R.drawable.ic_repository_manager)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_OPTIONS,
-                        LIST_ITEM_REPO_MANAGER_ID
-                )
+                        .withIdentifier(LIST_ITEM_REPO_MANAGER_ID)
         );
 
         // Add repo store
@@ -232,12 +198,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.repository_store)
                         .withIcon(R.drawable.ic_store)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_OPTIONS,
-                        LIST_ITEM_REPO_STORE_ID
-                )
+                        .withIdentifier(LIST_ITEM_REPO_STORE_ID)
         );
 
         // Add update checker
@@ -245,12 +206,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.update_checker)
                         .withIcon(R.drawable.ic_update_checker)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_OPTIONS,
-                        LIST_ITEM_UPDATE_CHECKER_ID
-                )
+                        .withIdentifier(LIST_ITEM_UPDATE_CHECKER_ID)
         );
 
         // Add settings
@@ -258,12 +214,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.settings)
                         .withIcon(R.drawable.ic_settings)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_OPTIONS,
-                        LIST_ITEM_SETTINGS_ID
-                )
+                        .withIdentifier(LIST_ITEM_SETTINGS_ID)
         );
 
         // Add exit
@@ -271,19 +222,14 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.exit)
                         .withIcon(R.drawable.ic_exit)
-        );
-        mState.addToDrawerItems(
-                new MainActivityDrawerItem(
-                        MainActivityDrawerItem.ITEM_TYPE_OPTIONS,
-                        LIST_ITEM_EXIT_ID
-                )
+                        .withIdentifier(LIST_ITEM_EXIT_ID)
         );
 
         // On click
         mDrawer.setOnDrawerItemClickListener(this);
     }
 
-    private void switchNotificationState() {
+    private void setupNotificationState() {
         NotificationHelper
                 .switchNotificationState(this,
                         mPreferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
@@ -293,7 +239,7 @@ public class MainActivity extends BaseActivity implements
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key) {
         if (PREF_NOTIFICATION_VISIBILITY.equals(key)) {
-            switchNotificationState();
+            setupNotificationState();
         }
     }
 
@@ -381,36 +327,6 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void internalSwitchRepository() {
-        // If it is a local repository
-        if (mState.getRepositoryId() < 0) {
-            // Nullify source fragment
-            //mCurrentSourceFragment = null;
-
-            // Switch to correct fragment
-            long id = mState.getRepositoryId();
-            if (id == LIST_ITEM_FAVORITE_ID)
-                replaceMainContainer(new FavoriteFragment());
-            if (id == LIST_ITEM_HISTORY_ID)
-                replaceMainContainer(new HistoryFragment());
-            if (id == LIST_ITEM_BUILT_IN_EMOJI_ID)
-                replaceMainContainer(new EmojiconsFragment());
-
-            // Close drawers
-            closeDrawers();
-        }
-
-        // Else it is a remote repository with a parsed source
-        else {
-            //mCurrentSourceFragment = SourceFragment.newInstance(mState.getSource());
-
-            // Create source fragment and switch
-            replaceMainContainer(SourceFragment.newInstance(mState.getSource()));
-
-            // Do not close drawers
-        }
-    }
-
     private void replaceMainContainer(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -434,12 +350,21 @@ public class MainActivity extends BaseActivity implements
 
         // Coming back from repository manager, repositories may be changed
         if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE) {
-            // TODO
+
+            // If currently showing repositories, refresh
+            if (mState.getItemId() == LIST_ITEM_REPOSITORIES) {
+                mState.setSourceCache(initializeCache());
+                refreshUiWithCurrentState();
+            }
         }
 
         // Coming back from preference, favorites may be changed
         if (requestCode == PREFERENCE_REQUEST_CODE) {
-            // TODO
+
+            // If currently showing favorites, refresh
+            if (mState.getItemId() == LIST_ITEM_FAVORITE_ID) {
+                refreshUiWithCurrentState();
+            }
         }
     }
 
@@ -460,7 +385,7 @@ public class MainActivity extends BaseActivity implements
             // It has run
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -549,58 +474,74 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    private void refreshUiWithCurrentState() {
+        int listItemId = mState.getItemId();
+
+        // Primary items
+
+        if (listItemId == LIST_ITEM_FAVORITE_ID) {
+            replaceMainContainer(new FavoriteFragment());
+            closeDrawers();
+        }
+
+        if (listItemId == LIST_ITEM_HISTORY_ID) {
+            replaceMainContainer(new HistoryFragment());
+            closeDrawers();
+        }
+
+        if (listItemId == LIST_ITEM_BUILT_IN_EMOJI_ID) {
+            replaceMainContainer(new EmojiconsFragment());
+            closeDrawers();
+        }
+
+        if (listItemId == LIST_ITEM_REPOSITORIES) {
+            replaceMainContainer(RepositoriesFragment.newInstance(mState.getSourceCache()));
+            closeDrawers();
+        }
+
+        // Secondary items
+
+        if (listItemId == LIST_ITEM_REPO_MANAGER_ID) {
+            Intent intent = new Intent(this, RepositoryManagerActivity.class);
+            startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
+            mState.revertToPreviousId();
+        }
+
+        if (listItemId == LIST_ITEM_SETTINGS_ID) {
+            Intent intent = new Intent(this, PreferenceActivity.class);
+            startActivityForResult(intent, PREFERENCE_REQUEST_CODE);
+            mState.revertToPreviousId();
+        }
+
+        if (listItemId == LIST_ITEM_EXIT_ID) {
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .cancel(PERSISTENT_NOTIFICATION_ID);
+            finish();
+            mState.revertToPreviousId();
+        }
+
+        if (listItemId == LIST_ITEM_ACCOUNT_ID) {
+            Intent intent = new Intent(this, AccountActivity.class);
+            startActivity(intent);
+            mState.revertToPreviousId();
+        }
+
+        if (listItemId == LIST_ITEM_REPO_STORE_ID) {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(STORE_URL));
+            startActivity(intent);
+            mState.revertToPreviousId();
+        }
+
+        if (listItemId == LIST_ITEM_UPDATE_CHECKER_ID) {
+            new UpdateChecker().checkForLatestVercode();
+            mState.revertToPreviousId();
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
-        MainActivityDrawerItem item = mState.getDrawerItem(i);
-
-        // If repository
-        if (item.getItemType() == MainActivityDrawerItem.ITEM_TYPE_REPOSITORY) {
-            mState.setRepositoryId(item.getId());
-            internalSwitchRepository();
-            return;
-        }
-
-        // If category
-        /**
-         if (item.getItemType() == MainActivityDrawerItem.ITEM_TYPE_CATEGORY) {
-         return;
-         }
-         **/
-
-        // If options
-        if (item.getItemType() == MainActivityDrawerItem.ITEM_TYPE_OPTIONS) {
-            long id = item.getId();
-
-            if (id == LIST_ITEM_REPO_MANAGER_ID) {
-                Intent intent = new Intent(this, RepositoryManagerActivity.class);
-                startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
-            }
-
-            if (id == LIST_ITEM_SETTINGS_ID) {
-                Intent intent = new Intent(this, PreferenceActivity.class);
-                startActivityForResult(intent, PREFERENCE_REQUEST_CODE);
-            }
-
-            if (id == LIST_ITEM_EXIT_ID) {
-                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                        .cancel(PERSISTENT_NOTIFICATION_ID);
-                finish();
-            }
-
-            if (id == LIST_ITEM_ACCOUNT_ID) {
-                Intent intent = new Intent(this, AccountActivity.class);
-                startActivity(intent);
-            }
-
-            if (id == LIST_ITEM_REPO_STORE_ID) {
-                Intent intent = new Intent();
-                intent.setData(Uri.parse(STORE_URL));
-                startActivity(intent);
-            }
-
-            if (id == LIST_ITEM_UPDATE_CHECKER_ID) {
-                new UpdateChecker().checkForLatestVercode();
-            }
-        }
+        mState.setItemId(iDrawerItem.getIdentifier());
+        refreshUiWithCurrentState();
     }
 }
