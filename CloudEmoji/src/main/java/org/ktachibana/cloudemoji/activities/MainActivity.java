@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.mtp.MtpConstants;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -99,7 +100,7 @@ public class MainActivity extends BaseActivity implements
             mState = new MainActivityState(initializeCache());
         }
 
-        // Adjust to the current state
+        // Refresh UI with current state
         refreshUiWithCurrentState();
     }
 
@@ -482,21 +483,25 @@ public class MainActivity extends BaseActivity implements
         // Primary items
 
         if (listItemId == LIST_ITEM_FAVORITE_ID) {
+            mToolbar.setTitle(R.string.fav);
             replaceMainContainer(new FavoriteFragment());
             closeDrawers();
         }
 
         if (listItemId == LIST_ITEM_HISTORY_ID) {
+            mToolbar.setTitle(R.string.history);
             replaceMainContainer(new HistoryFragment());
             closeDrawers();
         }
 
         if (listItemId == LIST_ITEM_BUILT_IN_EMOJI_ID) {
+            mToolbar.setTitle(R.string.built_in_emoji);
             replaceMainContainer(new EmojiconsFragment());
             closeDrawers();
         }
 
         if (listItemId == LIST_ITEM_REPOSITORIES) {
+            mToolbar.setTitle(R.string.repositories);
             replaceMainContainer(RepositoriesFragment.newInstance(mState.getSourceCache()));
             closeDrawers();
         }
