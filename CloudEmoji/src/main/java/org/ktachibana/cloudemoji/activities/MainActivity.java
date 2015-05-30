@@ -20,7 +20,9 @@ import android.widget.AdapterView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -67,7 +69,7 @@ public class MainActivity extends BaseActivity implements
 
     private static final String STATE_TAG = "state";
     public static final String SOURCE_CACHE_TAG = "source_cache";
-    private Drawer.Result mDrawer;
+    private Drawer mDrawer;
     private MainActivityState mState;
 
     @Override
@@ -105,12 +107,12 @@ public class MainActivity extends BaseActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        AccountHeader.Result accountHeader = new AccountHeader()
+        AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.account_place_holder)
                 .build();
 
-        mDrawer = new Drawer()
+        mDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withAccountHeader(accountHeader)
@@ -540,8 +542,9 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
+    public boolean onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
         mState.setItemId(iDrawerItem.getIdentifier());
         refreshUiWithCurrentState();
+        return true;
     }
 }

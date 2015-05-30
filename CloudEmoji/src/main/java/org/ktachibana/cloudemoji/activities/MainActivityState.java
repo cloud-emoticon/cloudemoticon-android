@@ -28,7 +28,6 @@ public class MainActivityState implements Parcelable, Constants {
 
     public void revertToPreviousId() {
         this.itemId = this.previousItemId;
-        int i = 0;
     }
 
     public SourceInMemoryCache getSourceCache() {

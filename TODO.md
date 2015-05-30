@@ -2,8 +2,6 @@
 
 Use Android Support Design Library (Fab, Snackbar, Tabs)
 
-Bump up library versions
-
 Try lower required version
 
 Fix bug in Repo manager launched by external link

@@ -38,7 +38,9 @@ A cloud solution to your favorite emoticons
 ![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
 
 ## Libraries via Gradle
+* [appcompat-v4](https://developer.android.com/tools/support-library/features.html#v4)
 * [appcompat-v7](https://developer.android.com/tools/support-library/features.html#v7)
+* [android-support-v4-preferencefragment] (https://github.com/kolavar/android-support-v4-preferencefragment)
 * [android-async-http](https://github.com/loopj/android-async-http)
 * [EventBus](https://github.com/greenrobot/EventBus)
 * [LinearListView](https://github.com/frankiesardo/LinearListView)
