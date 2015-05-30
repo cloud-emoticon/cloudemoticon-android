@@ -15,9 +15,11 @@ import java.util.List;
 
 public class SourceXmlParser {
     private static final String ns = null;
+    private String alias;
 
-    public Source parse(Reader reader) throws XmlPullParserException,
+    public Source parse(String alias, Reader reader) throws XmlPullParserException,
             IOException {
+        this.alias = alias;
         XmlPullParser parser = Xml.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
         parser.setInput(reader);
@@ -44,7 +46,7 @@ public class SourceXmlParser {
                 categories.add(readCategory(parser));
             }
         }
-        return new Source(information, categories);
+        return new Source(alias, information, categories);
     }
 
     /**

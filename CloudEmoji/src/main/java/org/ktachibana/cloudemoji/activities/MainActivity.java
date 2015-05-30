@@ -124,9 +124,11 @@ public class MainActivity extends BaseActivity implements
     private SourceInMemoryCache initializeCache() {
         SourceInMemoryCache cache = new SourceInMemoryCache();
 
-        // Put favorites
-        Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
-        cache.put(-1, favoritesSource);
+        /**
+         // Put favorites
+         Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
+         cache.put(-1, favoritesSource);
+         **/
 
         // Put all available repositories
         List<Repository> allRepositories = Repository.listAll(Repository.class);
@@ -134,7 +136,8 @@ public class MainActivity extends BaseActivity implements
             if (repository.isAvailable()) {
                 try {
                     long id = repository.getId();
-                    Source source = new SourceReader().readSourceFromDatabaseId(id);
+                    Source source =
+                            new SourceReader().readSourceFromDatabaseId(repository.getAlias(), id);
                     cache.put(id, source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format) + e.getFormatType().toString());

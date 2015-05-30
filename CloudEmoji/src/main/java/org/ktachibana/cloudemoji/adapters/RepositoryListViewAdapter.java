@@ -177,7 +177,8 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
             public void onClick(View v) {
                 try {
                     // Get Source object
-                    Source source = new SourceReader().readSourceFromDatabaseId(item.getId());
+                    Source source =
+                            new SourceReader().readSourceFromDatabaseId(item.getAlias(), item.getId());
 
                     // Parse Source
                     String json = new SourceJsonParser().serialize(source);

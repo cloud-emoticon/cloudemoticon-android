@@ -16,7 +16,7 @@ public class FavoritesHelper {
         ArrayList<String> information = new ArrayList<String>();
         information.add("favorites");
         List<Category> categories = Arrays.asList(getFavoritesAsCategory());
-        return new Source(information, categories);
+        return new Source("favorites", information, categories);
     }
 
     public static Category getFavoritesAsCategory() {

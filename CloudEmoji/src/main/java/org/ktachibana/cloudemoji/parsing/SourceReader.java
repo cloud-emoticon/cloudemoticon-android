@@ -13,7 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class SourceReader {
-    public Source readSourceFromDatabaseId(long id) throws SourceParsingException, IOException {
+    public Source readSourceFromDatabaseId(String alias, long id) throws SourceParsingException, IOException {
         Source source = null;
 
         // Get repository file name
@@ -30,7 +30,7 @@ public class SourceReader {
             // Parse
             Repository.FormatType formatType = repository.getFormatType();
             if (formatType == Repository.FormatType.XML) {
-                source = new SourceXmlParser().parse(fileReader);
+                source = new SourceXmlParser().parse(alias, fileReader);
             } else if (formatType == Repository.FormatType.JSON) {
                 source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
             }
