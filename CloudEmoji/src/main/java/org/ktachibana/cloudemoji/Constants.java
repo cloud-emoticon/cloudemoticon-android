@@ -19,6 +19,7 @@ public interface Constants {
     int LIST_ITEM_SETTINGS_ID = 7;
     int LIST_ITEM_EXIT_ID = 8;
     int LIST_ITEM_ACCOUNT_ID = 9;
+    int DEFAULT_LIST_ITEM_ID = LIST_ITEM_FAVORITE_ID;
 
     // Notification
     int PERSISTENT_NOTIFICATION_ID = 0;

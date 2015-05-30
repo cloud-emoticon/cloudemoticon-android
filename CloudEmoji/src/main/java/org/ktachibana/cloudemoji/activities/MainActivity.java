@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity implements
         Constants,
         SharedPreferences.OnSharedPreferenceChangeListener, Drawer.OnDrawerItemClickListener {
 
-    private static final int DEFAULT_LIST_ITEM_ID = LIST_ITEM_FAVORITE_ID;
     private static final String STATE_TAG = "state";
     public static final String SOURCE_CACHE_TAG = "source_cache";
     private Drawer.Result mDrawer;
@@ -93,13 +92,13 @@ public class MainActivity extends BaseActivity implements
             mState = savedInstanceState.getParcelable(STATE_TAG);
         }
 
-        // Else, set it to display default
+        // Else, initialize
         else {
-            mState = new MainActivityState(DEFAULT_LIST_ITEM_ID, initializeCache());
+            mState = new MainActivityState(initializeCache());
         }
 
         // Adjust to the current state
-        adjustToCurrentState();
+        refreshUiWithCurrentState();
     }
 
     private void setupViews() {
@@ -351,12 +350,21 @@ public class MainActivity extends BaseActivity implements
 
         // Coming back from repository manager, repositories may be changed
         if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE) {
-            // TODO
+
+            // If currently showing repositories, refresh
+            if (mState.getItemId() == LIST_ITEM_REPOSITORIES) {
+                mState.setSourceCache(initializeCache());
+                refreshUiWithCurrentState();
+            }
         }
 
         // Coming back from preference, favorites may be changed
         if (requestCode == PREFERENCE_REQUEST_CODE) {
-            // TODO
+
+            // If currently showing favorites, refresh
+            if (mState.getItemId() == LIST_ITEM_FAVORITE_ID) {
+                refreshUiWithCurrentState();
+            }
         }
     }
 
@@ -466,8 +474,10 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void adjustToCurrentState() {
+    private void refreshUiWithCurrentState() {
         int listItemId = mState.getItemId();
+
+        // Primary items
 
         if (listItemId == LIST_ITEM_FAVORITE_ID) {
             replaceMainContainer(new FavoriteFragment());
@@ -489,41 +499,49 @@ public class MainActivity extends BaseActivity implements
             closeDrawers();
         }
 
+        // Secondary items
+
         if (listItemId == LIST_ITEM_REPO_MANAGER_ID) {
             Intent intent = new Intent(this, RepositoryManagerActivity.class);
             startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
+            mState.revertToPreviousId();
         }
 
         if (listItemId == LIST_ITEM_SETTINGS_ID) {
             Intent intent = new Intent(this, PreferenceActivity.class);
             startActivityForResult(intent, PREFERENCE_REQUEST_CODE);
+            mState.revertToPreviousId();
         }
 
         if (listItemId == LIST_ITEM_EXIT_ID) {
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .cancel(PERSISTENT_NOTIFICATION_ID);
             finish();
+            mState.revertToPreviousId();
         }
 
         if (listItemId == LIST_ITEM_ACCOUNT_ID) {
             Intent intent = new Intent(this, AccountActivity.class);
             startActivity(intent);
+            mState.revertToPreviousId();
         }
 
         if (listItemId == LIST_ITEM_REPO_STORE_ID) {
             Intent intent = new Intent();
             intent.setData(Uri.parse(STORE_URL));
             startActivity(intent);
+            mState.revertToPreviousId();
         }
 
         if (listItemId == LIST_ITEM_UPDATE_CHECKER_ID) {
             new UpdateChecker().checkForLatestVercode();
+            mState.revertToPreviousId();
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
         mState.setItemId(iDrawerItem.getIdentifier());
-        adjustToCurrentState();
+        refreshUiWithCurrentState();
     }
 }

@@ -3,16 +3,17 @@ package org.ktachibana.cloudemoji.activities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
-public class MainActivityState implements Parcelable {
+public class MainActivityState implements Parcelable, Constants {
     private int itemId;
+    private int previousItemId;
     private SourceInMemoryCache sourceCache;
 
-    public MainActivityState(
-            int itemId,
-            SourceInMemoryCache sourceCache) {
-        this.itemId = itemId;
+    public MainActivityState(SourceInMemoryCache sourceCache) {
+        this.itemId = DEFAULT_LIST_ITEM_ID;
+        this.previousItemId = DEFAULT_LIST_ITEM_ID;
         this.sourceCache = sourceCache;
     }
 
@@ -20,12 +21,23 @@ public class MainActivityState implements Parcelable {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setItemId(int newItemId) {
+        this.previousItemId = this.itemId;
+        this.itemId = newItemId;
+    }
+
+    public void revertToPreviousId() {
+        this.itemId = this.previousItemId;
+        int i = 0;
     }
 
     public SourceInMemoryCache getSourceCache() {
         return sourceCache;
+    }
+
+    public void setSourceCache(SourceInMemoryCache cache) {
+        sourceCache = null;
+        sourceCache = cache;
     }
 
     @Override
