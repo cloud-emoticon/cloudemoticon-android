@@ -1,6 +1,6 @@
 # 0.6.8 (17)
 
-Fix bug in Repo manager launched by external link
+Repo store
 
 Better looking list items in Favorite/Repo Manager
 
