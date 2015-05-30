@@ -1,7 +1,5 @@
 # 0.6.8 (17)
 
-New repo center
-
 Use Android Support Design Library (Fab, Snackbar, Tabs)
 
 Bump up library versions
