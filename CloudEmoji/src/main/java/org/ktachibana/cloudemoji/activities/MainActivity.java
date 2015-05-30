@@ -38,11 +38,11 @@ import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
+import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.models.persistence.Favorite;
 import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.ktachibana.cloudemoji.net.UpdateChecker;
-import org.ktachibana.cloudemoji.parsing.FavoritesHelper;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -485,7 +485,8 @@ public class MainActivity extends BaseActivity implements
         }
 
         if (listItemId == LIST_ITEM_REPOSITORIES) {
-            // TODO
+            replaceMainContainer(RepositoriesFragment.newInstance(mState.getSourceCache()));
+            closeDrawers();
         }
 
         if (listItemId == LIST_ITEM_REPO_MANAGER_ID) {

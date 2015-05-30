@@ -57,6 +57,21 @@ public class SourceInMemoryCache implements Parcelable {
     }
 
     /**
+     * Get all valid keys in the cache
+     *
+     * @return all valid keys in the cache
+     */
+    public List<Long> getAllKeys() {
+        List<Long> keys = new ArrayList<>();
+        for (Long key : mKeyArray) {
+            if (key != null) {
+                keys.add(key);
+            }
+        }
+        return keys;
+    }
+
+    /**
      * Get all valid values in the cache
      *
      * @return all valid values in the cache
