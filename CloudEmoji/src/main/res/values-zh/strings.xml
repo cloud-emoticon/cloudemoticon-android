@@ -82,4 +82,5 @@
     <string name="no_shortcut">没有快捷输入</string>
     <string name="shortcut">快捷输入</string>
     <string name="repositories">源</string>
+    <string name="please_wait">请稍等&#8230;</string>
 </resources>

@@ -47,13 +47,14 @@ public interface Constants {
     String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
     String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
     String CLOUD_API_HOST = "http://ce.catofes.com";
-    String STORE_URL = "http://emoticon.moe/?cat=2";
+    String STORE_URL = "http://emoticon.moe/store.json";
     String UPDATE_CHECKER_URL = "https://cloudemoticonbackend.herokuapp.com/version";
     String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
 
     // Intent
     int REPOSITORY_MANAGER_REQUEST_CODE = 0;
     int PREFERENCE_REQUEST_CODE = 1;
+    int REPOSITORY_STORE_REQUEST_CODE = 2;
 
     // File
     String FAVORITES_BACKUP_FILE_PATH

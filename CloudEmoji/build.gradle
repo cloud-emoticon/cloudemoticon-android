@@ -57,4 +57,5 @@ dependencies {
     compile 'com.github.mrengineer13:snackbar:1.2.0'
     compile 'com.afollestad:material-dialogs:0.7.4.2'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

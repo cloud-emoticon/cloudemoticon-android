@@ -7,4 +7,6 @@
     <dimen name="listPreferredItemPaddingRight">16dip</dimen>
     <dimen name="listPreferredItemIconAndTextMargin">32dip</dimen>
 
+    <dimen name="iconSize">128dip</dimen>
+
 </resources>

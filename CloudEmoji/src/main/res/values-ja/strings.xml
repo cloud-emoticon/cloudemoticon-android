@@ -80,4 +80,5 @@
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>
     <string name="repositories">Repositories</string>
+    <string name="please_wait">Please wait&#8230;</string>
 </resources>
