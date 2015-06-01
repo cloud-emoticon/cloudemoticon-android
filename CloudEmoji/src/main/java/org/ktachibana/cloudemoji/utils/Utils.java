@@ -5,11 +5,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 
+import org.ktachibana.cloudemoji.BaseApplication;
+
 /**
  * The notorious trash can
  */
 public class Utils {
-    public static boolean networkAvailable(Context context) {
+    public static boolean networkAvailable() {
+        Context context = BaseApplication.context();
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         if (info == null) return false;
@@ -17,8 +20,8 @@ public class Utils {
         return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 
-    public static boolean networkUnavailable(Context context) {
-        return !networkAvailable(context);
+    public static boolean networkUnavailable() {
+        return !networkAvailable();
     }
 
     public static boolean belowHoneycomb() {

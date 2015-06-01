@@ -26,17 +26,17 @@ import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
+import org.ktachibana.cloudemoji.BaseApplication;
+import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
@@ -44,7 +44,7 @@ import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.models.persistence.Favorite;
 import org.ktachibana.cloudemoji.models.persistence.Repository;
-import org.ktachibana.cloudemoji.net.UpdateChecker;
+import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -290,11 +290,9 @@ public class MainActivity extends BaseActivity implements
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
     }
 
-    public void onEvent(UpdateCheckedEvent event) {
-        int latestVersionCode = event.getVercode();
-
+    private void checkVersionCode(boolean success, int latestVersionCode) {
         // If failed
-        if (latestVersionCode == 0) {
+        if (!success) {
             showSnackBar(R.string.update_checker_failed);
             return;
         }
@@ -414,8 +412,7 @@ public class MainActivity extends BaseActivity implements
 
             // Load file from assets and save to file system
             inputStream = getAssets().open("test.xml");
-            File file = new File(
-                    SugarApp.getSugarContext().getFilesDir(), defaultRepository.getFileName());
+            File file = new File(BaseApplication.context().getFilesDir(), defaultRepository.getFileName());
             outputStream = new FileOutputStream(file);
 
             // Copying
@@ -540,7 +537,22 @@ public class MainActivity extends BaseActivity implements
         }
 
         if (listItemId == LIST_ITEM_UPDATE_CHECKER_ID) {
-            new UpdateChecker().checkForLatestVercode();
+            new VersionCodeCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
+                @Override
+                public void success(int result) {
+                    checkVersionCode(true, result);
+                }
+
+                @Override
+                public void fail(Throwable t) {
+                    checkVersionCode(false, 0);
+                }
+
+                @Override
+                public void finish() {
+
+                }
+            });
             mState.revertToPreviousId();
         }
     }

@@ -1,18 +1,13 @@
 package org.ktachibana.cloudemoji.net;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 
-public class ApiClient implements Constants {
+public class ApiClient extends BaseHttpClient implements Constants {
     private static final String REGISTER = "/api/account.php?f=register";
-    private AsyncHttpClient mClient;
-
-    public ApiClient() {
-        mClient = new AsyncHttpClient();
-    }
 
     public static Status getRegisterStatus(int code) {
         switch (code) {

@@ -1,14 +1,10 @@
-# 0.6.8 (17)
-
-Abstract out Http ops
-
-Pull to refresh in Source
-
-# Future
+# 0.6.9 (18)
 
 Better looking list items in Favorite/Repo Manager
 
 Add info in SourceFragment
+
+Pull to refresh in Source
 
 Build EmoticonView
 

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:textColorPrimary="@android:color/white"/>
+        android:textColorPrimary="@android:color/white" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

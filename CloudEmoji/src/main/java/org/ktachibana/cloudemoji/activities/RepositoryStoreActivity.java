@@ -4,20 +4,15 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseActivity;
-import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryStoreListViewAdapter;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
+import org.ktachibana.cloudemoji.net.RepositoryStoreDownloaderClient;
 import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
 
 import java.util.ArrayList;
@@ -27,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class RepositoryStoreActivity extends BaseActivity implements Constants {
+public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
     private List<StoreRepository> mRepositories;
 
@@ -53,42 +48,21 @@ public class RepositoryStoreActivity extends BaseActivity implements Constants {
                 .content(R.string.downloading)
                 .show();
 
-        new AsyncHttpClient().get(
-                this,
-                STORE_URL,
-                new JsonHttpResponseHandler() {
+        new RepositoryStoreDownloaderClient().downloadRepositoryStore(
+                new BaseHttpClient.ListCallback<StoreRepository>() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        List<StoreRepository> repositories = new ArrayList<>();
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject object = response.getJSONObject(i);
-                                String alias = object.getString("name");
-                                String url = object.getString("codeurl");
-                                String description = object.getString("introduction");
-                                String author = object.getString("creator");
-                                String authorUrl = object.getString("creatorurl");
-                                String authorIconUrl = object.getString("iconurl");
-                                StoreRepository repository = new StoreRepository(
-                                        alias, url, description, author, authorUrl, authorIconUrl
-                                );
-                                repositories.add(repository);
-                            }
-                            mRepositories = repositories;
-                            showRepositoryStore();
-                        } catch (JSONException e) {
-                            showSnackBar(e.getLocalizedMessage());
-                        }
+                    public void success(List<StoreRepository> result) {
+                        mRepositories = result;
+                        showRepositoryStore();
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        showSnackBar(throwable.getLocalizedMessage());
+                    public void fail(Throwable t) {
+                        showSnackBar(t.getLocalizedMessage());
                     }
 
                     @Override
-                    public void onFinish() {
-                        // Dismiss the dialog
+                    public void finish() {
                         dialog.dismiss();
                     }
                 });

@@ -10,7 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="18dp">
-    
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             tools:text="Author"
             android:id="@+id/author"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
 
