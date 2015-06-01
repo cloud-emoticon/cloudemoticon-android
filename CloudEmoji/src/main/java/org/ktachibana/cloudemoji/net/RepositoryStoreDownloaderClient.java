@@ -1,5 +1,7 @@
 package org.ktachibana.cloudemoji.net;
 
+import android.support.annotation.NonNull;
+
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RepositoryStoreDownloaderClient extends BaseHttpClient implements Constants {
-    public void downloadRepositoryStore(final ListCallback callback) {
+    public void downloadRepositoryStore(@NonNull final ListCallback callback) {
         mClient.get(STORE_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -42,6 +44,11 @@ public class RepositoryStoreDownloaderClient extends BaseHttpClient implements C
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 callback.fail(throwable);
+            }
+
+            @Override
+            public void onFinish() {
+                callback.finish();
             }
         });
     }

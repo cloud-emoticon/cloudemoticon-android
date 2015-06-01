@@ -9,6 +9,7 @@ public class BaseHttpClient {
 
     public interface BaseCallback {
         void fail(Throwable t);
+        void finish();
     }
 
     public interface IntCallback extends BaseCallback {
@@ -17,6 +18,10 @@ public class BaseHttpClient {
 
     public interface ListCallback<T> extends BaseCallback {
         void success(List<T> result);
+    }
+
+    public interface  ObjectCallback<T> extends BaseCallback {
+        void success(T result);
     }
 
     public BaseHttpClient() {

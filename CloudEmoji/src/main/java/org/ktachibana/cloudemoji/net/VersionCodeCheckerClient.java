@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 
-public class UpdateCheckerClient extends BaseHttpClient implements Constants {
+public class VersionCodeCheckerClient extends BaseHttpClient implements Constants {
     public void checkForLatestVersionCode(@NonNull final IntCallback callback) {
         mClient.get(UPDATE_CHECKER_URL, new JsonHttpResponseHandler() {
             @Override
@@ -26,6 +26,11 @@ public class UpdateCheckerClient extends BaseHttpClient implements Constants {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 callback.fail(throwable);
+            }
+
+            @Override
+            public void onFinish() {
+                callback.finish();
             }
         });
     }

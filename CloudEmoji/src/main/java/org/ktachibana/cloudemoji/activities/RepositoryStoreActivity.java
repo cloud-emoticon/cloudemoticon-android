@@ -54,14 +54,18 @@ public class RepositoryStoreActivity extends BaseActivity {
                     public void success(List<StoreRepository> result) {
                         mRepositories = result;
                         showRepositoryStore();
-                        dialog.dismiss();
                     }
 
                     @Override
                     public void fail(Throwable t) {
+                        showSnackBar(t.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void finish() {
                         dialog.dismiss();
                     }
-        });
+                });
     }
 
     @Override
