@@ -7,4 +7,9 @@
     <color name="primaryFabPressed">#E91E63</color>
     <color name="listItemPressed">#ddd</color>
     <color name="listItemRipple">#9E9E9E</color>
+    <color name="holoBlueLight">#33b5e5</color>
+    <color name="holoGreenLight">#99cc00</color>
+    <color name="holoOrangeLight">#ffbb33</color>
+    <color name="holoRedLight">#ff4444</color>
+
 </resources>
