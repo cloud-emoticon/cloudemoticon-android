@@ -44,7 +44,7 @@ import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.models.persistence.Favorite;
 import org.ktachibana.cloudemoji.models.persistence.Repository;
-import org.ktachibana.cloudemoji.net.UpdateChecker;
+import org.ktachibana.cloudemoji.net.UpdateCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
@@ -538,10 +538,15 @@ public class MainActivity extends BaseActivity implements
         }
 
         if (listItemId == LIST_ITEM_UPDATE_CHECKER_ID) {
-            new UpdateChecker().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
+            new UpdateCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
                 @Override
-                public void finish(boolean success, int result) {
-                    checkVersionCode(success, result);
+                public void success(int result) {
+                    checkVersionCode(true, result);
+                }
+
+                @Override
+                public void fail(Throwable t) {
+                    checkVersionCode(false, 0);
                 }
             });
             mState.revertToPreviousId();
