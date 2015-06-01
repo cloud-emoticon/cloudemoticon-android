@@ -8,7 +8,6 @@ import java.util.List;
 
 public class BaseHttpClient {
     protected AsyncHttpClient mClient;
-    protected boolean mNetworkAvailable;
     protected static Exception NETWORK_UNAVAILABLE_EXCEPTION = new Exception(BaseApplication.context().getString(R.string.bad_conn));
 
     public interface BaseCallback {
@@ -31,10 +30,5 @@ public class BaseHttpClient {
 
     public BaseHttpClient() {
         mClient = new AsyncHttpClient();
-        mNetworkAvailable = Utils.networkAvailable(BaseApplication.context());
-    }
-
-    protected boolean isNetWorkAvailable() {
-        return mNetworkAvailable;
     }
 }
