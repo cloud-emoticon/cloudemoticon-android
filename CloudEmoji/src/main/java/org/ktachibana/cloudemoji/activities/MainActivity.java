@@ -36,7 +36,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.events.UpdateCheckedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
@@ -290,9 +289,7 @@ public class MainActivity extends BaseActivity implements
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
     }
 
-    public void onEvent(UpdateCheckedEvent event) {
-        int latestVersionCode = event.getVercode();
-
+    private void checkVersionCode(int latestVersionCode) {
         // If failed
         if (latestVersionCode == 0) {
             showSnackBar(R.string.update_checker_failed);
@@ -540,7 +537,12 @@ public class MainActivity extends BaseActivity implements
         }
 
         if (listItemId == LIST_ITEM_UPDATE_CHECKER_ID) {
-            new UpdateChecker().checkForLatestVercode();
+            new UpdateChecker().checkForLatestVersionCode(new UpdateChecker.UpdateCheckedCallback() {
+                @Override
+                public void finish(int versionCode) {
+                    checkVersionCode(versionCode);
+                }
+            });
             mState.revertToPreviousId();
         }
     }
