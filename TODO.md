@@ -1,12 +1,12 @@
 # 0.6.8 (17)
 
-Better looking list items in Favorite/Repo Manager
-
 Abstract out Http ops
 
 Pull to refresh in Source
 
 # Future
+
+Better looking list items in Favorite/Repo Manager
 
 Add info in SourceFragment
 
