@@ -15,8 +15,8 @@ public class BaseHttpClient {
         void success(int result);
     }
 
-    public interface ListCallback extends BaseCallback {
-        void success(List result);
+    public interface ListCallback<T> extends BaseCallback {
+        void success(List<T> result);
     }
 
     public BaseHttpClient() {

@@ -48,18 +48,19 @@ public class RepositoryStoreActivity extends BaseActivity {
                 .content(R.string.downloading)
                 .show();
 
-        new RepositoryStoreDownloaderClient().downloadRepositoryStore(new BaseHttpClient.ListCallback() {
-            @Override
-            public void success(List result) {
-                mRepositories = result;
-                showRepositoryStore();
-                dialog.dismiss();
-            }
+        new RepositoryStoreDownloaderClient().downloadRepositoryStore(
+                new BaseHttpClient.ListCallback<StoreRepository>() {
+                    @Override
+                    public void success(List<StoreRepository> result) {
+                        mRepositories = result;
+                        showRepositoryStore();
+                        dialog.dismiss();
+                    }
 
-            @Override
-            public void fail(Throwable t) {
-                dialog.dismiss();
-            }
+                    @Override
+                    public void fail(Throwable t) {
+                        dialog.dismiss();
+                    }
         });
     }
 
