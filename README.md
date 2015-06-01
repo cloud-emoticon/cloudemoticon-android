@@ -25,13 +25,13 @@ A cloud solution to your favorite emoticons
 
 ## Features
 * Multi-repository management
-* Favorites
+* Bookmarks
 * History
 * Search
 * Repository store
-* Backup and restore favorites
+* Backup and restore bookmarks
 * Swipe-up navigation bar icon to replace home
-* Add your favorites to your user dictionary (some IME's can use it!)
+* Add your bookmarks to your user dictionary (some IME's can use it!)
 * More...
 
 ## Screenshot
