@@ -87,11 +87,8 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
                         String extension = FilenameUtils.getExtension(url);
 
                         // Detect duplicate URL
-                        List<Repository> repositories = Repository.listAll(Repository.class);
-                        for (Repository repository : repositories) {
-                            if (url.equals(repository.getUrl())) {
-                                return getString(R.string.duplicate_url);
-                            }
+                        if (Repository.hasDuplicateUrl(url)) {
+                            return getString(R.string.duplicate_url);
                         }
 
                         // Detect incorrect file format

@@ -15,6 +15,8 @@ import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryStoreListViewAdapter;
+import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
 import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
 
@@ -23,8 +25,12 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 public class RepositoryStoreActivity extends BaseActivity implements Constants {
+    private static final String STATE_TAG = "state";
+    private List<StoreRepository> mRepositories;
+
     @InjectView(R.id.list)
     ListView mList;
 
@@ -34,6 +40,13 @@ public class RepositoryStoreActivity extends BaseActivity implements Constants {
         setContentView(R.layout.activity_repository_store);
 
         ButterKnife.inject(this);
+        EventBus.getDefault().register(this);
+
+        if (savedInstanceState != null) {
+            mRepositories = savedInstanceState.getParcelableArrayList(STATE_TAG);
+            showRepositoryStore();
+            return;
+        }
 
         final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(this)
                 .title(R.string.please_wait)
@@ -61,7 +74,8 @@ public class RepositoryStoreActivity extends BaseActivity implements Constants {
                                 );
                                 repositories.add(repository);
                             }
-                            showRepositoryStore(repositories);
+                            mRepositories = repositories;
+                            showRepositoryStore();
                         } catch (JSONException e) {
                             showSnackBar(e.getLocalizedMessage());
                         }
@@ -80,7 +94,27 @@ public class RepositoryStoreActivity extends BaseActivity implements Constants {
                 });
     }
 
-    private void showRepositoryStore(List<StoreRepository> repositories) {
-        mList.setAdapter(new RepositoryStoreListViewAdapter(this, repositories));
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(STATE_TAG, (ArrayList<StoreRepository>) mRepositories);
+    }
+
+    private void showRepositoryStore() {
+        mList.setAdapter(new RepositoryStoreListViewAdapter(this, mRepositories));
+    }
+
+    public void onEvent(RepositoryAddedEvent event) {
+        showSnackBar(event.getRepository().getAlias());
+    }
+
+    public void onEvent(RepositoryDuplicatedEvent event) {
+        showSnackBar(R.string.duplicate_url);
     }
 }

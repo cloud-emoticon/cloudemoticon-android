@@ -6,17 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.EmptyEvent;
+import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
+import org.ktachibana.cloudemoji.models.persistence.Repository;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 public class RepositoryStoreListViewAdapter extends BaseAdapter {
     private List<StoreRepository> mRepositories;
@@ -25,6 +31,8 @@ public class RepositoryStoreListViewAdapter extends BaseAdapter {
     public RepositoryStoreListViewAdapter(Context context, List<StoreRepository> repositories) {
         this.mRepositories = repositories;
         this.mContext = context;
+
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -56,18 +64,33 @@ public class RepositoryStoreListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        StoreRepository item = mRepositories.get(position);
+        final StoreRepository item = mRepositories.get(position);
 
         viewHolder.alias.setText(item.getAlias());
         viewHolder.url.setText(item.getUrl());
         viewHolder.description.setText(item.getDescription());
         Picasso.with(mContext).load(item.getAuthorIconUrl()).into(viewHolder.authorImage);
         viewHolder.author.setText(item.getAuthor());
+        viewHolder.root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Repository.hasDuplicateUrl(item.getUrl())) {
+                    EventBus.getDefault().post(new RepositoryDuplicatedEvent());
+                } else {
+                    Repository repository = new Repository(item.getUrl(), item.getAlias());
+                    repository.save();
+
+                    EventBus.getDefault().post(new RepositoryAddedEvent(repository));
+                }
+            }
+        });
 
         return view;
     }
 
     static class ViewHolder {
+        @InjectView(R.id.root)
+        LinearLayout root;
         @InjectView(R.id.alias)
         TextView alias;
         @InjectView(R.id.url)
@@ -82,5 +105,9 @@ public class RepositoryStoreListViewAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
+    }
+
+    public void onEvent(EmptyEvent event) {
+
     }
 }

@@ -110,6 +110,10 @@
         <activity
             android:name=".activities.RepositoryStoreActivity"
             android:label="@string/repository_store" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
     </application>
 

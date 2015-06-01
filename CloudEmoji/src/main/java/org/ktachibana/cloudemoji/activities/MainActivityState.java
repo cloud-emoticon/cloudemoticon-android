@@ -47,11 +47,13 @@ public class MainActivityState implements Parcelable, Constants {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.itemId);
+        dest.writeInt(this.previousItemId);
         dest.writeParcelable(this.sourceCache, 0);
     }
 
     private MainActivityState(Parcel in) {
         this.itemId = in.readInt();
+        this.previousItemId = in.readInt();
         this.sourceCache = in.readParcelable(SourceInMemoryCache.class.getClassLoader());
     }
 
