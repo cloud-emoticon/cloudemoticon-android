@@ -12,26 +12,31 @@ import org.ktachibana.cloudemoji.Constants;
 
 public class VersionCodeCheckerClient extends BaseHttpClient implements Constants {
     public void checkForLatestVersionCode(@NonNull final IntCallback callback) {
-        mClient.get(UPDATE_CHECKER_URL, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    int versionCode = response.getInt("version");
-                    callback.success(versionCode);
-                } catch (JSONException e) {
-                    callback.fail(e);
+        if (isNetWorkAvailable()) {
+            mClient.get(UPDATE_CHECKER_URL, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        int versionCode = response.getInt("version");
+                        callback.success(versionCode);
+                    } catch (JSONException e) {
+                        callback.fail(e);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                callback.fail(throwable);
-            }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    callback.fail(throwable);
+                }
 
-            @Override
-            public void onFinish() {
-                callback.finish();
-            }
-        });
+                @Override
+                public void onFinish() {
+                    callback.finish();
+                }
+            });
+        } else {
+            callback.fail(NETWORK_UNAVAILABLE_EXCEPTION);
+            callback.finish();
+        }
     }
 }

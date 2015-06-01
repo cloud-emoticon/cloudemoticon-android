@@ -26,12 +26,12 @@ import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.orm.SugarApp;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
+import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -412,8 +412,7 @@ public class MainActivity extends BaseActivity implements
 
             // Load file from assets and save to file system
             inputStream = getAssets().open("test.xml");
-            File file = new File(
-                    SugarApp.getSugarContext().getFilesDir(), defaultRepository.getFileName());
+            File file = new File(BaseApplication.context().getFilesDir(), defaultRepository.getFileName());
             outputStream = new FileOutputStream(file);
 
             // Copying

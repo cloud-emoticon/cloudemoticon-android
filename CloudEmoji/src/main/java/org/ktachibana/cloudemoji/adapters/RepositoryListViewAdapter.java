@@ -10,16 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.orm.SugarApp;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
+import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.NetworkUnavailableEvent;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
@@ -32,10 +27,8 @@ import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.Utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -97,37 +90,28 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
         viewHolder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // If network is available
-                if (Utils.networkAvailable(SugarApp.getSugarContext())) {
+                // Show a dialog progress dialog
+                final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(mContext)
+                        .title(R.string.please_wait)
+                        .content(mContext.getString(R.string.downloading) + "\n" + item.getUrl())
+                        .show();
 
-                    // Show a dialog progress dialog
-                    final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(mContext)
-                            .title(R.string.please_wait)
-                            .content(mContext.getString(R.string.downloading) + "\n" + item.getUrl())
-                            .show();
+                new RepositoryDownloaderClient().downloadSource(item, new BaseHttpClient.ObjectCallback<Repository>() {
+                    @Override
+                    public void success(Repository result) {
+                        EventBus.getDefault().post(new RepositoryDownloadedEvent(item));
+                    }
 
-                    new RepositoryDownloaderClient().downloadSource(item, new BaseHttpClient.ObjectCallback<Repository>() {
-                        @Override
-                        public void success(Repository result) {
-                            EventBus.getDefault().post(new RepositoryDownloadedEvent(item));
-                        }
+                    @Override
+                    public void fail(Throwable t) {
+                        EventBus.getDefault().post(new RepositoryDownloadFailedEvent(t));
+                    }
 
-                        @Override
-                        public void fail(Throwable t) {
-                            EventBus.getDefault().post(new RepositoryDownloadFailedEvent(t));
-                        }
-
-                        @Override
-                        public void finish() {
-                            dialog.dismiss();
-                        }
-                    });
-
-                } else {
-                    EventBus.getDefault().post(new NetworkUnavailableEvent());
-                }
-
-
+                    @Override
+                    public void finish() {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -178,8 +162,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
             public void onClick(View view) {
                 // Delete repository file from file system
                 item.delete();
-                File deletedFile = new File(SugarApp.getSugarContext().getFilesDir()
-                        , item.getFileName());
+                File deletedFile = new File(BaseApplication.context().getFilesDir(), item.getFileName());
                 deletedFile.delete();
 
                 // Update list

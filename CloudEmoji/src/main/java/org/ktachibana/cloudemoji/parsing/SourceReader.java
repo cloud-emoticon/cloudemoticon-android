@@ -1,9 +1,9 @@
 package org.ktachibana.cloudemoji.parsing;
 
 import com.google.gson.JsonParseException;
-import com.orm.SugarApp;
 
 import org.apache.commons.io.IOUtils;
+import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.xmlpull.v1.XmlPullParserException;
@@ -21,7 +21,7 @@ public class SourceReader {
         String fileName = repository.getFileName();
 
         // Read the file from file system
-        File file = new File(SugarApp.getSugarContext().getFilesDir(), fileName);
+        File file = new File(BaseApplication.context().getFilesDir(), fileName);
         FileReader fileReader = null;
         try {
             // Read it
