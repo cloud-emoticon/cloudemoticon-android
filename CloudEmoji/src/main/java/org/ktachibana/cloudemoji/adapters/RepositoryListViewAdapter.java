@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.adapters;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.orm.SugarApp;
@@ -29,6 +29,7 @@ import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
+import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.Utils;
 
 import java.io.File;
@@ -98,10 +99,10 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                 if (Utils.networkAvailable(SugarApp.getSugarContext())) {
 
                     // Show a dialog progress dialog
-                    final ProgressDialog dialog = new ProgressDialog(mContext);
-                    dialog.setTitle(R.string.downloading);
-                    dialog.setMessage(item.getUrl());
-                    dialog.show();
+                    final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(mContext)
+                            .title(R.string.please_wait)
+                            .content(mContext.getString(R.string.downloading) + "\n" + item.getUrl())
+                            .show();
 
                     new AsyncHttpClient().get(
                             SugarApp.getSugarContext(),

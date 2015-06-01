@@ -6,6 +6,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.ktachibana.cloudemoji.Constants;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * POJO class holding a remote repository and its relevant information
@@ -67,6 +68,16 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
 
     public void setVisible(boolean isVisible) {
         this.isVisible = isVisible;
+    }
+
+    public static boolean hasDuplicateUrl(String url) {
+        List<Repository> repositories = listAll(Repository.class);
+        for (Repository repository : repositories) {
+            if (url.equals(repository.getUrl())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static enum FormatType {XML, JSON}

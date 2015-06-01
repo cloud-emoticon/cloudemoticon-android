@@ -30,6 +30,7 @@ public class AccountActivity extends BaseActivity implements Constants {
     EditText emailAddress;
     @InjectView(R.id.register)
     Button register;
+    // TODO: change to MaterialDialog
     ProgressDialog mProgressDialog;
 
     @Override

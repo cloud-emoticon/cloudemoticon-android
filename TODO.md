@@ -1,8 +1,8 @@
 # 0.6.8 (17)
 
-Repo store
-
 Better looking list items in Favorite/Repo Manager
+
+Abstract out Http ops
 
 Pull to refresh in Source
 
@@ -10,10 +10,8 @@ Pull to refresh in Source
 
 Add info in SourceFragment
 
-Use Android Support Design Library (Nav drawer)
-
-Emoticon wrapping
+Build EmoticonView
 
 Abstract out EventBus
 
-Try lower required version
+Use RecyclerView

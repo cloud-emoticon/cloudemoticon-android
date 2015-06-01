@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.mtp.MtpConstants;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -351,8 +350,9 @@ public class MainActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Coming back from repository manager, repositories may be changed
-        if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE) {
+        // Coming back from repository manager or repository store, repositories may be changed
+        if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE ||
+                requestCode == REPOSITORY_STORE_REQUEST_CODE) {
 
             // If currently showing repositories, refresh
             if (mState.getItemId() == LIST_ITEM_REPOSITORIES) {
@@ -534,9 +534,8 @@ public class MainActivity extends BaseActivity implements
         }
 
         if (listItemId == LIST_ITEM_REPO_STORE_ID) {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse(STORE_URL));
-            startActivity(intent);
+            Intent intent = new Intent(this, RepositoryStoreActivity.class);
+            startActivityForResult(intent, REPOSITORY_STORE_REQUEST_CODE);
             mState.revertToPreviousId();
         }
 

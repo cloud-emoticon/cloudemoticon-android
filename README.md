@@ -52,6 +52,7 @@ A cloud solution to your favorite emoticons
 * [SnackBar] (https://github.com/MrEngineer13/SnackBar)
 * [material-dialogs] (https://github.com/afollestad/material-dialogs)
 * [MaterialDrawer] (https://github.com/mikepenz/MaterialDrawer)
+* [picasso] (http://github.com/square/picasso)
 
 ## Libraries via Jar/Aar balls
 * [ARCA](https://github.com/ACRA/acra)
