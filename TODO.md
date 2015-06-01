@@ -1,7 +1,5 @@
 # 0.6.8 (17)
 
-Repo store
-
 Better looking list items in Favorite/Repo Manager
 
 Abstract out Http ops
