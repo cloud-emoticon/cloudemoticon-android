@@ -43,7 +43,6 @@ A cloud solution to your favorite emoticons
 * [android-support-v4-preferencefragment] (https://github.com/kolavar/android-support-v4-preferencefragment)
 * [android-async-http](https://github.com/loopj/android-async-http)
 * [EventBus](https://github.com/greenrobot/EventBus)
-* [LinearListView](https://github.com/frankiesardo/LinearListView)
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
 * [Gson](https://code.google.com/p/google-gson/)
 * [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
