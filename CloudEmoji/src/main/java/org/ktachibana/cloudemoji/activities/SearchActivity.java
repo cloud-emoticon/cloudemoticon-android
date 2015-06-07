@@ -32,18 +32,10 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_search);
 
         mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG);
         handleIntent(getIntent());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

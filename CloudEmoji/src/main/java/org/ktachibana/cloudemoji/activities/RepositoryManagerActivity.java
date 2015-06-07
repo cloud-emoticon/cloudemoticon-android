@@ -28,7 +28,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 public class RepositoryManagerActivity extends BaseActivity implements Constants {
     @InjectView(R.id.repositoryListView)
@@ -48,7 +47,6 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
     @Override
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_repository_manager);
         ButterKnife.inject(this);
 
@@ -65,12 +63,6 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
                 popupAddRepositoryDialog("");
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     public void popupAddRepositoryDialog(String passedInUrl) {
