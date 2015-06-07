@@ -8,6 +8,4 @@ Pull to refresh in Source
 
 Build EmoticonView
 
-Abstract out EventBus
-
 Use RecyclerView
