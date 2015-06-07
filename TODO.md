@@ -1,4 +1,4 @@
-# 0.6.9 (18)
+# Future
 
 Better looking list items in Favorite/Repo Manager
 
