@@ -1,13 +1,11 @@
 package org.ktachibana.cloudemoji.fragments;
 
 
-import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
@@ -15,7 +13,6 @@ import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.inmemory.Entry;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
-import org.ktachibana.cloudemoji.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -70,17 +67,7 @@ public class SourceFragment extends BaseFragment {
 
             }
         });
-        setFastScrollAlwaysVisible(mList, true);
 
         return rootView;
-    }
-
-    @TargetApi(11)
-    private void setFastScrollAlwaysVisible(ListView listView, boolean fastScrollAlwaysVisible) {
-        if (fastScrollAlwaysVisible) {
-            if (Utils.aboveHoneycomb()) {
-                listView.setFastScrollAlwaysVisible(true);
-            }
-        }
     }
 }

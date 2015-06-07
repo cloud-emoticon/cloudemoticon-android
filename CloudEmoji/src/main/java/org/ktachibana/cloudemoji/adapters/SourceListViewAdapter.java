@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
@@ -26,7 +25,7 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
-public class SourceListViewAdapter extends SectionedBaseAdapter implements SectionIndexer {
+public class SourceListViewAdapter extends SectionedBaseAdapter {
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
@@ -34,31 +33,15 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     private LayoutInflater mInflater;
     // Cache stores whether a emoticon is in favorites
     private HashMap<String, Boolean> mEmoticonInFavoritesCache;
-    private String[] mCategoryNameSectionIndexer;
-    private int[] mSectionToPositionMap;
 
     public SourceListViewAdapter(Context context, Source source) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSource = source;
-        mEmoticonInFavoritesCache = new LinkedHashMap<String, Boolean>();
+        mEmoticonInFavoritesCache = new LinkedHashMap<>();
 
         // Constant drawables
         mNoStarDrawable = context.getResources().getDrawable(R.drawable.ic_unfavorite);
         mStarDrawable = context.getResources().getDrawable(R.drawable.ic_favorite);
-
-        // Set up fast scroll indexer
-        mCategoryNameSectionIndexer = new String[mSource.getCategories().size()];
-        for (int i = 0; i < mCategoryNameSectionIndexer.length; i++) {
-            mCategoryNameSectionIndexer[i] = mSource.getCategories().get(i).getName();
-        }
-
-        // Set up section to position map
-        mSectionToPositionMap = new int[mSource.getCategories().size()];
-        int runningTotal = 0;
-        for (int i = 0; i < mSource.getCategories().size(); i++) {
-            mSectionToPositionMap[i] = runningTotal;
-            runningTotal += mSource.getCategories().get(i).getEntries().size();
-        }
     }
 
     @Override
@@ -176,16 +159,6 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         viewHolder.text.setText(category.getName());
 
         return convertView;
-    }
-
-    @Override
-    public Object[] getSections() {
-        return mCategoryNameSectionIndexer;
-    }
-
-    @Override
-    public int getPositionForSection(int sectionIndex) {
-        return mSectionToPositionMap[sectionIndex];
     }
 
     static class EntryViewHolder {

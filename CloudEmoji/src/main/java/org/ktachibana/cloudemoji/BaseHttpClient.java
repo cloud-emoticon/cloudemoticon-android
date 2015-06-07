@@ -2,8 +2,6 @@ package org.ktachibana.cloudemoji;
 
 import com.loopj.android.http.AsyncHttpClient;
 
-import org.ktachibana.cloudemoji.utils.Utils;
-
 import java.util.List;
 
 public class BaseHttpClient {
