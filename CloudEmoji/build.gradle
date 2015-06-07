@@ -45,6 +45,7 @@ dependencies {
     compile files('libs/acra-4.5.0.jar')
     compile files('libs/PinnedHeaderListView.jar')
     compile files('libs/sugar-1.3.jar')
+    compile files('libs/Parse-1.9.2.jar')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.loopj.android:android-async-http:1.4.7'
@@ -59,5 +60,4 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.parse.bolts:bolts-android:1.+'
-    compile files('libs/Parse-1.9.2.jar')
 }
