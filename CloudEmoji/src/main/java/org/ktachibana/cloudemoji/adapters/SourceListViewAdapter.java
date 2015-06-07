@@ -10,6 +10,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.Category;
@@ -74,6 +75,8 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
                 mSectionIndexToPositionMapping.add(j);
             }
         }
+
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -201,6 +204,10 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     @Override
     public int getPositionForSection(int sectionIndex) {
         return mSectionIndexToPositionMapping.get(sectionIndex);
+    }
+
+    public void onEvent(EmptyEvent event) {
+
     }
 
     static class EntryViewHolder {

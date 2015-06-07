@@ -4,12 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobeta.android.dslv.DragSortListView;
 
+import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
@@ -19,9 +19,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
-public class FavoriteListViewAdapter extends BaseAdapter implements DragSortListView.DropListener {
+public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSortListView.DropListener {
     private Context mContext;
     private List<Favorite> mFavorites;
 
@@ -82,7 +81,7 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
             public void onClick(View view) {
                 favorite.delete();
 
-                EventBus.getDefault().post(new FavoriteDeletedEvent(favorite.getEmoticon()));
+                mBus.post(new FavoriteDeletedEvent(favorite.getEmoticon()));
 
                 mFavorites.remove(favorite);
                 notifyDataSetChanged();
@@ -91,11 +90,7 @@ public class FavoriteListViewAdapter extends BaseAdapter implements DragSortList
         viewHolder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * Tell anybody who cares about a favorite is being edited
-                 * Namely the favorite fragment
-                 */
-                EventBus.getDefault().post(new FavoriteBeginEditingEvent(favorite));
+                mBus.post(new FavoriteBeginEditingEvent(favorite));
             }
         });
 
