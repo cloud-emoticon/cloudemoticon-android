@@ -58,4 +58,6 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.7.4.2'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile files('libs/Parse-1.9.2.jar')
 }
