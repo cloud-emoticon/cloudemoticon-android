@@ -20,7 +20,6 @@ import org.ktachibana.cloudemoji.models.persistence.History;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 public class HistoryFragment extends BaseFragment {
     @InjectView(R.id.historyListView)
@@ -63,7 +62,7 @@ public class HistoryFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History history = (History) mAdapter.getItem(position);
                 Entry entry = new Entry(history.getEmoticon(), history.getDescription());
-                EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
                 mAdapter.updateHistory();
             }
         });

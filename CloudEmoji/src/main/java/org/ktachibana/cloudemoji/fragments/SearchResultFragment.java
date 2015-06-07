@@ -19,7 +19,6 @@ import org.ktachibana.cloudemoji.models.inmemory.Entry;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 public class SearchResultFragment extends BaseFragment {
     private static final String SEARCH_QUERY_KEY = "mSearchQuery";
@@ -49,7 +48,6 @@ public class SearchResultFragment extends BaseFragment {
         if (getArguments() != null) {
             mSearchQuery = getArguments().getString(SEARCH_QUERY_KEY);
         }
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -66,7 +64,7 @@ public class SearchResultFragment extends BaseFragment {
                 + this.getResources().getString(R.string.search_result_not_found));
 
         // Initiate search
-        EventBus.getDefault().post(new SearchInitiatedEvent(mSearchQuery));
+        mBus.post(new SearchInitiatedEvent(mSearchQuery));
 
         return rootView;
     }
@@ -77,14 +75,8 @@ public class SearchResultFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Entry entry = (Entry) parent.getAdapter().getItem(position);
-                EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 }

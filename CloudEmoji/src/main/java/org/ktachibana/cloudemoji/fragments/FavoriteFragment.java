@@ -26,7 +26,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 public class FavoriteFragment extends BaseFragment {
     @InjectView(R.id.favoriteListView)
@@ -48,12 +47,6 @@ public class FavoriteFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceBundle) {
-        super.onCreate(savedInstanceBundle);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Setup views
@@ -72,7 +65,7 @@ public class FavoriteFragment extends BaseFragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Favorite favorite = (Favorite) mAdapter.getItem(i);
                         Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
-                        EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                        mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
                     }
                 });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));
@@ -130,12 +123,6 @@ public class FavoriteFragment extends BaseFragment {
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
                 .show();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     /**

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 
+import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.utils.Utils;
 
@@ -103,5 +104,9 @@ public class BaseActivity extends AppCompatActivity implements Constants {
         } else {
             showSnackBar(message);
         }
+    }
+
+    public void onEvent(EmptyEvent e) {
+
     }
 }
