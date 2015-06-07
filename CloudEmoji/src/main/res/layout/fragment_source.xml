@@ -2,11 +2,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <za.co.immedia.pinnedheaderlistview.PinnedHeaderListView
-            android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/white"
-            android:fastScrollEnabled="true" />
+    <za.co.immedia.pinnedheaderlistview.PinnedHeaderListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/white"
+        android:fastScrollEnabled="true" />
 
 </FrameLayout>
