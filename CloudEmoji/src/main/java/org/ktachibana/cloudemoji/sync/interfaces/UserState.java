@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.sync.inetrfaces;
+package org.ktachibana.cloudemoji.sync.interfaces;
 
 import bolts.Task;
 

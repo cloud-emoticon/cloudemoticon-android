@@ -2,8 +2,8 @@ package org.ktachibana.cloudemoji.sync.parse;
 
 import com.parse.ParseUser;
 
-import org.ktachibana.cloudemoji.sync.inetrfaces.User;
-import org.ktachibana.cloudemoji.sync.inetrfaces.UserState;
+import org.ktachibana.cloudemoji.sync.interfaces.User;
+import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 
 import bolts.Task;
 

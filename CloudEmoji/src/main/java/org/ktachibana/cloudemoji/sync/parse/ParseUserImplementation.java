@@ -2,7 +2,7 @@ package org.ktachibana.cloudemoji.sync.parse;
 
 import com.parse.ParseUser;
 
-import org.ktachibana.cloudemoji.sync.inetrfaces.User;
+import org.ktachibana.cloudemoji.sync.interfaces.User;
 
 import java.util.Map;
 
@@ -16,6 +16,10 @@ public class ParseUserImplementation implements User {
     private String password;
     private String email;
     private ParseUser mInternalParseUser;
+
+    public ParseUserImplementation() {
+
+    }
 
     public ParseUserImplementation(String username, String password, String email) {
         this.username = username;
