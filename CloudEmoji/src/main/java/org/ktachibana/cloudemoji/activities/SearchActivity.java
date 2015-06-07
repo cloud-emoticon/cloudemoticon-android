@@ -24,26 +24,16 @@ import org.ktachibana.cloudemoji.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-
 public class SearchActivity extends BaseActivity {
     private SourceInMemoryCache mCurrentSourceCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_search);
 
         mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG);
         handleIntent(getIntent());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -126,6 +116,6 @@ public class SearchActivity extends BaseActivity {
         }
 
         // Search finished
-        EventBus.getDefault().post(new SearchFinishedEvent(results));
+        mBus.post(new SearchFinishedEvent(results));
     }
 }

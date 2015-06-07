@@ -20,7 +20,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
@@ -33,9 +32,7 @@ public class RepositoryStoreActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repository_store);
-
         ButterKnife.inject(this);
-        EventBus.getDefault().register(this);
 
         if (savedInstanceState != null) {
             mRepositories = savedInstanceState.getParcelableArrayList(STATE_TAG);
@@ -66,13 +63,6 @@ public class RepositoryStoreActivity extends BaseActivity {
                         dialog.dismiss();
                     }
                 });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

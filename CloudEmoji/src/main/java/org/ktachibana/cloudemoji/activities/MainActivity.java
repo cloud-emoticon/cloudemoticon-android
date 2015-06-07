@@ -61,7 +61,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements
         Constants,
@@ -75,7 +74,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
 
         // Setup views
         setupViews();
@@ -344,12 +342,6 @@ public class MainActivity extends BaseActivity implements
 
     private void closeDrawers() {
         mDrawer.closeDrawer();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

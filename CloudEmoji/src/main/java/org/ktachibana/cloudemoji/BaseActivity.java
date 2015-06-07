@@ -14,22 +14,33 @@ import android.widget.Toast;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 
+import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.utils.Utils;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Base activity for all activities with UI to extend
- * It includes a default toolbar, SnackBar and copy to clipboard
+ * It includes preferences, toolbar, snack bar, event bus, and copy to clipboard
  */
 public class BaseActivity extends AppCompatActivity implements Constants {
     protected SharedPreferences mPreferences;
     protected Toolbar mToolbar;
+    protected EventBus mBus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mBus = EventBus.getDefault();
+        mBus.register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBus.unregister(this);
     }
 
     @Override
@@ -93,5 +104,9 @@ public class BaseActivity extends AppCompatActivity implements Constants {
         } else {
             showSnackBar(message);
         }
+    }
+
+    public void onEvent(EmptyEvent e) {
+
     }
 }
