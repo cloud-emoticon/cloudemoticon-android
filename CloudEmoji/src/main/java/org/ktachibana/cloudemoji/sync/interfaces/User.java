@@ -10,12 +10,20 @@ import bolts.Task;
  */
 public interface User {
     String getUsername();
+
     void setUsername(String username);
+
     String getPassword();
+
     void setPassword(String password);
+
     String getEmail();
+
     void setEmail(String email);
+
     Map<String, String> getExtra();
+
     void setExtra(Map<String, String> extra);
+
     Task<Void> register();
 }

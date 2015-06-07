@@ -20,9 +20,7 @@ public class AccountActivity extends BaseActivity {
                     .beginTransaction()
                     .replace(R.id.root, new AccountUserProfileFragment())
                     .commit();
-        }
-        else
-        {
+        } else {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.root, new AccountLogInOrRegisterFragment())

@@ -7,7 +7,10 @@ import bolts.Task;
  */
 public interface UserState {
     Task<Void> login(User user);
+
     Task<Void> logout();
+
     boolean isLoggedIn();
+
     User getLoggedInUser();
 }
