@@ -187,6 +187,14 @@ public class MainActivity extends BaseActivity implements
         // Divider
         mDrawer.addItem(new DividerDrawerItem());
 
+        // Add account
+        mDrawer.addItem(
+                new UncheckableSecondaryDrawerItem()
+                        .withName(R.string.account)
+                        .withIcon(R.drawable.ic_account)
+                        .withIdentifier(LIST_ITEM_ACCOUNT_ID)
+        );
+
         // Add repo manager
         mDrawer.addItem(
                 new UncheckableSecondaryDrawerItem()
