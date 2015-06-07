@@ -24,8 +24,6 @@ import org.ktachibana.cloudemoji.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-
 public class SearchActivity extends BaseActivity {
     private SourceInMemoryCache mCurrentSourceCache;
 
@@ -118,6 +116,6 @@ public class SearchActivity extends BaseActivity {
         }
 
         // Search finished
-        EventBus.getDefault().post(new SearchFinishedEvent(results));
+        mBus.post(new SearchFinishedEvent(results));
     }
 }
