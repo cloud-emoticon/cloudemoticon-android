@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
@@ -16,6 +17,7 @@ import org.ktachibana.cloudemoji.models.inmemory.Entry;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.models.persistence.Favorite;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,7 +27,7 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
-public class SourceListViewAdapter extends SectionedBaseAdapter {
+public class SourceListViewAdapter extends SectionedBaseAdapter implements SectionIndexer {
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
@@ -33,6 +35,12 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
     private LayoutInflater mInflater;
     // Cache stores whether a emoticon is in favorites
     private HashMap<String, Boolean> mEmoticonInFavoritesCache;
+
+    // Section headers
+    private String[] mSectionHeaders;
+
+    // Section index to adapter position mapping
+    private List<Integer> mSectionIndexToPositionMapping;
 
     public SourceListViewAdapter(Context context, Source source) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -42,6 +50,30 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
         // Constant drawables
         mNoStarDrawable = context.getResources().getDrawable(R.drawable.ic_unfavorite);
         mStarDrawable = context.getResources().getDrawable(R.drawable.ic_favorite);
+
+        // Section headers
+        mSectionHeaders = new String[mSource.getCategories().size()];
+        for (int i = 0; i < mSectionHeaders.length; i++) {
+            mSectionHeaders[i] = mSource.getCategories().get(i).getName();
+        }
+
+        // Section index to adapter position mapping
+        mSectionIndexToPositionMapping = new ArrayList<>();
+        List<Integer> positionsToSectionsMapping = new ArrayList<>();
+        int section = 0;
+        for (Category category : mSource.getCategories()) {
+            for (Entry entry : category.getEntries()) {
+                positionsToSectionsMapping.add(section);
+            }
+            section++;
+        }
+
+        mSectionIndexToPositionMapping.add(0);
+        for (int j = 1; j < positionsToSectionsMapping.size(); j++) {
+            if (!positionsToSectionsMapping.get(j).equals(positionsToSectionsMapping.get(j - 1))) {
+                mSectionIndexToPositionMapping.add(j);
+            }
+        }
     }
 
     @Override
@@ -159,6 +191,16 @@ public class SourceListViewAdapter extends SectionedBaseAdapter {
         viewHolder.text.setText(category.getName());
 
         return convertView;
+    }
+
+    @Override
+    public Object[] getSections() {
+        return mSectionHeaders;
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return mSectionIndexToPositionMapping.get(sectionIndex);
     }
 
     static class EntryViewHolder {
