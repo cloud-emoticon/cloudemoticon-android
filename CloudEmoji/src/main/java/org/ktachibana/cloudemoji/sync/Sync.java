@@ -6,6 +6,11 @@ import org.ktachibana.cloudemoji.sync.parse.ParseUserImplementation;
 import org.ktachibana.cloudemoji.sync.parse.ParseUserStateImplementation;
 
 public class Sync {
-    public static final User user = new ParseUserImplementation();
-    public static final UserState userState = new ParseUserStateImplementation();
+    public static User getUser() {
+        return new ParseUserImplementation();
+    }
+
+    public static UserState getUserState() {
+        return new ParseUserStateImplementation();
+    }
 }
