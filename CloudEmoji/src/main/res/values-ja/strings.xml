@@ -81,4 +81,6 @@
     <string name="shortcut">Shortcut</string>
     <string name="repositories">Repositories</string>
     <string name="please_wait">Please wait&#8230;</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
 </resources>

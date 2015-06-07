@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import org.ktachibana.cloudemoji.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AccountUserProfileFragment extends Fragment {
 
 

@@ -83,4 +83,6 @@
     <string name="shortcut">快捷输入</string>
     <string name="repositories">源</string>
     <string name="please_wait">请稍等&#8230;</string>
+    <string name="log_in">登陆</string>
+    <string name="register">注册</string>
 </resources>

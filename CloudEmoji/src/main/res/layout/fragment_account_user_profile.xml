@@ -3,8 +3,10 @@
     android:layout_height="match_parent"
     tools:context="org.ktachibana.cloudemoji.fragments.AccountUserProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User profile"
+        android:id="@+id/textView5"
+        android:layout_gravity="center" />
 </FrameLayout>
