@@ -51,7 +51,6 @@
     <string name="account">账号</string>
     <string name="registering">注册中</string>
     <string name="register_successful">注册成功</string>
-    <string name="illegal_username">无效用户名</string>
     <string name="existing_username">用户名已存在</string>
     <string name="illegal_email_address">无效电子邮箱</string>
     <string name="existing_email_address">电子邮箱已存在</string>
@@ -85,4 +84,6 @@
     <string name="please_wait">请稍等&#8230;</string>
     <string name="log_in">登陆</string>
     <string name="register">注册</string>
+    <string name="empty_username">用户名不能为空</string>
+    <string name="empty_password">用户密码不能为空</string>
 </resources>

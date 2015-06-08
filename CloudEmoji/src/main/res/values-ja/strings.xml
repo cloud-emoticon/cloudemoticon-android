@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Cloud Emoticon</string>
-    <string name="settings">設定</string>
-    <string name="exit">出口</string>
-    <string name="copied">クリップボードにコピー</string>
-    <string name="bad_conn">悪い接続を再試行してください</string>
-    <string name="touch_to_launch">タッチを起動するには</string>
-    <string name="title_activity_settings">設定</string>
-    <string name="behaviors">動作</string>
-    <string name="close_after_copy">コピー後に閉じる</string>
-    <string name="repo_url">リポジトリの URL</string>
-    <string name="about">について</string>
-    <string name="github_repo">GitHub のリポジトリ</string>
-    <string name="github_release">GitHub リリース</string>
-    <string name="version">バージョン</string>
-    <string name="fav">お気に入り</string>
-    <string name="add_to_fav">お気に入りに追加します。</string>
+    <string name="settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="bad_conn">Bad connection, please retry</string>
+    <string name="touch_to_launch">Touch to launch</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="behaviors">Behavior</string>
+    <string name="close_after_copy">Close after copy</string>
+    <string name="repo_url">Repository URL</string>
+    <string name="about">About</string>
+    <string name="github_repo">GitHub repository</string>
+    <string name="github_release">GitHub release</string>
+    <string name="version">Version</string>
+    <string name="fav">Bookmarks</string>
+    <string name="add_to_fav">Add to bookmarks</string>
     <string name="ui">UI</string>
-    <string name="added_to_fav">お気に入りに追加</string>
-    <string name="removed_from_fav">お気に入りから削除</string>
-    <string name="notification_visibility">通知の可視性</string>
-    <string name="show_after_boot_up">起動後の通知を表示します。</string>
-    <string name="emoticon">絵文字</string>
-    <string name="description">説明</string>
-    <string name="edit_repository">リポジトリを編集します。</string>
-    <string name="version_code">バージョン コード</string>
-    <string name="no_repo_prompt">任意のリポジトリを持っていない</string>
-    <string name="repo_manager">リポジトリ マネージャー</string>
-    <string name="add_repo">リポジトリを追加します。</string>
-    <string name="alias">エイリアス</string>
-    <string name="invalid_repo_format">無効なリポジトリ フォーマット</string>
-    <string name="source">ソース</string>
-    <string name="history">歴史</string>
-    <string name="category">カテゴリ</string>
-    <string name="downloading">ダウンロードします。</string>
-    <string name="downloaded">ダウンロード</string>
-    <string name="duplicate_url">重複する URL</string>
-    <string name="duplicate_emoticon">重複する絵文字</string>
-    <string name="navbar_gesture_title">ナビゲーション バーのジェスチャ</string>
-    <string name="navbar_gesture_summary">開始するには、ナビゲーション バーからスワイプ アップ</string>
-    <string name="no_favorite_prompt">あなたはお気に入りのを持っていない</string>
-    <string name="no_history_prompt">あなたは、どんな歴史を持っていない</string>
-    <string name="edit_favorite">お気に入りのを編集します。</string>
-    <string name="remove_all_history">すべての履歴を削除します。</string>
-    <string name="backup_and_restore">バックアップと復元</string>
-    <string name="backup_favorites">お気に入りをバックアップします。</string>
-    <string name="restore_favorites">お気に入りを復元します。</string>
+    <string name="added_to_fav">Added to bookmarks</string>
+    <string name="removed_from_fav">Removed from bookmarks</string>
+    <string name="notification_visibility">Notification visibility</string>
+    <string name="show_after_boot_up">Show notification after boot-up</string>
+    <string name="emoticon">Emoticon</string>
+    <string name="description">Description</string>
+    <string name="edit_repository">Edit Repository</string>
+    <string name="version_code">Version code</string>
+    <string name="no_repo_prompt">You don\'t have any repository</string>
+    <string name="repo_manager">Repository Manager</string>
+    <string name="add_repo">Add repository</string>
+    <string name="alias">Alias</string>
+    <string name="invalid_repo_format">Invalid repository format</string>
+    <string name="source">Source</string>
+    <string name="history">History</string>
+    <string name="category">Category</string>
+    <string name="downloading">Downloading</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="duplicate_url">Duplicate URL</string>
+    <string name="duplicate_emoticon">Duplicate emoticon</string>
+    <string name="navbar_gesture_title">Navigation bar gesture</string>
+    <string name="navbar_gesture_summary">Swipe-up from the navigation bar to start</string>
+    <string name="no_favorite_prompt">You don\'t have any bookmarks</string>
+    <string name="no_history_prompt">You don\'t have any history</string>
+    <string name="edit_favorite">Edit Bookmark</string>
+    <string name="remove_all_history">Remove all history</string>
+    <string name="backup_and_restore">Backup and restore</string>
+    <string name="backup_favorites">Backup bookmarks</string>
+    <string name="restore_favorites">Restore bookmarks</string>
     <string name="empty_emoticon">Empty emoticon</string>
     <string name="account">Account</string>
     <string name="registering">Registering</string>
     <string name="register_successful">You have registered</string>
-    <string name="illegal_username">Illegal username</string>
     <string name="existing_username">Existing username</string>
     <string name="illegal_email_address">Illegal email address</string>
     <string name="existing_email_address">Existing email address</string>
     <string name="repository_store">Repository Store</string>
-    <string name="old_favorites_merged">Old favorites merged</string>
+    <string name="old_favorites_merged">Old bookmarks merged</string>
     <string name="update_checker">Check for update</string>
     <string name="update_checker_failed">Failed to check for update</string>
     <string name="already_latest_version">Already latest version</string>
@@ -66,16 +66,16 @@
     <string name="search_result_not_found">Result not found</string>
 
     <string-array name="notification_options">
-        <item>表示しない</item>
-        <item>のみ通知パネル内の（唯一のAndroid3.0上で動作します）</item>
-        <item>通知パネルとステータスバーの両方に</item>
+        <item>Don\'t show</item>
+        <item>Only in notification panel(Only works above Android 3.0)</item>
+        <item>Both in notification panel and status bar</item>
     </string-array>
     <string name="ime">User dictionary</string>
     <string name="import_into_ime">Import all bookmarks into user dictionary</string>
     <string name="revoke_from_ime">Revoke all bookmarks from user dictionary</string>
     <string name="imported_into_ime">Imported %d bookmarks into user dictionary</string>
     <string name="revoked_from_ime">Revoked %d bookmarks from user dictionary</string>
-    <string name="import_into_ime_summary">Only works for description in English letters and numbers</string>
+    <string name="import_into_ime_summary">Only works for shortcut in English letters</string>
     <string name="no_description">No description</string>
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>
@@ -83,4 +83,6 @@
     <string name="please_wait">Please wait&#8230;</string>
     <string name="log_in">Log in</string>
     <string name="register">Register</string>
+    <string name="empty_username">Empty username</string>
+    <string name="empty_password">Empty password</string>
 </resources>
