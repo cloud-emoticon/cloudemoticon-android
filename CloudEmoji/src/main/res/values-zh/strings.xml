@@ -47,7 +47,7 @@
     <string name="backup_and_restore">备份和恢复</string>
     <string name="backup_favorites">备份收藏</string>
     <string name="restore_favorites">恢复收藏</string>
-    <string name="empty_emoticon">空颜文字</string>
+    <string name="empty_emoticon">颜文字不能为空</string>
     <string name="account">账号</string>
     <string name="registering">注册中</string>
     <string name="register_successful">注册成功</string>
@@ -86,4 +86,7 @@
     <string name="register">注册</string>
     <string name="empty_username">用户名不能为空</string>
     <string name="empty_password">用户密码不能为空</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="email">电子邮箱</string>
 </resources>
