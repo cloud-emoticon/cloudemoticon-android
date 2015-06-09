@@ -89,4 +89,5 @@
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="email">电子邮箱</string>
+    <string name="log_out">登出</string>
 </resources>

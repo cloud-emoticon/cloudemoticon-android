@@ -88,4 +88,5 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="log_out">Log out</string>
 </resources>

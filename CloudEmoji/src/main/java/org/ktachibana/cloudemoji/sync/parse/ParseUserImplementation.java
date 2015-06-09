@@ -12,19 +12,15 @@ import bolts.Task;
  * Parse implementation of User interface
  */
 public class ParseUserImplementation implements User {
-    private String username;
-    private String password;
-    private String email;
     private ParseUser mInternalParseUser;
+    private String mLocalPassword;
 
     public ParseUserImplementation() {
-
+        mInternalParseUser = new ParseUser();
     }
 
     public ParseUserImplementation(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+        mLocalPassword = password;
         mInternalParseUser = new ParseUser();
         mInternalParseUser.setUsername(username);
         mInternalParseUser.setPassword(password);
@@ -33,32 +29,33 @@ public class ParseUserImplementation implements User {
 
     @Override
     public String getUsername() {
-        return username;
+        return mInternalParseUser.getUsername();
     }
 
     @Override
     public void setUsername(String username) {
-        this.username = username;
+        mInternalParseUser.setUsername(username);
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return mLocalPassword;
     }
 
     @Override
     public void setPassword(String password) {
-        this.password = password;
+        mLocalPassword = password;
+        mInternalParseUser.setPassword(password);
     }
 
     @Override
     public String getEmail() {
-        return email;
+        return mInternalParseUser.getEmail();
     }
 
     @Override
     public void setEmail(String email) {
-        this.email = email;
+        mInternalParseUser.setEmail(email);
     }
 
     @Override

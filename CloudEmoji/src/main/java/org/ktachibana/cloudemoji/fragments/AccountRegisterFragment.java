@@ -2,16 +2,13 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.text.TextUtilsCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.parse.codec.binary.StringUtils;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
@@ -21,6 +18,8 @@ import org.ktachibana.cloudemoji.sync.interfaces.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import bolts.Continuation;
+import bolts.Task;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -87,5 +86,18 @@ public class AccountRegisterFragment extends BaseFragment {
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setEmail(email);
+        newUser.register().onSuccess(new Continuation<Void, Void>() {
+            @Override
+            public Void then(Task<Void> task) throws Exception {
+                if (task.isCompleted()) {
+                    // TODO: transfer to logged in state
+                    Log.e("233", "register completed");
+                } else {
+                    Log.e("233", "register not completed");
+                    Log.e("233", task.getError().getLocalizedMessage());
+                }
+                return null;
+            }
+        });
     }
 }
