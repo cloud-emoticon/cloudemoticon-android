@@ -3,7 +3,6 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,16 +53,10 @@ public class AccountUserProfileFragment extends Fragment {
     }
 
     private void logOut() {
-        mUserState.logout().onSuccess(new Continuation<Void, Void>() {
+        mUserState.logout().continueWith(new Continuation<Void, Void>() {
             @Override
             public Void then(Task<Void> task) throws Exception {
-                if (task.isCompleted()) {
-                    // TODO: transfer to not logged in state
-                    Log.e("233", "log out completed");
-                } else {
-                    Log.e("233", "log out not completed");
-                    Log.e("233", task.getError().getLocalizedMessage());
-                }
+                // TODO
                 return null;
             }
         });

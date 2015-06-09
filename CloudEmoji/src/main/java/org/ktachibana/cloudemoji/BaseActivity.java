@@ -16,7 +16,7 @@ import com.github.mrengineer13.snackbar.SnackBar;
 
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
-import org.ktachibana.cloudemoji.utils.Utils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import de.greenrobot.event.EventBus;
 
@@ -82,7 +82,7 @@ public class BaseActivity extends AppCompatActivity implements Constants {
     public void onEvent(EntryCopiedAndAddedToHistoryEvent event) {
         String copied = event.getEntry().getEmoticon();
 
-        if (Utils.belowHoneycomb()) {
+        if (SystemUtils.belowHoneycomb()) {
             android.text.ClipboardManager clipboard
                     = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setText(copied);

@@ -3,7 +3,6 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,16 +85,10 @@ public class AccountRegisterFragment extends BaseFragment {
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setEmail(email);
-        newUser.register().onSuccess(new Continuation<Void, Void>() {
+        newUser.register().continueWith(new Continuation<Void, Void>() {
             @Override
             public Void then(Task<Void> task) throws Exception {
-                if (task.isCompleted()) {
-                    // TODO: transfer to logged in state
-                    Log.e("233", "register completed");
-                } else {
-                    Log.e("233", "register not completed");
-                    Log.e("233", task.getError().getLocalizedMessage());
-                }
+                // TODO
                 return null;
             }
         });

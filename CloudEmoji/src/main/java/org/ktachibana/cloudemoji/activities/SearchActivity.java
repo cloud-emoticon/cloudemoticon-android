@@ -19,7 +19,7 @@ import org.ktachibana.cloudemoji.models.inmemory.Category;
 import org.ktachibana.cloudemoji.models.inmemory.Entry;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
-import org.ktachibana.cloudemoji.utils.Utils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class SearchActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         // Associate searchable configuration with the SearchView
-        if (Utils.aboveHoneycomb()) {
+        if (SystemUtils.aboveHoneycomb()) {
             SearchManager searchManager =
                     (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             SearchView searchView =

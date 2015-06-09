@@ -11,14 +11,14 @@ import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
-import org.ktachibana.cloudemoji.utils.Utils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepositoryStoreDownloaderClient extends BaseHttpClient implements Constants {
     public void downloadRepositoryStore(@NonNull final ListCallback callback) {
-        if (Utils.networkAvailable()) {
+        if (SystemUtils.networkAvailable()) {
             mClient.get(STORE_URL, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
