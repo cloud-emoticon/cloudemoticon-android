@@ -14,6 +14,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
+import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -52,12 +53,12 @@ public class AccountLogInFragment extends BaseFragment {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
-        if (TextUtils.isEmpty(username)) {
+        if (!CredentialsValidator.username(username)) {
             usernameEditText.setError(getString(R.string.empty_username));
             showSnackBar(R.string.empty_username);
             return;
         }
-        if (TextUtils.isEmpty(password)) {
+        if (!CredentialsValidator.password(password)) {
             passwordEditText.setError(getString(R.string.empty_password));
             showSnackBar(R.string.empty_password);
             return;

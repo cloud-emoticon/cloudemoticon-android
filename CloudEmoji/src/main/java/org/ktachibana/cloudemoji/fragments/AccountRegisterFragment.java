@@ -13,6 +13,7 @@ import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
+import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,15 +33,8 @@ public class AccountRegisterFragment extends BaseFragment {
     @InjectView(R.id.register)
     Button registerButton;
 
-    private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private Pattern mEmailPattern;
-
     public AccountRegisterFragment() {
         // Required empty public constructor
-
-        mEmailPattern = Pattern.compile(EMAIL_PATTERN);
     }
 
     @Override
@@ -63,19 +57,18 @@ public class AccountRegisterFragment extends BaseFragment {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String email = emailEditText.getText().toString();
-        Matcher emailMatcher = mEmailPattern.matcher(email);
 
-        if (TextUtils.isEmpty(username)) {
+        if (!CredentialsValidator.username(username)) {
             usernameEditText.setError(getString(R.string.empty_username));
             showSnackBar(R.string.empty_username);
             return;
         }
-        if (TextUtils.isEmpty(password)) {
+        if (!CredentialsValidator.password(password)) {
             passwordEditText.setError(getString(R.string.empty_password));
             showSnackBar(R.string.empty_password);
             return;
         }
-        if (!emailMatcher.matches()) {
+        if (!CredentialsValidator.email(email)) {
             emailEditText.setError(getString(R.string.illegal_email_address));
             showSnackBar(R.string.illegal_email_address);
             return;
