@@ -25,6 +25,7 @@ import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -47,6 +48,7 @@ import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
+import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
@@ -74,12 +76,12 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
-        // Setup views
-        setupViews();
-
-        // Setup left drawer
-        setupLeftDrawer();
+        // Setup drawer
+        setupDrawer();
+        setupAccountHeader();
 
         // Setup notification state
         setupNotificationState();
@@ -101,20 +103,28 @@ public class MainActivity extends BaseActivity implements
         refreshUiWithCurrentState();
     }
 
-    private void setupViews() {
-        setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+    private void setupDrawer() {
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .build();
+        setupLeftDrawer();
+    }
 
+    private void setupAccountHeader() {
+        mDrawer.removeHeader();
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.account_place_holder)
                 .build();
-
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(mToolbar)
-                .withAccountHeader(accountHeader)
-                .build();
+        if (Sync.getUserState().isLoggedIn()) {
+            String username = Sync.getUserState().getLoggedInUser().getUsername();
+            String email = Sync.getUserState().getLoggedInUser().getEmail();
+            accountHeader.addProfile(
+                    new ProfileDrawerItem().withName(username).withEmail(email), 0
+            );
+        }
+        mDrawer.setHeader(accountHeader.getView());
     }
 
     /**
@@ -370,7 +380,7 @@ public class MainActivity extends BaseActivity implements
 
         // Coming back from account, user state may be changed
         if (requestCode == ACCOUNT_REQUEST_CODE) {
-            // TODO: re-setup account header
+            setupAccountHeader();
         }
     }
 

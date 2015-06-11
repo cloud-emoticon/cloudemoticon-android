@@ -1,11 +1,11 @@
 package org.ktachibana.cloudemoji;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 
-import com.github.mrengineer13.snackbar.SnackBar;
-
 import org.ktachibana.cloudemoji.events.EmptyEvent;
+import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 
 import de.greenrobot.event.EventBus;
 
@@ -34,13 +34,10 @@ public class BaseFragment extends Fragment {
     }
 
     protected void showSnackBar(String message) {
-        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
+        BUS.post(new ShowSnackBarOnBaseActivityEvent(message));
     }
 
-    protected void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
+    protected void showSnackBar(@StringRes int resId) {
+        BUS.post(new ShowSnackBarOnBaseActivityEvent(getString(resId)));
     }
 }
