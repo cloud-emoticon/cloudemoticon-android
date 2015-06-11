@@ -26,7 +26,7 @@ import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
             @Override
             public void onClick(View view) {
                 // Show a dialog progress dialog
-                final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(mContext)
+                final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(mContext)
                         .title(R.string.please_wait)
                         .content(mContext.getString(R.string.downloading) + "\n" + item.getUrl())
                         .show();

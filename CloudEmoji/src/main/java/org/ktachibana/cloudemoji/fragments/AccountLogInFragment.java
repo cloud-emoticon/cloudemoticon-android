@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,8 @@ import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 import org.ktachibana.cloudemoji.utils.Termination;
-import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
-import bolts.Continuation;
 import bolts.Task;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -73,7 +71,7 @@ public class AccountLogInFragment extends BaseFragment {
         user.setPassword(password);
         UserState userState = Sync.getUserState();
 
-        final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(getActivity())
+        final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(getActivity())
                 .title(R.string.please_wait)
                 .content(R.string.logging_in)
                 .show();

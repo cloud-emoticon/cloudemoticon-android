@@ -13,7 +13,7 @@ import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
 import org.ktachibana.cloudemoji.net.RepositoryStoreDownloaderClient;
-import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class RepositoryStoreActivity extends BaseActivity {
             return;
         }
 
-        final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(this)
+        final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(this)
                 .title(R.string.please_wait)
                 .content(R.string.downloading)
                 .show();
