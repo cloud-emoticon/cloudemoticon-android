@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.Subscribe;
 
 public class RepositoryManagerActivity extends BaseActivity implements Constants {
     @InjectView(R.id.repositoryListView)
@@ -113,36 +114,19 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
                 .show();
     }
 
-    /**
-     * Listens for repository downloaded from Internet, namely from repository list view adapter
-     *
-     * @param event repository downloaded from Internet event
-     */
-    public void onEvent(RepositoryDownloadedEvent event) {
+    @Subscribe
+    public void handle(RepositoryDownloadedEvent event) {
         showSnackBar(event.getRepository().getAlias() + " " + getString(R.string.downloaded));
         mAdapter.updateRepositories();
     }
 
-    /**
-     * Listens for repository download from Internet failed, namely from repository list view adapter
-     *
-     * @param event repository download failed from Internet event
-     */
-    public void onEvent(RepositoryDownloadFailedEvent event) {
+    @Subscribe
+    public void handle(RepositoryDownloadFailedEvent event) {
         showSnackBar(event.getThrowable().getLocalizedMessage());
     }
 
-    /**
-     * Listens for repository being edited, namely from repository list view adapter
-     *
-     * @param event repository being edited event
-     */
-    public void onEvent(RepositoryBeginEditingEvent event) {
-        /**
-         EditRepositoryDialogFragment fragment
-         = EditRepositoryDialogFragment.newInstance(event.getRepository());
-         fragment.show(getFragmentManager(), "edit_repository");
-         **/
+    @Subscribe
+    public void handle(RepositoryBeginEditingEvent event) {
         final Repository repository = event.getRepository();
         new MultiInputMaterialDialogBuilder(RepositoryManagerActivity.this)
                 .addInput(repository.getAlias(), getString(R.string.alias))
@@ -164,15 +148,18 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
                 .show();
     }
 
-    public void onEvent(NetworkUnavailableEvent event) {
+    @Subscribe
+    public void handle(NetworkUnavailableEvent event) {
         showSnackBar(R.string.bad_conn);
     }
 
-    public void onEvent(RepositoryExportedEvent exportedEvent) {
+    @Subscribe
+    public void handle(RepositoryExportedEvent exportedEvent) {
         showSnackBar(exportedEvent.getPath());
     }
 
-    public void onEvent(RepositoryInvalidFormatEvent event) {
+    @Subscribe
+    public void handle(RepositoryInvalidFormatEvent event) {
         showSnackBar(getString(R.string.invalid_repo_format) + event.getType());
     }
 }

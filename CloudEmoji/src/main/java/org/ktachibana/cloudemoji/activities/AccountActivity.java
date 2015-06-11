@@ -10,6 +10,8 @@ import org.ktachibana.cloudemoji.fragments.AccountLogInOrRegisterFragment;
 import org.ktachibana.cloudemoji.fragments.AccountUserProfileFragment;
 import org.ktachibana.cloudemoji.sync.Sync;
 
+import de.greenrobot.event.Subscribe;
+
 public class AccountActivity extends BaseActivity {
 
     @Override
@@ -24,11 +26,13 @@ public class AccountActivity extends BaseActivity {
         }
     }
 
-    public void onEvent(UserLoggedInEvent event) {
+    @Subscribe
+    public void handle(UserLoggedInEvent event) {
         showUserProfile();
     }
 
-    public void onEvent(UserLoggedOutEvent event) {
+    @Subscribe
+    public void handle(UserLoggedOutEvent event) {
         showLogInOrRegister();
     }
 

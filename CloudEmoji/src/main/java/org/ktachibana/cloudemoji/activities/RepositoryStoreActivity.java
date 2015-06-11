@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
@@ -74,11 +75,13 @@ public class RepositoryStoreActivity extends BaseActivity {
         mList.setAdapter(new RepositoryStoreListViewAdapter(this, mRepositories));
     }
 
-    public void onEvent(RepositoryAddedEvent event) {
+    @Subscribe
+    public void handle(RepositoryAddedEvent event) {
         showSnackBar(event.getRepository().getAlias());
     }
 
-    public void onEvent(RepositoryDuplicatedEvent event) {
+    @Subscribe
+    public void handle(RepositoryDuplicatedEvent event) {
         showSnackBar(R.string.duplicate_url);
     }
 }

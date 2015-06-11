@@ -19,6 +19,7 @@ import org.ktachibana.cloudemoji.models.inmemory.Entry;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.Subscribe;
 
 public class SearchResultFragment extends BaseFragment {
     private static final String SEARCH_QUERY_KEY = "mSearchQuery";
@@ -69,7 +70,8 @@ public class SearchResultFragment extends BaseFragment {
         return rootView;
     }
 
-    public void onEvent(SearchFinishedEvent e) {
+    @Subscribe
+    public void handle(SearchFinishedEvent e) {
         mSearchResultListView.setAdapter(new SearchResultListViewAdapter(getActivity(), e.getResults()));
         mSearchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

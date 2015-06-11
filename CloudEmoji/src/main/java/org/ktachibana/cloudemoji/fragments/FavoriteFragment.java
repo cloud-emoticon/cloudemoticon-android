@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.Subscribe;
 
 public class FavoriteFragment extends BaseFragment {
     @InjectView(R.id.favoriteListView)
@@ -125,17 +126,8 @@ public class FavoriteFragment extends BaseFragment {
                 .show();
     }
 
-    /**
-     * Listens for favorite being edited, namely from favorite list view adapter
-     *
-     * @param event favorite being edited event
-     */
-    public void onEvent(FavoriteBeginEditingEvent event) {
-        /**
-         EditFavoriteDialogFragment fragment
-         = EditFavoriteDialogFragment.newInstance(event.getFavorite());
-         fragment.show(getFragmentManager(), "edit_favorite");
-         **/
+    @Subscribe
+    public void handle(FavoriteBeginEditingEvent event) {
         final Favorite favorite = event.getFavorite();
         new MultiInputMaterialDialogBuilder(getActivity())
                 .addInput(favorite.getDescription(), getString(R.string.description))

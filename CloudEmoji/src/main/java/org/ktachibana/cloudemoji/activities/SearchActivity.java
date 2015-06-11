@@ -24,6 +24,8 @@ import org.ktachibana.cloudemoji.utils.SystemUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.Subscribe;
+
 public class SearchActivity extends BaseActivity {
     private SourceInMemoryCache mCurrentSourceCache;
 
@@ -92,7 +94,8 @@ public class SearchActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onEvent(SearchInitiatedEvent e) {
+    @Subscribe
+    public void handle(SearchInitiatedEvent e) {
         String searchQuery = e.getSearchQuery();
         List<Entry> results = new ArrayList<Entry>();
 

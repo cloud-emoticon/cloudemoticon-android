@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
     private List<StoreRepository> mRepositories;
@@ -103,7 +104,8 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
         }
     }
 
-    public void onEvent(EmptyEvent event) {
+    @Subscribe
+    public void handle(EmptyEvent event) {
 
     }
 }

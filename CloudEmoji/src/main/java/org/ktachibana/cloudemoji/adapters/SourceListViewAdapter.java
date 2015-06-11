@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
 public class SourceListViewAdapter extends SectionedBaseAdapter implements SectionIndexer {
@@ -206,7 +207,8 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         return mSectionIndexToPositionMapping.get(sectionIndex);
     }
 
-    public void onEvent(EmptyEvent event) {
+    @Subscribe
+    public void handle(EmptyEvent event) {
 
     }
 
