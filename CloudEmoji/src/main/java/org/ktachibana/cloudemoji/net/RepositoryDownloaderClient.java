@@ -9,14 +9,14 @@ import org.apache.http.Header;
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.models.persistence.Repository;
-import org.ktachibana.cloudemoji.utils.Utils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
 public class RepositoryDownloaderClient extends BaseHttpClient {
     public void downloadSource(@NonNull final Repository item, @NonNull final ObjectCallback<Repository> callback) {
-        if (Utils.networkAvailable()) {
+        if (SystemUtils.networkAvailable()) {
             mClient.get(
                     item.getUrl(),
                     new AsyncHttpResponseHandler() {

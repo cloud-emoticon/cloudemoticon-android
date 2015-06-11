@@ -3,6 +3,7 @@ package org.ktachibana.cloudemoji;
 import android.content.Context;
 
 import com.orm.SugarApp;
+import com.parse.Parse;
 
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -12,7 +13,7 @@ import org.acra.annotation.ReportsCrashes;
         mailTo = "whj19931115@gmail.com",
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.fail)
-public class BaseApplication extends SugarApp {
+public class BaseApplication extends SugarApp implements PrivateConstants {
 
     private static Context CONTEXT;
 
@@ -20,6 +21,8 @@ public class BaseApplication extends SugarApp {
     public void onCreate() {
         super.onCreate();
         CONTEXT = getApplicationContext();
+
+        Parse.initialize(this, applicationId, clientKey);
     }
 
     public static Context context() {

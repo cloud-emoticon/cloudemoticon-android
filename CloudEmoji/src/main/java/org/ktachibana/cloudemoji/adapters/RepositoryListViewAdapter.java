@@ -5,13 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.ktachibana.cloudemoji.BaseApplication;
+import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -26,7 +26,7 @@ import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +34,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
-public class RepositoryListViewAdapter extends BaseAdapter implements Constants {
+public class RepositoryListViewAdapter extends BaseBaseAdapter implements Constants {
     private List<Repository> mRepositories;
     private Context mContext;
 
@@ -91,7 +90,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
             @Override
             public void onClick(View view) {
                 // Show a dialog progress dialog
-                final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(mContext)
+                final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(mContext)
                         .title(R.string.please_wait)
                         .content(mContext.getString(R.string.downloading) + "\n" + item.getUrl())
                         .show();
@@ -99,12 +98,12 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                 new RepositoryDownloaderClient().downloadSource(item, new BaseHttpClient.ObjectCallback<Repository>() {
                     @Override
                     public void success(Repository result) {
-                        EventBus.getDefault().post(new RepositoryDownloadedEvent(item));
+                        BUS.post(new RepositoryDownloadedEvent(item));
                     }
 
                     @Override
                     public void fail(Throwable t) {
-                        EventBus.getDefault().post(new RepositoryDownloadFailedEvent(t));
+                        BUS.post(new RepositoryDownloadFailedEvent(t));
                     }
 
                     @Override
@@ -119,12 +118,7 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
         viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /**
-                 * Tell anybody who cares about a repository is started edited
-                 * Namely the anybody would be repository list fragment
-                 */
-                EventBus.getDefault().post(new RepositoryBeginEditingEvent(item));
+                BUS.post(new RepositoryBeginEditingEvent(item));
             }
         });
 
@@ -145,9 +139,9 @@ public class RepositoryListViewAdapter extends BaseAdapter implements Constants 
                     File exportFile = new File(filePath);
                     BackupHelper.writeFileToExternalStorage(json, exportFile);
 
-                    EventBus.getDefault().post(new RepositoryExportedEvent(filePath));
+                    BUS.post(new RepositoryExportedEvent(filePath));
                 } catch (SourceParsingException e) {
-                    EventBus.getDefault().post(e.getFormatType().toString());
+                    BUS.post(e.getFormatType().toString());
                 } catch (IOException e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {

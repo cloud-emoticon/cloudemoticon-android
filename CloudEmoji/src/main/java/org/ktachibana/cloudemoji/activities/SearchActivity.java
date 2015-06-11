@@ -19,12 +19,12 @@ import org.ktachibana.cloudemoji.models.inmemory.Category;
 import org.ktachibana.cloudemoji.models.inmemory.Entry;
 import org.ktachibana.cloudemoji.models.inmemory.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
-import org.ktachibana.cloudemoji.utils.Utils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 public class SearchActivity extends BaseActivity {
     private SourceInMemoryCache mCurrentSourceCache;
@@ -32,18 +32,10 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_search);
 
         mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG);
         handleIntent(getIntent());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -75,7 +67,7 @@ public class SearchActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         // Associate searchable configuration with the SearchView
-        if (Utils.aboveHoneycomb()) {
+        if (SystemUtils.aboveHoneycomb()) {
             SearchManager searchManager =
                     (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             SearchView searchView =
@@ -102,7 +94,8 @@ public class SearchActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onEvent(SearchInitiatedEvent e) {
+    @Subscribe
+    public void handle(SearchInitiatedEvent e) {
         String searchQuery = e.getSearchQuery();
         List<Entry> results = new ArrayList<Entry>();
 
@@ -126,6 +119,6 @@ public class SearchActivity extends BaseActivity {
         }
 
         // Search finished
-        EventBus.getDefault().post(new SearchFinishedEvent(results));
+        BUS.post(new SearchFinishedEvent(results));
     }
 }

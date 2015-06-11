@@ -25,6 +25,7 @@ import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -47,6 +48,7 @@ import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
+import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
@@ -61,7 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 public class MainActivity extends BaseActivity implements
         Constants,
@@ -75,13 +77,12 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
-        // Setup views
-        setupViews();
-
-        // Setup left drawer
-        setupLeftDrawer();
+        // Setup drawer
+        setupDrawer();
+        setupAccountHeader();
 
         // Setup notification state
         setupNotificationState();
@@ -103,20 +104,28 @@ public class MainActivity extends BaseActivity implements
         refreshUiWithCurrentState();
     }
 
-    private void setupViews() {
-        setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+    private void setupDrawer() {
+        mDrawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .build();
+        setupLeftDrawer();
+    }
 
+    private void setupAccountHeader() {
+        mDrawer.removeHeader();
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.account_place_holder)
                 .build();
-
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(mToolbar)
-                .withAccountHeader(accountHeader)
-                .build();
+        if (Sync.getUserState().isLoggedIn()) {
+            String username = Sync.getUserState().getLoggedInUser().getUsername();
+            String email = Sync.getUserState().getLoggedInUser().getEmail();
+            accountHeader.addProfile(
+                    new ProfileDrawerItem().withName(username).withEmail(email), 0
+            );
+        }
+        mDrawer.setHeader(accountHeader.getView());
     }
 
     /**
@@ -186,6 +195,14 @@ public class MainActivity extends BaseActivity implements
 
         // Divider
         mDrawer.addItem(new DividerDrawerItem());
+
+        // Add account
+        mDrawer.addItem(
+                new UncheckableSecondaryDrawerItem()
+                        .withName(R.string.account)
+                        .withIcon(R.drawable.ic_account)
+                        .withIdentifier(LIST_ITEM_ACCOUNT_ID)
+        );
 
         // Add repo manager
         mDrawer.addItem(
@@ -282,11 +299,13 @@ public class MainActivity extends BaseActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    public void onEvent(FavoriteAddedEvent event) {
+    @Subscribe
+    public void handle(FavoriteAddedEvent event) {
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.added_to_fav));
     }
 
-    public void onEvent(FavoriteDeletedEvent event) {
+    @Subscribe
+    public void handle(FavoriteDeletedEvent event) {
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
     }
 
@@ -339,12 +358,6 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -366,6 +379,11 @@ public class MainActivity extends BaseActivity implements
             if (mState.getItemId() == LIST_ITEM_FAVORITE_ID) {
                 refreshUiWithCurrentState();
             }
+        }
+
+        // Coming back from account, user state may be changed
+        if (requestCode == ACCOUNT_REQUEST_CODE) {
+            setupAccountHeader();
         }
     }
 
@@ -526,7 +544,7 @@ public class MainActivity extends BaseActivity implements
 
         if (listItemId == LIST_ITEM_ACCOUNT_ID) {
             Intent intent = new Intent(this, AccountActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
             mState.revertToPreviousId();
         }
 

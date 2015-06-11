@@ -10,7 +10,7 @@ import org.ktachibana.cloudemoji.BaseApplication;
 /**
  * The notorious trash can
  */
-public class Utils {
+public class SystemUtils {
     public static boolean networkAvailable() {
         Context context = BaseApplication.context();
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -26,7 +26,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 public class FavoriteFragment extends BaseFragment {
     @InjectView(R.id.favoriteListView)
@@ -48,12 +48,6 @@ public class FavoriteFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceBundle) {
-        super.onCreate(savedInstanceBundle);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Setup views
@@ -72,7 +66,7 @@ public class FavoriteFragment extends BaseFragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Favorite favorite = (Favorite) mAdapter.getItem(i);
                         Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
-                        EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                        BUS.post(new EntryCopiedAndAddedToHistoryEvent(entry));
                     }
                 });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));
@@ -132,23 +126,8 @@ public class FavoriteFragment extends BaseFragment {
                 .show();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    /**
-     * Listens for favorite being edited, namely from favorite list view adapter
-     *
-     * @param event favorite being edited event
-     */
-    public void onEvent(FavoriteBeginEditingEvent event) {
-        /**
-         EditFavoriteDialogFragment fragment
-         = EditFavoriteDialogFragment.newInstance(event.getFavorite());
-         fragment.show(getFragmentManager(), "edit_favorite");
-         **/
+    @Subscribe
+    public void handle(FavoriteBeginEditingEvent event) {
         final Favorite favorite = event.getFavorite();
         new MultiInputMaterialDialogBuilder(getActivity())
                 .addInput(favorite.getDescription(), getString(R.string.description))

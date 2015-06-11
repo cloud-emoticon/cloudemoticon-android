@@ -13,14 +13,14 @@ import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
 import org.ktachibana.cloudemoji.net.RepositoryStoreDownloaderClient;
-import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
@@ -33,9 +33,7 @@ public class RepositoryStoreActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repository_store);
-
         ButterKnife.inject(this);
-        EventBus.getDefault().register(this);
 
         if (savedInstanceState != null) {
             mRepositories = savedInstanceState.getParcelableArrayList(STATE_TAG);
@@ -43,7 +41,7 @@ public class RepositoryStoreActivity extends BaseActivity {
             return;
         }
 
-        final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(this)
+        final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(this)
                 .title(R.string.please_wait)
                 .content(R.string.downloading)
                 .show();
@@ -69,13 +67,6 @@ public class RepositoryStoreActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(STATE_TAG, (ArrayList<StoreRepository>) mRepositories);
     }
@@ -84,11 +75,13 @@ public class RepositoryStoreActivity extends BaseActivity {
         mList.setAdapter(new RepositoryStoreListViewAdapter(this, mRepositories));
     }
 
-    public void onEvent(RepositoryAddedEvent event) {
+    @Subscribe
+    public void handle(RepositoryAddedEvent event) {
         showSnackBar(event.getRepository().getAlias());
     }
 
-    public void onEvent(RepositoryDuplicatedEvent event) {
+    @Subscribe
+    public void handle(RepositoryDuplicatedEvent event) {
         showSnackBar(R.string.duplicate_url);
     }
 }

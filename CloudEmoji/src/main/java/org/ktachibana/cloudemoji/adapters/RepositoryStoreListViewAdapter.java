@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
@@ -22,17 +22,15 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
-public class RepositoryStoreListViewAdapter extends BaseAdapter {
+public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
     private List<StoreRepository> mRepositories;
     private Context mContext;
 
     public RepositoryStoreListViewAdapter(Context context, List<StoreRepository> repositories) {
         this.mRepositories = repositories;
         this.mContext = context;
-
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -75,12 +73,11 @@ public class RepositoryStoreListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (Repository.hasDuplicateUrl(item.getUrl())) {
-                    EventBus.getDefault().post(new RepositoryDuplicatedEvent());
+                    BUS.post(new RepositoryDuplicatedEvent());
                 } else {
                     Repository repository = new Repository(item.getUrl(), item.getAlias());
                     repository.save();
-
-                    EventBus.getDefault().post(new RepositoryAddedEvent(repository));
+                    BUS.post(new RepositoryAddedEvent(repository));
                 }
             }
         });
@@ -107,7 +104,8 @@ public class RepositoryStoreListViewAdapter extends BaseAdapter {
         }
     }
 
-    public void onEvent(EmptyEvent event) {
+    @Subscribe
+    public void handle(EmptyEvent event) {
 
     }
 }

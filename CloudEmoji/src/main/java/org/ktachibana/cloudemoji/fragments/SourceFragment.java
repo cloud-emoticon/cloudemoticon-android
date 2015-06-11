@@ -16,7 +16,6 @@ import org.ktachibana.cloudemoji.models.inmemory.Source;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends BaseFragment {
@@ -59,7 +58,7 @@ public class SourceFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
                 Entry entry = (Entry) mAdapter.getItem(section, position);
-                EventBus.getDefault().post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                BUS.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
 
             @Override
