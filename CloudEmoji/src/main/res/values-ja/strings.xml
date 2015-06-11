@@ -89,4 +89,6 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="log_out">Log out</string>
+    <string name="logging_in">Logging in</string>
+    <string name="logging_out">Logging out</string>
 </resources>

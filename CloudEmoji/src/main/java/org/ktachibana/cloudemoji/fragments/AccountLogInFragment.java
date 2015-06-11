@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
+import org.ktachibana.cloudemoji.utils.Termination;
+import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -68,12 +72,32 @@ public class AccountLogInFragment extends BaseFragment {
         user.setUsername(username);
         user.setPassword(password);
         UserState userState = Sync.getUserState();
-        userState.login(user).continueWith(new Continuation<Void, Void>() {
+
+        final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(getActivity())
+                .title(R.string.please_wait)
+                .content(R.string.logging_in)
+                .show();
+
+        userState.login(user).continueWith(new Termination<>(new Termination.Callback<Void>() {
             @Override
-            public Void then(Task<Void> task) throws Exception {
-                // TODO
-                return null;
+            public void cancelled() {
+                showSnackBar(R.string.fail);
             }
-        });
+
+            @Override
+            public void faulted(Exception e) {
+                showSnackBar(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void succeeded(Void result) {
+                // TODO: transit to logged in state
+            }
+
+            @Override
+            public void completed() {
+                dialog.dismiss();
+            }
+        }));
     }
 }

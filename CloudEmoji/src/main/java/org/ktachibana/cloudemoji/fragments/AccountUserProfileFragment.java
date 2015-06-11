@@ -9,17 +9,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
+import org.ktachibana.cloudemoji.utils.Termination;
+import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
 
 import bolts.Continuation;
 import bolts.Task;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class AccountUserProfileFragment extends Fragment {
+public class AccountUserProfileFragment extends BaseFragment {
     @InjectView(R.id.username)
     TextView username;
     @InjectView(R.id.email)
@@ -53,12 +58,32 @@ public class AccountUserProfileFragment extends Fragment {
     }
 
     private void logOut() {
-        mUserState.logout().continueWith(new Continuation<Void, Void>() {
+
+        final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(getActivity())
+                .title(R.string.please_wait)
+                .content(R.string.logging_out)
+                .show();
+
+        mUserState.logout().continueWith(new Termination<>(new Termination.Callback<Void>() {
             @Override
-            public Void then(Task<Void> task) throws Exception {
-                // TODO
-                return null;
+            public void cancelled() {
+                showSnackBar(R.string.fail);
             }
-        });
+
+            @Override
+            public void faulted(Exception e) {
+                showSnackBar(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void succeeded(Void result) {
+                // TODO: transit to logged out state
+            }
+
+            @Override
+            public void completed() {
+                dialog.dismiss();
+            }
+        }));
     }
 }

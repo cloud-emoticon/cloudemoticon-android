@@ -2,21 +2,22 @@ package org.ktachibana.cloudemoji.fragments;
 
 
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.ktachibana.cloudemoji.utils.Termination;
+import org.ktachibana.cloudemoji.utils.UncancelableProgressMaterialDialogBuilder;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -78,12 +79,32 @@ public class AccountRegisterFragment extends BaseFragment {
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setEmail(email);
-        newUser.register().continueWith(new Continuation<Void, Void>() {
+
+        final MaterialDialog dialog = new UncancelableProgressMaterialDialogBuilder(getActivity())
+                .title(R.string.please_wait)
+                .content(R.string.registering)
+                .show();
+
+        newUser.register().continueWith(new Termination<>(new Termination.Callback<Void>() {
             @Override
-            public Void then(Task<Void> task) throws Exception {
-                // TODO
-                return null;
+            public void cancelled() {
+                showSnackBar(R.string.fail);
             }
-        });
+
+            @Override
+            public void faulted(Exception e) {
+                showSnackBar(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void succeeded(Void result) {
+                // TODO: transit to logged in state
+            }
+
+            @Override
+            public void completed() {
+                dialog.dismiss();
+            }
+        }), Task.UI_THREAD_EXECUTOR);
     }
 }
