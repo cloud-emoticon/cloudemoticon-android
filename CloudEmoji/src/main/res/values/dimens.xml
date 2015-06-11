@@ -2,11 +2,13 @@
 <resources>
     <dimen name="drawerSize">300dp</dimen>
 
-    <dimen name="listPreferredItemMinHeight">60dip</dimen>
-    <dimen name="listPreferredItemPaddingLeft">16dip</dimen>
-    <dimen name="listPreferredItemPaddingRight">16dip</dimen>
-    <dimen name="listPreferredItemIconAndTextMargin">32dip</dimen>
+    <dimen name="listPreferredItemMinHeight">60dp</dimen>
+    <dimen name="listPreferredItemPaddingLeft">16dp</dimen>
+    <dimen name="listPreferredItemPaddingRight">16dp</dimen>
+    <dimen name="listPreferredItemIconAndTextMargin">32dp</dimen>
 
-    <dimen name="iconSize">128dip</dimen>
+    <dimen name="iconSize">128dp</dimen>
+
+    <dimen name="fragmentPadding">24dp</dimen>
 
 </resources>
