@@ -28,7 +28,6 @@ public class EmojiconsGridFragment extends BaseFragment {
 
     public EmojiconsGridFragment() {
         // Required empty public constructor
-        int i = 0;
     }
 
     public static EmojiconsGridFragment newInstance(Emojicon[] emojicons) {
