@@ -9,6 +9,6 @@
 
     <dimen name="iconSize">128dp</dimen>
 
-    <dimen name="fragmentPadding">24dp</dimen>
+    <dimen name="fragmentPadding">16dp</dimen>
 
 </resources>
