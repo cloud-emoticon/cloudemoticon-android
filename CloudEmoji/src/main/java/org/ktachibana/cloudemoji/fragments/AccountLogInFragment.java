@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
 import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
@@ -89,7 +90,7 @@ public class AccountLogInFragment extends BaseFragment {
 
             @Override
             public void succeeded(Void result) {
-                // TODO: transit to logged in state
+                BUS.post(new UserLoggedInEvent());
             }
 
             @Override
