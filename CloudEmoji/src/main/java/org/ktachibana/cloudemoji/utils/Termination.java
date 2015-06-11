@@ -6,8 +6,11 @@ import bolts.Task;
 public class Termination<TClass> implements Continuation<TClass, Void> {
     public interface Callback<TCallback> {
         void cancelled();
+
         void faulted(Exception e);
+
         void succeeded(TCallback result);
+
         void completed();
     }
 

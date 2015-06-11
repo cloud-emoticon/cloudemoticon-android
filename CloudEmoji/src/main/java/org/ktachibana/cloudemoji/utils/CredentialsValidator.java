@@ -13,6 +13,7 @@ public class CredentialsValidator {
     public static boolean username(String username) {
         return !TextUtils.isEmpty(username);
     }
+
     public static boolean password(String password) {
         return !TextUtils.isEmpty(password);
     }

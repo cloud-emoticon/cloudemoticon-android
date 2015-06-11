@@ -17,8 +17,8 @@ import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
-import org.ktachibana.cloudemoji.utils.Termination;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.Termination;
 
 import bolts.Task;
 import butterknife.ButterKnife;
