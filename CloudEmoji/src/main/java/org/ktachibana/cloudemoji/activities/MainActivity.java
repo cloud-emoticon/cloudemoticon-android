@@ -367,6 +367,11 @@ public class MainActivity extends BaseActivity implements
                 refreshUiWithCurrentState();
             }
         }
+
+        // Coming back from account, user state may be changed
+        if (requestCode == ACCOUNT_REQUEST_CODE) {
+            // TODO: re-setup account header
+        }
     }
 
     @Override
@@ -526,7 +531,7 @@ public class MainActivity extends BaseActivity implements
 
         if (listItemId == LIST_ITEM_ACCOUNT_ID) {
             Intent intent = new Intent(this, AccountActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
             mState.revertToPreviousId();
         }
 

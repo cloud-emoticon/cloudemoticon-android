@@ -55,6 +55,7 @@ public interface Constants {
     int REPOSITORY_MANAGER_REQUEST_CODE = 0;
     int PREFERENCE_REQUEST_CODE = 1;
     int REPOSITORY_STORE_REQUEST_CODE = 2;
+    int ACCOUNT_REQUEST_CODE = 3;
 
     // File
     String FAVORITES_BACKUP_FILE_PATH

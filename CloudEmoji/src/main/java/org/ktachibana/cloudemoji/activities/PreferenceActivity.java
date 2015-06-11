@@ -21,16 +21,4 @@ public class PreferenceActivity extends BaseActivity implements Constants {
                 .replace(R.id.main_container, fragment)
                 .commit();
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                setResult(REPOSITORY_MANAGER_REQUEST_CODE);
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
