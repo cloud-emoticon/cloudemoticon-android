@@ -84,6 +84,6 @@ public class AccountUserProfileFragment extends BaseFragment {
             public void completed() {
                 dialog.dismiss();
             }
-        }));
+        }), Task.UI_THREAD_EXECUTOR);
     }
 }
