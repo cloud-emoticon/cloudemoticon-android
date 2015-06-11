@@ -14,19 +14,19 @@ import de.greenrobot.event.EventBus;
  * It includes snack bar, and event bus
  */
 public class BaseFragment extends Fragment {
-    protected EventBus mBus;
+    protected EventBus BUS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBus = EventBus.getDefault();
-        mBus.register(this);
+        BUS = EventBus.getDefault();
+        BUS.register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mBus.unregister(this);
+        BUS.unregister(this);
     }
 
     public void onEvent(EmptyEvent event) {

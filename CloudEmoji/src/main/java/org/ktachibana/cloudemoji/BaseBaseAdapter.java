@@ -12,11 +12,11 @@ import de.greenrobot.event.EventBus;
  * It includes event bus
  */
 public class BaseBaseAdapter extends android.widget.BaseAdapter {
-    protected EventBus mBus;
+    protected EventBus BUS;
 
     public BaseBaseAdapter() {
-        mBus = EventBus.getDefault();
-        mBus.register(this);
+        BUS = EventBus.getDefault();
+        BUS.register(this);
     }
 
     public void onEvent(EmptyEvent event) {

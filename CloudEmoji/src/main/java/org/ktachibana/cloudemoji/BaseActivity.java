@@ -27,20 +27,20 @@ import de.greenrobot.event.EventBus;
 public class BaseActivity extends AppCompatActivity implements Constants {
     protected SharedPreferences mPreferences;
     protected Toolbar mToolbar;
-    protected EventBus mBus;
+    protected EventBus BUS;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mBus = EventBus.getDefault();
-        mBus.register(this);
+        BUS = EventBus.getDefault();
+        BUS.register(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBus.unregister(this);
+        BUS.unregister(this);
     }
 
     @Override

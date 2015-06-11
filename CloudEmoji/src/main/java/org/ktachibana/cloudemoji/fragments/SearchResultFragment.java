@@ -64,7 +64,7 @@ public class SearchResultFragment extends BaseFragment {
                 + this.getResources().getString(R.string.search_result_not_found));
 
         // Initiate search
-        mBus.post(new SearchInitiatedEvent(mSearchQuery));
+        BUS.post(new SearchInitiatedEvent(mSearchQuery));
 
         return rootView;
     }
@@ -75,7 +75,7 @@ public class SearchResultFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Entry entry = (Entry) parent.getAdapter().getItem(position);
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                BUS.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
         });
     }

@@ -98,12 +98,12 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
                 new RepositoryDownloaderClient().downloadSource(item, new BaseHttpClient.ObjectCallback<Repository>() {
                     @Override
                     public void success(Repository result) {
-                        mBus.post(new RepositoryDownloadedEvent(item));
+                        BUS.post(new RepositoryDownloadedEvent(item));
                     }
 
                     @Override
                     public void fail(Throwable t) {
-                        mBus.post(new RepositoryDownloadFailedEvent(t));
+                        BUS.post(new RepositoryDownloadFailedEvent(t));
                     }
 
                     @Override
@@ -118,7 +118,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
         viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBus.post(new RepositoryBeginEditingEvent(item));
+                BUS.post(new RepositoryBeginEditingEvent(item));
             }
         });
 
@@ -139,9 +139,9 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
                     File exportFile = new File(filePath);
                     BackupHelper.writeFileToExternalStorage(json, exportFile);
 
-                    mBus.post(new RepositoryExportedEvent(filePath));
+                    BUS.post(new RepositoryExportedEvent(filePath));
                 } catch (SourceParsingException e) {
-                    mBus.post(e.getFormatType().toString());
+                    BUS.post(e.getFormatType().toString());
                 } catch (IOException e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {

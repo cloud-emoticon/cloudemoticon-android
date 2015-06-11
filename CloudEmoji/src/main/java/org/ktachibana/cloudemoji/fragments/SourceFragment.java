@@ -58,7 +58,7 @@ public class SourceFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
                 Entry entry = (Entry) mAdapter.getItem(section, position);
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                BUS.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
 
             @Override

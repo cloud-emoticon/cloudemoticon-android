@@ -62,7 +62,7 @@ public class HistoryFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History history = (History) mAdapter.getItem(position);
                 Entry entry = new Entry(history.getEmoticon(), history.getDescription());
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                BUS.post(new EntryCopiedAndAddedToHistoryEvent(entry));
                 mAdapter.updateHistory();
             }
         });

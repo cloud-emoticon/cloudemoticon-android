@@ -72,11 +72,11 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
             @Override
             public void onClick(View v) {
                 if (Repository.hasDuplicateUrl(item.getUrl())) {
-                    mBus.post(new RepositoryDuplicatedEvent());
+                    BUS.post(new RepositoryDuplicatedEvent());
                 } else {
                     Repository repository = new Repository(item.getUrl(), item.getAlias());
                     repository.save();
-                    mBus.post(new RepositoryAddedEvent(repository));
+                    BUS.post(new RepositoryAddedEvent(repository));
                 }
             }
         });

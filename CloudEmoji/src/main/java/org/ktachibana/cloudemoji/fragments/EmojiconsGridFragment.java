@@ -59,7 +59,7 @@ public class EmojiconsGridFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String emojicon = mEmojicons[position].getEmoji();
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(new Entry(emojicon, "")));
+                BUS.post(new EntryCopiedAndAddedToHistoryEvent(new Entry(emojicon, "")));
             }
         });
 

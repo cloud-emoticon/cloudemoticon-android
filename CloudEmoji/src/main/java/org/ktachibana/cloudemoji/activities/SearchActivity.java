@@ -116,6 +116,6 @@ public class SearchActivity extends BaseActivity {
         }
 
         // Search finished
-        mBus.post(new SearchFinishedEvent(results));
+        BUS.post(new SearchFinishedEvent(results));
     }
 }
