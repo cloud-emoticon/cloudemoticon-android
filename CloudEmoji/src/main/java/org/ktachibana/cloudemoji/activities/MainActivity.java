@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import de.greenrobot.event.Subscribe;
 
 public class MainActivity extends BaseActivity implements
         Constants,
@@ -298,11 +299,13 @@ public class MainActivity extends BaseActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    public void onEvent(FavoriteAddedEvent event) {
+    @Subscribe
+    public void handle(FavoriteAddedEvent event) {
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.added_to_fav));
     }
 
-    public void onEvent(FavoriteDeletedEvent event) {
+    @Subscribe
+    public void handle(FavoriteDeletedEvent event) {
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
     }
 

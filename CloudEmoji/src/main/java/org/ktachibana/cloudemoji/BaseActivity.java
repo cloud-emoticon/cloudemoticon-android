@@ -21,6 +21,7 @@ import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * Base activity for all activities with UI to extend
@@ -74,18 +75,15 @@ public class BaseActivity extends AppCompatActivity implements Constants {
         showSnackBar(getString(resId));
     }
 
-    public void onEvent(ShowSnackBarOnBaseActivityEvent event) {
+    @Subscribe
+    public void handle(ShowSnackBarOnBaseActivityEvent event) {
         showSnackBar(event.getMessage());
     }
 
-    /**
-     * Listens for any string copied and send it to clipboard
-     *
-     * @param event string copied event
-     */
     @SuppressWarnings("deprecation")
     @TargetApi(11)
-    public void onEvent(EntryCopiedAndAddedToHistoryEvent event) {
+    @Subscribe
+    public void handle(EntryCopiedAndAddedToHistoryEvent event) {
         String copied = event.getEntry().getEmoticon();
 
         if (SystemUtils.belowHoneycomb()) {
@@ -112,7 +110,8 @@ public class BaseActivity extends AppCompatActivity implements Constants {
         }
     }
 
-    public void onEvent(EmptyEvent e) {
+    @Subscribe
+    public void handle(EmptyEvent e) {
 
     }
 }

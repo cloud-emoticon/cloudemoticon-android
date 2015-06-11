@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * Base adapter for all list adapters to extend
@@ -19,7 +20,8 @@ public class BaseBaseAdapter extends android.widget.BaseAdapter {
         BUS.register(this);
     }
 
-    public void onEvent(EmptyEvent event) {
+    @Subscribe
+    public void handle(EmptyEvent event) {
 
     }
 

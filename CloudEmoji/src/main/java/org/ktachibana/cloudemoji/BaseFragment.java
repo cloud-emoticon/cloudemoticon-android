@@ -8,6 +8,7 @@ import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * Base fragment for all fragments to extend
@@ -29,7 +30,8 @@ public class BaseFragment extends Fragment {
         BUS.unregister(this);
     }
 
-    public void onEvent(EmptyEvent event) {
+    @Subscribe
+    public void handle(EmptyEvent event) {
 
     }
 
