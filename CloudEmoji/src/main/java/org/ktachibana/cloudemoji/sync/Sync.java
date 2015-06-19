@@ -1,9 +1,11 @@
 package org.ktachibana.cloudemoji.sync;
 
 import org.ktachibana.cloudemoji.sync.interfaces.Bookmark;
+import org.ktachibana.cloudemoji.sync.interfaces.BookmarkManager;
 import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 import org.ktachibana.cloudemoji.sync.parse.ParseBookmarkImplementation;
+import org.ktachibana.cloudemoji.sync.parse.ParseBookmarkManagerImplementation;
 import org.ktachibana.cloudemoji.sync.parse.ParseUserImplementation;
 import org.ktachibana.cloudemoji.sync.parse.ParseUserStateImplementation;
 
@@ -18,5 +20,9 @@ public class Sync {
 
     public static Bookmark getBookmark() {
         return new ParseBookmarkImplementation();
+    }
+
+    public static BookmarkManager getBookmarkManager() {
+        return new ParseBookmarkManagerImplementation();
     }
 }
