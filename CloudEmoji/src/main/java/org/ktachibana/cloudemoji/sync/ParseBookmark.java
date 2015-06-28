@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.parse;
+package org.ktachibana.cloudemoji.sync;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
