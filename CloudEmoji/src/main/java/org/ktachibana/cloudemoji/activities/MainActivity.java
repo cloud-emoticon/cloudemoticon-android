@@ -29,6 +29,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.query.Condition;
 import com.orm.query.Select;
+import com.parse.ParseUser;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
@@ -48,7 +49,6 @@ import org.ktachibana.cloudemoji.models.persistence.Repository;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.ktachibana.cloudemoji.sync.Sync;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
@@ -118,9 +118,9 @@ public class MainActivity extends BaseActivity implements
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.account_place_holder)
                 .build();
-        if (Sync.getUserState().isLoggedIn()) {
-            String username = Sync.getUserState().getLoggedInUser().getUsername();
-            String email = Sync.getUserState().getLoggedInUser().getEmail();
+        if (ParseUser.getCurrentUser() != null) {
+            String username = ParseUser.getCurrentUser().getUsername();
+            String email = ParseUser.getCurrentUser().getEmail();
             accountHeader.addProfile(
                     new ProfileDrawerItem().withName(username).withEmail(email), 0
             );

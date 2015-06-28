@@ -8,7 +8,7 @@ import com.parse.ParseObject;
 
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-import org.ktachibana.cloudemoji.sync.parse.ParseBookmarkImplementation;
+import org.ktachibana.cloudemoji.parse.ParseBookmark;
 
 @ReportsCrashes(
         formKey = "", // will not be used
@@ -25,7 +25,7 @@ public class BaseApplication extends SugarApp implements PrivateConstants {
         CONTEXT = getApplicationContext();
 
         Parse.initialize(this, applicationId, clientKey);
-        ParseObject.registerSubclass(ParseBookmarkImplementation.class);
+        ParseObject.registerSubclass(ParseBookmark.class);
     }
 
     public static Context context() {
