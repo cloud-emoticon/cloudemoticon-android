@@ -1,13 +1,22 @@
 package org.ktachibana.cloudemoji.sync;
 
+import com.parse.ParseACL;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-    
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 @ParseClassName("Bookmark")
 public class ParseBookmark extends ParseObject {
-    public static final String KEY_FOR_EMOTICON = "emoticon";
-    public static final String KEY_FOR_DESCRIPTION = "description";
-    public static final String KEY_FOR_SHORTCUT = "shortcut";
+    private static final String KEY_FOR_EMOTICON = "emoticon";
+    private static final String KEY_FOR_DESCRIPTION = "description";
+    private static final String KEY_FOR_SHORTCUT = "shortcut";
+    private static final String KEY_FOR_OWNER = "owner";
+
+    public ParseBookmark(ParseUser user) {
+        setACL(new ParseACL(user));
+        put(KEY_FOR_OWNER, user);
+    }
 
     public String getEmoticon() {
         return getString(KEY_FOR_EMOTICON);
@@ -31,5 +40,11 @@ public class ParseBookmark extends ParseObject {
 
     public void setShortcut(String shortcut) {
         put(KEY_FOR_SHORTCUT, shortcut);
+    }
+
+    public static ParseQuery<ParseBookmark> getQuery(ParseUser user) {
+        ParseQuery<ParseBookmark> query = ParseQuery.getQuery(ParseBookmark.class);
+        query.whereEqualTo(KEY_FOR_OWNER, user);
+        return query;
     }
 }
