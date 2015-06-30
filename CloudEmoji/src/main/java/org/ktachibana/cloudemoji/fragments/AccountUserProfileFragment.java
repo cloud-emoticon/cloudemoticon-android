@@ -9,13 +9,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.events.UserLoggedOutEvent;
-import org.ktachibana.cloudemoji.sync.Sync;
-import org.ktachibana.cloudemoji.sync.interfaces.User;
-import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.Termination;
 
@@ -30,7 +29,6 @@ public class AccountUserProfileFragment extends BaseFragment {
     TextView email;
     @InjectView(R.id.log_out)
     Button logOut;
-    UserState mUserState;
 
     public AccountUserProfileFragment() {
         // Required empty public constructor
@@ -42,8 +40,7 @@ public class AccountUserProfileFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_account_user_profile, container, false);
         ButterKnife.inject(this, rootView);
 
-        mUserState = Sync.getUserState();
-        User currentUser = mUserState.getLoggedInUser();
+        ParseUser currentUser = ParseUserState.getLoggedInUser();
         username.setText(currentUser.getUsername());
         email.setText(currentUser.getEmail());
         logOut.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +60,7 @@ public class AccountUserProfileFragment extends BaseFragment {
                 .content(R.string.logging_out)
                 .show();
 
-        mUserState.logout().continueWith(new Termination<>(new Termination.Callback<Void>() {
+        ParseUser.logOutInBackground().continueWith(new Termination<>(new Termination.Callback<Void>() {
             @Override
             public void cancelled() {
                 showSnackBar(R.string.fail);

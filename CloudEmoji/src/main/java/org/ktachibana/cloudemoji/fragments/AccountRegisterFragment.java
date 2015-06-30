@@ -9,12 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
-import org.ktachibana.cloudemoji.sync.Sync;
-import org.ktachibana.cloudemoji.sync.interfaces.User;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.Termination;
@@ -74,7 +73,7 @@ public class AccountRegisterFragment extends BaseFragment {
             return;
         }
 
-        User newUser = Sync.getUser();
+        ParseUser newUser = new ParseUser();
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setEmail(email);
@@ -84,7 +83,7 @@ public class AccountRegisterFragment extends BaseFragment {
                 .content(R.string.registering)
                 .show();
 
-        newUser.register().continueWith(new Termination<>(new Termination.Callback<Void>() {
+        newUser.signUpInBackground().continueWith(new Termination<>(new Termination.Callback<Void>() {
             @Override
             public void cancelled() {
                 showSnackBar(R.string.fail);

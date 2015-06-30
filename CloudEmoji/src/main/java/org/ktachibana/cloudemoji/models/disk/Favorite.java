@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.models.persistence;
+package org.ktachibana.cloudemoji.models.disk;
 
 import com.orm.SugarRecord;
 import com.orm.query.Condition;

@@ -4,11 +4,11 @@ import android.os.Bundle;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
 import org.ktachibana.cloudemoji.events.UserLoggedOutEvent;
 import org.ktachibana.cloudemoji.fragments.AccountLogInOrRegisterFragment;
 import org.ktachibana.cloudemoji.fragments.AccountUserProfileFragment;
-import org.ktachibana.cloudemoji.sync.Sync;
 
 import de.greenrobot.event.Subscribe;
 
@@ -19,7 +19,7 @@ public class AccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        if (Sync.getUserState().isLoggedIn()) {
+        if (ParseUserState.isLoggedIn()) {
             showUserProfile();
         } else {
             showLogInOrRegister();

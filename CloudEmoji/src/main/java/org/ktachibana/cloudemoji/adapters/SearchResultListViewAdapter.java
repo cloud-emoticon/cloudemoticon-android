@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import java.util.List;
 

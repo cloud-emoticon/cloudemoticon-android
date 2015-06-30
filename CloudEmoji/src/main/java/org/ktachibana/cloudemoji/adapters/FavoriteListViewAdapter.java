@@ -13,7 +13,7 @@ import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.models.persistence.Favorite;
+import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.util.List;
 

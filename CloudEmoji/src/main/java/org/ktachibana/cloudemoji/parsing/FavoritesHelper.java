@@ -1,9 +1,9 @@
 package org.ktachibana.cloudemoji.parsing;
 
-import org.ktachibana.cloudemoji.models.inmemory.Category;
-import org.ktachibana.cloudemoji.models.inmemory.Entry;
-import org.ktachibana.cloudemoji.models.inmemory.Source;
-import org.ktachibana.cloudemoji.models.persistence.Favorite;
+import org.ktachibana.cloudemoji.models.disk.Favorite;
+import org.ktachibana.cloudemoji.models.memory.Category;
+import org.ktachibana.cloudemoji.models.memory.Entry;
+import org.ktachibana.cloudemoji.models.memory.Source;
 
 import java.util.ArrayList;
 import java.util.Arrays;

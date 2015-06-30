@@ -1,5 +1,9 @@
 # Future
 
+Quick edit box
+
+Auto paste using assist
+
 Better looking list items in Favorite/Repo Manager
 
 Add info in SourceFragment

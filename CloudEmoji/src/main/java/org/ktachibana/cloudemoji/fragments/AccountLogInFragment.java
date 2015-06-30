@@ -9,13 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
-import org.ktachibana.cloudemoji.sync.Sync;
-import org.ktachibana.cloudemoji.sync.interfaces.User;
-import org.ktachibana.cloudemoji.sync.interfaces.UserState;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.Termination;
@@ -67,17 +65,12 @@ public class AccountLogInFragment extends BaseFragment {
             return;
         }
 
-        User user = Sync.getUser();
-        user.setUsername(username);
-        user.setPassword(password);
-        UserState userState = Sync.getUserState();
-
         final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(getActivity())
                 .title(R.string.please_wait)
                 .content(R.string.logging_in)
                 .show();
 
-        userState.login(user).continueWith(new Termination<>(new Termination.Callback<Void>() {
+        ParseUser.logInInBackground(username, password).continueWith(new Termination<>(new Termination.Callback<ParseUser>() {
             @Override
             public void cancelled() {
                 showSnackBar(R.string.fail);
@@ -89,7 +82,7 @@ public class AccountLogInFragment extends BaseFragment {
             }
 
             @Override
-            public void succeeded(Void result) {
+            public void succeeded(ParseUser result) {
                 BUS.post(new UserLoggedInEvent());
             }
 

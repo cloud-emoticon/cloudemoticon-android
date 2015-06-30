@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.orm.SugarApp;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
 @ReportsCrashes(
         formKey = "", // will not be used
@@ -23,6 +25,7 @@ public class BaseApplication extends SugarApp implements PrivateConstants {
         CONTEXT = getApplicationContext();
 
         Parse.initialize(this, applicationId, clientKey);
+        ParseObject.registerSubclass(ParseBookmark.class);
     }
 
     public static Context context() {

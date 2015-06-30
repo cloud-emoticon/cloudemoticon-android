@@ -8,7 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
-import org.ktachibana.cloudemoji.models.persistence.Repository;
+import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.io.File;

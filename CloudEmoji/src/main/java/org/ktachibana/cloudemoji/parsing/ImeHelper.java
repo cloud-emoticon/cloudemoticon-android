@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.provider.UserDictionary;
 
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.models.persistence.Favorite;
+import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.List;
