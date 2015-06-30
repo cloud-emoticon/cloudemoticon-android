@@ -13,6 +13,7 @@ import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.events.UserLoggedOutEvent;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.Termination;
@@ -39,7 +40,7 @@ public class AccountUserProfileFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_account_user_profile, container, false);
         ButterKnife.inject(this, rootView);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseUser currentUser = ParseUserState.getLoggedInUser();
         username.setText(currentUser.getUsername());
         email.setText(currentUser.getEmail());
         logOut.setOnClickListener(new View.OnClickListener() {

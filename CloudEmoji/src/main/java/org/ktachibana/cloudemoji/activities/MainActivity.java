@@ -29,7 +29,6 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.query.Condition;
 import com.orm.query.Select;
-import com.parse.ParseUser;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
@@ -37,15 +36,16 @@ import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
-import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.Repository;
+import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
@@ -118,9 +118,9 @@ public class MainActivity extends BaseActivity implements
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.account_place_holder)
                 .build();
-        if (ParseUser.getCurrentUser() != null) {
-            String username = ParseUser.getCurrentUser().getUsername();
-            String email = ParseUser.getCurrentUser().getEmail();
+        if (ParseUserState.isLoggedIn()) {
+            String username = ParseUserState.getLoggedInUser().getUsername();
+            String email = ParseUserState.getLoggedInUser().getEmail();
             accountHeader.addProfile(
                     new ProfileDrawerItem().withName(username).withEmail(email), 0
             );

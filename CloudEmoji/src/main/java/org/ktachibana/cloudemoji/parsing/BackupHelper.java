@@ -4,9 +4,9 @@ import android.os.Environment;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
-import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -4,8 +4,8 @@ import com.google.gson.JsonParseException;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseApplication;
-import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.models.disk.Repository;
+import org.ktachibana.cloudemoji.models.memory.Source;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;

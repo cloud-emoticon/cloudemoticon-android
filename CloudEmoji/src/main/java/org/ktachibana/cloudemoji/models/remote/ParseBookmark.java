@@ -13,7 +13,8 @@ public class ParseBookmark extends ParseObject {
     private static final String KEY_FOR_SHORTCUT = "shortcut";
     private static final String KEY_FOR_OWNER = "owner";
 
-    public ParseBookmark(){}
+    public ParseBookmark() {
+    }
 
     public ParseBookmark(ParseUser user) {
         setACL(new ParseACL(user));

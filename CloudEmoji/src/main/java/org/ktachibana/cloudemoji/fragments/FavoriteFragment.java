@@ -18,8 +18,8 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
-import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
+import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
 
 import java.util.List;

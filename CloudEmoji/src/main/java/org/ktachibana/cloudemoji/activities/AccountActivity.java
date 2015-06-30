@@ -2,10 +2,9 @@ package org.ktachibana.cloudemoji.activities;
 
 import android.os.Bundle;
 
-import com.parse.ParseUser;
-
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
 import org.ktachibana.cloudemoji.events.UserLoggedOutEvent;
 import org.ktachibana.cloudemoji.fragments.AccountLogInOrRegisterFragment;
@@ -20,7 +19,7 @@ public class AccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        if (ParseUser.getCurrentUser() != null) {
+        if (ParseUserState.isLoggedIn()) {
             showUserProfile();
         } else {
             showLogInOrRegister();
