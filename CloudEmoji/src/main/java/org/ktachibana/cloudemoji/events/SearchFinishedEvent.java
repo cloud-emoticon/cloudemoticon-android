@@ -1,6 +1,6 @@
 package org.ktachibana.cloudemoji.events;
 
-import org.ktachibana.cloudemoji.models.inmemory.Entry;
+import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import java.util.List;
 

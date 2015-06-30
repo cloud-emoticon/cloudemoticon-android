@@ -15,8 +15,8 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
-import org.ktachibana.cloudemoji.models.inmemory.StoreRepository;
-import org.ktachibana.cloudemoji.models.persistence.Repository;
+import org.ktachibana.cloudemoji.models.memory.StoreRepository;
+import org.ktachibana.cloudemoji.models.disk.Repository;
 
 import java.util.List;
 

@@ -8,7 +8,7 @@ import com.parse.ParseObject;
 
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-import org.ktachibana.cloudemoji.sync.ParseBookmark;
+import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
 @ReportsCrashes(
         formKey = "", // will not be used

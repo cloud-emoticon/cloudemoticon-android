@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.sync;
+package org.ktachibana.cloudemoji.models.remote;
 
 import com.parse.ParseACL;
 import com.parse.ParseClassName;
@@ -12,6 +12,8 @@ public class ParseBookmark extends ParseObject {
     private static final String KEY_FOR_DESCRIPTION = "description";
     private static final String KEY_FOR_SHORTCUT = "shortcut";
     private static final String KEY_FOR_OWNER = "owner";
+
+    public ParseBookmark(){}
 
     public ParseBookmark(ParseUser user) {
         setACL(new ParseACL(user));
