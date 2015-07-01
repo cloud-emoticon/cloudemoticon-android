@@ -5,8 +5,10 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +28,20 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
         this.shortcut = shortcut;
     }
 
-    @SuppressWarnings("unchecked")
+    public Favorite(ParseBookmark bookmark) {
+        this.emoticon = bookmark.getEmoticon();
+        this.description = bookmark.getDescription();
+        this.shortcut = bookmark.getShortcut();
+    }
+
+    public static List<Favorite> convert(List<ParseBookmark> bookmarks) {
+        List<Favorite> favorites = new ArrayList<>();
+        for (ParseBookmark bookmark : bookmarks) {
+            favorites.add(new Favorite(bookmark));
+        }
+        return favorites;
+    }
+
     public static List<Favorite> queryByEmoticon(String queriedEmoticon) {
         return Select
                 .from(Favorite.class)
