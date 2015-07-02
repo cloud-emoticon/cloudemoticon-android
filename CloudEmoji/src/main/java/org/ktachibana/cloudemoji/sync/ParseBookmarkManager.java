@@ -90,6 +90,35 @@ public class ParseBookmarkManager {
     }
 
     /**
+     * Delete one
+     */
+    public static void deleteBookmark(String emoticon) {
+        Favorite favorite = Favorite.queryByEmoticon(emoticon);
+        deleteBookmarkLocally(favorite);
+        if (ParseUserState.isLoggedIn()) {
+            deleteBookmarkRemotely(favorite);
+        }
+    }
+
+    private static void deleteBookmarkLocally(Favorite favorite) {
+        favorite.delete();
+    }
+
+    private static void deleteBookmarkRemotely(Favorite favorite) {
+        ParseBookmark.getQuery(ParseUserState.getLoggedInUser(), favorite.getEmoticon())
+                .getFirstInBackground()
+                .continueWith(new Continuation<ParseBookmark, Void>() {
+                    @Override
+                    public Void then(Task<ParseBookmark> task) throws Exception {
+                        if (task.getResult() != null) {
+                            task.getResult().deleteEventually();
+                        }
+                        throw new ParseBookmarkNotFoundException()''
+                    }
+                });
+    }
+
+    /**
      * Utils
      */
 
