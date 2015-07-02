@@ -32,28 +32,19 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
         this(bookmark.getEmoticon(), bookmark.getDescription(), bookmark.getShortcut());
     }
 
-    public static List<Favorite> convert(List<ParseBookmark> bookmarks) {
-        List<Favorite> favorites = new ArrayList<>();
-        for (ParseBookmark bookmark : bookmarks) {
-            favorites.add(new Favorite(bookmark));
-        }
-        return favorites;
-    }
-
-    public static boolean listEquals(List<Favorite> a, List<Favorite> b) {
-        if (a == null || b == null) return false;
-        if (a.size() != b.size()) return false;
-        for (int i = 0; i < a.size(); i++) {
-            if (!a.get(i).equals(b.get(i))) return false;
-        }
-        return true;
-    }
-
-    public static List<Favorite> queryByEmoticon(String queriedEmoticon) {
+    private static List<Favorite> queryListByEmoticon(String queriedEmoticon) {
         return Select
                 .from(Favorite.class)
                 .where(Condition.prop("emoticon").eq(queriedEmoticon))
                 .list();
+    }
+
+    public static Favorite queryByEmoticon(String queriedEmoticon) {
+        List<Favorite> favorites = queryListByEmoticon(queriedEmoticon);
+        if (favorites == null || favorites.size() == 0) {
+            return null;
+        }
+        return favorites.get(0);
     }
 
     public String getEmoticon() {

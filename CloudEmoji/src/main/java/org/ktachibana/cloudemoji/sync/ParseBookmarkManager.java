@@ -1,5 +1,7 @@
 package org.ktachibana.cloudemoji.sync;
 
+import com.parse.Parse;
+
 import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
@@ -24,11 +26,11 @@ public class ParseBookmarkManager {
         }
     }
 
-    public static void createBookmarkLocally(Favorite favorite) {
+    private static void createBookmarkLocally(Favorite favorite) {
         favorite.save();
     }
 
-    public static void createBookmarkRemotely(Favorite favorite) {
+    private static void createBookmarkRemotely(Favorite favorite) {
         ParseBookmark bookmark = new ParseBookmark(ParseUserState.getLoggedInUser(), favorite);
         bookmark.saveEventually();
     }
@@ -36,24 +38,40 @@ public class ParseBookmarkManager {
     /**
      * Read all
      */
-    public static Task<List<Favorite>> readAllBookmarksRemotely() {
+    // TODO: read all transparently
+
+    public static List<Favorite> readAllBookmarksLocally() {
+        return Favorite.listAll(Favorite.class);
+    }
+
+    public static Task<List<ParseBookmark>> readAllBookmarksRemotely() {
         return ParseBookmark.getQuery(ParseUserState.getLoggedInUser())
-                .findInBackground()
-                .continueWith(new Continuation<List<ParseBookmark>, List<Favorite>>() {
-                    @Override
-                    public List<Favorite> then(Task<List<ParseBookmark>> task) throws Exception {
-                        if (task.getResult() != null) {
-                            return Favorite.convert(task.getResult());
-                        }
-                        throw new ParseBookmarkNotFoundException();
-                    }
-                });
+                .findInBackground();
     }
 
     /**
      * Update one
      */
-    public static void updateBookmarkRemotely(final Favorite favorite) {
+    public static void updateBookmark(
+            String emoticon,
+            String description,
+            String shortcut) {
+        Favorite favorite = Favorite.queryByEmoticon(emoticon);
+        if (favorite != null) {
+            favorite.setDescription(description);
+            favorite.setShortcut(shortcut);
+            updateBookmarkLocally(favorite);
+            if (ParseUserState.isLoggedIn()) {
+                updateBookmarkRemotely(favorite);
+            }
+        }
+    }
+
+    private static void updateBookmarkLocally(Favorite favorite) {
+        favorite.save();
+    }
+
+    private static void updateBookmarkRemotely(final Favorite favorite) {
         ParseBookmark.getQuery(ParseUserState.getLoggedInUser(), favorite.getEmoticon())
                 .getFirstInBackground()
                 .continueWith(new Continuation<ParseBookmark, Void>() {
@@ -76,60 +94,12 @@ public class ParseBookmarkManager {
      */
 
     /**
-     * Try to handle first login conflict
+     * Handle first login conflict
      * If local contents are empty and remote contents are empty, do nothing
      * If EITHER local contents OR remote contents are non-empty, download/upload from one to another
-     * If BOTH local contents AND remote contents are non-empty, try to merge
+     * If BOTH local contents AND remote contents are non-empty, merge
      */
-    public static Task<FirstLoginConflictResult> handleFirstLoginConflict() {
-        // Read local favorites
-        final List<Favorite> local = Favorite.listAll(Favorite.class);
-
-        // Read remote favorites
-        return readAllBookmarksRemotely().continueWith(new Continuation<List<Favorite>, FirstLoginConflictResult>() {
-            @Override
-            public FirstLoginConflictResult then(Task<List<Favorite>> task) throws Exception {
-                final List<Favorite> remote = task.getResult();
-                if (remote != null) {
-
-                    // If both local and remote are empty then do nothing
-                    if (local.size() == 0 && remote.size() == 0)
-                        return FirstLoginConflictResult.BOTH_EMPTY;
-
-                    // If local is non-empty and remote is empty then upload
-                    if (local.size() != 0 && remote.size() == 0) {
-                        for (Favorite favorite : local) {
-                            createBookmarkRemotely(favorite);
-                        }
-                        return FirstLoginConflictResult.REMOTE_EMPTY;
-                    }
-
-                    // If local is empty and remote is non-empty then download
-                    if (local.size() == 0 && remote.size() != 0) {
-                        for (Favorite favorite : remote) {
-                            favorite.save();
-                        }
-                        return FirstLoginConflictResult.LOCAL_EMPTY;
-                    }
-
-                    // If both are non-empty, check for identical
-                    if (Favorite.listEquals(local, remote))
-                        return FirstLoginConflictResult.IDENTICAL;
-
-                    // Otherwise different
-                    handleFirstLoginConflictWithDifference(local, remote);
-                    return FirstLoginConflictResult.DIFFERENT;
-                }
-                throw new ParseBookmarkNotFoundException();
-            }
-        });
-    }
-
-    private static void handleFirstLoginConflictWithDifference(List<Favorite> local, List<Favorite> remote) {
-        // TODO: remove result enum and use this code only
-    }
-
-    public enum FirstLoginConflictResult {
-        BOTH_EMPTY, LOCAL_EMPTY, REMOTE_EMPTY, IDENTICAL, DIFFERENT
+    public static Task<Boolean> handleFirstLoginConflict() {
+        return null;
     }
 }
