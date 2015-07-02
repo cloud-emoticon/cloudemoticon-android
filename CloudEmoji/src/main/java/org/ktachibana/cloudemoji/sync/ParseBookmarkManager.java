@@ -39,6 +39,27 @@ public class ParseBookmarkManager {
     }
 
     /**
+     * Update one
+     */
+    public static void updateBookmarkRemotely(final Favorite favorite) {
+        ParseBookmark.getQuery(ParseUserState.getLoggedInUser(), favorite.getEmoticon())
+                .getFirstInBackground()
+                .continueWith(new Continuation<ParseBookmark, Void>() {
+                    @Override
+                    public Void then(Task<ParseBookmark> task) throws Exception {
+                        if (task.getResult() != null) {
+                            ParseBookmark remote = task.getResult();
+                            remote.setDescription(favorite.getDescription());
+                            remote.setShortcut(favorite.getShortcut());
+                            remote.saveEventually();
+                            return null;
+                        }
+                        throw new ParseBookmarkNotFoundException();
+                    }
+                });
+    }
+
+    /**
      * Utils
      */
 
@@ -56,7 +77,7 @@ public class ParseBookmarkManager {
         return readAllBookmarksRemotely().continueWith(new Continuation<List<Favorite>, FirstLoginConflictResult>() {
             @Override
             public FirstLoginConflictResult then(Task<List<Favorite>> task) throws Exception {
-                List<Favorite> remote = task.getResult();
+                final List<Favorite> remote = task.getResult();
                 if (remote != null) {
 
                     // If both local and remote are empty then do nothing
@@ -84,11 +105,16 @@ public class ParseBookmarkManager {
                         return FirstLoginConflictResult.IDENTICAL;
 
                     // Otherwise different
+                    handleFirstLoginConflictWithDifference(local, remote);
                     return FirstLoginConflictResult.DIFFERENT;
                 }
                 throw new ParseBookmarkNotFoundException();
             }
         });
+    }
+
+    private static void handleFirstLoginConflictWithDifference(List<Favorite> local, List<Favorite> remote) {
+        // TODO: remove result enum and use this code only
     }
 
     public enum FirstLoginConflictResult {

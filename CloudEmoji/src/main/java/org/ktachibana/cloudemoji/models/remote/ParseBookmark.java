@@ -45,9 +45,15 @@ public class ParseBookmark extends ParseObject {
         put(KEY_FOR_SHORTCUT, shortcut);
     }
 
-    public static ParseQuery<ParseBookmark> getQuery(ParseUser user) {
+    public static ParseQuery<ParseBookmark> getQuery(ParseUser owner) {
         ParseQuery<ParseBookmark> query = ParseQuery.getQuery(ParseBookmark.class);
-        query.whereEqualTo(KEY_FOR_OWNER, user);
+        query.whereEqualTo(KEY_FOR_OWNER, owner);
+        return query;
+    }
+
+    public static ParseQuery<ParseBookmark> getQuery(ParseUser owner, String emoticon) {
+        ParseQuery<ParseBookmark> query = getQuery(owner);
+        query.whereEqualTo(KEY_FOR_EMOTICON, emoticon);
         return query;
     }
 }
