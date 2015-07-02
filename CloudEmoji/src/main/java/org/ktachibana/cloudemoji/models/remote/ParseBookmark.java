@@ -6,6 +6,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.ktachibana.cloudemoji.models.disk.Favorite;
+
 @ParseClassName("Bookmark")
 public class ParseBookmark extends ParseObject {
     private static final String KEY_FOR_EMOTICON = "emoticon";
@@ -16,9 +18,16 @@ public class ParseBookmark extends ParseObject {
     public ParseBookmark() {
     }
 
-    public ParseBookmark(ParseUser user) {
-        setACL(new ParseACL(user));
-        put(KEY_FOR_OWNER, user);
+    public ParseBookmark(ParseUser owner) {
+        setACL(new ParseACL(owner));
+        put(KEY_FOR_OWNER, owner);
+    }
+
+    public ParseBookmark(ParseUser owner, Favorite favorite) {
+        this(owner);
+        setEmoticon(favorite.getEmoticon());
+        setDescription(favorite.getDescription());
+        setShortcut(favorite.getShortcut());
     }
 
     public String getEmoticon() {

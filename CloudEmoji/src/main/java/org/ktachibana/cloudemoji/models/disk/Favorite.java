@@ -29,9 +29,7 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
     }
 
     public Favorite(ParseBookmark bookmark) {
-        this.emoticon = bookmark.getEmoticon();
-        this.description = bookmark.getDescription();
-        this.shortcut = bookmark.getShortcut();
+        this(bookmark.getEmoticon(), bookmark.getDescription(), bookmark.getShortcut());
     }
 
     public static List<Favorite> convert(List<ParseBookmark> bookmarks) {

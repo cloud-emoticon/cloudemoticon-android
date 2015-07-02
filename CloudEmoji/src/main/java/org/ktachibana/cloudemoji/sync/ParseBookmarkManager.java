@@ -13,11 +13,23 @@ public class ParseBookmarkManager {
     /**
      * Create one
      */
+    public static void createBookmark(
+            String emoticon,
+            String description,
+            String shortcut) {
+        Favorite favorite = new Favorite(emoticon, description, shortcut);
+        createBookmarkLocally(favorite);
+        if (ParseUserState.isLoggedIn()) {
+            createBookmarkRemotely(favorite);
+        }
+    }
+
+    public static void createBookmarkLocally(Favorite favorite) {
+        favorite.save();
+    }
+
     public static void createBookmarkRemotely(Favorite favorite) {
-        ParseBookmark bookmark = new ParseBookmark(ParseUserState.getLoggedInUser());
-        bookmark.setEmoticon(favorite.getEmoticon());
-        bookmark.setDescription(favorite.getDescription());
-        bookmark.setShortcut(favorite.getShortcut());
+        ParseBookmark bookmark = new ParseBookmark(ParseUserState.getLoggedInUser(), favorite);
         bookmark.saveEventually();
     }
 
