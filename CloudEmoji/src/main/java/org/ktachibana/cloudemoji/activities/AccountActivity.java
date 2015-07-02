@@ -14,6 +14,7 @@ import org.ktachibana.cloudemoji.fragments.AccountLogInOrRegisterFragment;
 import org.ktachibana.cloudemoji.fragments.AccountUserProfileFragment;
 import org.ktachibana.cloudemoji.sync.ParseBookmarkManager;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.Termination;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -64,16 +65,26 @@ public class AccountActivity extends BaseActivity {
                 .content(R.string.handling_first_login_conflict)
                 .show();
 
-        ParseBookmarkManager.handleFirstLoginConflict().continueWith(new Continuation<ParseBookmarkManager.FirstLoginConflictResult, Void>() {
+        ParseBookmarkManager.handleFirstLoginConflict().continueWith(new Termination<>(new Termination.Callback<Void>() {
             @Override
-            public Void then(Task<ParseBookmarkManager.FirstLoginConflictResult> task) throws Exception {
-                if (task.getResult() != ParseBookmarkManager.FirstLoginConflictResult.DIFFERENT) {
-                    dialog.dismiss();
-                } else {
-                    Log.e("233", "waiting for merge");
-                }
-                return null;
+            public void cancelled() {
+
             }
-        }, Task.UI_THREAD_EXECUTOR);
+
+            @Override
+            public void faulted(Exception e) {
+
+            }
+
+            @Override
+            public void succeeded(Void result) {
+
+            }
+
+            @Override
+            public void completed() {
+                dialog.dismiss();
+            }
+        }));
     }
 }

@@ -99,7 +99,7 @@ public class ParseBookmarkManager {
      * If EITHER local contents OR remote contents are non-empty, download/upload from one to another
      * If BOTH local contents AND remote contents are non-empty, merge
      */
-    public static Task<Boolean> handleFirstLoginConflict() {
+    public static Task<Void> handleFirstLoginConflict() {
         return null;
     }
 }
