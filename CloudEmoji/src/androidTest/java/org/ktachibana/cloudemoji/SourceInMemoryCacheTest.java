@@ -110,7 +110,7 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
     }
 
     private Source generateRandomSource() {
-        return new Source(generateRandomInformation(5), generateRandomCategories(10));
+        return new Source("test", generateRandomInformation(5), generateRandomCategories(10));
     }
 
     private ArrayList<String> generateRandomInformation(int count) {
