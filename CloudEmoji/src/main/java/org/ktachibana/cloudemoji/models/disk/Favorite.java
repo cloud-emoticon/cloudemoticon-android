@@ -42,6 +42,15 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
         return favorites;
     }
 
+    public static boolean listEquals(List<Favorite> a, List<Favorite> b) {
+        if (a == null || b == null) return false;
+        if (a.size() != b.size()) return false;
+        for (int i = 0; i < a.size(); i++) {
+            if (!a.get(i).equals(b.get(i))) return false;
+        }
+        return true;
+    }
+
     public static List<Favorite> queryByEmoticon(String queriedEmoticon) {
         return Select
                 .from(Favorite.class)
@@ -71,5 +80,16 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
 
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof Favorite)) return false;
+        Favorite another = (Favorite) o;
+        if (!this.emoticon.equals(another.emoticon)) return false;
+        if (!this.description.equals(another.description)) return false;
+        if (!this.shortcut.equals(another.shortcut)) return false;
+        return true;
     }
 }

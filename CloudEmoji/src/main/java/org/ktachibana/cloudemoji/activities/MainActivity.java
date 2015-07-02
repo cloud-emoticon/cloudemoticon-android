@@ -381,9 +381,14 @@ public class MainActivity extends BaseActivity implements
             }
         }
 
-        // Coming back from account, user state may be changed
+        // Coming back from account, user state and favorites may be changed
         if (requestCode == ACCOUNT_REQUEST_CODE) {
             setupAccountHeader();
+
+            // If currently showing favorites, refresh
+            if (mState.getItemId() == LIST_ITEM_FAVORITE_ID) {
+                refreshUiWithCurrentState();
+            }
         }
     }
 
