@@ -4,6 +4,7 @@ import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bolts.Continuation;
@@ -126,6 +127,41 @@ public class ParseBookmarkManager {
      * If BOTH local contents AND remote contents are non-empty, merge
      */
     public static Task<Void> handleFirstLoginConflict() {
-        return null;
+        final List<Favorite> local = readAllBookmarksLocally();
+
+        return readAllBookmarksRemotely().continueWith(new Continuation<List<ParseBookmark>, Void>() {
+            @Override
+            public Void then(Task<List<ParseBookmark>> task) throws Exception {
+                List<ParseBookmark> remote = task.getResult();
+                if (remote != null) {
+                    MergeResult result = merge(local, remote);
+                    return null;
+                }
+                throw new ParseBookmarkNotFoundException();
+            }
+        });
+    }
+
+    public static MergeResult merge(List<Favorite> local, List<ParseBookmark> remote) {
+        MergeResult result = new MergeResult();
+        List<Favorite> localUnique = new ArrayList<>();
+        List<ParseBookmark> remoteUnique = new ArrayList<>();
+        List<Favorite> localMerged = new ArrayList<>();
+        List<ParseBookmark> remoteMerged = new ArrayList<>();
+
+        // TODO
+
+        result.localUnique = localUnique;
+        result.remoteUnique = remoteUnique;
+        result.localMerged = localMerged;
+        result.remoteMerged = remoteMerged;
+        return result;
+    }
+
+    public static class MergeResult {
+        public List<Favorite> localUnique;
+        public List<ParseBookmark> remoteUnique;
+        public List<Favorite> localMerged;
+        public List<ParseBookmark> remoteMerged;
     }
 }
