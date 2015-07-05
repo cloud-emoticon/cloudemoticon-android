@@ -1,7 +1,6 @@
 package org.ktachibana.cloudemoji.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -16,8 +15,6 @@ import org.ktachibana.cloudemoji.sync.ParseBookmarkManager;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.Termination;
 
-import bolts.Continuation;
-import bolts.Task;
 import de.greenrobot.event.Subscribe;
 
 public class AccountActivity extends BaseActivity {

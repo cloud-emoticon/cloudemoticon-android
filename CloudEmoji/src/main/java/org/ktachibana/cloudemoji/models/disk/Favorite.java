@@ -8,7 +8,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

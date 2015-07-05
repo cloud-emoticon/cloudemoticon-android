@@ -1,7 +1,5 @@
 package org.ktachibana.cloudemoji.sync;
 
-import com.parse.Parse;
-
 import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
@@ -39,7 +37,6 @@ public class ParseBookmarkManager {
      * Read all
      */
     // TODO: read all transparently
-
     public static List<Favorite> readAllBookmarksLocally() {
         return Favorite.listAll(Favorite.class);
     }
@@ -113,7 +110,7 @@ public class ParseBookmarkManager {
                         if (task.getResult() != null) {
                             task.getResult().deleteEventually();
                         }
-                        throw new ParseBookmarkNotFoundException()''
+                        throw new ParseBookmarkNotFoundException();
                     }
                 });
     }
