@@ -135,6 +135,7 @@ public class ParseBookmarkManager {
                 List<ParseBookmark> remote = task.getResult();
                 if (remote != null) {
                     MergeResult result = merge(local, remote);
+                    // TODO
                     return null;
                 }
                 throw new ParseBookmarkNotFoundException();
@@ -142,13 +143,25 @@ public class ParseBookmarkManager {
         });
     }
 
-    public static MergeResult merge(List<Favorite> local, List<ParseBookmark> remote) {
+    public static MergeResult merge(final List<Favorite> local, final List<ParseBookmark> remote) {
         MergeResult result = new MergeResult();
         List<Favorite> localUnique = new ArrayList<>();
         List<ParseBookmark> remoteUnique = new ArrayList<>();
         List<Favorite> localMerged = new ArrayList<>();
         List<ParseBookmark> remoteMerged = new ArrayList<>();
 
+        // If both lists are empty, do nothing
+        if (local.size() == 0 && remote.size() == 0) {}
+
+        // If only local is empty, pull all from remote
+        else if (local.size() == 0 && remote.size() != 0) {
+            localUnique.addAll(Favorite.convert(remote));
+        }
+
+        // If only remote is empty, push all from local
+        else if (local.size() != 0 && remote.size() == 0) {
+            remoteUnique.addAll(ParseBookmark.convert(ParseUserState.getLoggedInUser(), local));
+        }
         // TODO
 
         result.localUnique = localUnique;
@@ -159,9 +172,13 @@ public class ParseBookmarkManager {
     }
 
     public static class MergeResult {
+        // Contents that local needs to create
         public List<Favorite> localUnique;
+        // Contents that remote needs to create
         public List<ParseBookmark> remoteUnique;
+        // Contents that local needs to update
         public List<Favorite> localMerged;
+        // Contents that remote needs to update
         public List<ParseBookmark> remoteMerged;
     }
 }

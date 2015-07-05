@@ -3,11 +3,13 @@ package org.ktachibana.cloudemoji.models.disk;
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
+import com.parse.Parse;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,14 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
 
     public Favorite(ParseBookmark bookmark) {
         this(bookmark.getEmoticon(), bookmark.getDescription(), bookmark.getShortcut());
+    }
+
+    public static List<Favorite> convert(List<ParseBookmark> parseBookmarks) {
+        List<Favorite> favorites = new ArrayList<>();
+        for (ParseBookmark parseBookmark : parseBookmarks) {
+            favorites.add(new Favorite(parseBookmark));
+        }
+        return favorites;
     }
 
     private static List<Favorite> queryListByEmoticon(String queriedEmoticon) {

@@ -8,6 +8,9 @@ import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ParseClassName("Bookmark")
 public class ParseBookmark extends ParseObject {
     private static final String KEY_FOR_EMOTICON = "emoticon";
@@ -28,6 +31,14 @@ public class ParseBookmark extends ParseObject {
         setEmoticon(favorite.getEmoticon());
         setDescription(favorite.getDescription());
         setShortcut(favorite.getShortcut());
+    }
+
+    public static List<ParseBookmark> convert(ParseUser owner, List<Favorite> favorites) {
+        List<ParseBookmark> parseBookmarks = new ArrayList<>();
+        for (Favorite favorite : favorites) {
+            parseBookmarks.add(new ParseBookmark(owner, favorite));
+        }
+        return parseBookmarks;
     }
 
     public String getEmoticon() {
