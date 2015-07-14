@@ -93,4 +93,5 @@
     <string name="log_out">Log out</string>
     <string name="logging_in">Logging in</string>
     <string name="logging_out">Logging out</string>
+    <string name="cloudemoji_input_method">CloudEmoji Input Method</string>
 </resources>
