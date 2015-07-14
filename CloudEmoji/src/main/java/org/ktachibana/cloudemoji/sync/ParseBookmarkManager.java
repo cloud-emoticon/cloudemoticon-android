@@ -217,7 +217,28 @@ public class ParseBookmarkManager {
 
                     // Otherwise in both, overwrite description/shortcut from local/remote that is more recently modified
                 else {
-                    // TODO
+                    // local and remote
+                    Favorite localFavorite = local.get(indexInLocal);
+                    ParseBookmark remoteBookmark = remote.get(indexInRemote);
+
+                    // Compare last modified time
+                    long localLastModifiedTime = localFavorite.getLastModifiedTime();
+                    long remoteLastModifiedTime = remoteBookmark.getUpdatedAt().getTime();
+                    boolean localIsMoreRecent = localLastModifiedTime > remoteLastModifiedTime;
+
+                    // If local is more recent, update remote
+                    if (localIsMoreRecent) {
+                        remoteBookmark.setDescription(localFavorite.getDescription());
+                        remoteBookmark.setShortcut(localFavorite.getShortcut());
+                        result.remoteMerged.add(remoteBookmark);
+                    }
+
+                    // Else remote is more recent, update local
+                    else {
+                        localFavorite.setDescription(remoteBookmark.getDescription());
+                        localFavorite.setShortcut(remoteBookmark.getShortcut());
+                        result.localMerged.add(localFavorite);
+                    }
                 }
             }
         }

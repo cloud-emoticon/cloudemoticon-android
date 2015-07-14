@@ -118,6 +118,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
             Favorite lastFavorite = shiftedFavorites[size - 1];
             boolean fromUpperToLower = from < to;
 
+            // TODO: change implementation avoid using setId()?
             // If from upper to lower
             if (fromUpperToLower) {
                 /**
