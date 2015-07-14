@@ -21,7 +21,7 @@
             android:value="ce.db" />
         <meta-data
             android:name="VERSION"
-            android:value="3" />
+            android:value="4" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.ktachibana.cloudemoji.models.disk" />

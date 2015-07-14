@@ -20,6 +20,7 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
     private String emoticon;
     private String description;
     private String shortcut = "";
+    private long lastModifiedTime = System.nanoTime();
 
     public Favorite() {
     }
@@ -28,6 +29,7 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
         this.emoticon = emoticon;
         this.description = description;
         this.shortcut = shortcut;
+        this.lastModifiedTime = System.nanoTime();
     }
 
     public Favorite(ParseBookmark bookmark) {
@@ -81,10 +83,12 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
 
     public void setDescription(String description) {
         this.description = description;
+        updateLastModifiedTime();
     }
 
     public void setId(long id) {
         this.id = id;
+        updateLastModifiedTime();
     }
 
     public String getShortcut() {
@@ -93,6 +97,15 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
 
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
+        updateLastModifiedTime();
+    }
+
+    private void updateLastModifiedTime() {
+        this.lastModifiedTime = System.nanoTime();
+    }
+
+    public long getLastModifiedTime() {
+        return lastModifiedTime;
     }
 
     @Override
