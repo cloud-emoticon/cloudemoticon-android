@@ -1,9 +1,10 @@
 package org.ktachibana.cloudemoji.models.disk;
 
+import android.support.annotation.NonNull;
+
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
-import com.parse.Parse;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
@@ -33,12 +34,26 @@ public class Favorite extends SugarRecord<Favorite> implements Constants, Serial
         this(bookmark.getEmoticon(), bookmark.getDescription(), bookmark.getShortcut());
     }
 
-    public static List<Favorite> convert(List<ParseBookmark> parseBookmarks) {
+    public static List<Favorite> convert(
+            @NonNull List<ParseBookmark> parseBookmarks
+    ) {
         List<Favorite> favorites = new ArrayList<>();
         for (ParseBookmark parseBookmark : parseBookmarks) {
             favorites.add(new Favorite(parseBookmark));
         }
         return favorites;
+    }
+
+    public static boolean listEquals(
+            @NonNull List<Favorite> favorites,
+            @NonNull List<ParseBookmark> parseBookmarks
+    ) {
+        if (favorites.size() != parseBookmarks.size()) return false;
+        for (int i = 0; i < favorites.size(); i++) {
+            if (!favorites.get(i).getEmoticon().equals(parseBookmarks.get(i).getEmoticon()))
+                return false;
+        }
+        return true;
     }
 
     private static List<Favorite> queryListByEmoticon(String queriedEmoticon) {
