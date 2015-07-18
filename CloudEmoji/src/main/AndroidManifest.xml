@@ -27,7 +27,7 @@
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="org.ktachibana.cloudemoji.models.persistence" />
+            android:value="org.ktachibana.cloudemoji.models" />
 
         <activity
             android:name=".activities.MainActivity"
@@ -115,6 +115,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
+        <service android:name=".input.InputMethodService"
+            android:label="@string/cloudemoji_input_method"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im"
+            android:resource="@xml/input_method" />
+        </service>
     </application>
 
 </manifest>
