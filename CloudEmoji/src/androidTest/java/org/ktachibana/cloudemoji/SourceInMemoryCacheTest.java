@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class SourceInMemoryCacheTest extends AndroidTestCase {
     protected SourceInMemoryCache mCache;
@@ -29,7 +28,7 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
     }
 
     public void testInitialization() {
-        long key = generateRandomLong();
+        long key = TestUtils.generateRandomLong();
         individuallyTestSize(0);
         assertNull("get() should return null", mCache.get(key));
         assertNull("contains() should return null", mCache.contains(key));
@@ -37,7 +36,7 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
 
     public void testAddingOnePair() {
         // Put a pair in cache
-        long key = generateRandomLong();
+        long key = TestUtils.generateRandomLong();
         Source value = generateRandomSource();
         mCache.put(key, value);
         individuallyTestSize(1);
@@ -52,12 +51,12 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
 
     public void testAddingTwoPairs() {
         // Put first pair in cache
-        long firstKey = generateRandomLong();
+        long firstKey = TestUtils.generateRandomLong();
         Source firstValue = generateRandomSource();
         mCache.put(firstKey, firstValue);
 
         // Put second pair in cache
-        long secondKey = generateRandomLong();
+        long secondKey = TestUtils.generateRandomLong();
         Source secondValue = generateRandomSource();
         mCache.put(secondKey, secondValue);
         individuallyTestSize(2);
@@ -69,7 +68,7 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
         int numberToExceed = 4;
         Map<Long, Source> pairs = new HashMap<Long, Source>();
         for (int i = 0; i < numberToExceed * 2; i++) {
-            pairs.put(generateRandomLong(), generateRandomSource());
+            pairs.put(TestUtils.generateRandomLong(), generateRandomSource());
         }
 
         // Put many pairs in cache
@@ -105,10 +104,6 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
         );
     }
 
-    private long generateRandomLong() {
-        return new Random().nextLong();
-    }
-
     private Source generateRandomSource() {
         return new Source("test", generateRandomInformation(5), generateRandomCategories(10));
     }
@@ -116,7 +111,7 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
     private ArrayList<String> generateRandomInformation(int count) {
         ArrayList<String> information = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
-            information.add(generateRandomString(5));
+            information.add(TestUtils.generateRandomString());
         }
         return information;
     }
@@ -130,22 +125,13 @@ public class SourceInMemoryCacheTest extends AndroidTestCase {
     }
 
     private Category generateRandomCategory(int count) {
-        String name = generateRandomString(10);
+        String name = TestUtils.generateRandomString();
         List<Entry> entries = new ArrayList<Entry>();
         for (int i = 0; i < count; i++) {
-            entries.add(new Entry(generateRandomString(10), generateRandomString(10)));
+            entries.add(
+                    new Entry(TestUtils.generateRandomString(), TestUtils.generateRandomString())
+            );
         }
         return new Category(name, entries);
-    }
-
-    private String generateRandomString(int count) {
-        char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-        StringBuilder stringBuilder = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < count; i++) {
-            char c = alphabet[random.nextInt(alphabet.length)];
-            stringBuilder.append(c);
-        }
-        return stringBuilder.toString();
     }
 }
