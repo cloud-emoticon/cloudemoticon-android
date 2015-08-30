@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.orm.SugarApp;
 
-public class BaseApplication extends SugarApp implements PrivateConstants {
+public class BaseApplication extends SugarApp {
 
     private static Context CONTEXT;
 

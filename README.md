@@ -37,18 +37,6 @@ A cloud solution to your favorite emoticons
 ## Screenshot
 ![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
 
-## Development
-We are using [Parse] (https://www.parse.com/) as our user sync backend service
-
-so the PrivateConstants.java is git-ignored since it contains private app keys
-
-You can either
-
-1. Create PrivateConstants.java manually and fill in random stuff if you are not developing any user sync related features
-2. Register a Parse account and create your own Parse backend (it has free tier service) if you are developing user sync related features
-
-We might be rolling our own backend implementation (also open-sourced!) and migrate user data from Parse to there.
-
 ## Libraries via Gradle
 * [appcompat-v4](https://developer.android.com/tools/support-library/features.html#v4)
 * [appcompat-v7](https://developer.android.com/tools/support-library/features.html#v7)
@@ -66,7 +54,6 @@ We might be rolling our own backend implementation (also open-sourced!) and migr
 * [picasso] (http://github.com/square/picasso)
 
 ## Libraries via Jar/Aar balls
-* [ARCA](https://github.com/ACRA/acra)
 * [sugar](https://github.com/satyan/sugar)
 * [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
 
