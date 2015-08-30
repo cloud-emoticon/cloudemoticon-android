@@ -131,7 +131,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         Boolean isInCache = mEmoticonInFavoritesCache.get(emoticon);
         // If not in cache, then do query and put into cache
         if (isInCache == null) {
-            boolean isInFavorites = Favorite.queryByEmoticon(emoticon).size() != 0;
+            boolean isInFavorites = Favorite.queryByEmoticon(emoticon) != null;
             mEmoticonInFavoritesCache.put(emoticon, isInFavorites);
         }
         // Else it is in cache, retrieve
@@ -145,8 +145,8 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
                 // If already in favorite, remove it from favorites
                 if (isStared) {
                     // Remove from database
-                    List<Favorite> favoritesFound = Favorite.queryByEmoticon(emoticon);
-                    for (Favorite favorite : favoritesFound) {
+                    Favorite favorite = Favorite.queryByEmoticon(emoticon);
+                    if (favorite != null) {
                         favorite.delete();
                     }
                     // Update cache

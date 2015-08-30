@@ -92,4 +92,5 @@
     <string name="log_out">登出</string>
     <string name="logging_in">登陆中</string>
     <string name="logging_out">登出中</string>
+    <string name="handling_first_login_conflict">处理首次登陆冲突</string>
 </resources>

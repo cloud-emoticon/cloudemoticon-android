@@ -1,0 +1,1 @@
+alter table FAVORITE add LAST_MODIFIED_TIME INTEGER;
