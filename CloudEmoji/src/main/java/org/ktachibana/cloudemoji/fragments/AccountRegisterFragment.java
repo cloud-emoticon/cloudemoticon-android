@@ -8,17 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.parse.ParseUser;
-
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
-import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.Termination;
 
-import bolts.Task;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -72,37 +65,5 @@ public class AccountRegisterFragment extends BaseFragment {
             showSnackBar(R.string.illegal_email_address);
             return;
         }
-
-        ParseUser newUser = new ParseUser();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        newUser.setEmail(email);
-
-        final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(getActivity())
-                .title(R.string.please_wait)
-                .content(R.string.registering)
-                .show();
-
-        newUser.signUpInBackground().continueWith(new Termination<>(new Termination.Callback<Void>() {
-            @Override
-            public void cancelled() {
-                showSnackBar(R.string.fail);
-            }
-
-            @Override
-            public void faulted(Exception e) {
-                showSnackBar(e.getLocalizedMessage());
-            }
-
-            @Override
-            public void succeeded(Void result) {
-                BUS.post(new UserLoggedInEvent());
-            }
-
-            @Override
-            public void completed() {
-                dialog.dismiss();
-            }
-        }), Task.UI_THREAD_EXECUTOR);
     }
 }

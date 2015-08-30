@@ -9,16 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.UserLoggedInEvent;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.Termination;
 
-import bolts.Task;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -69,27 +65,5 @@ public class AccountLogInFragment extends BaseFragment {
                 .title(R.string.please_wait)
                 .content(R.string.logging_in)
                 .show();
-
-        ParseUser.logInInBackground(username, password).continueWith(new Termination<>(new Termination.Callback<ParseUser>() {
-            @Override
-            public void cancelled() {
-                showSnackBar(R.string.fail);
-            }
-
-            @Override
-            public void faulted(Exception e) {
-                showSnackBar(e.getLocalizedMessage());
-            }
-
-            @Override
-            public void succeeded(ParseUser result) {
-                BUS.post(new UserLoggedInEvent());
-            }
-
-            @Override
-            public void completed() {
-                dialog.dismiss();
-            }
-        }), Task.UI_THREAD_EXECUTOR);
     }
 }

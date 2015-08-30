@@ -9,16 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.parse.ParseUser;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.auth.ParseUserState;
-import org.ktachibana.cloudemoji.events.UserLoggedOutEvent;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.Termination;
 
-import bolts.Task;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -39,47 +34,13 @@ public class AccountUserProfileFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_user_profile, container, false);
         ButterKnife.inject(this, rootView);
-
-        ParseUser currentUser = ParseUserState.getLoggedInUser();
-        username.setText(currentUser.getUsername());
-        email.setText(currentUser.getEmail());
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOut();
-            }
-        });
-
         return rootView;
     }
 
     private void logOut() {
-
         final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(getActivity())
                 .title(R.string.please_wait)
                 .content(R.string.logging_out)
                 .show();
-
-        ParseUser.logOutInBackground().continueWith(new Termination<>(new Termination.Callback<Void>() {
-            @Override
-            public void cancelled() {
-                showSnackBar(R.string.fail);
-            }
-
-            @Override
-            public void faulted(Exception e) {
-                showSnackBar(e.getLocalizedMessage());
-            }
-
-            @Override
-            public void succeeded(Void result) {
-                BUS.post(new UserLoggedOutEvent());
-            }
-
-            @Override
-            public void completed() {
-                dialog.dismiss();
-            }
-        }), Task.UI_THREAD_EXECUTOR);
     }
 }

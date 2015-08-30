@@ -25,7 +25,6 @@ import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -36,7 +35,6 @@ import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
@@ -113,19 +111,20 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setupAccountHeader() {
-        mDrawer.removeHeader();
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.account_place_holder)
                 .build();
-        if (ParseUserState.isLoggedIn()) {
-            String username = ParseUserState.getLoggedInUser().getUsername();
-            String email = ParseUserState.getLoggedInUser().getEmail();
-            accountHeader.addProfile(
-                    new ProfileDrawerItem().withName(username).withEmail(email), 0
-            );
-        }
         mDrawer.setHeader(accountHeader.getView());
+        /**
+         if (ParseUserState.isLoggedIn()) {
+         String username = ParseUserState.getLoggedInUser().getUsername();
+         String email = ParseUserState.getLoggedInUser().getEmail();
+         accountHeader.addProfile(
+         new ProfileDrawerItem().withName(username).withEmail(email), 0
+         );
+         }
+         **/
     }
 
     /**
@@ -197,12 +196,14 @@ public class MainActivity extends BaseActivity implements
         mDrawer.addItem(new DividerDrawerItem());
 
         // Add account
-        mDrawer.addItem(
-                new UncheckableSecondaryDrawerItem()
-                        .withName(R.string.account)
-                        .withIcon(R.drawable.ic_account)
-                        .withIdentifier(LIST_ITEM_ACCOUNT_ID)
-        );
+        /**
+         mDrawer.addItem(
+         new UncheckableSecondaryDrawerItem()
+         .withName(R.string.account)
+         .withIcon(R.drawable.ic_account)
+         .withIdentifier(LIST_ITEM_ACCOUNT_ID)
+         );
+         **/
 
         // Add repo manager
         mDrawer.addItem(
@@ -547,11 +548,13 @@ public class MainActivity extends BaseActivity implements
             mState.revertToPreviousId();
         }
 
-        if (listItemId == LIST_ITEM_ACCOUNT_ID) {
-            Intent intent = new Intent(this, AccountActivity.class);
-            startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
-            mState.revertToPreviousId();
-        }
+        /**
+         if (listItemId == LIST_ITEM_ACCOUNT_ID) {
+         Intent intent = new Intent(this, AccountActivity.class);
+         startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
+         mState.revertToPreviousId();
+         }
+         **/
 
         if (listItemId == LIST_ITEM_REPO_STORE_ID) {
             Intent intent = new Intent(this, RepositoryStoreActivity.class);
