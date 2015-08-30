@@ -4,7 +4,11 @@ import org.ktachibana.cloudemoji.auth.ParseUserState;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.remote.ParseBookmark;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -13,35 +17,62 @@ public class ParseBookmarkManager {
     /**
      * Create one
      */
-    public static void createBookmarkRemotely(Favorite favorite) {
-        ParseBookmark bookmark = new ParseBookmark(ParseUserState.getLoggedInUser());
-        bookmark.setEmoticon(favorite.getEmoticon());
-        bookmark.setDescription(favorite.getDescription());
-        bookmark.setShortcut(favorite.getShortcut());
+    public static void createBookmark(
+            String emoticon,
+            String description,
+            String shortcut) {
+        Favorite favorite = new Favorite(emoticon, description, shortcut);
+        createBookmarkLocally(favorite);
+        if (ParseUserState.isLoggedIn()) {
+            createBookmarkRemotely(favorite);
+        }
+    }
+
+    private static void createBookmarkLocally(Favorite favorite) {
+        favorite.save();
+    }
+
+    private static void createBookmarkRemotely(Favorite favorite) {
+        ParseBookmark bookmark = new ParseBookmark(ParseUserState.getLoggedInUser(), favorite);
         bookmark.saveEventually();
     }
 
     /**
      * Read all
      */
-    public static Task<List<Favorite>> readAllBookmarksRemotely() {
+    // TODO: read all transparently
+    public static List<Favorite> readAllBookmarksLocally() {
+        return Favorite.listAll(Favorite.class);
+    }
+
+    public static Task<List<ParseBookmark>> readAllBookmarksRemotely() {
         return ParseBookmark.getQuery(ParseUserState.getLoggedInUser())
-                .findInBackground()
-                .continueWith(new Continuation<List<ParseBookmark>, List<Favorite>>() {
-                    @Override
-                    public List<Favorite> then(Task<List<ParseBookmark>> task) throws Exception {
-                        if (task.getResult() != null) {
-                            return Favorite.convert(task.getResult());
-                        }
-                        throw new ParseBookmarkNotFoundException();
-                    }
-                });
+                .findInBackground();
     }
 
     /**
      * Update one
      */
-    public static void updateBookmarkRemotely(final Favorite favorite) {
+    public static void updateBookmark(
+            String emoticon,
+            String description,
+            String shortcut) {
+        Favorite favorite = Favorite.queryByEmoticon(emoticon);
+        if (favorite != null) {
+            favorite.setDescription(description);
+            favorite.setShortcut(shortcut);
+            updateBookmarkLocally(favorite);
+            if (ParseUserState.isLoggedIn()) {
+                updateBookmarkRemotely(favorite);
+            }
+        }
+    }
+
+    private static void updateBookmarkLocally(Favorite favorite) {
+        favorite.save();
+    }
+
+    private static void updateBookmarkRemotely(final Favorite favorite) {
         ParseBookmark.getQuery(ParseUserState.getLoggedInUser(), favorite.getEmoticon())
                 .getFirstInBackground()
                 .continueWith(new Continuation<ParseBookmark, Void>() {
@@ -60,64 +91,195 @@ public class ParseBookmarkManager {
     }
 
     /**
+     * Delete one
+     */
+    public static void deleteBookmark(String emoticon) {
+        Favorite favorite = Favorite.queryByEmoticon(emoticon);
+        deleteBookmarkLocally(favorite);
+        if (ParseUserState.isLoggedIn()) {
+            deleteBookmarkRemotely(favorite);
+        }
+    }
+
+    private static void deleteBookmarkLocally(Favorite favorite) {
+        favorite.delete();
+    }
+
+    private static void deleteBookmarkRemotely(Favorite favorite) {
+        ParseBookmark.getQuery(ParseUserState.getLoggedInUser(), favorite.getEmoticon())
+                .getFirstInBackground()
+                .continueWith(new Continuation<ParseBookmark, Void>() {
+                    @Override
+                    public Void then(Task<ParseBookmark> task) throws Exception {
+                        if (task.getResult() != null) {
+                            task.getResult().deleteEventually();
+                        }
+                        throw new ParseBookmarkNotFoundException();
+                    }
+                });
+    }
+
+    /**
      * Utils
      */
 
     /**
-     * Try to handle first login conflict
+     * Handle first login conflict
      * If local contents are empty and remote contents are empty, do nothing
      * If EITHER local contents OR remote contents are non-empty, download/upload from one to another
-     * If BOTH local contents AND remote contents are non-empty, try to merge
+     * If BOTH local contents AND remote contents are non-empty, merge
      */
-    public static Task<FirstLoginConflictResult> handleFirstLoginConflict() {
-        // Read local favorites
-        final List<Favorite> local = Favorite.listAll(Favorite.class);
+    public static Task<Void> handleFirstLoginConflict() {
+        final List<Favorite> local = readAllBookmarksLocally();
 
-        // Read remote favorites
-        return readAllBookmarksRemotely().continueWith(new Continuation<List<Favorite>, FirstLoginConflictResult>() {
+        return readAllBookmarksRemotely().continueWith(new Continuation<List<ParseBookmark>, Void>() {
             @Override
-            public FirstLoginConflictResult then(Task<List<Favorite>> task) throws Exception {
-                final List<Favorite> remote = task.getResult();
+            public Void then(Task<List<ParseBookmark>> task) throws Exception {
+                List<ParseBookmark> remote = task.getResult();
                 if (remote != null) {
-
-                    // If both local and remote are empty then do nothing
-                    if (local.size() == 0 && remote.size() == 0)
-                        return FirstLoginConflictResult.BOTH_EMPTY;
-
-                    // If local is non-empty and remote is empty then upload
-                    if (local.size() != 0 && remote.size() == 0) {
-                        for (Favorite favorite : local) {
-                            createBookmarkRemotely(favorite);
-                        }
-                        return FirstLoginConflictResult.REMOTE_EMPTY;
-                    }
-
-                    // If local is empty and remote is non-empty then download
-                    if (local.size() == 0 && remote.size() != 0) {
-                        for (Favorite favorite : remote) {
-                            favorite.save();
-                        }
-                        return FirstLoginConflictResult.LOCAL_EMPTY;
-                    }
-
-                    // If both are non-empty, check for identical
-                    if (Favorite.listEquals(local, remote))
-                        return FirstLoginConflictResult.IDENTICAL;
-
-                    // Otherwise different
-                    handleFirstLoginConflictWithDifference(local, remote);
-                    return FirstLoginConflictResult.DIFFERENT;
+                    MergeResult result = merge(local, remote);
+                    // TODO
+                    return null;
                 }
                 throw new ParseBookmarkNotFoundException();
             }
         });
     }
 
-    private static void handleFirstLoginConflictWithDifference(List<Favorite> local, List<Favorite> remote) {
-        // TODO: remove result enum and use this code only
+    public static MergeResult merge(final List<Favorite> local, final List<ParseBookmark> remote) {
+        MergeResult result = new MergeResult();
+
+        // If both lists are empty, do nothing
+        if (local.size() == 0 && remote.size() == 0) {
+        }
+
+        // If both local and remote are identical, do nothing
+        else if (Favorite.listEquals(local, remote)) {
+        }
+
+        // If only local is empty, pull all from remote to local
+        else if (local.size() == 0 && remote.size() != 0) {
+            result.localUnique.addAll(Favorite.convert(remote));
+        }
+
+        // If only remote is empty, push all from local to remote
+        else if (local.size() != 0 && remote.size() == 0) {
+            result.remoteUnique.addAll(ParseBookmark.convert(ParseUserState.getLoggedInUser(), local));
+        }
+
+        // Merge
+        else {
+            // Mapping of emoticon string to a wrapper
+            // Wrapper contains the emoticon string's index in local and remote, and a state
+            // The state represents whether the emoticon is local only, remote only, or in both
+            HashMap<String, MergeInfoWrapper> occurrences = new LinkedHashMap<>();
+
+            // First pass
+
+            // Iterate through local
+            for (int i = 0; i < local.size(); i++) {
+                Favorite favorite = local.get(i);
+                occurrences.put(favorite.getEmoticon(), new MergeInfoWrapper(MergeState.LOCAL_ONLY, i, -1));
+            }
+
+            // Iterate through remote, mark 0 if already exists
+            for (int i = 0; i < remote.size(); i++) {
+                ParseBookmark bookmark = remote.get(i);
+                String emoticon = bookmark.getEmoticon();
+                if (!occurrences.containsKey(emoticon))
+                    occurrences.put(emoticon, new MergeInfoWrapper(MergeState.REMOTE_ONLY, -1, i));
+                else {
+                    MergeInfoWrapper newWrapper = occurrences.get(emoticon);
+                    newWrapper.state = MergeState.BOTH;
+                    newWrapper.indexInRemote = i;
+                    occurrences.put(emoticon, newWrapper);
+                }
+            }
+
+            // Second pass
+
+            for (Map.Entry<String, MergeInfoWrapper> entry : occurrences.entrySet()) {
+                MergeInfoWrapper wrapper = entry.getValue();
+                MergeState state = wrapper.state;
+                int indexInLocal = wrapper.indexInLocal;
+                int indexInRemote = wrapper.indexInRemote;
+                // If only in local, push it to remote
+                if (state == MergeState.LOCAL_ONLY)
+                    result.remoteUnique.add(
+                            new ParseBookmark(ParseUserState.getLoggedInUser(), local.get(indexInLocal))
+                    );
+
+                    // If only in remote, pull it from local
+                else if (state == MergeState.REMOTE_ONLY)
+                    result.localUnique.add(
+                            new Favorite(remote.get(indexInRemote))
+                    );
+
+                    // Otherwise in both, overwrite description/shortcut from local/remote that is more recently modified
+                else {
+                    // local and remote
+                    Favorite localFavorite = local.get(indexInLocal);
+                    ParseBookmark remoteBookmark = remote.get(indexInRemote);
+
+                    // Compare last modified time
+                    long localLastModifiedTime = localFavorite.getLastModifiedTime();
+                    long remoteLastModifiedTime = remoteBookmark.getUpdatedAt().getTime();
+                    boolean localIsMoreRecent = localLastModifiedTime > remoteLastModifiedTime;
+
+                    // If local is more recent, update remote
+                    if (localIsMoreRecent) {
+                        remoteBookmark.setDescription(localFavorite.getDescription());
+                        remoteBookmark.setShortcut(localFavorite.getShortcut());
+                        result.remoteMerged.add(remoteBookmark);
+                    }
+
+                    // Else remote is more recent, update local
+                    else {
+                        localFavorite.setDescription(remoteBookmark.getDescription());
+                        localFavorite.setShortcut(remoteBookmark.getShortcut());
+                        result.localMerged.add(localFavorite);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
-    public enum FirstLoginConflictResult {
-        BOTH_EMPTY, LOCAL_EMPTY, REMOTE_EMPTY, IDENTICAL, DIFFERENT
+    private enum MergeState {
+        LOCAL_ONLY, REMOTE_ONLY, BOTH
+    }
+
+    private static class MergeInfoWrapper {
+        public MergeState state;
+        public int indexInLocal;
+        public int indexInRemote;
+
+        public MergeInfoWrapper(MergeState state, int indexInLocal, int indexInRemote) {
+            this.state = state;
+            this.indexInLocal = indexInLocal;
+            this.indexInRemote = indexInRemote;
+        }
+    }
+
+    public static class MergeResult {
+        // Contents that local needs to create
+        public List<Favorite> localUnique;
+
+        // Contents that remote needs to create
+        public List<ParseBookmark> remoteUnique;
+
+        // Contents that local needs to update
+        public List<Favorite> localMerged;
+
+        // Contents that remote needs to update
+        public List<ParseBookmark> remoteMerged;
+
+        public MergeResult() {
+            this.localUnique = new ArrayList<>();
+            this.remoteUnique = new ArrayList<>();
+            this.localMerged = new ArrayList<>();
+            this.remoteMerged = new ArrayList<>();
+        }
     }
 }
