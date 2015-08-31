@@ -20,8 +20,6 @@ import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.Bind;

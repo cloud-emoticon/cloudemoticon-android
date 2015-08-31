@@ -13,13 +13,10 @@ import com.rockerhieu.emojicon.emoji.People;
 import com.rockerhieu.emojicon.emoji.Places;
 import com.rockerhieu.emojicon.emoji.Symbols;
 
-import org.ktachibana.cloudemoji.fragments.EmojiconsGridFragment;
 import org.ktachibana.cloudemoji.fragments.EmojiconsGridFragmentBuilder;
 import org.ktachibana.cloudemoji.utils.EmojiconOfferable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class EmojiconsPagerAdapter extends FragmentStatePagerAdapter {

@@ -38,7 +38,6 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
-import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.Repository;
