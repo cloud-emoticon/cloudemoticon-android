@@ -69,4 +69,5 @@ dependencies {
     apt 'com.hannesdorfmann.fragmentargs:processor:2.1.2'
     compile "org.parceler:parceler-api:1.0.3"
     apt "org.parceler:parceler:1.0.3"
+    compile 'com.facebook.stetho:stetho:1.1.1'
 }
