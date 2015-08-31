@@ -9,6 +9,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
+import com.hannesdorfmann.fragmentargs.annotation.Arg;
+
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
@@ -29,26 +32,17 @@ public class SearchResultFragment extends BaseFragment {
     RelativeLayout mSearchResultEmptyView;
     @Bind(R.id.emptyViewTextView)
     TextView mSearchResultEmptyViewTextView;
-    private String mSearchQuery;
+    @Arg
+    String mSearchQuery;
 
     public SearchResultFragment() {
         // Required empty public constructor
     }
 
-    public static SearchResultFragment newInstance(String searchQuery) {
-        SearchResultFragment fragment = new SearchResultFragment();
-        Bundle args = new Bundle();
-        args.putString(SEARCH_QUERY_KEY, searchQuery);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mSearchQuery = getArguments().getString(SEARCH_QUERY_KEY);
-        }
+        FragmentArgs.inject(this);
     }
 
     @Override

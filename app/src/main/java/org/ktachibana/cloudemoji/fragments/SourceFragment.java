@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
+import com.hannesdorfmann.fragmentargs.annotation.Arg;
+
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
@@ -22,27 +25,18 @@ public class SourceFragment extends BaseFragment {
     private static final String ARG_SOURCE = "source";
     @Bind(R.id.list)
     PinnedHeaderListView mList;
-    private Source mSource;
+    @Arg
+    Source mSource;
     private SourceListViewAdapter mAdapter;
 
     public SourceFragment() {
         // Required empty public constructor
     }
 
-    public static SourceFragment newInstance(Source source) {
-        SourceFragment fragment = new SourceFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_SOURCE, source);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mSource = getArguments().getParcelable(ARG_SOURCE);
-        }
+        FragmentArgs.inject(this);
     }
 
     @Override
