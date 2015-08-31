@@ -15,12 +15,12 @@ android {
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            shrinkResources true
+            versionNameSuffix '.debug'
+            zipAlignEnabled true
         }
         release {
             debuggable false
-            minifyEnabled false
-            shrinkResources true
+            zipAlignEnabled true
         }
     }
 
