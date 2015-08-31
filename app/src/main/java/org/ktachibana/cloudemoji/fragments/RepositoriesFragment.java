@@ -6,21 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
+import com.hannesdorfmann.fragmentargs.annotation.Arg;
+
 import org.ktachibana.cloudemoji.BaseTabsPagerFragment;
 import org.ktachibana.cloudemoji.adapters.RepositoriesPagerAdapter;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 public class RepositoriesFragment extends BaseTabsPagerFragment {
     private static final String ARG_CACHE = "cache";
-    private SourceInMemoryCache mCache;
-
-    public static RepositoriesFragment newInstance(SourceInMemoryCache cache) {
-        RepositoriesFragment fragment = new RepositoriesFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_CACHE, cache);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    @Arg
+    SourceInMemoryCache mCache;
 
     public RepositoriesFragment() {
         // Required empty public constructor
@@ -29,9 +25,7 @@ public class RepositoriesFragment extends BaseTabsPagerFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mCache = getArguments().getParcelable(ARG_CACHE);
-        }
+        FragmentArgs.inject(this);
     }
 
     @Override
