@@ -141,7 +141,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
 
                     BUS.post(new RepositoryExportedEvent(filePath));
                 } catch (SourceParsingException e) {
-                    BUS.post(e.getFormatType().toString());
+                    BUS.post(e.getFormatType());
                 } catch (IOException e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {

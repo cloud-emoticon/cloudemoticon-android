@@ -14,7 +14,7 @@ import java.util.List;
 public class Repository extends SugarRecord<Repository> implements Constants, Serializable {
     private String url;
     private String alias;
-    private int formatType;
+    @FormatType private int formatType;
     private String fileName;
     private boolean isAvailable;
     private boolean isVisible;
@@ -57,9 +57,9 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
         this.isAvailable = isAvailable;
     }
 
-    public FormatType getFormatType() {
-        if (formatType == FORMAT_TYPE_XML) return FormatType.XML;
-        else return FormatType.JSON;
+    @FormatType
+    public int getFormatType() {
+        return formatType;
     }
 
     public boolean isVisible() {
@@ -79,6 +79,4 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
         }
         return false;
     }
-
-    public static enum FormatType {XML, JSON}
 }

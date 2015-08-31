@@ -4,6 +4,7 @@ import com.google.gson.JsonParseException;
 
 import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseApplication;
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.xmlpull.v1.XmlPullParserException;
@@ -28,16 +29,16 @@ public class SourceReader {
             fileReader = new FileReader(file);
 
             // Parse
-            Repository.FormatType formatType = repository.getFormatType();
-            if (formatType == Repository.FormatType.XML) {
+            @Constants.FormatType int formatType = repository.getFormatType();
+            if (formatType == Constants.FORMAT_TYPE_XML) {
                 source = new SourceXmlParser().parse(alias, fileReader);
-            } else if (formatType == Repository.FormatType.JSON) {
+            } else if (formatType == Constants.FORMAT_TYPE_JSON) {
                 source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
             }
         } catch (XmlPullParserException e) {
-            throw new SourceParsingException(Repository.FormatType.XML);
+            throw new SourceParsingException(Constants.FORMAT_TYPE_XML);
         } catch (JsonParseException e) {
-            throw new SourceParsingException(Repository.FormatType.JSON);
+            throw new SourceParsingException(Constants.FORMAT_TYPE_JSON);
         } finally {
             IOUtils.closeQuietly(fileReader);
         }

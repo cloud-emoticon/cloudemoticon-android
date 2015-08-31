@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity implements
                             new SourceReader().readSourceFromDatabaseId(repository.getAlias(), id);
                     cache.put(id, source);
                 } catch (SourceParsingException e) {
-                    showSnackBar(getString(R.string.invalid_repo_format) + e.getFormatType().toString());
+                    showSnackBar(getString(R.string.invalid_repo_format));
                 } catch (Exception e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 }
