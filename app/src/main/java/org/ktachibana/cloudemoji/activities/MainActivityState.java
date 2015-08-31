@@ -1,8 +1,5 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 

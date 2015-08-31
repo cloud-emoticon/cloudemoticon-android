@@ -16,7 +16,6 @@ import org.ktachibana.cloudemoji.net.RepositoryStoreDownloaderClient;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;

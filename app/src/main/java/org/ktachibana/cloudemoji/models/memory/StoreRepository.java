@@ -1,8 +1,5 @@
 package org.ktachibana.cloudemoji.models.memory;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * POJO class holding a repository in store
  */

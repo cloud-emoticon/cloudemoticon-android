@@ -1,8 +1,5 @@
 package org.ktachibana.cloudemoji.utils;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.ktachibana.cloudemoji.models.memory.Source;
 
 import java.util.ArrayList;
