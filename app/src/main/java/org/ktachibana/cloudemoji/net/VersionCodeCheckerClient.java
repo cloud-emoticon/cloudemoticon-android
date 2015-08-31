@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.utils.NetworkUnavailableException;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 public class VersionCodeCheckerClient extends BaseHttpClient {
@@ -36,7 +37,7 @@ public class VersionCodeCheckerClient extends BaseHttpClient {
                 }
             });
         } else {
-            callback.fail(NETWORK_UNAVAILABLE_EXCEPTION);
+            callback.fail(new NetworkUnavailableException());
             callback.finish();
         }
     }

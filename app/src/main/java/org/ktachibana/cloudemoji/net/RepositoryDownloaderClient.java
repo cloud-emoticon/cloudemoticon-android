@@ -9,6 +9,7 @@ import org.apache.http.Header;
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.models.disk.Repository;
+import org.ktachibana.cloudemoji.utils.NetworkUnavailableException;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class RepositoryDownloaderClient extends BaseHttpClient {
                     }
             );
         } else {
-            callback.fail(NETWORK_UNAVAILABLE_EXCEPTION);
+            callback.fail(new NetworkUnavailableException());
             callback.finish();
         }
     }

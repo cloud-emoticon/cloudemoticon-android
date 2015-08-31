@@ -6,7 +6,6 @@ import java.util.List;
 
 public class BaseHttpClient {
     protected AsyncHttpClient mClient;
-    protected static Exception NETWORK_UNAVAILABLE_EXCEPTION = new Exception(BaseApplication.context().getString(R.string.bad_conn));
 
     public interface BaseCallback {
         void fail(Throwable t);

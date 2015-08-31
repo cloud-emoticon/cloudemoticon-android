@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.memory.StoreRepository;
+import org.ktachibana.cloudemoji.utils.NetworkUnavailableException;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class RepositoryStoreDownloaderClient extends BaseHttpClient {
                 }
             });
         } else {
-            callback.fail(NETWORK_UNAVAILABLE_EXCEPTION);
+            callback.fail(new NetworkUnavailableException());
             callback.finish();
         }
     }
