@@ -140,10 +140,6 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
                     BackupHelper.writeFileToExternalStorage(json, exportFile);
 
                     BUS.post(new RepositoryExportedEvent(filePath));
-                } catch (SourceParsingException e) {
-                    BUS.post(e.getFormatType());
-                } catch (IOException e) {
-                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 } catch (Exception e) {
                     Log.e(DEBUG_TAG, e.getLocalizedMessage());
                 }

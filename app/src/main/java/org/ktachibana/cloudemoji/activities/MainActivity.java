@@ -438,8 +438,6 @@ public class MainActivity extends BaseActivity implements
             // Set available to true and SAVE
             defaultRepository.setAvailable(true);
             defaultRepository.save();
-        } catch (FileNotFoundException e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
         } catch (IOException e) {
             Log.e(DEBUG_TAG, e.getLocalizedMessage());
         } finally {
@@ -467,7 +465,7 @@ public class MainActivity extends BaseActivity implements
             );
 
             // Read all favorites
-            List<Favorite> favorites = new ArrayList<Favorite>();
+            List<Favorite> favorites = new ArrayList<>();
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 String emoticon = cursor.getString(0);
