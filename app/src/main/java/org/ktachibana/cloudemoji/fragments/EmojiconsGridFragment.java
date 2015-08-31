@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
+import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.rockerhieu.emojicon.emoji.People;
 
@@ -24,28 +26,17 @@ public class EmojiconsGridFragment extends BaseFragment {
     private static final String EMOJICONS_KEY = "emojicons";
     @Bind(R.id.grid)
     GridView grid;
-    private Emojicon[] mEmojicons;
+    @Arg
+    Emojicon[] mEmojicons;
 
     public EmojiconsGridFragment() {
         // Required empty public constructor
     }
 
-    public static EmojiconsGridFragment newInstance(Emojicon[] emojicons) {
-        EmojiconsGridFragment fragment = new EmojiconsGridFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArray(EMOJICONS_KEY, emojicons);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mEmojicons = (Emojicon[]) getArguments().getParcelableArray(EMOJICONS_KEY);
-        } else {
-            mEmojicons = new People().offer();
-        }
+        FragmentArgs.inject(this);
     }
 
     @Override

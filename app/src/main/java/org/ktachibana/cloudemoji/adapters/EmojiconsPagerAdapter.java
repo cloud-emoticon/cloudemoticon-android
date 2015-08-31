@@ -14,6 +14,7 @@ import com.rockerhieu.emojicon.emoji.Places;
 import com.rockerhieu.emojicon.emoji.Symbols;
 
 import org.ktachibana.cloudemoji.fragments.EmojiconsGridFragment;
+import org.ktachibana.cloudemoji.fragments.EmojiconsGridFragmentBuilder;
 import org.ktachibana.cloudemoji.utils.EmojiconOfferable;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class EmojiconsPagerAdapter extends FragmentStatePagerAdapter {
         // Get emojicon data
         Emojicon[] data = mData.get(mKeys.get(i)).offer();
 
-        return EmojiconsGridFragment.newInstance(data);
+        return new EmojiconsGridFragmentBuilder(data).build();
     }
 
     @Override

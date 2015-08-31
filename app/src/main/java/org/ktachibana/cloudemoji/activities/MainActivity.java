@@ -39,6 +39,7 @@ import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragment;
+import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
@@ -512,7 +513,7 @@ public class MainActivity extends BaseActivity implements
 
         if (listItemId == Constants.LIST_ITEM_REPOSITORIES) {
             mToolbar.setTitle(R.string.repositories);
-            replaceMainContainer(RepositoriesFragment.newInstance(mState.getSourceCache()));
+            replaceMainContainer(new RepositoriesFragmentBuilder(mState.getSourceCache()).build());
             closeDrawers();
         }
 

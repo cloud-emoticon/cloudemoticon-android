@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.ktachibana.cloudemoji.fragments.SourceFragment;
+import org.ktachibana.cloudemoji.fragments.SourceFragmentBuilder;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return SourceFragment.newInstance(mCache.get(fromPositionToKey(position)));
+        return new SourceFragmentBuilder(mCache.get(fromPositionToKey(position))).build();
     }
 
     @Override
