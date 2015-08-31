@@ -17,12 +17,12 @@ import org.ktachibana.cloudemoji.adapters.EmojiconsGridAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class EmojiconsGridFragment extends BaseFragment {
     private static final String EMOJICONS_KEY = "emojicons";
-    @InjectView(R.id.grid)
+    @Bind(R.id.grid)
     GridView grid;
     private Emojicon[] mEmojicons;
 
@@ -52,7 +52,7 @@ public class EmojiconsGridFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_emojicons_grid, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         grid.setAdapter(new EmojiconsGridAdapter(getActivity(), mEmojicons));
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {

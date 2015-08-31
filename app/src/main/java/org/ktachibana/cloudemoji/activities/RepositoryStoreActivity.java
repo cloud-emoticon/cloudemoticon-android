@@ -18,22 +18,22 @@ import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilde
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
     private List<StoreRepository> mRepositories;
 
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     ListView mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repository_store);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
             mRepositories = savedInstanceState.getParcelableArrayList(STATE_TAG);

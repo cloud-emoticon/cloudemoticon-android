@@ -17,8 +17,8 @@ import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSortListView.DropListener {
     private Context mContext;
@@ -168,17 +168,17 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
     }
 
     static class ViewHolder {
-        @InjectView(R.id.emoticonTextView)
+        @Bind(R.id.emoticonTextView)
         TextView emoticon;
-        @InjectView(R.id.descriptionTextView)
+        @Bind(R.id.descriptionTextView)
         TextView description;
-        @InjectView(R.id.favoriteStarImageView)
+        @Bind(R.id.favoriteStarImageView)
         ImageView star;
-        @InjectView(R.id.favoriteEditImageView)
+        @Bind(R.id.favoriteEditImageView)
         ImageView edit;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

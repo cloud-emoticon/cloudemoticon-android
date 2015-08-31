@@ -12,17 +12,17 @@ import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class AccountRegisterFragment extends BaseFragment {
-    @InjectView(R.id.username)
+    @Bind(R.id.username)
     EditText usernameEditText;
-    @InjectView(R.id.password)
+    @Bind(R.id.password)
     EditText passwordEditText;
-    @InjectView(R.id.email)
+    @Bind(R.id.email)
     EditText emailEditText;
-    @InjectView(R.id.register)
+    @Bind(R.id.register)
     Button registerButton;
 
     public AccountRegisterFragment() {
@@ -33,7 +33,7 @@ public class AccountRegisterFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_register, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
@@ -213,24 +213,24 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     }
 
     static class EntryViewHolder {
-        @InjectView(R.id.emoticonTextView)
+        @Bind(R.id.emoticonTextView)
         TextView emoticon;
-        @InjectView(R.id.descriptionTextView)
+        @Bind(R.id.descriptionTextView)
         TextView description;
-        @InjectView(R.id.entryStarImageView)
+        @Bind(R.id.entryStarImageView)
         ImageView favorite;
 
         EntryViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 
     static class SectionHeaderViewHolder {
-        @InjectView(R.id.sectionHeaderTextView)
+        @Bind(R.id.sectionHeaderTextView)
         TextView text;
 
         SectionHeaderViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

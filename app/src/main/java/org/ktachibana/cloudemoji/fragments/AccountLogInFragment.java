@@ -15,15 +15,15 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.utils.CredentialsValidator;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class AccountLogInFragment extends BaseFragment {
-    @InjectView(R.id.username)
+    @Bind(R.id.username)
     EditText usernameEditText;
-    @InjectView(R.id.password)
+    @Bind(R.id.password)
     EditText passwordEditText;
-    @InjectView(R.id.log_in)
+    @Bind(R.id.log_in)
     Button logInButton;
 
     public AccountLogInFragment() {
@@ -34,7 +34,7 @@ public class AccountLogInFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_log_in, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override

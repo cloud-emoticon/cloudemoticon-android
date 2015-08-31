@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Base fragment with tabs and pager
  */
 public class BaseTabsPagerFragment extends BaseFragment {
-    @InjectView(R.id.pager)
+    @Bind(R.id.pager)
     protected ViewPager mPager;
-    @InjectView(R.id.tabs)
+    @Bind(R.id.tabs)
     protected PagerSlidingTabStrip mTabs;
 
     public BaseTabsPagerFragment() {
@@ -30,7 +30,7 @@ public class BaseTabsPagerFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Setup views
         View rootView = inflater.inflate(R.layout.fragment_base_tabs_pager, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         return rootView;
     }

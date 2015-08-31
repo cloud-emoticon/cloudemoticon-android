@@ -14,13 +14,13 @@ import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends BaseFragment {
     private static final String ARG_SOURCE = "source";
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     PinnedHeaderListView mList;
     private Source mSource;
     private SourceListViewAdapter mAdapter;
@@ -49,7 +49,7 @@ public class SourceFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_source, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         // Setup contents
         mAdapter = new SourceListViewAdapter(getActivity(), mSource);

@@ -17,17 +17,17 @@ import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.Subscribe;
 
 public class SearchResultFragment extends BaseFragment {
     private static final String SEARCH_QUERY_KEY = "mSearchQuery";
-    @InjectView(R.id.searchResultListView)
+    @Bind(R.id.searchResultListView)
     ListView mSearchResultListView;
-    @InjectView(R.id.emptyView)
+    @Bind(R.id.emptyView)
     RelativeLayout mSearchResultEmptyView;
-    @InjectView(R.id.emptyViewTextView)
+    @Bind(R.id.emptyViewTextView)
     TextView mSearchResultEmptyViewTextView;
     private String mSearchQuery;
 
@@ -56,7 +56,7 @@ public class SearchResultFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Setup views
         View rootView = inflater.inflate(R.layout.fragment_search_result, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         // Setup contents
         mSearchResultListView.setEmptyView(mSearchResultEmptyView);

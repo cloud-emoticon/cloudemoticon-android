@@ -26,21 +26,21 @@ import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.Subscribe;
 
 public class RepositoryManagerActivity extends BaseActivity implements Constants {
-    @InjectView(R.id.repositoryListView)
+    @Bind(R.id.repositoryListView)
     ListView mRepositoryListView;
 
-    @InjectView(R.id.emptyView)
+    @Bind(R.id.emptyView)
     RelativeLayout mRepositoryEmptyView;
 
-    @InjectView(R.id.emptyViewTextView)
+    @Bind(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
-    @InjectView(R.id.fab)
+    @Bind(R.id.fab)
     FloatingActionButton mFab;
 
     private RepositoryListViewAdapter mAdapter;
@@ -49,7 +49,7 @@ public class RepositoryManagerActivity extends BaseActivity implements Constants
     public void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.activity_repository_manager);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Setup contents
         mRepositoryListView.setEmptyView(mRepositoryEmptyView);

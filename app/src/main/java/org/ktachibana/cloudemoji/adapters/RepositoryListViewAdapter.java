@@ -32,8 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class RepositoryListViewAdapter extends BaseBaseAdapter implements Constants {
     private List<Repository> mRepositories;
@@ -174,21 +174,21 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
     }
 
     static class ViewHolder {
-        @InjectView(R.id.repositoryAliasTextView)
+        @Bind(R.id.repositoryAliasTextView)
         TextView aliasTextView;
-        @InjectView(R.id.repositoryUrlTextView)
+        @Bind(R.id.repositoryUrlTextView)
         TextView urlTextView;
-        @InjectView(R.id.repositoryDownloadButton)
+        @Bind(R.id.repositoryDownloadButton)
         ImageView downloadButton;
-        @InjectView(R.id.repositoryEditButton)
+        @Bind(R.id.repositoryEditButton)
         ImageView editButton;
-        @InjectView(R.id.repositoryExportButton)
+        @Bind(R.id.repositoryExportButton)
         ImageView exportButton;
-        @InjectView(R.id.repositoryDeleteButton)
+        @Bind(R.id.repositoryDeleteButton)
         ImageView deleteButton;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

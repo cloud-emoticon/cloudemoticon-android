@@ -24,21 +24,21 @@ import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.Subscribe;
 
 public class FavoriteFragment extends BaseFragment {
-    @InjectView(R.id.favoriteListView)
+    @Bind(R.id.favoriteListView)
     DragSortListView mFavoriteListView;
 
-    @InjectView(R.id.emptyView)
+    @Bind(R.id.emptyView)
     RelativeLayout mFavoriteEmptyView;
 
-    @InjectView(R.id.emptyViewTextView)
+    @Bind(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
-    @InjectView(R.id.fab)
+    @Bind(R.id.fab)
     FloatingActionButton mFab;
 
     FavoriteListViewAdapter mAdapter;
@@ -52,7 +52,7 @@ public class FavoriteFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Setup views
         View rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         // Setup contents
         mFavoriteListView.setEmptyView(mFavoriteEmptyView);

@@ -12,8 +12,8 @@ import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class SearchResultListViewAdapter extends BaseAdapter {
     private List<Entry> mResults;
@@ -66,14 +66,14 @@ public class SearchResultListViewAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @InjectView(R.id.emoticonTextView)
+        @Bind(R.id.emoticonTextView)
         TextView emoticon;
 
-        @InjectView(R.id.descriptionTextView)
+        @Bind(R.id.descriptionTextView)
         TextView description;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

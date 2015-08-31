@@ -3,7 +3,6 @@ package org.ktachibana.cloudemoji.fragments;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.preference.PreferenceManager;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 
+import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
@@ -131,15 +131,10 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
 
         // Version
         Preference versionPref = findPreference(PREF_VERSION);
-        try {
-            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-            String version = pInfo.versionName;
-            String versionCode = Integer.toString(pInfo.versionCode);
-            versionPref.setTitle(getString(R.string.version) + " " + version);
-            versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        String version = BuildConfig.VERSION_NAME;
+        int versionCode = BuildConfig.VERSION_CODE;
+        versionPref.setTitle(getString(R.string.version) + " " + version);
+        versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
     }
 
     @Override

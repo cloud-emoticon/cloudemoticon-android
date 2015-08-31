@@ -18,20 +18,20 @@ import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.disk.History;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class HistoryFragment extends BaseFragment {
-    @InjectView(R.id.historyListView)
+    @Bind(R.id.historyListView)
     ListView mHistoryListView;
 
-    @InjectView(R.id.emptyView)
+    @Bind(R.id.emptyView)
     RelativeLayout mHistoryEmptyView;
 
-    @InjectView(R.id.emptyViewTextView)
+    @Bind(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
-    @InjectView(R.id.fab)
+    @Bind(R.id.fab)
     FloatingActionButton mFab;
 
     private HistoryListViewAdapter mAdapter;
@@ -50,7 +50,7 @@ public class HistoryFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Setup views
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
 
         // Setup contents
         mHistoryListView.setEmptyView(mHistoryEmptyView);

@@ -20,8 +20,8 @@ import org.ktachibana.cloudemoji.models.memory.StoreRepository;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
@@ -86,21 +86,21 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
     }
 
     static class ViewHolder {
-        @InjectView(R.id.root)
+        @Bind(R.id.root)
         LinearLayout root;
-        @InjectView(R.id.alias)
+        @Bind(R.id.alias)
         TextView alias;
-        @InjectView(R.id.url)
+        @Bind(R.id.url)
         TextView url;
-        @InjectView(R.id.description)
+        @Bind(R.id.description)
         TextView description;
-        @InjectView(R.id.authorImage)
+        @Bind(R.id.authorImage)
         ImageView authorImage;
-        @InjectView(R.id.author)
+        @Bind(R.id.author)
         TextView author;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

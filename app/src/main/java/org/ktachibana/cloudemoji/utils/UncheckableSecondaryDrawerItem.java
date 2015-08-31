@@ -4,6 +4,6 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 
 public class UncheckableSecondaryDrawerItem extends SecondaryDrawerItem {
     public UncheckableSecondaryDrawerItem() {
-        this.withCheckable(false);
+        this.withSelectable(false);
     }
 }

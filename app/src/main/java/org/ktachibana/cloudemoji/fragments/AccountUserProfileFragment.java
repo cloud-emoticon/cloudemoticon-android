@@ -14,15 +14,15 @@ import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class AccountUserProfileFragment extends BaseFragment {
-    @InjectView(R.id.username)
+    @Bind(R.id.username)
     TextView username;
-    @InjectView(R.id.email)
+    @Bind(R.id.email)
     TextView email;
-    @InjectView(R.id.log_out)
+    @Bind(R.id.log_out)
     Button logOut;
 
     public AccountUserProfileFragment() {
@@ -33,7 +33,7 @@ public class AccountUserProfileFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_user_profile, container, false);
-        ButterKnife.inject(this, rootView);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 

@@ -4,8 +4,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -16,13 +14,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
-import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -33,6 +30,7 @@ import org.apache.commons.io.IOUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
+import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
@@ -76,7 +74,7 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Setup drawer
         setupDrawer();
@@ -318,33 +316,28 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Get current version and compare
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int versionCode = pInfo.versionCode;
+        int versionCode = BuildConfig.VERSION_CODE;
 
-            // Already latest
-            if (latestVersionCode == versionCode) {
-                showSnackBar(R.string.already_latest_version);
-                return;
-            }
-
-            // New version available, show dialog
-            new MaterialDialog.Builder(MainActivity.this)
-                    .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
-                    .positiveText(R.string.go_to_play_store)
-                    .negativeText(android.R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            Intent intent = new Intent();
-                            intent.setData(Uri.parse(PLAY_STORE_URL));
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        // Already latest
+        if (latestVersionCode == versionCode) {
+            showSnackBar(R.string.already_latest_version);
+            return;
         }
+
+        // New version available, show dialog
+        new MaterialDialog.Builder(MainActivity.this)
+                .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
+                .positiveText(R.string.go_to_play_store)
+                .negativeText(android.R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        Intent intent = new Intent();
+                        intent.setData(Uri.parse(PLAY_STORE_URL));
+                        startActivity(intent);
+                    }
+                })
+                .show();
     }
 
     private void replaceMainContainer(Fragment fragment) {
@@ -584,7 +577,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
+    public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
         mState.setItemId(iDrawerItem.getIdentifier());
         refreshUiWithCurrentState();
         return true;

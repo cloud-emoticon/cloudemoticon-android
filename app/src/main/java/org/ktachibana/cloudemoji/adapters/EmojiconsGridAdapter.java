@@ -12,8 +12,8 @@ import com.rockerhieu.emojicon.emoji.Emojicon;
 
 import org.ktachibana.cloudemoji.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class EmojiconsGridAdapter implements ListAdapter {
@@ -100,11 +100,11 @@ public class EmojiconsGridAdapter implements ListAdapter {
     }
 
     static class ViewHolder {
-        @InjectView(R.id.textView)
+        @Bind(R.id.textView)
         TextView textView;
 
         ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }
