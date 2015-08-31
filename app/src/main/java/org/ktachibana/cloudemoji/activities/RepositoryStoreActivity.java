@@ -14,6 +14,7 @@ import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.memory.StoreRepository;
 import org.ktachibana.cloudemoji.net.RepositoryStoreDownloaderClient;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class RepositoryStoreActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
-            mRepositories = savedInstanceState.getParcelableArrayList(STATE_TAG);
+            mRepositories = Parcels.unwrap(savedInstanceState.getParcelable(STATE_TAG));
             showRepositoryStore();
             return;
         }
@@ -68,7 +69,7 @@ public class RepositoryStoreActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(STATE_TAG, (ArrayList<StoreRepository>) mRepositories);
+        outState.putParcelable(STATE_TAG, Parcels.wrap(mRepositories));
     }
 
     private void showRepositoryStore() {

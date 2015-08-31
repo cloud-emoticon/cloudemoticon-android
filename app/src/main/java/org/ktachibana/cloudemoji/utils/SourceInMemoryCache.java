@@ -13,10 +13,10 @@ import java.util.List;
  * Intended to be stored by Android Parcelable mechanism
  * key will be primitive long
  */
-public class SourceInMemoryCache implements Parcelable {
-    public static final int INITIAL_CAPACITY = 4;
-    private List<Long> mKeyArray;
-    private List<Source> mValueArray;
+@org.parceler.Parcel
+public class SourceInMemoryCache {
+    List<Long> mKeyArray;
+    List<Source> mValueArray;
 
     @SuppressWarnings("unchecked")
     public SourceInMemoryCache() {
@@ -110,32 +110,4 @@ public class SourceInMemoryCache implements Parcelable {
         }
         return null;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(this.mKeyArray);
-        dest.writeTypedList(mValueArray);
-    }
-
-    private SourceInMemoryCache(Parcel in) {
-        this.mKeyArray = new ArrayList<>();
-        in.readList(this.mKeyArray, List.class.getClassLoader());
-        this.mValueArray = new ArrayList<>();
-        in.readTypedList(mValueArray, Source.CREATOR);
-    }
-
-    public static final Parcelable.Creator<SourceInMemoryCache> CREATOR = new Parcelable.Creator<SourceInMemoryCache>() {
-        public SourceInMemoryCache createFromParcel(Parcel source) {
-            return new SourceInMemoryCache(source);
-        }
-
-        public SourceInMemoryCache[] newArray(int size) {
-            return new SourceInMemoryCache[size];
-        }
-    };
 }

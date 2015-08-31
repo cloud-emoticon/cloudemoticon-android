@@ -16,38 +16,19 @@
 
 package com.rockerhieu.emojicon.emoji;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com)
  */
-public class Emojicon implements Parcelable {
-    public static final Creator<Emojicon> CREATOR = new Creator<Emojicon>() {
-        public Emojicon createFromParcel(Parcel source) {
-            return new Emojicon(source);
-        }
+@org.parceler.Parcel
+public class Emojicon {
+    int icon;
+    char value;
+    String emoji;
 
-        public Emojicon[] newArray(int size) {
-            return new Emojicon[size];
-        }
-    };
-    private static final long serialVersionUID = 1L;
-    private int icon;
-    private char value;
-    private String emoji;
-
-    private Emojicon() {
-    }
+    public Emojicon() { /*Required empty bean constructor*/ }
 
     public Emojicon(String emoji) {
         this.emoji = emoji;
-    }
-
-    private Emojicon(Parcel in) {
-        this.icon = in.readInt();
-        this.value = (char) in.readInt();
-        this.emoji = in.readString();
     }
 
     public static Emojicon fromResource(int icon, int value) {
@@ -75,7 +56,7 @@ public class Emojicon implements Parcelable {
         return emoji;
     }
 
-    public static final String newString(int codePoint) {
+    public static String newString(int codePoint) {
         if (Character.charCount(codePoint) == 1) {
             return String.valueOf(codePoint);
         } else {
@@ -103,17 +84,5 @@ public class Emojicon implements Parcelable {
     @Override
     public int hashCode() {
         return emoji.hashCode();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.icon);
-        dest.writeInt((int) this.value);
-        dest.writeString(this.emoji);
     }
 }
