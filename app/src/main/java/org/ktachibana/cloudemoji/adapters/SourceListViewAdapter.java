@@ -2,6 +2,7 @@ package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     private Source mSource;
     private LayoutInflater mInflater;
     // Cache stores whether a emoticon is in favorites
-    private HashMap<String, Boolean> mEmoticonInFavoritesCache;
+    private ArrayMap<String, Boolean> mEmoticonInFavoritesCache;
 
     // Section headers
     private String[] mSectionHeaders;
@@ -47,7 +48,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     public SourceListViewAdapter(Context context, Source source) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSource = source;
-        mEmoticonInFavoritesCache = new LinkedHashMap<>();
+        mEmoticonInFavoritesCache = new ArrayMap<>();
 
         // Constant drawables
         mNoStarDrawable = context.getResources().getDrawable(R.drawable.ic_unfavorite);

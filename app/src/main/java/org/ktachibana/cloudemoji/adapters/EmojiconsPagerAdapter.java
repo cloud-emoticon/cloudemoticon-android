@@ -4,6 +4,7 @@ package org.ktachibana.cloudemoji.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.util.ArrayMap;
 
 import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.rockerhieu.emojicon.emoji.Nature;
@@ -21,14 +22,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class EmojiconsPagerAdapter extends FragmentStatePagerAdapter {
-    private HashMap<String, EmojiconOfferable> mData;
+    private ArrayMap<String, EmojiconOfferable> mData;
     private List<String> mKeys;
 
     public EmojiconsPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
 
         // Fill emojicons data
-        mData = new LinkedHashMap<String, EmojiconOfferable>();
+        mData = new ArrayMap<>();
         mData.put("NATURE", new Nature());
         mData.put("OBJECTS", new Objects());
         mData.put("PEOPLE", new People());
