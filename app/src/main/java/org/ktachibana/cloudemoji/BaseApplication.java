@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.facebook.stetho.Stetho;
 import com.orm.SugarApp;
+import com.squareup.leakcanary.LeakCanary;
 
 public class BaseApplication extends SugarApp {
 
@@ -22,6 +23,7 @@ public class BaseApplication extends SugarApp {
                     .enableWebKitInspector(
                             Stetho.defaultInspectorModulesProvider(this))
                     .build());
+            LeakCanary.install(this);
         }
     }
 
