@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
+import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
@@ -25,7 +26,7 @@ public class SourceFragment extends BaseFragment {
     private static final String ARG_SOURCE = "source";
     @Bind(R.id.list)
     PinnedHeaderListView mList;
-    @Arg
+    @Arg(bundler = ParcelerArgsBundler.class)
     Source mSource;
     private SourceListViewAdapter mAdapter;
 

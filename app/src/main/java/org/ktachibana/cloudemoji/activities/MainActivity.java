@@ -48,6 +48,7 @@ import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
+import org.parceler.Parcels;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -288,7 +289,7 @@ public class MainActivity extends BaseActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            intent.putExtra(SOURCE_CACHE_TAG, mState.getSourceCache());
+            intent.putExtra(SOURCE_CACHE_TAG, Parcels.wrap(mState.getSourceCache()));
             startActivity(intent);
             return true;
         }
@@ -387,7 +388,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // Save current state
-        outState.putParcelable(STATE_TAG, mState);
+        outState.putParcelable(STATE_TAG, Parcels.wrap(mState));
     }
 
     private void firstTimeCheck() {

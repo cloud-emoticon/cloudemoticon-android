@@ -65,5 +65,8 @@ dependencies {
     compile 'com.android.support:support-v4:23.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.hannesdorfmann.fragmentargs:annotation:2.1.2'
+    compile 'com.hannesdorfmann.fragmentargs:bundler-parceler:2.1.2'
     apt 'com.hannesdorfmann.fragmentargs:processor:2.1.2'
+    compile "org.parceler:parceler-api:1.0.3"
+    apt "org.parceler:parceler:1.0.3"
 }

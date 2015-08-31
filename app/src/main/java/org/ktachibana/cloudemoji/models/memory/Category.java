@@ -9,9 +9,12 @@ import java.util.List;
 /**
  * POJO class holding a name and a list of entries
  */
-public class Category implements Parcelable {
-    private String name;
-    private List<Entry> entries;
+@org.parceler.Parcel
+public class Category {
+    String name;
+    List<Entry> entries;
+
+    public Category() { /*Required empty bean constructor*/ }
 
     public Category(String name, List<Entry> entries) {
         this.name = name;
@@ -42,31 +45,4 @@ public class Category implements Parcelable {
 
         return true;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeTypedList(entries);
-    }
-
-    private Category(Parcel in) {
-        this.name = in.readString();
-        this.entries = new ArrayList<>();
-        in.readTypedList(entries, Entry.CREATOR);
-    }
-
-    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
-        public Category createFromParcel(Parcel source) {
-            return new Category(source);
-        }
-
-        public Category[] newArray(int size) {
-            return new Category[size];
-        }
-    };
 }

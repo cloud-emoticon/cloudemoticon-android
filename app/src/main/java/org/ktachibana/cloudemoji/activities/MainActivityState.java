@@ -6,10 +6,13 @@ import android.os.Parcelable;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
-public class MainActivityState implements Parcelable {
-    private int itemId;
-    private int previousItemId;
-    private SourceInMemoryCache sourceCache;
+@org.parceler.Parcel
+public class MainActivityState {
+    int itemId;
+    int previousItemId;
+    SourceInMemoryCache sourceCache;
+
+    public MainActivityState() { /*Required empty bean constructor*/ }
 
     public MainActivityState(SourceInMemoryCache sourceCache) {
         this.itemId = Constants.DEFAULT_LIST_ITEM_ID;
@@ -38,32 +41,4 @@ public class MainActivityState implements Parcelable {
         sourceCache = null;
         sourceCache = cache;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.itemId);
-        dest.writeInt(this.previousItemId);
-        dest.writeParcelable(this.sourceCache, 0);
-    }
-
-    private MainActivityState(Parcel in) {
-        this.itemId = in.readInt();
-        this.previousItemId = in.readInt();
-        this.sourceCache = in.readParcelable(SourceInMemoryCache.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<MainActivityState> CREATOR = new Parcelable.Creator<MainActivityState>() {
-        public MainActivityState createFromParcel(Parcel source) {
-            return new MainActivityState(source);
-        }
-
-        public MainActivityState[] newArray(int size) {
-            return new MainActivityState[size];
-        }
-    };
 }
