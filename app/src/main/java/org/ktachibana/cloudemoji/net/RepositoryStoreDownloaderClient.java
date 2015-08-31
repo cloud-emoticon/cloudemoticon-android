@@ -16,10 +16,10 @@ import org.ktachibana.cloudemoji.utils.SystemUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepositoryStoreDownloaderClient extends BaseHttpClient implements Constants {
+public class RepositoryStoreDownloaderClient extends BaseHttpClient {
     public void downloadRepositoryStore(@NonNull final ListCallback callback) {
         if (SystemUtils.networkAvailable()) {
-            mClient.get(STORE_URL, new JsonHttpResponseHandler() {
+            mClient.get(Constants.STORE_URL, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     List<StoreRepository> repositories = new ArrayList<>();

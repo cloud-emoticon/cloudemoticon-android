@@ -4,15 +4,13 @@ import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import org.ktachibana.cloudemoji.Constants;
-
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * POJO class holding an entry with arrangingOrder
  */
-public class Favorite extends SugarRecord<Favorite> implements Constants, Serializable {
+public class Favorite extends SugarRecord<Favorite> implements Serializable {
     private String emoticon;
     private String description;
     private String shortcut = "";

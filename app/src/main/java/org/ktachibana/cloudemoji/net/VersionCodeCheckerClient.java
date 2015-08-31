@@ -11,10 +11,10 @@ import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
-public class VersionCodeCheckerClient extends BaseHttpClient implements Constants {
+public class VersionCodeCheckerClient extends BaseHttpClient {
     public void checkForLatestVersionCode(@NonNull final IntCallback callback) {
         if (SystemUtils.networkAvailable()) {
-            mClient.get(UPDATE_CHECKER_URL, new JsonHttpResponseHandler() {
+            mClient.get(Constants.UPDATE_CHECKER_URL, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {

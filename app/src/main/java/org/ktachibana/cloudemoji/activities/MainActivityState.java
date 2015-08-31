@@ -6,14 +6,14 @@ import android.os.Parcelable;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
-public class MainActivityState implements Parcelable, Constants {
+public class MainActivityState implements Parcelable {
     private int itemId;
     private int previousItemId;
     private SourceInMemoryCache sourceCache;
 
     public MainActivityState(SourceInMemoryCache sourceCache) {
-        this.itemId = DEFAULT_LIST_ITEM_ID;
-        this.previousItemId = DEFAULT_LIST_ITEM_ID;
+        this.itemId = Constants.DEFAULT_LIST_ITEM_ID;
+        this.previousItemId = Constants.DEFAULT_LIST_ITEM_ID;
         this.sourceCache = sourceCache;
     }
 

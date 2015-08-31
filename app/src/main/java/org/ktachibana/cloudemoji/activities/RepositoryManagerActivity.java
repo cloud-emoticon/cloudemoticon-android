@@ -12,7 +12,6 @@ import com.melnykov.fab.FloatingActionButton;
 
 import org.apache.commons.io.FilenameUtils;
 import org.ktachibana.cloudemoji.BaseActivity;
-import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.NetworkUnavailableEvent;
@@ -30,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.Subscribe;
 
-public class RepositoryManagerActivity extends BaseActivity implements Constants {
+public class RepositoryManagerActivity extends BaseActivity {
     @Bind(R.id.repositoryListView)
     ListView mRepositoryListView;
 

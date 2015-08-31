@@ -42,8 +42,10 @@ public interface Constants {
     // Repository
     int FORMAT_TYPE_XML = 0;
     int FORMAT_TYPE_JSON = 1;
+
     @IntDef({FORMAT_TYPE_XML, FORMAT_TYPE_JSON})
-    @interface FormatType {}
+    @interface FormatType {
+    }
 
     // URLs
     String DEFAULT_REPOSITORY_URL = "https://dl.dropboxusercontent.com/u/120725807/test.xml";

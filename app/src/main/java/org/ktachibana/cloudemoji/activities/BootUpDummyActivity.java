@@ -11,15 +11,15 @@ import org.ktachibana.cloudemoji.utils.NotificationHelper;
 /**
  * Dummy activity that shows notification after boot up
  */
-public class BootUpDummyActivity extends Activity implements Constants {
+public class BootUpDummyActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Read whether to show up and what way to show up
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean showAfterBootUp = preferences.getBoolean(PREF_SHOW_AFTER_BOOT_UP, true);
-        String notificationVisibility = preferences.getString(PREF_NOTIFICATION_VISIBILITY, "both");
+        Boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
+        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, "both");
 
         // Do it
         if (showAfterBootUp) {

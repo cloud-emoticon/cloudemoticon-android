@@ -10,7 +10,7 @@ import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.List;
 
-public class ImeHelper implements Constants {
+public class ImeHelper {
     public static int importAllFavoritesIntoIme(ContentResolver contentResolver) {
         List<Favorite> favorites = FavoritesHelper.getFavoritesAsList();
 
@@ -19,7 +19,7 @@ public class ImeHelper implements Constants {
         for (Favorite favorite : favorites) {
             if (!favorite.getShortcut().equals("")) {
                 ContentValues newValue = new ContentValues();
-                newValue.put(UserDictionary.Words.APP_ID, USER_DICTIONARY_APP_ID);
+                newValue.put(UserDictionary.Words.APP_ID, Constants.USER_DICTIONARY_APP_ID);
                 newValue.put(UserDictionary.Words.WORD, favorite.getEmoticon());
                 if (SystemUtils.aboveJellybean()) {
                     newValue.put(UserDictionary.Words.SHORTCUT, favorite.getShortcut());
@@ -34,7 +34,7 @@ public class ImeHelper implements Constants {
 
     public static int revokeAllFavoritesFromIme(ContentResolver contentResolver) {
         String clause = UserDictionary.Words.APP_ID + "=?";
-        String[] args = {USER_DICTIONARY_APP_ID};
+        String[] args = {Constants.USER_DICTIONARY_APP_ID};
 
         // TODO: Remove all entries belonging to this app
         return contentResolver.delete(UserDictionary.Words.CONTENT_URI, clause, args);

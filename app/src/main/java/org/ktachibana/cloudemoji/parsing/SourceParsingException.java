@@ -1,10 +1,10 @@
 package org.ktachibana.cloudemoji.parsing;
 
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.models.disk.Repository;
 
 public class SourceParsingException extends Exception {
-    @Constants.FormatType private int mFormatType;
+    @Constants.FormatType
+    private int mFormatType;
 
     public SourceParsingException(@Constants.FormatType int formatType) {
         mFormatType = formatType;

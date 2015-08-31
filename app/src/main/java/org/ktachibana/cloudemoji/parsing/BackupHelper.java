@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BackupHelper implements Constants {
+public class BackupHelper {
 
     public static boolean backupFavorites() {
         // If external storage not writable
@@ -26,7 +26,7 @@ public class BackupHelper implements Constants {
         }
 
         // Get backup file
-        File backupFile = new File(FAVORITES_BACKUP_FILE_PATH);
+        File backupFile = new File(Constants.FAVORITES_BACKUP_FILE_PATH);
         if (backupFile.exists()) backupFile.delete();
 
         // Write to file
@@ -46,7 +46,7 @@ public class BackupHelper implements Constants {
         }
 
         // Get backup file
-        File backupFile = new File(FAVORITES_BACKUP_FILE_PATH);
+        File backupFile = new File(Constants.FAVORITES_BACKUP_FILE_PATH);
 
         // Read from file
         FileInputStream inputStream = null;

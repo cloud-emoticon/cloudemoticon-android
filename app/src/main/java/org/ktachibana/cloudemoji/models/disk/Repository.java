@@ -11,10 +11,11 @@ import java.util.List;
 /**
  * POJO class holding a remote repository and its relevant information
  */
-public class Repository extends SugarRecord<Repository> implements Constants, Serializable {
+public class Repository extends SugarRecord<Repository> implements Serializable {
     private String url;
     private String alias;
-    @FormatType private int formatType;
+    @Constants.FormatType
+    private int formatType;
     private String fileName;
     private boolean isAvailable;
     private boolean isVisible;
@@ -26,8 +27,8 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
         this.url = url;
         this.alias = alias;
         String extension = FilenameUtils.getExtension(url);
-        if (extension.equals("xml")) formatType = FORMAT_TYPE_XML;
-        if (extension.equals("json")) formatType = FORMAT_TYPE_JSON;
+        if (extension.equals("xml")) formatType = Constants.FORMAT_TYPE_XML;
+        if (extension.equals("json")) formatType = Constants.FORMAT_TYPE_JSON;
         this.fileName = String.valueOf(url.hashCode()) + "." + extension;
         this.isAvailable = false;
         this.isVisible = false;
@@ -57,7 +58,7 @@ public class Repository extends SugarRecord<Repository> implements Constants, Se
         this.isAvailable = isAvailable;
     }
 
-    @FormatType
+    @Constants.FormatType
     public int getFormatType() {
         return formatType;
     }

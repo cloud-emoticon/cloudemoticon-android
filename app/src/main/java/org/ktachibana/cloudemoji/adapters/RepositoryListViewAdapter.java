@@ -24,18 +24,16 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.RepositoryDownloaderClient;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
-import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RepositoryListViewAdapter extends BaseBaseAdapter implements Constants {
+public class RepositoryListViewAdapter extends BaseBaseAdapter {
     private List<Repository> mRepositories;
     private Context mContext;
 
@@ -135,13 +133,13 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter implements Consta
                     String json = new SourceJsonParser().serialize(source);
 
                     // Get file and write
-                    String filePath = String.format(EXPORT_FILE_PATH, item.getAlias() + ".json");
+                    String filePath = String.format(Constants.EXPORT_FILE_PATH, item.getAlias() + ".json");
                     File exportFile = new File(filePath);
                     BackupHelper.writeFileToExternalStorage(json, exportFile);
 
                     BUS.post(new RepositoryExportedEvent(filePath));
                 } catch (Exception e) {
-                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                    Log.e(Constants.DEBUG_TAG, e.getLocalizedMessage());
                 }
             }
         });

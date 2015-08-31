@@ -18,7 +18,7 @@ import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
-public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment implements Constants {
+public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     SharedPreferences mPreferences;
@@ -32,7 +32,7 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Navbar Gesture
-        Preference navbarGesturePref = findPreference(PREF_NAVBAR_GESTURE);
+        Preference navbarGesturePref = findPreference(Constants.PREF_NAVBAR_GESTURE);
         if (SystemUtils.belowJellybean())
             navbarGesturePref.setEnabled(false);
         navbarGesturePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -50,7 +50,7 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
         });
 
         // Import favorites into IME
-        Preference importImePref = findPreference(PREF_IMPORT_IME);
+        Preference importImePref = findPreference(Constants.PREF_IMPORT_IME);
         importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -76,13 +76,13 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
          **/
 
         // Backup favorites
-        Preference backupPref = findPreference(PREF_BACKUP_FAV);
+        Preference backupPref = findPreference(Constants.PREF_BACKUP_FAV);
         backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 boolean success = BackupHelper.backupFavorites();
                 if (success) {
-                    showSnackBar(FAVORITES_BACKUP_FILE_PATH);
+                    showSnackBar(Constants.FAVORITES_BACKUP_FILE_PATH);
                 } else {
                     showSnackBar(R.string.fail);
                 }
@@ -91,7 +91,7 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
         });
 
         // Restore favorites
-        Preference restorePref = findPreference(PREF_RESTORE_FAV);
+        Preference restorePref = findPreference(Constants.PREF_RESTORE_FAV);
         restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -106,31 +106,31 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
         });
 
         // GitHub Release
-        Preference gitHubReleasePref = findPreference(PREF_GIT_HUB_RELEASE);
+        Preference gitHubReleasePref = findPreference(Constants.PREF_GIT_HUB_RELEASE);
         gitHubReleasePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent();
-                intent.setData(Uri.parse(GIT_HUB_RELEASE_URL));
+                intent.setData(Uri.parse(Constants.GIT_HUB_RELEASE_URL));
                 startActivity(intent);
                 return true;
             }
         });
 
         // GitHub Repo
-        Preference gitHubRepoPref = findPreference(PREF_GIT_HUB_REPO);
+        Preference gitHubRepoPref = findPreference(Constants.PREF_GIT_HUB_REPO);
         gitHubRepoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent();
-                intent.setData(Uri.parse(GIT_HUB_REPO_URL));
+                intent.setData(Uri.parse(Constants.GIT_HUB_REPO_URL));
                 startActivity(intent);
                 return true;
             }
         });
 
         // Version
-        Preference versionPref = findPreference(PREF_VERSION);
+        Preference versionPref = findPreference(Constants.PREF_VERSION);
         String version = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;
         versionPref.setTitle(getString(R.string.version) + " " + version);

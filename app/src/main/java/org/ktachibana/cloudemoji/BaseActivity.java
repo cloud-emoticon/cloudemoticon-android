@@ -27,7 +27,7 @@ import de.greenrobot.event.Subscribe;
  * Base activity for all activities with UI to extend
  * It includes preferences, toolbar, snack bar, event bus, and copy to clipboard
  */
-public class BaseActivity extends AppCompatActivity implements Constants {
+public class BaseActivity extends AppCompatActivity {
     protected SharedPreferences mPreferences;
     protected Toolbar mToolbar;
     protected EventBus BUS;
@@ -98,7 +98,7 @@ public class BaseActivity extends AppCompatActivity implements Constants {
         }
 
         // Show toast
-        boolean isCloseAfterCopy = mPreferences.getBoolean(PREF_CLOSE_AFTER_COPY, true);
+        boolean isCloseAfterCopy = mPreferences.getBoolean(Constants.PREF_CLOSE_AFTER_COPY, true);
 
         // Show toast if close after copy, otherwise snackbar
         String message = copied + "\n" + getString(R.string.copied);

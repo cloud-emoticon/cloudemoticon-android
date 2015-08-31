@@ -50,7 +50,6 @@ import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +61,6 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.Subscribe;
 
 public class MainActivity extends BaseActivity implements
-        Constants,
         SharedPreferences.OnSharedPreferenceChangeListener, Drawer.OnDrawerItemClickListener {
 
     private static final String STATE_TAG = "state";
@@ -149,7 +147,7 @@ public class MainActivity extends BaseActivity implements
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format));
                 } catch (Exception e) {
-                    Log.e(DEBUG_TAG, e.getLocalizedMessage());
+                    Log.e(Constants.DEBUG_TAG, e.getLocalizedMessage());
                 }
             }
         }
@@ -163,7 +161,7 @@ public class MainActivity extends BaseActivity implements
                 new PrimaryDrawerItem()
                         .withName(R.string.fav)
                         .withIcon(R.drawable.ic_favorite)
-                        .withIdentifier(LIST_ITEM_FAVORITE_ID)
+                        .withIdentifier(Constants.LIST_ITEM_FAVORITE_ID)
         );
 
         // Add history
@@ -171,7 +169,7 @@ public class MainActivity extends BaseActivity implements
                 new PrimaryDrawerItem()
                         .withName(R.string.history)
                         .withIcon(R.drawable.ic_history)
-                        .withIdentifier(LIST_ITEM_HISTORY_ID)
+                        .withIdentifier(Constants.LIST_ITEM_HISTORY_ID)
         );
 
         // Add built in emoji
@@ -179,7 +177,7 @@ public class MainActivity extends BaseActivity implements
                 new PrimaryDrawerItem()
                         .withName(R.string.built_in_emoji)
                         .withIcon(R.drawable.ic_built_in_emoji)
-                        .withIdentifier(LIST_ITEM_BUILT_IN_EMOJI_ID)
+                        .withIdentifier(Constants.LIST_ITEM_BUILT_IN_EMOJI_ID)
         );
 
         // Add repositories
@@ -187,7 +185,7 @@ public class MainActivity extends BaseActivity implements
                 new PrimaryDrawerItem()
                         .withName(R.string.repositories)
                         .withIcon(R.drawable.ic_repository)
-                        .withIdentifier(LIST_ITEM_REPOSITORIES)
+                        .withIdentifier(Constants.LIST_ITEM_REPOSITORIES)
         );
 
         // Divider
@@ -208,7 +206,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.repo_manager)
                         .withIcon(R.drawable.ic_repository_manager)
-                        .withIdentifier(LIST_ITEM_REPO_MANAGER_ID)
+                        .withIdentifier(Constants.LIST_ITEM_REPO_MANAGER_ID)
         );
 
         // Add repo store
@@ -216,7 +214,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.repository_store)
                         .withIcon(R.drawable.ic_store)
-                        .withIdentifier(LIST_ITEM_REPO_STORE_ID)
+                        .withIdentifier(Constants.LIST_ITEM_REPO_STORE_ID)
         );
 
         // Add update checker
@@ -224,7 +222,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.update_checker)
                         .withIcon(R.drawable.ic_update_checker)
-                        .withIdentifier(LIST_ITEM_UPDATE_CHECKER_ID)
+                        .withIdentifier(Constants.LIST_ITEM_UPDATE_CHECKER_ID)
         );
 
         // Add settings
@@ -232,7 +230,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.settings)
                         .withIcon(R.drawable.ic_settings)
-                        .withIdentifier(LIST_ITEM_SETTINGS_ID)
+                        .withIdentifier(Constants.LIST_ITEM_SETTINGS_ID)
         );
 
         // Add exit
@@ -240,7 +238,7 @@ public class MainActivity extends BaseActivity implements
                 new UncheckableSecondaryDrawerItem()
                         .withName(R.string.exit)
                         .withIcon(R.drawable.ic_exit)
-                        .withIdentifier(LIST_ITEM_EXIT_ID)
+                        .withIdentifier(Constants.LIST_ITEM_EXIT_ID)
         );
 
         // On click
@@ -250,13 +248,13 @@ public class MainActivity extends BaseActivity implements
     private void setupNotificationState() {
         NotificationHelper
                 .switchNotificationState(this,
-                        mPreferences.getString(PREF_NOTIFICATION_VISIBILITY, "both"));
+                        mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, "both"));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key) {
-        if (PREF_NOTIFICATION_VISIBILITY.equals(key)) {
+        if (Constants.PREF_NOTIFICATION_VISIBILITY.equals(key)) {
             setupNotificationState();
         }
     }
@@ -333,7 +331,7 @@ public class MainActivity extends BaseActivity implements
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         Intent intent = new Intent();
-                        intent.setData(Uri.parse(PLAY_STORE_URL));
+                        intent.setData(Uri.parse(Constants.PLAY_STORE_URL));
                         startActivity(intent);
                     }
                 })
@@ -356,31 +354,31 @@ public class MainActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         // Coming back from repository manager or repository store, repositories may be changed
-        if (requestCode == REPOSITORY_MANAGER_REQUEST_CODE ||
-                requestCode == REPOSITORY_STORE_REQUEST_CODE) {
+        if (requestCode == Constants.REPOSITORY_MANAGER_REQUEST_CODE ||
+                requestCode == Constants.REPOSITORY_STORE_REQUEST_CODE) {
 
             // If currently showing repositories, refresh
-            if (mState.getItemId() == LIST_ITEM_REPOSITORIES) {
+            if (mState.getItemId() == Constants.LIST_ITEM_REPOSITORIES) {
                 mState.setSourceCache(initializeCache());
                 refreshUiWithCurrentState();
             }
         }
 
         // Coming back from preference, favorites may be changed
-        if (requestCode == PREFERENCE_REQUEST_CODE) {
+        if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
 
             // If currently showing favorites, refresh
-            if (mState.getItemId() == LIST_ITEM_FAVORITE_ID) {
+            if (mState.getItemId() == Constants.LIST_ITEM_FAVORITE_ID) {
                 refreshUiWithCurrentState();
             }
         }
 
         // Coming back from account, user state and favorites may be changed
-        if (requestCode == ACCOUNT_REQUEST_CODE) {
+        if (requestCode == Constants.ACCOUNT_REQUEST_CODE) {
             setupAccountHeader();
 
             // If currently showing favorites, refresh
-            if (mState.getItemId() == LIST_ITEM_FAVORITE_ID) {
+            if (mState.getItemId() == Constants.LIST_ITEM_FAVORITE_ID) {
                 refreshUiWithCurrentState();
             }
         }
@@ -393,7 +391,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void firstTimeCheck() {
-        boolean hasRunBefore = mPreferences.getBoolean(PREF_HAS_RUN_BEFORE, false);
+        boolean hasRunBefore = mPreferences.getBoolean(Constants.PREF_HAS_RUN_BEFORE, false);
 
         upgradeFavoriteDatabaseIfExists();
         setupDefaultRepoIfNotExists();
@@ -402,7 +400,7 @@ public class MainActivity extends BaseActivity implements
         if (!hasRunBefore) {
             // It has run
             SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putBoolean(PREF_HAS_RUN_BEFORE, true);
+            editor.putBoolean(Constants.PREF_HAS_RUN_BEFORE, true);
             editor.apply();
         }
     }
@@ -413,7 +411,7 @@ public class MainActivity extends BaseActivity implements
         List<Repository> kt = Select
                 .from(Repository.class)
                 .where(Condition.prop("url")
-                        .eq(DEFAULT_REPOSITORY_URL))
+                        .eq(Constants.DEFAULT_REPOSITORY_URL))
                 .list();
         if (kt.size() != 0) {
             // If found, ignore below
@@ -424,7 +422,7 @@ public class MainActivity extends BaseActivity implements
         OutputStream outputStream = null;
         try {
             // Save record to database
-            Repository defaultRepository = new Repository(DEFAULT_REPOSITORY_URL, "KT");
+            Repository defaultRepository = new Repository(Constants.DEFAULT_REPOSITORY_URL, "KT");
             defaultRepository.save();
 
             // Load file from assets and save to file system
@@ -439,7 +437,7 @@ public class MainActivity extends BaseActivity implements
             defaultRepository.setAvailable(true);
             defaultRepository.save();
         } catch (IOException e) {
-            Log.e(DEBUG_TAG, e.getLocalizedMessage());
+            Log.e(Constants.DEBUG_TAG, e.getLocalizedMessage());
         } finally {
             IOUtils.closeQuietly(inputStream);
             IOUtils.closeQuietly(outputStream);
@@ -494,25 +492,25 @@ public class MainActivity extends BaseActivity implements
 
         // Primary items
 
-        if (listItemId == LIST_ITEM_FAVORITE_ID) {
+        if (listItemId == Constants.LIST_ITEM_FAVORITE_ID) {
             mToolbar.setTitle(R.string.fav);
             replaceMainContainer(new FavoriteFragment());
             closeDrawers();
         }
 
-        if (listItemId == LIST_ITEM_HISTORY_ID) {
+        if (listItemId == Constants.LIST_ITEM_HISTORY_ID) {
             mToolbar.setTitle(R.string.history);
             replaceMainContainer(new HistoryFragment());
             closeDrawers();
         }
 
-        if (listItemId == LIST_ITEM_BUILT_IN_EMOJI_ID) {
+        if (listItemId == Constants.LIST_ITEM_BUILT_IN_EMOJI_ID) {
             mToolbar.setTitle(R.string.built_in_emoji);
             replaceMainContainer(new EmojiconsFragment());
             closeDrawers();
         }
 
-        if (listItemId == LIST_ITEM_REPOSITORIES) {
+        if (listItemId == Constants.LIST_ITEM_REPOSITORIES) {
             mToolbar.setTitle(R.string.repositories);
             replaceMainContainer(RepositoriesFragment.newInstance(mState.getSourceCache()));
             closeDrawers();
@@ -520,21 +518,21 @@ public class MainActivity extends BaseActivity implements
 
         // Secondary items
 
-        if (listItemId == LIST_ITEM_REPO_MANAGER_ID) {
+        if (listItemId == Constants.LIST_ITEM_REPO_MANAGER_ID) {
             Intent intent = new Intent(this, RepositoryManagerActivity.class);
-            startActivityForResult(intent, REPOSITORY_MANAGER_REQUEST_CODE);
+            startActivityForResult(intent, Constants.REPOSITORY_MANAGER_REQUEST_CODE);
             mState.revertToPreviousId();
         }
 
-        if (listItemId == LIST_ITEM_SETTINGS_ID) {
+        if (listItemId == Constants.LIST_ITEM_SETTINGS_ID) {
             Intent intent = new Intent(this, PreferenceActivity.class);
-            startActivityForResult(intent, PREFERENCE_REQUEST_CODE);
+            startActivityForResult(intent, Constants.PREFERENCE_REQUEST_CODE);
             mState.revertToPreviousId();
         }
 
-        if (listItemId == LIST_ITEM_EXIT_ID) {
+        if (listItemId == Constants.LIST_ITEM_EXIT_ID) {
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                    .cancel(PERSISTENT_NOTIFICATION_ID);
+                    .cancel(Constants.PERSISTENT_NOTIFICATION_ID);
             finish();
             mState.revertToPreviousId();
         }
@@ -547,13 +545,13 @@ public class MainActivity extends BaseActivity implements
          }
          **/
 
-        if (listItemId == LIST_ITEM_REPO_STORE_ID) {
+        if (listItemId == Constants.LIST_ITEM_REPO_STORE_ID) {
             Intent intent = new Intent(this, RepositoryStoreActivity.class);
-            startActivityForResult(intent, REPOSITORY_STORE_REQUEST_CODE);
+            startActivityForResult(intent, Constants.REPOSITORY_STORE_REQUEST_CODE);
             mState.revertToPreviousId();
         }
 
-        if (listItemId == LIST_ITEM_UPDATE_CHECKER_ID) {
+        if (listItemId == Constants.LIST_ITEM_UPDATE_CHECKER_ID) {
             new VersionCodeCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
                 @Override
                 public void success(int result) {
