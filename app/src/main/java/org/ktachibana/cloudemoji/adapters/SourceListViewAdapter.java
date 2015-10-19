@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -141,41 +142,55 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         viewHolder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // If already in favorite, remove it from favorites
-                if (isStared) {
-                    // Remove from database
-                    Favorite favorite = Favorite.queryByEmoticon(emoticon);
-                    if (favorite != null) {
-                        favorite.delete();
-                    }
-                    // Update cache
-                    mEmoticonInFavoritesCache.put(emoticon, false);
-                    // Update this star
-                    viewHolder.favorite.setImageDrawable(mNoStarDrawable);
-                    // Update other stars
-                    notifyDataSetChanged();
-                    // Notify main activity
-                    EventBus.getDefault().post(new FavoriteDeletedEvent(emoticon));
-                }
-                // Else, add to star
-                else {
-                    // Save to database
-                    Favorite savedFavorite
-                            = new Favorite(emoticon, description, "");
-                    savedFavorite.save();
-                    // Update cache
-                    mEmoticonInFavoritesCache.put(emoticon, true);
-                    // Update this star
-                    viewHolder.favorite.setImageDrawable(mStarDrawable);
-                    // Update other stars
-                    notifyDataSetChanged();
-                    // Notify main activity
-                    EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
-                }
+                addOrRemoveFromFavorites(isStared, emoticon, viewHolder, description);
+
+            }
+        });
+
+        // Setup on whole view long clicked
+        viewHolder.root.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                addOrRemoveFromFavorites(isStared, emoticon, viewHolder, description);
+                return true;
             }
         });
 
         return convertView;
+    }
+
+    private void addOrRemoveFromFavorites(boolean isStared, String emoticon, EntryViewHolder viewHolder, String description) {
+        // If already in favorite, remove it from favorites
+        if (isStared) {
+            // Remove from database
+            Favorite favorite = Favorite.queryByEmoticon(emoticon);
+            if (favorite != null) {
+                favorite.delete();
+            }
+            // Update cache
+            mEmoticonInFavoritesCache.put(emoticon, false);
+            // Update this star
+            viewHolder.favorite.setImageDrawable(mNoStarDrawable);
+            // Update other stars
+            notifyDataSetChanged();
+            // Notify main activity
+            EventBus.getDefault().post(new FavoriteDeletedEvent(emoticon));
+        }
+        // Else, add to star
+        else {
+            // Save to database
+            Favorite savedFavorite
+                    = new Favorite(emoticon, description, "");
+            savedFavorite.save();
+            // Update cache
+            mEmoticonInFavoritesCache.put(emoticon, true);
+            // Update this star
+            viewHolder.favorite.setImageDrawable(mStarDrawable);
+            // Update other stars
+            notifyDataSetChanged();
+            // Notify main activity
+            EventBus.getDefault().post(new FavoriteAddedEvent(emoticon));
+        }
     }
 
     @Override
@@ -212,6 +227,8 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     }
 
     static class EntryViewHolder {
+        @Bind(R.id.root)
+        RelativeLayout root;
         @Bind(R.id.emoticonTextView)
         TextView emoticon;
         @Bind(R.id.descriptionTextView)
