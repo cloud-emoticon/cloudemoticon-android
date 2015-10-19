@@ -22,7 +22,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class EmojiconsGridFragment extends BaseFragment {
-    private static final String EMOJICONS_KEY = "emojicons";
     @Bind(R.id.grid)
     GridView grid;
     @Arg

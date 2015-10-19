@@ -15,7 +15,6 @@ import org.ktachibana.cloudemoji.adapters.RepositoriesPagerAdapter;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 public class RepositoriesFragment extends BaseTabsPagerFragment {
-    private static final String ARG_CACHE = "cache";
     @Arg(bundler = ParcelerArgsBundler.class)
     SourceInMemoryCache mCache;
 

@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.Subscribe;
 
 public class SearchResultFragment extends BaseFragment {
-    private static final String SEARCH_QUERY_KEY = "mSearchQuery";
     @Bind(R.id.searchResultListView)
     ListView mSearchResultListView;
     @Bind(R.id.emptyView)

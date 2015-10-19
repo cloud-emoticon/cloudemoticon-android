@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends BaseFragment {
-    private static final String ARG_SOURCE = "source";
     @Bind(R.id.list)
     PinnedHeaderListView mList;
     @Arg(bundler = ParcelerArgsBundler.class)
