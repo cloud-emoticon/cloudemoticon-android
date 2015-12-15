@@ -1,6 +1,6 @@
 # Cloud emoticon
 
-A cloud solution to your favorite emoticons
+A cloud solution for your favorite emoticons
 
 <a href="https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji">
   <img alt="Get it on Google Play"
