@@ -40,6 +40,8 @@
     <string name="duplicate_emoticon">重复的颜文字</string>
     <string name="navbar_gesture_title">导航栏手势</string>
     <string name="navbar_gesture_summary">从导航栏上划以启动</string>
+    <string name="now_on_tap_title">长按 Home 键启动</string>
+    <string name="now_on_tap_summary">请点击打开系统设置，在「辅助应用」中选择</string>
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
     <string name="edit_favorite">编辑收藏</string>

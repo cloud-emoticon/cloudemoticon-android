@@ -39,4 +39,12 @@ public class SystemUtils {
     public static boolean aboveJellybean() {
         return !belowJellybean();
     }
+
+    public static boolean belowMarshmallow() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
+    }
+
+    public static boolean aboveMarshmallow() {
+        return !belowMarshmallow();
+    }
 }

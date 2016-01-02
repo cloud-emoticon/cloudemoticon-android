@@ -42,6 +42,8 @@
     <string name="duplicate_emoticon">Duplicate emoticon</string>
     <string name="navbar_gesture_title">Navigation bar gesture</string>
     <string name="navbar_gesture_summary">Swipe-up from the navigation bar to start</string>
+    <string name="now_on_tap_title">Hold Home button to startup</string>
+    <string name="now_on_tap_summary">Touch to open system settings, then select "Assist app"</string>
     <string name="no_favorite_prompt">You don\'t have any bookmarks</string>
     <string name="no_history_prompt">You don\'t have any history</string>
     <string name="edit_favorite">Edit Bookmark</string>
