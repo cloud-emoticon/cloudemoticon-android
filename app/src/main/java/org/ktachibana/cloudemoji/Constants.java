@@ -38,6 +38,8 @@ public interface Constants {
     String PREF_RESTORE_FAV = "pref_restore_fav";
     String PREF_IMPORT_IME = "pref_import_into_ime";
     String PREF_REVOKE_IME = "pref_revoke_from_ime";
+    String PREF_BEHAVIORS = "pref_behaviors";
+    String PREF_NOW_ON_TAP = "pref_now_on_tap";
 
     // Repository
     int FORMAT_TYPE_XML = 0;
@@ -67,6 +69,10 @@ public interface Constants {
             = Environment.getExternalStorageDirectory().getPath() + File.separator + "ce.json";
     String EXPORT_FILE_PATH
             = Environment.getExternalStorageDirectory().getPath() + File.separator + "%s";
+
+    // Hacking
+    String PACKAGE_NAME_ANDROID_SETTINGS = "com.android.settings";
+    String CLASS_NAME_MANAGE_ASSIST_ACTIVITY = "com.android.settings.Settings$ManageAssistActivity";
 
     // Debug
     String DEBUG_TAG = "CloudEmoticon";

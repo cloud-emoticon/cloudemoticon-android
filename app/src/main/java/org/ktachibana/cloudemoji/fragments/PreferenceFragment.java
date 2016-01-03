@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
 import com.github.mrengineer13.snackbar.SnackBar;
@@ -33,8 +34,12 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
 
         // Navbar Gesture
         Preference navbarGesturePref = findPreference(Constants.PREF_NAVBAR_GESTURE);
+        Preference nowOnTapPref = findPreference(Constants.PREF_NOW_ON_TAP);
+        PreferenceCategory behaviorsPref = (PreferenceCategory) findPreference(Constants.PREF_BEHAVIORS);
         if (SystemUtils.belowJellybean())
             navbarGesturePref.setEnabled(false);
+        if (SystemUtils.belowMarshmallow())
+            behaviorsPref.removePreference(nowOnTapPref);
         navbarGesturePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -45,6 +50,28 @@ public class PreferenceFragment extends android.support.v4.preference.Preference
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
                 packageManager.setComponentEnabledSetting(componentName, componentState,
                         PackageManager.DONT_KILL_APP);
+                return true;
+            }
+        });
+
+        // Now on Tap
+        if (SystemUtils.aboveMarshmallow()) {
+            behaviorsPref.removePreference(navbarGesturePref);
+            PackageManager packageManager = getActivity().getPackageManager();
+            ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
+            packageManager.setComponentEnabledSetting(componentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+        }
+        nowOnTapPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent();
+                // Didn't found it in android.provider.Settings... Just hardcoded it.
+                ComponentName componentName = new ComponentName(
+                        Constants.PACKAGE_NAME_ANDROID_SETTINGS,
+                        Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
+                intent.setComponent(componentName);
+                startActivity(intent);
                 return true;
             }
         });

@@ -12,8 +12,8 @@
     <string name="close_after_copy">复制之后关闭</string>
     <string name="repo_url">源URL</string>
     <string name="about">关于</string>
-    <string name="github_repo">GitHub源</string>
-    <string name="github_release">GitHub发布</string>
+    <string name="github_repo">GitHub 源</string>
+    <string name="github_release">GitHub 发布</string>
     <string name="version">版本</string>
     <string name="fav">收藏</string>
     <string name="add_to_fav">添加到收藏</string>
@@ -36,10 +36,12 @@
     <string name="category">类别</string>
     <string name="downloading">下载中</string>
     <string name="downloaded">下载完毕</string>
-    <string name="duplicate_url">重复的URL</string>
+    <string name="duplicate_url">重复的 URL</string>
     <string name="duplicate_emoticon">重复的颜文字</string>
     <string name="navbar_gesture_title">导航栏手势</string>
     <string name="navbar_gesture_summary">从导航栏上划以启动</string>
+    <string name="now_on_tap_title">长按 Home 键启动</string>
+    <string name="now_on_tap_summary">请点击打开系统设置，在「辅助应用」中选择</string>
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
     <string name="edit_favorite">编辑收藏</string>
@@ -60,7 +62,7 @@
     <string name="update_checker_failed">检查新版本失败</string>
     <string name="already_latest_version">已经是最新版本</string>
     <string name="new_version_available">有新版本辣！</string>
-    <string name="go_to_play_store">去Play Store看看</string>
+    <string name="go_to_play_store">去 Play Store 看看</string>
     <string name="built_in_emoji">自带表情符号</string>
     <string name="search_hint">搜索颜文字</string>
     <string name="search_result_not_found">没找到</string>
@@ -68,13 +70,13 @@
 
     <string-array name="notification_options">
         <item>不显示</item>
-        <item>只在通知面板里显示（只在Android3.0以上有效）</item>
+        <item>只在通知面板里显示（只在 Android 3.0 以上有效）</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
     <string name="ime">用户词典</string>
     <string name="import_into_ime">将全部收藏导入用户词典</string>
     <string name="revoke_from_ime">将全部收藏从用户词典中移除</string>
-    <string name="imported_into_ime">已将%d个收藏导入用户词典</string>
+    <string name="imported_into_ime">已将 %d 个收藏导入用户词典</string>
     <string name="revoked_from_ime">已将%d个收藏从用户词典中移除</string>
     <string name="import_into_ime_summary">只对描述是英文和数字的收藏有效</string>
     <string name="no_description">没有描述</string>
