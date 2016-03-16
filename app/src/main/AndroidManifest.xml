@@ -82,13 +82,6 @@
         </receiver>
 
         <activity
-            android:name=".activities.AccountActivity"
-            android:label="@string/account">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
-        </activity>
-        <activity
             android:name=".activities.SearchActivity"
             android:label=""
             android:launchMode="singleTop">
