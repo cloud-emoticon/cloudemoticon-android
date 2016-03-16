@@ -147,15 +147,6 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
             }
         });
 
-        // Setup on whole view long clicked
-        viewHolder.root.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                addOrRemoveFromFavorites(isStared, emoticon, viewHolder, description);
-                return true;
-            }
-        });
-
         return convertView;
     }
 
