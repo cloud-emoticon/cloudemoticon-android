@@ -12,14 +12,12 @@ public interface Constants {
     // Left drawer list item
     int LIST_ITEM_FAVORITE_ID = 0;
     int LIST_ITEM_HISTORY_ID = 1;
-    int LIST_ITEM_BUILT_IN_EMOJI_ID = 2;
     int LIST_ITEM_REPOSITORIES = 3;
     int LIST_ITEM_REPO_MANAGER_ID = 4;
     int LIST_ITEM_REPO_STORE_ID = 5;
     int LIST_ITEM_UPDATE_CHECKER_ID = 6;
     int LIST_ITEM_SETTINGS_ID = 7;
     int LIST_ITEM_EXIT_ID = 8;
-    int LIST_ITEM_ACCOUNT_ID = 9;
     int DEFAULT_LIST_ITEM_ID = LIST_ITEM_FAVORITE_ID;
 
     // Notification

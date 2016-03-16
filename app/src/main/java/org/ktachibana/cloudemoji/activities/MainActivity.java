@@ -35,7 +35,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.fragments.EmojiconsFragment;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
@@ -171,14 +170,6 @@ public class MainActivity extends BaseActivity implements
                         .withName(R.string.history)
                         .withIcon(R.drawable.ic_history)
                         .withIdentifier(Constants.LIST_ITEM_HISTORY_ID)
-        );
-
-        // Add built in emoji
-        mDrawer.addItem(
-                new PrimaryDrawerItem()
-                        .withName(R.string.built_in_emoji)
-                        .withIcon(R.drawable.ic_built_in_emoji)
-                        .withIdentifier(Constants.LIST_ITEM_BUILT_IN_EMOJI_ID)
         );
 
         // Add repositories
@@ -502,12 +493,6 @@ public class MainActivity extends BaseActivity implements
         if (listItemId == Constants.LIST_ITEM_HISTORY_ID) {
             mToolbar.setTitle(R.string.history);
             replaceMainContainer(new HistoryFragment());
-            closeDrawers();
-        }
-
-        if (listItemId == Constants.LIST_ITEM_BUILT_IN_EMOJI_ID) {
-            mToolbar.setTitle(R.string.built_in_emoji);
-            replaceMainContainer(new EmojiconsFragment());
             closeDrawers();
         }
 
