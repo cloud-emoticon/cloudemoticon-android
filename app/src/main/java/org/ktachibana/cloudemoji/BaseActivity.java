@@ -56,7 +56,6 @@ public class BaseActivity extends AppCompatActivity {
 
         // Setup toolbar
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Add subclass view to main view
         View subclassView = getLayoutInflater().inflate(layoutResID, null);

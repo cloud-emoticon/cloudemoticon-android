@@ -20,6 +20,7 @@ import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,9 @@ public class SearchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCurrentSourceCache = getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG);
+        mCurrentSourceCache = Parcels.unwrap(getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG));
         handleIntent(getIntent());
     }
 

@@ -12,6 +12,7 @@ public class PreferenceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         PreferenceFragment fragment = new PreferenceFragment();
         getSupportFragmentManager()

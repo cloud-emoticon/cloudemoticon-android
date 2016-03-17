@@ -13,16 +13,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -35,8 +27,6 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
-import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
-import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.Repository;
@@ -46,7 +36,6 @@ import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
-import org.ktachibana.cloudemoji.utils.UncheckableSecondaryDrawerItem;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -61,11 +50,10 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.Subscribe;
 
 public class MainActivity extends BaseActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener, Drawer.OnDrawerItemClickListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String STATE_TAG = "state";
     public static final String SOURCE_CACHE_TAG = "source_cache";
-    private Drawer mDrawer;
     private MainActivityState mState;
 
     @Override
@@ -73,10 +61,6 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        // Setup drawer
-        setupDrawer();
-        setupAccountHeader();
 
         // Setup notification state
         setupNotificationState();
@@ -92,33 +76,9 @@ public class MainActivity extends BaseActivity implements
             mState = new MainActivityState(initializeCache());
         }
 
-        // Refresh UI with current state
-        refreshUiWithCurrentState();
-    }
-
-    private void setupDrawer() {
-        mDrawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(mToolbar)
-                .build();
-        setupLeftDrawer();
-    }
-
-    private void setupAccountHeader() {
-        AccountHeader accountHeader = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.account_place_holder)
-                .build();
-        mDrawer.setHeader(accountHeader.getView());
-        /**
-         if (ParseUserState.isLoggedIn()) {
-         String username = ParseUserState.getLoggedInUser().getUsername();
-         String email = ParseUserState.getLoggedInUser().getEmail();
-         accountHeader.addProfile(
-         new ProfileDrawerItem().withName(username).withEmail(email), 0
-         );
-         }
-         **/
+        // Show
+        mToolbar.setTitle(R.string.app_name);
+        replaceMainContainer(new RepositoriesFragmentBuilder(mState.getSourceCache()).build());
     }
 
     /**
@@ -151,88 +111,6 @@ public class MainActivity extends BaseActivity implements
         }
 
         return cache;
-    }
-
-    private void setupLeftDrawer() {
-        // Add favorite
-        mDrawer.addItem(
-                new PrimaryDrawerItem()
-                        .withName(R.string.fav)
-                        .withIcon(R.drawable.ic_favorite)
-                        .withIdentifier(Constants.LIST_ITEM_FAVORITE_ID)
-        );
-
-        // Add history
-        mDrawer.addItem(
-                new PrimaryDrawerItem()
-                        .withName(R.string.history)
-                        .withIcon(R.drawable.ic_history)
-                        .withIdentifier(Constants.LIST_ITEM_HISTORY_ID)
-        );
-
-        // Add repositories
-        mDrawer.addItem(
-                new PrimaryDrawerItem()
-                        .withName(R.string.repositories)
-                        .withIcon(R.drawable.ic_repository)
-                        .withIdentifier(Constants.LIST_ITEM_REPOSITORIES)
-        );
-
-        // Divider
-        mDrawer.addItem(new DividerDrawerItem());
-
-        // Add account
-        /**
-         mDrawer.addItem(
-         new UncheckableSecondaryDrawerItem()
-         .withName(R.string.account)
-         .withIcon(R.drawable.ic_account)
-         .withIdentifier(LIST_ITEM_ACCOUNT_ID)
-         );
-         **/
-
-        // Add repo manager
-        mDrawer.addItem(
-                new UncheckableSecondaryDrawerItem()
-                        .withName(R.string.repo_manager)
-                        .withIcon(R.drawable.ic_repository_manager)
-                        .withIdentifier(Constants.LIST_ITEM_REPO_MANAGER_ID)
-        );
-
-        // Add repo store
-        mDrawer.addItem(
-                new UncheckableSecondaryDrawerItem()
-                        .withName(R.string.repository_store)
-                        .withIcon(R.drawable.ic_store)
-                        .withIdentifier(Constants.LIST_ITEM_REPO_STORE_ID)
-        );
-
-        // Add update checker
-        mDrawer.addItem(
-                new UncheckableSecondaryDrawerItem()
-                        .withName(R.string.update_checker)
-                        .withIcon(R.drawable.ic_update_checker)
-                        .withIdentifier(Constants.LIST_ITEM_UPDATE_CHECKER_ID)
-        );
-
-        // Add settings
-        mDrawer.addItem(
-                new UncheckableSecondaryDrawerItem()
-                        .withName(R.string.settings)
-                        .withIcon(R.drawable.ic_settings)
-                        .withIdentifier(Constants.LIST_ITEM_SETTINGS_ID)
-        );
-
-        // Add exit
-        mDrawer.addItem(
-                new UncheckableSecondaryDrawerItem()
-                        .withName(R.string.exit)
-                        .withIcon(R.drawable.ic_exit)
-                        .withIdentifier(Constants.LIST_ITEM_EXIT_ID)
-        );
-
-        // On click
-        mDrawer.setOnDrawerItemClickListener(this);
     }
 
     private void setupNotificationState() {
@@ -370,10 +248,6 @@ public class MainActivity extends BaseActivity implements
                 .commit();
     }
 
-    private void closeDrawers() {
-        mDrawer.closeDrawer();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -385,7 +259,7 @@ public class MainActivity extends BaseActivity implements
             // If currently showing repositories, refresh
             if (mState.getItemId() == Constants.LIST_ITEM_REPOSITORIES) {
                 mState.setSourceCache(initializeCache());
-                refreshUiWithCurrentState();
+                // TODO: 3/17/16
             }
         }
 
@@ -394,17 +268,7 @@ public class MainActivity extends BaseActivity implements
 
             // If currently showing favorites, refresh
             if (mState.getItemId() == Constants.LIST_ITEM_FAVORITE_ID) {
-                refreshUiWithCurrentState();
-            }
-        }
-
-        // Coming back from account, user state and favorites may be changed
-        if (requestCode == Constants.ACCOUNT_REQUEST_CODE) {
-            setupAccountHeader();
-
-            // If currently showing favorites, refresh
-            if (mState.getItemId() == Constants.LIST_ITEM_FAVORITE_ID) {
-                refreshUiWithCurrentState();
+                // TODO: 3/17/16
             }
         }
     }
@@ -510,91 +374,5 @@ public class MainActivity extends BaseActivity implements
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
-    }
-
-    private void refreshUiWithCurrentState() {
-        int listItemId = mState.getItemId();
-
-        // Primary items
-
-        if (listItemId == Constants.LIST_ITEM_FAVORITE_ID) {
-            mToolbar.setTitle(R.string.fav);
-            replaceMainContainer(new FavoriteFragment());
-            closeDrawers();
-        }
-
-        if (listItemId == Constants.LIST_ITEM_HISTORY_ID) {
-            mToolbar.setTitle(R.string.history);
-            replaceMainContainer(new HistoryFragment());
-            closeDrawers();
-        }
-
-        if (listItemId == Constants.LIST_ITEM_REPOSITORIES) {
-            mToolbar.setTitle(R.string.repositories);
-            replaceMainContainer(new RepositoriesFragmentBuilder(mState.getSourceCache()).build());
-            closeDrawers();
-        }
-
-        // Secondary items
-
-        if (listItemId == Constants.LIST_ITEM_REPO_MANAGER_ID) {
-            Intent intent = new Intent(this, RepositoryManagerActivity.class);
-            startActivityForResult(intent, Constants.REPOSITORY_MANAGER_REQUEST_CODE);
-            mState.revertToPreviousId();
-        }
-
-        if (listItemId == Constants.LIST_ITEM_SETTINGS_ID) {
-            Intent intent = new Intent(this, PreferenceActivity.class);
-            startActivityForResult(intent, Constants.PREFERENCE_REQUEST_CODE);
-            mState.revertToPreviousId();
-        }
-
-        if (listItemId == Constants.LIST_ITEM_EXIT_ID) {
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                    .cancel(Constants.PERSISTENT_NOTIFICATION_ID);
-            finish();
-            mState.revertToPreviousId();
-        }
-
-        /**
-         if (listItemId == LIST_ITEM_ACCOUNT_ID) {
-         Intent intent = new Intent(this, AccountActivity.class);
-         startActivityForResult(intent, ACCOUNT_REQUEST_CODE);
-         mState.revertToPreviousId();
-         }
-         **/
-
-        if (listItemId == Constants.LIST_ITEM_REPO_STORE_ID) {
-            Intent intent = new Intent(this, RepositoryStoreActivity.class);
-            startActivityForResult(intent, Constants.REPOSITORY_STORE_REQUEST_CODE);
-            mState.revertToPreviousId();
-        }
-
-        if (listItemId == Constants.LIST_ITEM_UPDATE_CHECKER_ID) {
-            new VersionCodeCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
-                @Override
-                public void success(int result) {
-                    checkVersionCode(true, result);
-                }
-
-                @Override
-                public void fail(Throwable t) {
-                    checkVersionCode(false, 0);
-                }
-
-                @Override
-                public void finish() {
-
-                }
-            });
-            mState.revertToPreviousId();
-        }
-    }
-
-    @Override
-    public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
-        mState.setItemId(iDrawerItem.getIdentifier());
-        refreshUiWithCurrentState();
-        return true;
     }
 }

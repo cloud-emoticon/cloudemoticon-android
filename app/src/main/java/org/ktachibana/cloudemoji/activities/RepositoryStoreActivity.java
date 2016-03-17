@@ -33,6 +33,7 @@ public class RepositoryStoreActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repository_store);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
@@ -77,7 +78,7 @@ public class RepositoryStoreActivity extends BaseActivity {
 
     @Subscribe
     public void handle(RepositoryAddedEvent event) {
-        showSnackBar(event.getRepository().getAlias());
+        showSnackBar(getString(R.string.added_to_repo) + ": " + event.getRepository().getAlias());
     }
 
     @Subscribe
