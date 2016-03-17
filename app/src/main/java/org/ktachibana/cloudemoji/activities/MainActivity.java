@@ -36,7 +36,6 @@ import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationHelper;
-import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -45,17 +44,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import de.greenrobot.event.Subscribe;
 
-public class MainActivity extends BaseActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String STATE_TAG = "state";
-    public static final String SOURCE_CACHE_TAG = "source_cache";
-    private MainActivityState mState;
+    private LinkedHashMap<Long, Source> sourceCache;
+    private static final String SOURCE_CACHE_TAG = "sourceCache";
+    private int currentItem;
+    private static final String CURRENT_ITEM_TAG = "currentItem";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +72,11 @@ public class MainActivity extends BaseActivity implements
         // If not starting from refresh new, get state
         // Else, initialize
         if (savedInstanceState != null) {
-            mState = Parcels.unwrap(savedInstanceState.getParcelable(STATE_TAG));
+            sourceCache = Parcels.unwrap(savedInstanceState.getParcelable(SOURCE_CACHE_TAG));
+            currentItem = savedInstanceState.getParcelable(CURRENT_ITEM_TAG);
         } else {
-            mState = new MainActivityState(initializeCache());
+            sourceCache = initializeSourceCache();
+            currentItem = 0;
         }
 
         // Show according to state
@@ -82,19 +84,14 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void show() {
-        replaceMainContainer(
-                new RepositoriesFragmentBuilder(
-                        mState.sourceCache,
-                        mState.currentItem
-                ).build()
-        );
+        replaceMainContainer(new RepositoriesFragmentBuilder(sourceCache, currentItem).build());
     }
 
     /**
      * Put every source, including favorites, into cache
      */
-    private SourceInMemoryCache initializeCache() {
-        SourceInMemoryCache cache = new SourceInMemoryCache();
+    private LinkedHashMap<Long, Source> initializeSourceCache() {
+        LinkedHashMap<Long, Source> cache = new LinkedHashMap<Long, Source>();
 
         // Put all available repositories
         List<Repository> allRepositories = Repository.listAll(Repository.class);
@@ -159,7 +156,7 @@ public class MainActivity extends BaseActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            intent.putExtra(SOURCE_CACHE_TAG, Parcels.wrap(mState.sourceCache));
+            intent.putExtra(SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
             startActivity(intent);
             return true;
         } else if (id == R.id.repo_manager) {
@@ -212,6 +209,11 @@ public class MainActivity extends BaseActivity implements
         showSnackBar(event.getEmoticon() + "\n" + getString(R.string.removed_from_fav));
     }
 
+    @Subscribe
+    public void handle(RepositoriesPagerItemSelectedEvent event) {
+        currentItem = event.getItem();
+    }
+
     private void checkVersionCode(boolean success, int latestVersionCode) {
         // If failed
         if (!success) {
@@ -257,10 +259,10 @@ public class MainActivity extends BaseActivity implements
 
         // Coming back from repository manager
         // Repositories may be changed
-        // Need to refresh cache
+        // Need to refresh source cache
         // Need to re-show all repositories
         if (requestCode == Constants.REPOSITORY_MANAGER_REQUEST_CODE) {
-            mState = new MainActivityState(initializeCache(), mState.currentItem);
+            sourceCache = initializeSourceCache();
             show();
         }
 
@@ -275,7 +277,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // Save current state
-        outState.putParcelable(STATE_TAG, Parcels.wrap(mState));
+        outState.putParcelable(SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
+        outState.putInt(CURRENT_ITEM_TAG, currentItem);
     }
 
     private void firstTimeCheck() {
@@ -373,10 +376,5 @@ public class MainActivity extends BaseActivity implements
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
-    }
-
-    @Subscribe
-    public void handle(RepositoriesPagerItemSelectedEvent event) {
-        mState.currentItem = event.getItem();
     }
 }

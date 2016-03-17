@@ -15,12 +15,8 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
 import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.fragments.SearchResultFragmentBuilder;
-import org.ktachibana.cloudemoji.models.memory.Category;
 import org.ktachibana.cloudemoji.models.memory.Entry;
-import org.ktachibana.cloudemoji.models.memory.Source;
-import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +24,6 @@ import java.util.List;
 import de.greenrobot.event.Subscribe;
 
 public class SearchActivity extends BaseActivity {
-    private SourceInMemoryCache mCurrentSourceCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +31,6 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.activity_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCurrentSourceCache = Parcels.unwrap(getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG));
         handleIntent(getIntent());
     }
 
@@ -102,23 +96,6 @@ public class SearchActivity extends BaseActivity {
         List<Entry> results = new ArrayList<Entry>();
 
         // Traverse all sources
-        List<Source> sources = mCurrentSourceCache.getAllValues();
-        for (Source source : sources) {
-
-            // Traverse all categories
-            for (Category category : source.getCategories()) {
-
-                // Traverse all entries
-                for (Entry entry : category.getEntries()) {
-                    String emoticon = entry.getEmoticon();
-                    String description = entry.getDescription();
-
-                    if (emoticon.contains(searchQuery) || description.contains(searchQuery)) {
-                        results.add(entry);
-                    }
-                }
-            }
-        }
 
         // Search finished
         mBus.post(new SearchFinishedEvent(results));

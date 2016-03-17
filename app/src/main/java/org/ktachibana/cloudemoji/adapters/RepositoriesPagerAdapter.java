@@ -9,12 +9,15 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.fragments.FavoriteFragment;
 import org.ktachibana.cloudemoji.fragments.HistoryFragment;
 import org.ktachibana.cloudemoji.fragments.SourceFragmentBuilder;
-import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
+import org.ktachibana.cloudemoji.models.memory.Source;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
-    private SourceInMemoryCache mCache;
+    private LinkedHashMap<Long, Source> mCache;
     private List<Long> mIdList;
     private Context mContext;
 
@@ -22,11 +25,14 @@ public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
-    public RepositoriesPagerAdapter(Context context, FragmentManager fm, SourceInMemoryCache cache) {
+    public RepositoriesPagerAdapter(Context context, FragmentManager fm, LinkedHashMap<Long, Source> cache) {
         super(fm);
         mContext = context;
         mCache = cache;
-        mIdList = cache.getAllKeys();
+        mIdList = new ArrayList<>();
+        for (Map.Entry<Long, Source> entry : mCache.entrySet()) {
+            mIdList.add(entry.getKey());
+        }
     }
 
     @Override
