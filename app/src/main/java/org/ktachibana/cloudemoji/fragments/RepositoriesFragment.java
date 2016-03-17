@@ -15,6 +15,7 @@ import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoriesPagerAdapter;
+import org.ktachibana.cloudemoji.events.RepositoriesPagerItemSelectedEvent;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 import butterknife.Bind;
@@ -51,6 +52,22 @@ public class RepositoriesFragment extends BaseFragment {
         mPager.setAdapter(new RepositoriesPagerAdapter(getContext(), getChildFragmentManager(), mCache));
         mTabs.setViewPager(mPager);
         mPager.setCurrentItem(currentItem);
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mBus.post(new RepositoriesPagerItemSelectedEvent(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         return rootView;
     }

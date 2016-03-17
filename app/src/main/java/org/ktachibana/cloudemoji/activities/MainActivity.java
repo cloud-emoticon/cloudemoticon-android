@@ -25,8 +25,10 @@ import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
+import org.ktachibana.cloudemoji.events.RepositoriesPagerItemSelectedEvent;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.Repository;
@@ -371,5 +373,10 @@ public class MainActivity extends BaseActivity implements
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
+    }
+
+    @Subscribe
+    public void handle(RepositoriesPagerItemSelectedEvent event) {
+        mState.currentItem = event.getItem();
     }
 }
