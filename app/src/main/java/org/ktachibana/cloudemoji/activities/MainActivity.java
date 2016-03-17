@@ -281,6 +281,41 @@ public class MainActivity extends BaseActivity implements
             intent.putExtra(SOURCE_CACHE_TAG, Parcels.wrap(mState.getSourceCache()));
             startActivity(intent);
             return true;
+        } else if (id == R.id.repo_manager) {
+            Intent intent = new Intent(this, RepositoryManagerActivity.class);
+            startActivityForResult(intent, Constants.REPOSITORY_MANAGER_REQUEST_CODE);
+            return true;
+        } else if (id == R.id.repo_store) {
+            Intent intent = new Intent(this, RepositoryStoreActivity.class);
+            startActivityForResult(intent, Constants.REPOSITORY_STORE_REQUEST_CODE);
+            return true;
+        } else if (id == R.id.update_checker) {
+            new VersionCodeCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
+                @Override
+                public void success(int result) {
+                    checkVersionCode(true, result);
+                }
+
+                @Override
+                public void fail(Throwable t) {
+                    checkVersionCode(false, 0);
+                }
+
+                @Override
+                public void finish() {
+
+                }
+            });
+            return true;
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(this, PreferenceActivity.class);
+            startActivityForResult(intent, Constants.PREFERENCE_REQUEST_CODE);
+            return true;
+        } else if (id == R.id.exit) {
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .cancel(Constants.PERSISTENT_NOTIFICATION_ID);
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

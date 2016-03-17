@@ -7,4 +7,24 @@
         android:icon="@drawable/ic_ab_search"
         android:title="@android:string/search_go"
         app:showAsAction="collapseActionView|ifRoom" />
+    <item
+        android:id="@+id/repo_manager"
+        android:title="@string/repo_manager"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/repo_store"
+        android:title="@string/repository_store"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/update_checker"
+        android:title="@string/update_checker"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/exit"
+        android:title="@string/exit"
+        app:showAsAction="never" />
 </menu>
