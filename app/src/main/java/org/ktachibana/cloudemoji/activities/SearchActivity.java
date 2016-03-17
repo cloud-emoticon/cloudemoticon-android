@@ -64,12 +64,12 @@ public class SearchActivity extends BaseActivity {
 
         // Associate searchable configuration with the SearchView
         if (SystemUtils.aboveHoneycomb()) {
-            SearchManager searchManager =
-                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            SearchView searchView =
-                    (SearchView) menu.findItem(R.id.search).getActionView();
-            searchView.setSearchableInfo(
-                    searchManager.getSearchableInfo(getComponentName()));
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconified(false);
+            searchView.setFocusable(true);
+            searchView.requestFocusFromTouch();
         }
 
         return true;
