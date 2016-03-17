@@ -85,12 +85,10 @@ public class MainActivity extends BaseActivity implements
         firstTimeCheck();
 
         // If not starting from refresh new, get state
+        // Else, initialize
         if (savedInstanceState != null) {
             mState = savedInstanceState.getParcelable(STATE_TAG);
-        }
-
-        // Else, initialize
-        else {
+        } else {
             mState = new MainActivityState(initializeCache());
         }
 

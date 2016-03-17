@@ -35,7 +35,7 @@ public class RepositoriesFragment extends BaseTabsPagerFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         // Setup contents
-        mPager.setAdapter(new RepositoriesPagerAdapter(getChildFragmentManager(), mCache));
+        mPager.setAdapter(new RepositoriesPagerAdapter(getContext(), getChildFragmentManager(), mCache));
         mTabs.setViewPager(mPager);
 
         return rootView;
