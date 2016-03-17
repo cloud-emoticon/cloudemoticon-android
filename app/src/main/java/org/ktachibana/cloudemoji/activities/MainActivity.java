@@ -77,7 +77,12 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Show according to state
-        replaceMainContainer(new RepositoriesFragmentBuilder(mState.sourceCache).build());
+        replaceMainContainer(
+                new RepositoriesFragmentBuilder(
+                        mState.sourceCache,
+                        mState.currentItem
+                ).build()
+        );
     }
 
     /**

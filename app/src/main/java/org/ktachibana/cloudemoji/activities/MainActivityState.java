@@ -5,13 +5,13 @@ import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 @org.parceler.Parcel
 public class MainActivityState {
-    int itemId;
+    int currentItem;
     SourceInMemoryCache sourceCache;
 
     public MainActivityState() { /*Required empty bean constructor*/ }
 
     public MainActivityState(SourceInMemoryCache sourceCache) {
-        this.itemId = Constants.DEFAULT_LIST_ITEM_ID;
+        this.currentItem = 0;
         this.sourceCache = sourceCache;
     }
 }
