@@ -25,7 +25,6 @@ import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoriesPagerItemSelectedEvent;
@@ -79,6 +78,10 @@ public class MainActivity extends BaseActivity implements
         }
 
         // Show according to state
+        show();
+    }
+
+    private void show() {
         replaceMainContainer(
                 new RepositoriesFragmentBuilder(
                         mState.sourceCache,
@@ -92,12 +95,6 @@ public class MainActivity extends BaseActivity implements
      */
     private SourceInMemoryCache initializeCache() {
         SourceInMemoryCache cache = new SourceInMemoryCache();
-
-        /**
-         // Put favorites
-         Source favoritesSource = FavoritesHelper.getFavoritesAsSource();
-         cache.put(-1, favoritesSource);
-         **/
 
         // Put all available repositories
         List<Repository> allRepositories = Repository.listAll(Repository.class);
@@ -258,17 +255,20 @@ public class MainActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Coming back from repository manager or repository store, repositories may be changed
-        if (requestCode == Constants.REPOSITORY_MANAGER_REQUEST_CODE ||
-                requestCode == Constants.REPOSITORY_STORE_REQUEST_CODE) {
-
-            // TODO: 3/17/16
+        // Coming back from repository manager
+        // Repositories may be changed
+        // Need to refresh cache
+        // Need to re-show all repositories
+        if (requestCode == Constants.REPOSITORY_MANAGER_REQUEST_CODE) {
+            mState = new MainActivityState(initializeCache(), mState.currentItem);
+            show();
         }
 
-        // Coming back from preference, favorites may be changed
+        // Coming back from preference
+        // Favorites may be changed
+        // Need to re-show favorites
         if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
-
-            // TODO: 3/17/16
+            show();
         }
     }
 

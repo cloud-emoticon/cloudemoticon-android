@@ -13,4 +13,9 @@ public class MainActivityState {
         this.currentItem = 0;
         this.sourceCache = sourceCache;
     }
+
+    public MainActivityState(SourceInMemoryCache sourceCache, int currentItem) {
+        this(sourceCache);
+        this.currentItem = currentItem;
+    }
 }
