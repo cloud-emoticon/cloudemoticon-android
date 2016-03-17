@@ -30,20 +30,20 @@ import de.greenrobot.event.Subscribe;
 public class BaseActivity extends AppCompatActivity {
     protected SharedPreferences mPreferences;
     protected Toolbar mToolbar;
-    protected EventBus BUS;
+    protected EventBus mBus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        BUS = EventBus.getDefault();
-        BUS.register(this);
+        mBus = EventBus.getDefault();
+        mBus.register(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BUS.unregister(this);
+        mBus.unregister(this);
     }
 
     @Override

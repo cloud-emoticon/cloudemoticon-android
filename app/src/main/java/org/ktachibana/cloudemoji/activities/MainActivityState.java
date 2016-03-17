@@ -1,6 +1,5 @@
 package org.ktachibana.cloudemoji.activities;
 
-import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.utils.SourceInMemoryCache;
 
 @org.parceler.Parcel

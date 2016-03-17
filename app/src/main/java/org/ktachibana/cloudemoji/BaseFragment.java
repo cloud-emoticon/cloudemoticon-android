@@ -15,19 +15,19 @@ import de.greenrobot.event.Subscribe;
  * It includes snack bar, and event bus
  */
 public class BaseFragment extends Fragment {
-    protected EventBus BUS;
+    protected EventBus mBus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BUS = EventBus.getDefault();
-        BUS.register(this);
+        mBus = EventBus.getDefault();
+        mBus.register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BUS.unregister(this);
+        mBus.unregister(this);
     }
 
     @Subscribe
@@ -36,10 +36,10 @@ public class BaseFragment extends Fragment {
     }
 
     protected void showSnackBar(String message) {
-        BUS.post(new ShowSnackBarOnBaseActivityEvent(message));
+        mBus.post(new ShowSnackBarOnBaseActivityEvent(message));
     }
 
     protected void showSnackBar(@StringRes int resId) {
-        BUS.post(new ShowSnackBarOnBaseActivityEvent(getString(resId)));
+        mBus.post(new ShowSnackBarOnBaseActivityEvent(getString(resId)));
     }
 }

@@ -81,7 +81,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
             public void onClick(View view) {
                 favorite.delete();
 
-                BUS.post(new FavoriteDeletedEvent(favorite.getEmoticon()));
+                mBus.post(new FavoriteDeletedEvent(favorite.getEmoticon()));
 
                 mFavorites.remove(favorite);
                 notifyDataSetChanged();
@@ -90,7 +90,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
         viewHolder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BUS.post(new FavoriteBeginEditingEvent(favorite));
+                mBus.post(new FavoriteBeginEditingEvent(favorite));
             }
         });
 

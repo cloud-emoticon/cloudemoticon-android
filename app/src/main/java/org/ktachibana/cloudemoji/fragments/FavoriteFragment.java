@@ -66,7 +66,7 @@ public class FavoriteFragment extends BaseFragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Favorite favorite = (Favorite) mAdapter.getItem(i);
                         Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
-                        BUS.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                        mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
                     }
                 });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));

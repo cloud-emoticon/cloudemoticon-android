@@ -13,11 +13,11 @@ import de.greenrobot.event.Subscribe;
  * It includes event bus
  */
 public class BaseBaseAdapter extends android.widget.BaseAdapter {
-    protected EventBus BUS;
+    protected EventBus mBus;
 
     public BaseBaseAdapter() {
-        BUS = EventBus.getDefault();
-        BUS.register(this);
+        mBus = EventBus.getDefault();
+        mBus.register(this);
     }
 
     @Subscribe

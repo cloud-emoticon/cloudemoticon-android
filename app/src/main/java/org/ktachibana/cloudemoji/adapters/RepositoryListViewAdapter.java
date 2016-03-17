@@ -96,12 +96,12 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
                 new RepositoryDownloaderClient().downloadSource(item, new BaseHttpClient.ObjectCallback<Repository>() {
                     @Override
                     public void success(Repository result) {
-                        BUS.post(new RepositoryDownloadedEvent(item));
+                        mBus.post(new RepositoryDownloadedEvent(item));
                     }
 
                     @Override
                     public void fail(Throwable t) {
-                        BUS.post(new RepositoryDownloadFailedEvent(t));
+                        mBus.post(new RepositoryDownloadFailedEvent(t));
                     }
 
                     @Override
@@ -116,7 +116,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
         viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BUS.post(new RepositoryBeginEditingEvent(item));
+                mBus.post(new RepositoryBeginEditingEvent(item));
             }
         });
 
@@ -137,7 +137,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
                     File exportFile = new File(filePath);
                     BackupHelper.writeFileToExternalStorage(json, exportFile);
 
-                    BUS.post(new RepositoryExportedEvent(filePath));
+                    mBus.post(new RepositoryExportedEvent(filePath));
                 } catch (Exception e) {
                     Log.e(Constants.DEBUG_TAG, e.getLocalizedMessage());
                 }
