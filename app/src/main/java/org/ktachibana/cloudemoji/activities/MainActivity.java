@@ -71,14 +71,13 @@ public class MainActivity extends BaseActivity implements
         // If not starting from refresh new, get state
         // Else, initialize
         if (savedInstanceState != null) {
-            mState = savedInstanceState.getParcelable(STATE_TAG);
+            mState = Parcels.unwrap(savedInstanceState.getParcelable(STATE_TAG));
         } else {
             mState = new MainActivityState(initializeCache());
         }
 
-        // Show
-        mToolbar.setTitle(R.string.app_name);
-        replaceMainContainer(new RepositoriesFragmentBuilder(mState.getSourceCache()).build());
+        // Show according to state
+        replaceMainContainer(new RepositoriesFragmentBuilder(mState.sourceCache).build());
     }
 
     /**
@@ -156,7 +155,7 @@ public class MainActivity extends BaseActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            intent.putExtra(SOURCE_CACHE_TAG, Parcels.wrap(mState.getSourceCache()));
+            intent.putExtra(SOURCE_CACHE_TAG, Parcels.wrap(mState.sourceCache));
             startActivity(intent);
             return true;
         } else if (id == R.id.repo_manager) {
@@ -256,20 +255,13 @@ public class MainActivity extends BaseActivity implements
         if (requestCode == Constants.REPOSITORY_MANAGER_REQUEST_CODE ||
                 requestCode == Constants.REPOSITORY_STORE_REQUEST_CODE) {
 
-            // If currently showing repositories, refresh
-            if (mState.getItemId() == Constants.LIST_ITEM_REPOSITORIES) {
-                mState.setSourceCache(initializeCache());
-                // TODO: 3/17/16
-            }
+            // TODO: 3/17/16
         }
 
         // Coming back from preference, favorites may be changed
         if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
 
-            // If currently showing favorites, refresh
-            if (mState.getItemId() == Constants.LIST_ITEM_FAVORITE_ID) {
-                // TODO: 3/17/16
-            }
+            // TODO: 3/17/16
         }
     }
 
