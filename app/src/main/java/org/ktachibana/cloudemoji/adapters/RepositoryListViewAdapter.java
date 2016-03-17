@@ -25,7 +25,7 @@ import org.ktachibana.cloudemoji.net.RepositoryDownloaderClient;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.ui.NonCancelableProgressMaterialDialogBuilder;
 
 import java.io.File;
 import java.util.List;

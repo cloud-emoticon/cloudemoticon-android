@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.utils.NotificationHelper;
+import org.ktachibana.cloudemoji.utils.NotificationUtils;
 
 /**
  * Dummy activity that shows notification after boot up
@@ -23,7 +23,7 @@ public class BootUpDummyActivity extends Activity {
 
         // Do it
         if (showAfterBootUp) {
-            NotificationHelper.switchNotificationState(this, notificationVisibility);
+            NotificationUtils.switchNotificationState(this, notificationVisibility);
         }
         finish();
     }

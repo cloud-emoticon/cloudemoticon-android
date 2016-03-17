@@ -21,7 +21,7 @@ import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryInvalidFormatEvent;
 import org.ktachibana.cloudemoji.models.disk.Repository;
-import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
 
 import java.util.List;
 

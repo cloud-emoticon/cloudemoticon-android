@@ -20,7 +20,7 @@ import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
-import org.ktachibana.cloudemoji.utils.MultiInputMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
 
 import java.util.List;
 

@@ -35,7 +35,7 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.ktachibana.cloudemoji.utils.NotificationHelper;
+import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -73,22 +73,22 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Else, initialize
         if (savedInstanceState != null) {
             sourceCache = Parcels.unwrap(savedInstanceState.getParcelable(SOURCE_CACHE_TAG));
-            currentItem = savedInstanceState.getParcelable(CURRENT_ITEM_TAG);
+            currentItem = savedInstanceState.getInt(CURRENT_ITEM_TAG);
         } else {
             sourceCache = initializeSourceCache();
             currentItem = 0;
         }
 
         // Show according to state
-        show();
+        render();
     }
 
-    private void show() {
+    private void render() {
         replaceMainContainer(new RepositoriesFragmentBuilder(sourceCache, currentItem).build());
     }
 
     /**
-     * Put every source, including favorites, into cache
+     * Put every source, into source cache
      */
     private LinkedHashMap<Long, Source> initializeSourceCache() {
         LinkedHashMap<Long, Source> cache = new LinkedHashMap<Long, Source>();
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     private void setupNotificationState() {
-        NotificationHelper
+        NotificationUtils
                 .switchNotificationState(this,
                         mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, "both"));
     }
@@ -260,17 +260,17 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Coming back from repository manager
         // Repositories may be changed
         // Need to refresh source cache
-        // Need to re-show all repositories
+        // Need to re-render all repositories
         if (requestCode == Constants.REPOSITORY_MANAGER_REQUEST_CODE) {
             sourceCache = initializeSourceCache();
-            show();
+            render();
         }
 
         // Coming back from preference
         // Favorites may be changed
-        // Need to re-show favorites
+        // Need to re-render favorites
         if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
-            show();
+            render();
         }
     }
 

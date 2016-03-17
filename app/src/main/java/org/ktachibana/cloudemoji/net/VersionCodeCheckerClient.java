@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.utils.NetworkUnavailableException;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 public class VersionCodeCheckerClient extends BaseHttpClient {

@@ -14,7 +14,7 @@ import org.ktachibana.cloudemoji.activities.MainActivity;
 /**
  * Abstract Notification codes from MainActivity to be shared among MainActivity and BootUpDummyActivity
  */
-public class NotificationHelper {
+public class NotificationUtils {
 
     /**
      * Switch notification state to according to current user preference

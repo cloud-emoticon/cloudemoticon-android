@@ -13,7 +13,7 @@ import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.memory.StoreRepository;
 import org.ktachibana.cloudemoji.net.RepositoryStoreDownloaderClient;
-import org.ktachibana.cloudemoji.utils.NonCancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.ui.NonCancelableProgressMaterialDialogBuilder;
 import org.parceler.Parcels;
 
 import java.util.List;

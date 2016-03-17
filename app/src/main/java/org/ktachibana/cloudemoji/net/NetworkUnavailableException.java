@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.utils;
+package org.ktachibana.cloudemoji.net;
 
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.R;

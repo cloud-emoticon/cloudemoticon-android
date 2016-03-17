@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.memory.StoreRepository;
-import org.ktachibana.cloudemoji.utils.NetworkUnavailableException;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.ArrayList;
