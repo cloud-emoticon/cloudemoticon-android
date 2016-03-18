@@ -22,7 +22,6 @@ public class SearchResultListViewAdapter extends BaseAdapter {
     public SearchResultListViewAdapter(Context mContext, List<Entry> results) {
         mResults = results;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override

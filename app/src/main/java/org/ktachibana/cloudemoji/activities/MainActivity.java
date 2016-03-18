@@ -51,11 +51,10 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.Subscribe;
 
 public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private LinkedHashMap<Long, Source> sourceCache;
-    private static final String SOURCE_CACHE_TAG = "sourceCache";
-    private int currentItem;
+    public static final String SOURCE_CACHE_TAG = "sourceCache";
     private static final String CURRENT_ITEM_TAG = "currentItem";
+    private LinkedHashMap<Long, Source> sourceCache;
+    private int currentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Check first time run
         firstTimeCheck();
 
-        // If not starting from refresh new, get state
+        // If not starting from refresh new state
         // Else, initialize
         if (savedInstanceState != null) {
             sourceCache = Parcels.unwrap(savedInstanceState.getParcelable(SOURCE_CACHE_TAG));
@@ -88,12 +87,11 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     /**
-     * Put every source, into source cache
+     * Put every source into source cache
      */
     private LinkedHashMap<Long, Source> initializeSourceCache() {
-        LinkedHashMap<Long, Source> cache = new LinkedHashMap<Long, Source>();
+        LinkedHashMap<Long, Source> sourceCache = new LinkedHashMap<Long, Source>();
 
-        // Put all available repositories
         List<Repository> allRepositories = Repository.listAll(Repository.class);
         for (Repository repository : allRepositories) {
             if (repository.isAvailable()) {
@@ -101,7 +99,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
                     long id = repository.getId();
                     Source source =
                             new SourceReader().readSourceFromDatabaseId(repository.getAlias(), id);
-                    cache.put(id, source);
+                    sourceCache.put(id, source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format));
                 } catch (Exception e) {
@@ -110,7 +108,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
             }
         }
 
-        return cache;
+        return sourceCache;
     }
 
     private void setupNotificationState() {
@@ -276,7 +274,6 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // Save current state
         outState.putParcelable(SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
         outState.putInt(CURRENT_ITEM_TAG, currentItem);
     }

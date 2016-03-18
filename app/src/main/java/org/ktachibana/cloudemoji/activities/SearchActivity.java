@@ -1,37 +1,91 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.annotation.TargetApi;
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
-import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.fragments.SearchResultFragmentBuilder;
+import org.ktachibana.cloudemoji.models.disk.Favorite;
+import org.ktachibana.cloudemoji.models.disk.History;
+import org.ktachibana.cloudemoji.models.memory.Category;
 import org.ktachibana.cloudemoji.models.memory.Entry;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
+import org.ktachibana.cloudemoji.models.memory.Source;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-
-import de.greenrobot.event.Subscribe;
+import java.util.Map;
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
+    private LinkedHashMap<Long, Source> sourceCache;
+    private HashMap<String, List<Entry>> searchCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (savedInstanceState == null) {
+            sourceCache = Parcels.unwrap(getIntent().getExtras().getParcelable(MainActivity.SOURCE_CACHE_TAG));
+        } else {
+            sourceCache = Parcels.unwrap(savedInstanceState.getParcelable(MainActivity.SOURCE_CACHE_TAG));
+        }
+        searchCache = initializeSearchCache(sourceCache);
+
+        replaceMainContainer(new SearchResultFragmentBuilder("", new ArrayList<Entry>()).build());
+    }
+
+    /**
+     * Put all entries of favorites, histories and all sources into search cache
+     */
+    private HashMap<String, List<Entry>> initializeSearchCache(LinkedHashMap<Long, Source> sourceCache) {
+        HashMap<String, List<Entry>> searchCache = new HashMap<String, List<Entry>>();
+
+        // Favorites
+        for (Favorite favorite : Favorite.listAll(Favorite.class)) {
+            addToSearchCache(searchCache, new Entry(favorite.getEmoticon(), favorite.getDescription()));
+        }
+
+        // History
+        for (History history : History.listAll(History.class)) {
+            addToSearchCache(searchCache, new Entry(history.getEmoticon(), history.getDescription()));
+        }
+
+        // Sources
+        for (Map.Entry<Long, Source> source : sourceCache.entrySet()) {
+            for (Category category : source.getValue().getCategories()) {
+                for (Entry entry : category.getEntries()) {
+                    addToSearchCache(searchCache, entry);
+                }
+            }
+        }
+
+        return searchCache;
+    }
+
+    private void addToSearchCache(HashMap<String, List<Entry>> searchCache, Entry entry) {
+        List<String> keywords = Arrays.asList(entry.getEmoticon(), entry.getDescription());
+
+        for (String keyword : keywords) {
+            if (!searchCache.containsKey(keyword)) {
+                searchCache.put(keyword, new ArrayList<Entry>());
+            }
+            searchCache.get(keyword).add(entry);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(MainActivity.SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
     }
 
     @Override
@@ -73,13 +127,21 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Log.i("submit", query);
-        return false;
+        onQuery(query);
+        return true;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        Log.i("change", newText);
-        return false;
+    public boolean onQueryTextChange(String query) {
+        onQuery(query);
+        return true;
+    }
+
+    private void onQuery(String query) {
+        List<Entry> result = searchCache.get(query);
+        if (result == null) {
+            result = new ArrayList<>();
+        }
+        replaceMainContainer(new SearchResultFragmentBuilder(query, result).build());
     }
 }

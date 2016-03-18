@@ -11,18 +11,18 @@ import android.widget.TextView;
 
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
+import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
-import org.ktachibana.cloudemoji.events.SearchFinishedEvent;
-import org.ktachibana.cloudemoji.events.SearchInitiatedEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.Subscribe;
 
 public class SearchResultFragment extends BaseFragment {
     @Bind(R.id.searchResultListView)
@@ -33,6 +33,8 @@ public class SearchResultFragment extends BaseFragment {
     TextView mSearchResultEmptyViewTextView;
     @Arg
     String mSearchQuery;
+    @Arg(bundler = ParcelerArgsBundler.class)
+    List<Entry> mSearchResult;
 
     public SearchResultFragment() {
         // Required empty public constructor
@@ -57,15 +59,7 @@ public class SearchResultFragment extends BaseFragment {
                 + "\n"
                 + this.getResources().getString(R.string.search_result_not_found));
 
-        // Initiate search
-        mBus.post(new SearchInitiatedEvent(mSearchQuery));
-
-        return rootView;
-    }
-
-    @Subscribe
-    public void handle(SearchFinishedEvent e) {
-        mSearchResultListView.setAdapter(new SearchResultListViewAdapter(getActivity(), e.getResults()));
+        mSearchResultListView.setAdapter(new SearchResultListViewAdapter(getActivity(), mSearchResult));
         mSearchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -73,5 +67,7 @@ public class SearchResultFragment extends BaseFragment {
                 mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
         });
+
+        return rootView;
     }
 }
