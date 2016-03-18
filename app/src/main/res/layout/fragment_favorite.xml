@@ -5,8 +5,8 @@
 
     <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/favoriteListView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@android:color/white"
         app:drag_handle_id="@+id/favoriteDragHandlerImageView"
         app:float_background_color="@android:color/white" />
