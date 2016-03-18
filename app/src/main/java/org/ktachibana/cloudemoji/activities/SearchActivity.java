@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,30 +25,28 @@ import java.util.List;
 
 import de.greenrobot.event.Subscribe;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        handleIntent(getIntent());
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search, menu);
 
-    private void handleIntent(Intent intent) {
-        if (intent != null) {
-            // Handles search intent
-            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-                String query = intent.getStringExtra(SearchManager.QUERY);
-                replaceMainContainer(new SearchResultFragmentBuilder(query).build());
-            }
-        }
+        // Auto focus SearchView
+        SearchView searchView = (SearchView) (MenuItemCompat.getActionView(menu.findItem(R.id.search)));
+        searchView.setIconified(false);
+        searchView.setFocusable(true);
+        searchView.requestFocusFromTouch();
+        searchView.setOnQueryTextListener(this);
+
+        return true;
     }
 
     private void replaceMainContainer(Fragment fragment) {
@@ -54,25 +54,6 @@ public class SearchActivity extends BaseActivity {
                 .beginTransaction()
                 .replace(R.id.main_container, fragment)
                 .commit();
-    }
-
-    @Override
-    @TargetApi(11)
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-
-        // Associate searchable configuration with the SearchView
-        if (SystemUtils.aboveHoneycomb()) {
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            searchView.setIconified(false);
-            searchView.setFocusable(true);
-            searchView.requestFocusFromTouch();
-        }
-
-        return true;
     }
 
     @Override
@@ -90,14 +71,15 @@ public class SearchActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Subscribe
-    public void handle(SearchInitiatedEvent e) {
-        String searchQuery = e.getSearchQuery();
-        List<Entry> results = new ArrayList<Entry>();
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.i("submit", query);
+        return false;
+    }
 
-        // Traverse all sources
-
-        // Search finished
-        mBus.post(new SearchFinishedEvent(results));
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.i("change", newText);
+        return false;
     }
 }
