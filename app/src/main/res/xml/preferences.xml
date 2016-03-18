@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:key="pref_behaviors"
@@ -27,8 +25,8 @@
             android:title="@string/navbar_gesture_title" />
         <Preference
             android:key="pref_now_on_tap"
-            android:title="@string/now_on_tap_title"
-            android:summary="@string/now_on_tap_summary" />
+            android:summary="@string/now_on_tap_summary"
+            android:title="@string/now_on_tap_title" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -36,8 +34,8 @@
         android:title="@string/ime">
         <Preference
             android:key="pref_import_into_ime"
-            android:title="@string/import_into_ime"
-            android:summary="@string/import_into_ime_summary" />
+            android:summary="@string/import_into_ime_summary"
+            android:title="@string/import_into_ime" />
         <!--
         <Preference
             android:key="pref_revoke_from_ime"

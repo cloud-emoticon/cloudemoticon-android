@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
 import com.github.mrengineer13.snackbar.SnackBar;
@@ -19,15 +17,17 @@ import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
-public class PreferenceFragment extends android.support.v4.preference.PreferenceFragment {
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceFragmentCompat;
+
+public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     SharedPreferences mPreferences;
 
     @Override
-    public void onCreate(Bundle paramBundle) {
-        super.onCreate(paramBundle);
-
+    public void onCreatePreferences(Bundle paramBundle, String rootKey) {
         // Load the mPreferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
