@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/primaryFaint</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <!-- hack from https://github.com/Gericop/Android-Support-Preference-V7-Fix-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 </resources>
