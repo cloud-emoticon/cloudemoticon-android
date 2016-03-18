@@ -20,6 +20,7 @@ import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.Subscribe;
 
 public class HistoryFragment extends BaseFragment {
     @Bind(R.id.historyListView)
@@ -71,14 +72,15 @@ public class HistoryFragment extends BaseFragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeAllHistory();
+                History.deleteAll(History.class);
+                mAdapter.updateHistory();
             }
         });
         return rootView;
     }
 
-    private void removeAllHistory() {
-        History.deleteAll(History.class);
+    @Subscribe
+    public void handle(EntryCopiedAndAddedToHistoryEvent e) {
         mAdapter.updateHistory();
     }
 }

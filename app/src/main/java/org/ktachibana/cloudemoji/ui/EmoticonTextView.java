@@ -2,7 +2,6 @@ package org.ktachibana.cloudemoji.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 public class EmoticonTextView extends TextView {

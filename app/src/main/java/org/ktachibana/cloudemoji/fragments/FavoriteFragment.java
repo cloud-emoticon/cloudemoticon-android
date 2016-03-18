@@ -17,7 +17,9 @@ import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
+import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
@@ -80,10 +82,6 @@ public class FavoriteFragment extends BaseFragment {
         return rootView;
     }
 
-    public void notifyFavoriteAdded() {
-        mAdapter.updateFavorites();
-    }
-
     private void popupAddFavoriteDialog() {
         new MultiInputMaterialDialogBuilder(getActivity())
                 .addInput(null, getString(R.string.emoticon), new MultiInputMaterialDialogBuilder.InputValidator() {
@@ -115,7 +113,7 @@ public class FavoriteFragment extends BaseFragment {
                             Favorite favorite = new Favorite(emoticon, description, shortcut);
                             favorite.save();
 
-                            notifyFavoriteAdded();
+                            mAdapter.updateFavorites();
                             showSnackBar(emoticon + "\n" + getString(R.string.added_to_fav));
                         }
                     }
@@ -150,5 +148,15 @@ public class FavoriteFragment extends BaseFragment {
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
                 .show();
+    }
+
+    @Subscribe
+    public void handle(FavoriteAddedEvent e) {
+        mAdapter.updateFavorites();
+    }
+
+    @Subscribe
+    public void handle(FavoriteDeletedEvent e) {
+        mAdapter.updateFavorites();
     }
 }
