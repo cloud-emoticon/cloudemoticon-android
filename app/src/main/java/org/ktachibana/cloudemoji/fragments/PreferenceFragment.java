@@ -2,15 +2,20 @@ package org.ktachibana.cloudemoji.fragments;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
+
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,6 +28,14 @@ import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
+import java.util.jar.Manifest;
+
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -46,7 +59,27 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     public void handle(EmptyEvent e) {
     }
 
+    @OnShowRationale(android.Manifest.permission_group.STORAGE)
+    public void showRationaleForStorage(final PermissionRequest request) {
+        new AlertDialogWrapper.Builder(getContext())
+                .setMessage(R.string.storage_rationale)
+                .setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
     @Override
+    @NeedsPermission(android.Manifest.permission_group.STORAGE)
     public void onCreatePreferences(Bundle paramBundle, String rootKey) {
         // Load the mPreferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
@@ -133,7 +166,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 boolean success = BackupHelper.backupFavorites();
                 if (success) {
-                    showSnackBar(Constants.FAVORITES_BACKUP_FILE_PATH);
+                    showSnackBar(getString(R.string.backuped_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
                 } else {
                     showSnackBar(R.string.fail);
                 }
@@ -148,7 +181,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 boolean success = BackupHelper.restoreFavorites();
                 if (success) {
-                    showSnackBar(android.R.string.ok);
+                    showSnackBar(R.string.restored_favorites);
                 } else {
                     showSnackBar(R.string.fail);
                 }

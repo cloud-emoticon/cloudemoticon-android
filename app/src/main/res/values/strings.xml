@@ -72,4 +72,9 @@
     <string name="please_wait">Please wait&#8230;</string>
     <string name="added_to_repo">Added to repositories</string>
     <string name="import_into_ime_m_below">Sorry! Importing into user dictionary is only supported below Android 6.0</string>
+    <string name="allow">Allow</string>
+    <string name="deny">Deny</string>
+    <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>
+    <string name="backuped_favorites">Backuped favorites to</string>
+    <string name="restored_favorites">Restored bookmarks</string>
 </resources>
