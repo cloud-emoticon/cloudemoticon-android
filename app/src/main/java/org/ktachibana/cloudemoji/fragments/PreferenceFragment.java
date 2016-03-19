@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.fragments;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +14,8 @@ import com.github.mrengineer13.snackbar.SnackBar;
 import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.EmptyEvent;
+import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
@@ -21,10 +24,30 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     SharedPreferences mPreferences;
+    private EventBus mBus;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mBus = EventBus.getDefault();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mBus.unregister(this);
+    }
+
+    @Subscribe
+    public void handle(EmptyEvent e) {}
 
     @Override
     public void onCreatePreferences(Bundle paramBundle, String rootKey) {
@@ -171,10 +194,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showSnackBar(String message) {
-        new SnackBar.Builder(getActivity().getApplicationContext(), getView())
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
+        mBus.post(new ShowSnackBarOnBaseActivityEvent(message));
     }
 
     private void showSnackBar(int resId) {
