@@ -36,30 +36,3 @@ A cloud solution for your favorite emoticons
 
 ## Screenshot
 ![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
-
-## Libraries via Gradle
-* [appcompat-v4](https://developer.android.com/tools/support-library/features.html#v4)
-* [appcompat-v7](https://developer.android.com/tools/support-library/features.html#v7)
-* [android-support-v4-preferencefragment] (https://github.com/kolavar/android-support-v4-preferencefragment)
-* [android-async-http](https://github.com/loopj/android-async-http)
-* [EventBus](https://github.com/greenrobot/EventBus)
-* [ButterKnife](https://github.com/JakeWharton/butterknife)
-* [Gson](https://code.google.com/p/google-gson/)
-* [Apache Commons IO](http://commons.apache.org/proper/commons-io/)
-* [PagerSlidingTabStrip] (https://github.com/jpardogo/PagerSlidingTabStrip)
-* [FloatingActionButton] (https://github.com/makovkastar/FloatingActionButton)
-* [SnackBar] (https://github.com/MrEngineer13/SnackBar)
-* [material-dialogs] (https://github.com/afollestad/material-dialogs)
-* [MaterialDrawer] (https://github.com/mikepenz/MaterialDrawer)
-* [picasso] (http://github.com/square/picasso)
-
-## Libraries via Jar/Aar balls
-* [sugar](https://github.com/satyan/sugar)
-* [PinnedHeaderListView](https://github.com/JimiSmith/PinnedHeaderListView)
-
-## Libraries via direct code usage
-* [drag-sort-listview](https://github.com/bauerca/drag-sort-listview)
-* [emojicon](https://github.com/rockerhieu/emojicon)
-
-## License
-* [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
