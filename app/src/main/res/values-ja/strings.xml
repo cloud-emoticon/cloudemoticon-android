@@ -75,7 +75,7 @@
     <string name="revoke_from_ime">Revoke all bookmarks from user dictionary</string>
     <string name="imported_into_ime">Imported %d bookmarks into user dictionary</string>
     <string name="revoked_from_ime">Revoked %d bookmarks from user dictionary</string>
-    <string name="import_into_ime_summary">Only works for shortcut in English letters</string>
+    <string name="import_into_ime_summary">Only works for shortcut in English letters and below Android 6.0</string>
     <string name="no_description">No description</string>
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>
@@ -93,4 +93,6 @@
     <string name="logging_out">Logging out</string>
     <string name="handling_first_login_conflict">Handling first login conflict</string>
     <string name="added_to_repo">Added to repositories</string>
+    <string name="now_on_tap_summary">Touch to open system settings, then select "Assist app"</string>
+    <string name="now_on_tap_title">Hold Home button to startup</string>
 </resources>
