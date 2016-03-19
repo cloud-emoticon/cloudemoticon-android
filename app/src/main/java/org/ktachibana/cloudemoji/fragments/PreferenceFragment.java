@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.fragments;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,13 +10,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,8 +26,6 @@ import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
-
-import java.util.jar.Manifest;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnShowRationale;
@@ -59,7 +56,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     public void handle(EmptyEvent e) {
     }
 
-    @OnShowRationale(android.Manifest.permission_group.STORAGE)
+    @OnShowRationale({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void showRationaleForStorage(final PermissionRequest request) {
         new AlertDialogWrapper.Builder(getContext())
                 .setMessage(R.string.storage_rationale)
@@ -79,7 +76,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    @NeedsPermission(android.Manifest.permission_group.STORAGE)
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PreferenceFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
     public void onCreatePreferences(Bundle paramBundle, String rootKey) {
         // Load the mPreferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
@@ -164,12 +166,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                boolean success = BackupHelper.backupFavorites();
-                if (success) {
-                    showSnackBar(getString(R.string.backuped_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
-                } else {
-                    showSnackBar(R.string.fail);
-                }
+                PreferenceFragmentPermissionsDispatcher.backupFavoritesWithCheck(PreferenceFragment.this);
                 return true;
             }
         });
@@ -179,12 +176,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                boolean success = BackupHelper.restoreFavorites();
-                if (success) {
-                    showSnackBar(R.string.restored_favorites);
-                } else {
-                    showSnackBar(R.string.fail);
-                }
+                PreferenceFragmentPermissionsDispatcher.restoreFavoritesWithCheck(PreferenceFragment.this);
                 return true;
             }
         });
@@ -219,6 +211,26 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         int versionCode = BuildConfig.VERSION_CODE;
         versionPref.setTitle(getString(R.string.version) + " " + version);
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void backupFavorites() {
+        boolean success = BackupHelper.backupFavorites();
+        if (success) {
+            showSnackBar(getString(R.string.backuped_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
+        } else {
+            showSnackBar(R.string.fail);
+        }
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void restoreFavorites() {
+        boolean success = BackupHelper.restoreFavorites();
+        if (success) {
+            showSnackBar(R.string.restored_favorites);
+        } else {
+            showSnackBar(R.string.fail);
+        }
     }
 
     @Override
