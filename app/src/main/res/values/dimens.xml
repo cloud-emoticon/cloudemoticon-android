@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="drawerSize">300dp</dimen>
 
-    <dimen name="listPreferredItemMinHeight">60dp</dimen>
-    <dimen name="listPreferredItemPaddingLeft">16dp</dimen>
-    <dimen name="listPreferredItemPaddingRight">16dp</dimen>
     <dimen name="listPreferredItemIconAndTextMargin">32dp</dimen>
 
     <dimen name="iconSize">128dp</dimen>
-
-    <dimen name="fragmentPadding">16dp</dimen>
 
 </resources>

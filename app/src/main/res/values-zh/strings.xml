@@ -17,7 +17,6 @@
     <string name="version">版本</string>
     <string name="fav">收藏</string>
     <string name="add_to_fav">添加到收藏</string>
-    <string name="ui">UI</string>
     <string name="added_to_fav">已添加到收藏</string>
     <string name="removed_from_fav">已从收藏中移除</string>
     <string name="notification_visibility">通知可见性</string>
@@ -31,9 +30,7 @@
     <string name="add_repo">添加源</string>
     <string name="alias">别名</string>
     <string name="invalid_repo_format">无效的源</string>
-    <string name="source">源</string>
     <string name="history">历史</string>
-    <string name="category">类别</string>
     <string name="downloading">下载中</string>
     <string name="downloaded">下载完毕</string>
     <string name="duplicate_url">重复的 URL</string>
@@ -45,17 +42,10 @@
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
     <string name="edit_favorite">编辑收藏</string>
-    <string name="remove_all_history">移除所有历史</string>
     <string name="backup_and_restore">备份和恢复</string>
     <string name="backup_favorites">备份收藏</string>
     <string name="restore_favorites">恢复收藏</string>
     <string name="empty_emoticon">颜文字不能为空</string>
-    <string name="account">账号</string>
-    <string name="registering">注册中</string>
-    <string name="register_successful">注册成功</string>
-    <string name="existing_username">用户名已存在</string>
-    <string name="illegal_email_address">无效电子邮箱</string>
-    <string name="existing_email_address">电子邮箱已存在</string>
     <string name="repository_store">源商店</string>
     <string name="old_favorites_merged">旧收藏已合并</string>
     <string name="update_checker">检查新版本</string>
@@ -63,8 +53,6 @@
     <string name="already_latest_version">已经是最新版本</string>
     <string name="new_version_available">有新版本辣！</string>
     <string name="go_to_play_store">去 Play Store 看看</string>
-    <string name="built_in_emoji">自带表情符号</string>
-    <string name="search_hint">搜索颜文字</string>
     <string name="search_result_not_found">没找到</string>
 
 
@@ -75,26 +63,12 @@
     </string-array>
     <string name="ime">用户词典</string>
     <string name="import_into_ime">将全部收藏导入用户词典</string>
-    <string name="revoke_from_ime">将全部收藏从用户词典中移除</string>
     <string name="imported_into_ime">已将 %d 个收藏导入用户词典</string>
-    <string name="revoked_from_ime">已将%d个收藏从用户词典中移除</string>
     <string name="import_into_ime_summary">只对描述是英文和数字的收藏和Android版本6.0以下有效</string>
     <string name="no_description">没有描述</string>
     <string name="no_shortcut">没有快捷输入</string>
     <string name="shortcut">快捷输入</string>
-    <string name="repositories">源</string>
     <string name="please_wait">请稍等&#8230;</string>
-    <string name="log_in">登陆</string>
-    <string name="register">注册</string>
-    <string name="empty_username">用户名不能为空</string>
-    <string name="empty_password">用户密码不能为空</string>
-    <string name="username">用户名</string>
-    <string name="password">密码</string>
-    <string name="email">电子邮箱</string>
-    <string name="log_out">登出</string>
-    <string name="logging_in">登陆中</string>
-    <string name="logging_out">登出中</string>
-    <string name="handling_first_login_conflict">处理首次登陆冲突</string>
     <string name="added_to_repo">已添加到源</string>
     <string name="import_into_ime_m_below">抱歉! 导入用户词典仅支持Andorid版本6.0以下</string>
 </resources>

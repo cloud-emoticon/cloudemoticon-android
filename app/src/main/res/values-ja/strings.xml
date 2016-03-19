@@ -17,7 +17,6 @@
     <string name="version">Version</string>
     <string name="fav">Bookmarks</string>
     <string name="add_to_fav">Add to bookmarks</string>
-    <string name="ui">UI</string>
     <string name="added_to_fav">Added to bookmarks</string>
     <string name="removed_from_fav">Removed from bookmarks</string>
     <string name="notification_visibility">Notification visibility</string>
@@ -31,9 +30,7 @@
     <string name="add_repo">Add repository</string>
     <string name="alias">Alias</string>
     <string name="invalid_repo_format">Invalid repository format</string>
-    <string name="source">Source</string>
     <string name="history">History</string>
-    <string name="category">Category</string>
     <string name="downloading">Downloading</string>
     <string name="downloaded">Downloaded</string>
     <string name="duplicate_url">Duplicate URL</string>
@@ -43,17 +40,10 @@
     <string name="no_favorite_prompt">You don\'t have any bookmarks</string>
     <string name="no_history_prompt">You don\'t have any history</string>
     <string name="edit_favorite">Edit Bookmark</string>
-    <string name="remove_all_history">Remove all history</string>
     <string name="backup_and_restore">Backup and restore</string>
     <string name="backup_favorites">Backup bookmarks</string>
     <string name="restore_favorites">Restore bookmarks</string>
     <string name="empty_emoticon">Empty emoticon</string>
-    <string name="account">Account</string>
-    <string name="registering">Registering</string>
-    <string name="register_successful">You have registered</string>
-    <string name="existing_username">Existing username</string>
-    <string name="illegal_email_address">Illegal email</string>
-    <string name="existing_email_address">Existing email address</string>
     <string name="repository_store">Repository Store</string>
     <string name="old_favorites_merged">Old bookmarks merged</string>
     <string name="update_checker">Check for update</string>
@@ -61,8 +51,6 @@
     <string name="already_latest_version">Already latest version</string>
     <string name="new_version_available">New version is available!</string>
     <string name="go_to_play_store">Go to Play Store</string>
-    <string name="built_in_emoji">Built-in emoji</string>
-    <string name="search_hint">Search emoticon</string>
     <string name="search_result_not_found">Result not found</string>
 
     <string-array name="notification_options">
@@ -72,26 +60,12 @@
     </string-array>
     <string name="ime">User dictionary</string>
     <string name="import_into_ime">Import all bookmarks into user dictionary</string>
-    <string name="revoke_from_ime">Revoke all bookmarks from user dictionary</string>
     <string name="imported_into_ime">Imported %d bookmarks into user dictionary</string>
-    <string name="revoked_from_ime">Revoked %d bookmarks from user dictionary</string>
     <string name="import_into_ime_summary">Only works for shortcut in English letters and below Android 6.0</string>
     <string name="no_description">No description</string>
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>
-    <string name="repositories">Repositories</string>
     <string name="please_wait">Please wait&#8230;</string>
-    <string name="log_in">Log in</string>
-    <string name="register">Register</string>
-    <string name="empty_username">Empty username</string>
-    <string name="empty_password">Empty password</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="email">Email</string>
-    <string name="log_out">Log out</string>
-    <string name="logging_in">Logging in</string>
-    <string name="logging_out">Logging out</string>
-    <string name="handling_first_login_conflict">Handling first login conflict</string>
     <string name="added_to_repo">Added to repositories</string>
     <string name="now_on_tap_summary">Touch to open system settings, then select "Assist app"</string>
     <string name="now_on_tap_title">Hold Home button to startup</string>
