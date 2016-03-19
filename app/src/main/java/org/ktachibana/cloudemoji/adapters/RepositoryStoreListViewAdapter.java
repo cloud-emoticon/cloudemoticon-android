@@ -12,7 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
 import org.ktachibana.cloudemoji.models.disk.Repository;
@@ -22,7 +21,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
     private List<StoreRepository> mRepositories;
@@ -102,10 +100,5 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
-    }
-
-    @Subscribe
-    public void handle(EmptyEvent event) {
-
     }
 }

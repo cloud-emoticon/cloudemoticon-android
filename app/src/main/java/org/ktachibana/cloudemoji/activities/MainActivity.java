@@ -19,6 +19,7 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import org.apache.commons.io.IOUtils;
+import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
@@ -48,7 +49,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import de.greenrobot.event.Subscribe;
 
 public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String SOURCE_CACHE_TAG = "sourceCache";

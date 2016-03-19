@@ -3,10 +3,10 @@ package org.ktachibana.cloudemoji;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
 
 /**
  * Base adapter for all list adapters to extend

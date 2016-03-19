@@ -5,6 +5,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.R;
@@ -20,14 +21,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.Subscribe;
 
 public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
-    private List<StoreRepository> mRepositories;
-
     @Bind(R.id.list)
     ListView mList;
+    private List<StoreRepository> mRepositories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

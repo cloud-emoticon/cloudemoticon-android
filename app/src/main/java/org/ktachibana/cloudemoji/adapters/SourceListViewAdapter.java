@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
@@ -25,8 +27,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
 public class SourceListViewAdapter extends SectionedBaseAdapter implements SectionIndexer {

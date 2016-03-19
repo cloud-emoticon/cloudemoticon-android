@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.HistoryListViewAdapter;
@@ -20,7 +21,6 @@ import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.Subscribe;
 
 public class HistoryFragment extends BaseFragment {
     @Bind(R.id.historyListView)

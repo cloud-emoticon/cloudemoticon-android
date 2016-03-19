@@ -8,9 +8,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
-import com.github.mrengineer13.snackbar.SnackBar;
-
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
@@ -19,13 +22,6 @@ import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.parsing.BackupHelper;
 import org.ktachibana.cloudemoji.parsing.ImeHelper;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
-
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceFragmentCompat;
-
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
@@ -47,7 +43,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     @Subscribe
-    public void handle(EmptyEvent e) {}
+    public void handle(EmptyEvent e) {
+    }
 
     @Override
     public void onCreatePreferences(Bundle paramBundle, String rootKey) {
