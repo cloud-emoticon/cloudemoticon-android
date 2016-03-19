@@ -104,8 +104,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                int numberAdded = ImeHelper.importAllFavoritesIntoIme(getActivity().getContentResolver());
-                showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
+                if (SystemUtils.aboveMarshmallow()) {
+                    showSnackBar(R.string.import_into_ime_m_below);
+                } else {
+                    int numberAdded = ImeHelper.importAllFavoritesIntoIme(getActivity().getContentResolver());
+                    showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
+                }
                 return true;
             }
         });

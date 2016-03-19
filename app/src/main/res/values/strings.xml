@@ -97,4 +97,5 @@
     <string name="logging_out">Logging out</string>
     <string name="handling_first_login_conflict">Handling first login conflict</string>
     <string name="added_to_repo">Added to repositories</string>
+    <string name="import_into_ime_m_below">Sorry! Importing into user dictionary is only supported below Android 6.0</string>
 </resources>

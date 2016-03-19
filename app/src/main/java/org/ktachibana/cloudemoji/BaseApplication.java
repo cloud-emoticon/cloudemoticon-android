@@ -4,10 +4,15 @@ import android.content.Context;
 
 import com.facebook.stetho.Stetho;
 import com.orm.SugarApp;
+import com.squareup.leakcanary.LeakCanary;
 
 public class BaseApplication extends SugarApp {
 
     private static Context mContext;
+
+    public static Context context() {
+        return mContext;
+    }
 
     @Override
     public void onCreate() {
@@ -22,11 +27,7 @@ public class BaseApplication extends SugarApp {
                             .enableWebKitInspector(
                                     Stetho.defaultInspectorModulesProvider(this))
                             .build());
-            //LeakCanary.install(this);
+            LeakCanary.install(this);
         }
-    }
-
-    public static Context context() {
-        return mContext;
     }
 }

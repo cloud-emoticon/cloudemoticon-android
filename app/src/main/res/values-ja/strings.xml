@@ -95,4 +95,5 @@
     <string name="added_to_repo">Added to repositories</string>
     <string name="now_on_tap_summary">Touch to open system settings, then select "Assist app"</string>
     <string name="now_on_tap_title">Hold Home button to startup</string>
+    <string name="import_into_ime_m_below">Sorry! Importing into user dictionary is only supported below Android 6.0</string>
 </resources>

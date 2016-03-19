@@ -96,4 +96,5 @@
     <string name="logging_out">登出中</string>
     <string name="handling_first_login_conflict">处理首次登陆冲突</string>
     <string name="added_to_repo">已添加到源</string>
+    <string name="import_into_ime_m_below">抱歉! 导入用户词典仅支持Andorid版本6.0以下</string>
 </resources>
