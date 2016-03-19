@@ -7,7 +7,7 @@
     android:layout_centerVertical="true"
     android:orientation="vertical">
 
-    <org.ktachibana.cloudemoji.ui.EmoticonTextView
+    <TextView
         android:id="@+id/emoticonTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
