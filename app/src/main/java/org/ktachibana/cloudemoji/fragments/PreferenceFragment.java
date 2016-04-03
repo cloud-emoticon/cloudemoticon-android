@@ -23,8 +23,8 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
-import org.ktachibana.cloudemoji.parsing.BackupHelper;
-import org.ktachibana.cloudemoji.parsing.ImeHelper;
+import org.ktachibana.cloudemoji.utils.BackupUtils;
+import org.ktachibana.cloudemoji.utils.ImeUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import permissions.dispatcher.NeedsPermission;
@@ -139,7 +139,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 if (SystemUtils.aboveMarshmallow()) {
                     showSnackBar(R.string.import_into_ime_m_below);
                 } else {
-                    int numberAdded = ImeHelper.importAllFavoritesIntoIme(getActivity().getContentResolver());
+                    int numberAdded = ImeUtils.importAllFavoritesIntoIme(getActivity().getContentResolver());
                     showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
                 }
                 return true;
@@ -151,7 +151,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
          Preference revokeImePref = findPreference(PREF_REVOKE_IME);
          revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
         @Override public boolean onPreferenceClick(Preference preference) {
-        int numberRevoked = ImeHelper.revokeAllFavoritesFromIme(getContentResolver());
+        int numberRevoked = ImeUtils.revokeAllFavoritesFromIme(getContentResolver());
         Toast.makeText(
         PreferenceActivity.this,
         String.format(getString(R.string.revoked_from_ime), numberRevoked),
@@ -215,7 +215,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void backupFavorites() {
-        boolean success = BackupHelper.backupFavorites();
+        boolean success = BackupUtils.backupFavorites();
         if (success) {
             showSnackBar(getString(R.string.backuped_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
         } else {
@@ -225,7 +225,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     void restoreFavorites() {
-        boolean success = BackupHelper.restoreFavorites();
+        boolean success = BackupUtils.restoreFavorites();
         if (success) {
             showSnackBar(R.string.restored_favorites);
         } else {

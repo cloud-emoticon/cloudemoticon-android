@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.parsing;
+package org.ktachibana.cloudemoji.utils;
 
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Category;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FavoritesHelper {
+public class FavoritesUtils {
 
     public static Source getFavoritesAsSource() {
         // Build source

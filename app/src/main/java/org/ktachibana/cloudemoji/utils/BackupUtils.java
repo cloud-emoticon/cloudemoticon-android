@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.parsing;
+package org.ktachibana.cloudemoji.utils;
 
 import android.os.Environment;
 
@@ -7,6 +7,7 @@ import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
+import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BackupHelper {
+public class BackupUtils {
 
     public static boolean backupFavorites() {
         // If external storage not writable
@@ -31,7 +32,7 @@ public class BackupHelper {
 
         // Write to file
         try {
-            String json = new SourceJsonParser().serialize(FavoritesHelper.getFavoritesAsSource());
+            String json = new SourceJsonParser().serialize(FavoritesUtils.getFavoritesAsSource());
             writeFileToExternalStorage(json, backupFile);
         } catch (IOException e) {
             return false;

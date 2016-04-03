@@ -1,4 +1,4 @@
-package org.ktachibana.cloudemoji.parsing;
+package org.ktachibana.cloudemoji.utils;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -6,13 +6,12 @@ import android.provider.UserDictionary;
 
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.List;
 
-public class ImeHelper {
+public class ImeUtils {
     public static int importAllFavoritesIntoIme(ContentResolver contentResolver) {
-        List<Favorite> favorites = FavoritesHelper.getFavoritesAsList();
+        List<Favorite> favorites = FavoritesUtils.getFavoritesAsList();
 
         // Add all favorites into user dictionary
         int counter = 0;

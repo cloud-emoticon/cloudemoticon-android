@@ -22,7 +22,7 @@ import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.RepositoryDownloaderClient;
-import org.ktachibana.cloudemoji.parsing.BackupHelper;
+import org.ktachibana.cloudemoji.utils.BackupUtils;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.ui.NonCancelableProgressMaterialDialogBuilder;
@@ -135,7 +135,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
                     // Get file and write
                     String filePath = String.format(Constants.EXPORT_FILE_PATH, item.getAlias() + ".json");
                     File exportFile = new File(filePath);
-                    BackupHelper.writeFileToExternalStorage(json, exportFile);
+                    BackupUtils.writeFileToExternalStorage(json, exportFile);
 
                     mBus.post(new RepositoryExportedEvent(filePath));
                 } catch (Exception e) {
