@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * POJO class holding an entry with arrangingOrder
  */
-public class Favorite extends SugarRecord<Favorite> implements Serializable {
+public class Favorite extends SugarRecord implements Serializable {
     private String emoticon;
     private String description;
     private String shortcut = "";

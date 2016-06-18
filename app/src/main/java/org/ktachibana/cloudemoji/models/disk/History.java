@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * POJO class representing a history record
  */
-public class History extends SugarRecord<History> implements Serializable {
+public class History extends SugarRecord implements Serializable {
     private String emoticon;
     private String description;
 

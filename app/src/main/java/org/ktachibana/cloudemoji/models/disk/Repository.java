@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * POJO class holding a remote repository and its relevant information
  */
-public class Repository extends SugarRecord<Repository> implements Serializable {
+public class Repository extends SugarRecord implements Serializable {
     private String url;
     private String alias;
     @Constants.FormatType
