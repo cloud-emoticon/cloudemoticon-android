@@ -58,7 +58,7 @@ public class NotificationUtils {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(title)                     // Title
                 .setContentText(text)                       // Text
-                .setSmallIcon(R.drawable.ic_notification)   // Icon
+                .setSmallIcon(R.drawable.ic_launcher)       // Icon
                 .setContentIntent(pIntent)                  // Intent to launch this app
                 .setWhen(0)                                 // No time to display
                 .setPriority(priority)                      // Given priority
