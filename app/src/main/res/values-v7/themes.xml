@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
@@ -8,6 +9,7 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="android:listSeparatorTextViewStyle">@style/AppTheme.ListSeparatorTextView</item>
     </style>
+
     <style name="AppTheme.ListSeparatorTextView">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>

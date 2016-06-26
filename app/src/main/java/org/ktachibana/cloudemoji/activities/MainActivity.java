@@ -36,6 +36,7 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
+import org.ktachibana.cloudemoji.utils.EmoticonHeadService;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.parceler.Parcels;
 
@@ -62,8 +63,11 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // Setup notification state
-        setupNotificationState();
+        // Setup notification
+        setupNotification();
+
+        Intent intent = new Intent(this, EmoticonHeadService.class);
+        startService(intent);
 
         // Check first time run
         firstTimeCheck();
@@ -111,7 +115,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         return sourceCache;
     }
 
-    private void setupNotificationState() {
+    private void setupNotification() {
         NotificationUtils
                 .switchNotificationState(this,
                         mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, "both"));
@@ -121,7 +125,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     public void onSharedPreferenceChanged(SharedPreferences preferences,
                                           String key) {
         if (Constants.PREF_NOTIFICATION_VISIBILITY.equals(key)) {
-            setupNotificationState();
+            setupNotification();
         }
     }
 

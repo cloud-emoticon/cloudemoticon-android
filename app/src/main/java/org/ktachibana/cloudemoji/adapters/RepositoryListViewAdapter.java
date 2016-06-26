@@ -22,10 +22,10 @@ import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.RepositoryDownloaderClient;
-import org.ktachibana.cloudemoji.utils.BackupUtils;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.ui.NonCancelableProgressMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.BackupUtils;
 
 import java.io.File;
 import java.util.List;

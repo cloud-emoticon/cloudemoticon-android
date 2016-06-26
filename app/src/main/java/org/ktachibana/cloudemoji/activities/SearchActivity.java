@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.R;
-import org.ktachibana.cloudemoji.fragments.SearchResultFragment;
 import org.ktachibana.cloudemoji.fragments.SearchResultFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.History;
@@ -19,13 +18,11 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
     private LinkedHashMap<Long, Source> sourceCache;

@@ -10,7 +10,8 @@
     android:paddingRight="16dp"
     android:paddingTop="18dp">
 
-    <include layout="@layout/view_double_line_emoticon"
+    <include
+        layout="@layout/view_double_line_emoticon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/favoriteDragHandlerImageView" />
