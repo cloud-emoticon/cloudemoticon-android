@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.utils.EmoticonHeadUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 
 /**
@@ -16,15 +17,23 @@ public class BootUpDummyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Read whether to show up and what way to show up
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Show notification according to prefs
         Boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
         String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY);
-
-        // Do it
         if (showAfterBootUp) {
             NotificationUtils.setupNotificationWithPref(this, notificationVisibility);
         }
+
+        // Show emoticon head according to prefs
+        boolean overlayGranted = EmoticonHeadUtils.isOverlayAllowed(this);
+        boolean emoticonHeadVisibility = preferences.getBoolean(Constants.PREF_EMOTICON_HEAD_VISIBILITY, Constants.EMOTICON_HEAD_DEFAULT_VISIBILITY);
+        boolean showEmoticonHeadAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_EMOTICON_HEAD_AFTER_BOOT_UP, true);
+        if (overlayGranted && showEmoticonHeadAfterBootUp) {
+            EmoticonHeadUtils.setupEmoticonHeadWithPref(this, emoticonHeadVisibility);
+        }
+
         finish();
     }
 

@@ -24,6 +24,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
+import org.ktachibana.cloudemoji.utils.EmoticonHeadUtils;
 import org.ktachibana.cloudemoji.utils.ImeUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
@@ -130,6 +131,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        // Emoticon head
+        Preference emoticonHeadVisibilityPref = findPreference(Constants.PREF_EMOTICON_HEAD_VISIBILITY);
+        Preference showEmoticonHeadAfterBootUpPref = findPreference(Constants.PREF_SHOW_EMOTICON_HEAD_AFTER_BOOT_UP);
+        if (!EmoticonHeadUtils.isOverlayAllowed(getContext())) {
+            emoticonHeadVisibilityPref.setEnabled(false);
+            showEmoticonHeadAfterBootUpPref.setEnabled(false);
+        }
 
         // Import favorites into IME
         Preference importImePref = findPreference(Constants.PREF_IMPORT_IME);

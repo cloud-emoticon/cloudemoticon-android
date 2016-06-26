@@ -80,4 +80,5 @@
     <string name="emoticon_head">颜文字大头</string>
     <string name="emoticon_head_visibility">颜文字大头可见性</string>
     <string name="show_emoticon_head_after_boot_up">启动后显示颜文字大头</string>
+    <string name="overlay_rationale">需要系统窗口权限以显示颜文字大头\n不用担心, 你可以随时关闭它.</string>
 </resources>

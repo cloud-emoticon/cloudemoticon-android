@@ -81,4 +81,5 @@
     <string name="emoticon_head">Emoticon head</string>
     <string name="emoticon_head_visibility">Emoticon head visibility</string>
     <string name="show_emoticon_head_after_boot_up">Show emoticon head after boot-up</string>
+    <string name="overlay_rationale">We need overlay permission in order to show emoticon head.\nDon\'t worry, you can always disable it.</string>
 </resources>
