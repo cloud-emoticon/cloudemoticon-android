@@ -8,7 +8,7 @@
     <string name="bad_conn">Bad connection, please retry</string>
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="behaviors">Behavior</string>
+    <string name="behaviors">Behaviors</string>
     <string name="close_after_copy">Close after copy</string>
     <string name="repo_url">Repository URL</string>
     <string name="about">About</string>
@@ -75,4 +75,8 @@
     <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>
     <string name="backuped_favorites">Backuped favorites to</string>
     <string name="restored_favorites">Restored bookmarks</string>
+    <string name="notification">Notification</string>
+    <string name="emoticon_head">Emoticon head</string>
+    <string name="emoticon_head_visibility">Emoticon head visibility</string>
+    <string name="show_emoticon_head_after_boot_up">Show emoticon head after boot-up</string>
 </resources>

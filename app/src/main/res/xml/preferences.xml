@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
     <PreferenceCategory
         android:key="pref_behaviors"
         android:title="@string/behaviors">
@@ -12,12 +11,20 @@
             android:title="@string/notification_visibility" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="pref_close_after_copy"
-            android:title="@string/close_after_copy" />
-        <CheckBoxPreference
-            android:defaultValue="true"
             android:key="pref_show_after_boot_up"
             android:title="@string/show_after_boot_up" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_emoticon_head_visibility"
+            android:title="@string/emoticon_head_visibility" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_show_emoticon_head_after_boot_up"
+            android:title="@string/show_emoticon_head_after_boot_up" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_close_after_copy"
+            android:title="@string/close_after_copy" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="pref_navbar_gesture"

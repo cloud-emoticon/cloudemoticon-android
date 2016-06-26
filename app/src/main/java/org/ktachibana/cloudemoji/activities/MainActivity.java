@@ -38,6 +38,7 @@ import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.EmoticonHeadUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -87,7 +88,9 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     private void setupEmoticonHead() {
-        EmoticonHeadUtils.setupEmoticonHeadWithPref(this);
+        if (SystemUtils.belowMarshmallow()) {
+            EmoticonHeadUtils.setupEmoticonHeadWithPref(this);
+        }
     }
 
     private void render() {
@@ -120,7 +123,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     private void setupNotification() {
-        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTFICATION_DEFAULT_VISIBILITY));
+        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY));
     }
 
     @Override
