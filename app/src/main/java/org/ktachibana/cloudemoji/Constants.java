@@ -11,6 +11,7 @@ public interface Constants {
 
     // Notification
     int PERSISTENT_NOTIFICATION_ID = 0;
+    String PERSISTENT_NOTFICATION_DEFAULT_VISIBILITY = "both";
 
     // Preferences
     String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";

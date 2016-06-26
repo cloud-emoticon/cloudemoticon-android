@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     private void setupNotification() {
-        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, "both"));
+        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTFICATION_DEFAULT_VISIBILITY));
     }
 
     @Override

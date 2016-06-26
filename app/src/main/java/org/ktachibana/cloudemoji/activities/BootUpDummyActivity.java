@@ -19,7 +19,7 @@ public class BootUpDummyActivity extends Activity {
         // Read whether to show up and what way to show up
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
-        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, "both");
+        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTFICATION_DEFAULT_VISIBILITY);
 
         // Do it
         if (showAfterBootUp) {
