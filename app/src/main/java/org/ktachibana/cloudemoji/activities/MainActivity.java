@@ -36,6 +36,7 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
+import org.ktachibana.cloudemoji.utils.EmoticonHeadUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.parceler.Parcels;
 
@@ -65,6 +66,9 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Setup notification
         setupNotification();
 
+        // Setup emoticon head
+        setupEmoticonHead();
+
         // Check first time run
         firstTimeCheck();
 
@@ -80,6 +84,10 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
         // Show according to state
         render();
+    }
+
+    private void setupEmoticonHead() {
+        EmoticonHeadUtils.setupEmoticonHeadWithPref(this);
     }
 
     private void render() {
