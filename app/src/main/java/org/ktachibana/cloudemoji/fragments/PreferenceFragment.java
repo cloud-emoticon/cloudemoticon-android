@@ -133,18 +133,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         // Import favorites into IME
         Preference importImePref = findPreference(Constants.PREF_IMPORT_IME);
-        importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (SystemUtils.aboveMarshmallow()) {
-                    showSnackBar(R.string.import_into_ime_m_below);
-                } else {
+        if (SystemUtils.aboveMarshmallow()) {
+            importImePref.setEnabled(false);
+        } else {
+            importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
                     int numberAdded = ImeUtils.importAllFavoritesIntoIme(getActivity().getContentResolver());
                     showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
 
         // Revoke favorite from IME
         /**
