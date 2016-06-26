@@ -17,9 +17,9 @@ import org.ktachibana.cloudemoji.activities.MainActivity;
 public class NotificationUtils {
 
     /**
-     * Switch notification state to according to current user preference
+     * Setup notification with user preference
      */
-    public static void switchNotificationState(Context context, String notificationVisibility) {
+    public static void setupNotificationWithPref(Context context, String notificationVisibility) {
         // Cancel current notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(Constants.PERSISTENT_NOTIFICATION_ID);

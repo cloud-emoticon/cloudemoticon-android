@@ -23,7 +23,7 @@ public class BootUpDummyActivity extends Activity {
 
         // Do it
         if (showAfterBootUp) {
-            NotificationUtils.switchNotificationState(this, notificationVisibility);
+            NotificationUtils.setupNotificationWithPref(this, notificationVisibility);
         }
         finish();
     }
