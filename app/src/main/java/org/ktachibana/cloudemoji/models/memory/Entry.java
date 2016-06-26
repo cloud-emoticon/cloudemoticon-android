@@ -40,4 +40,8 @@ public class Entry {
     public int hashCode() {
         return emoticon.hashCode() + description.hashCode();
     }
+
+    public boolean searchQuery(String query) {
+        return emoticon.contains(query) || description.contains(query);
+    }
 }

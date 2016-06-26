@@ -19,7 +19,9 @@ import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +36,7 @@ public class SearchResultFragment extends BaseFragment {
     @Arg
     String mSearchQuery;
     @Arg(bundler = ParcelerArgsBundler.class)
-    List<Entry> mSearchResult;
+    List<Map.Entry<Entry, HashSet<String>>> mSearchResult;
 
     public SearchResultFragment() {
         // Required empty public constructor

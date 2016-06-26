@@ -10,16 +10,19 @@ import android.widget.TextView;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SearchResultListViewAdapter extends BaseAdapter {
-    private List<Entry> mResults;
+    private List<Map.Entry<Entry, HashSet<String>>> mResults;
     private LayoutInflater mInflater;
 
-    public SearchResultListViewAdapter(Context mContext, List<Entry> results) {
+    public SearchResultListViewAdapter(Context mContext, List<Map.Entry<Entry, HashSet<String>>> results) {
         mResults = results;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -51,15 +54,32 @@ public class SearchResultListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final Entry result = mResults.get(position);
+        final Map.Entry<Entry, HashSet<String>> result = mResults.get(position);
+        final Entry entry = result.getKey();
+        final HashSet<String> sources = result.getValue();
 
-        viewHolder.emoticon.setText(result.getEmoticon());
-        if (result.getDescription().equals("")) {
-            viewHolder.description.setVisibility(View.GONE);
-        } else {
-            viewHolder.description.setVisibility(View.VISIBLE);
-            viewHolder.description.setText(result.getDescription());
+        // Build sources string
+        final StringBuilder sourcesStringBuilder = new StringBuilder();
+        sourcesStringBuilder.append("from: ");
+        Iterator<String> i = sources.iterator();
+        while (i.hasNext()) {
+            sourcesStringBuilder.append(i.next());
+            if (i.hasNext()) {
+                sourcesStringBuilder.append(", ");
+            }
         }
+        final String sourcesString = sourcesStringBuilder.toString();
+
+        // Build description
+        final String description;
+        if ("".equals(entry.getDescription())) {
+            description = sourcesString;
+        } else {
+            description = String.format("%s\n%s", entry.getDescription(), sourcesString);
+        }
+
+        viewHolder.emoticon.setText(entry.getEmoticon());
+        viewHolder.description.setText(description);
 
         return convertView;
     }
