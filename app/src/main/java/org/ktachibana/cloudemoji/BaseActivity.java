@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
+import org.ktachibana.cloudemoji.utils.CopyUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 
@@ -79,22 +80,11 @@ public class BaseActivity extends AppCompatActivity {
         showSnackBar(event.getMessage());
     }
 
-    @SuppressWarnings("deprecation")
-    @TargetApi(11)
     @Subscribe
     public void handle(EntryCopiedAndAddedToHistoryEvent event) {
+        // Copy to clipboard
         String copied = event.getEntry().getEmoticon();
-
-        if (SystemUtils.belowHoneycomb()) {
-            android.text.ClipboardManager clipboard
-                    = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(copied);
-        } else {
-            android.content.ClipboardManager clipboard
-                    = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("emoji", copied);
-            clipboard.setPrimaryClip(clip);
-        }
+        CopyUtils.copyToClipboard(this, copied);
 
         // Show toast
         boolean isCloseAfterCopy = mPreferences.getBoolean(Constants.PREF_CLOSE_AFTER_COPY, true);
