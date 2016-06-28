@@ -3,19 +3,34 @@ package org.ktachibana.cloudemoji.utils;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class EmoticonHeadService extends Service {
     private WindowManager windowManager;
-    private ImageView head;
+    private View rootView;
+    private boolean showing;
+    @Bind(R.id.icon)
+    ImageView icon;
+    @Bind(R.id.window)
+    FrameLayout window;
 
     @Nullable
     @Override
@@ -29,8 +44,9 @@ public class EmoticonHeadService extends Service {
 
         // Initialize
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        head = new ImageView(this);
-        head.setImageResource(R.drawable.ic_launcher);
+        rootView = LayoutInflater.from(this).inflate(R.layout.view_emoticon_head, null);
+        ButterKnife.bind(this, rootView);
+        showing = true;
 
         // Window params
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -43,43 +59,78 @@ public class EmoticonHeadService extends Service {
         params.x = 0;
         params.y = 100;
 
-        // When head touched, moves
-        head.setOnTouchListener(new View.OnTouchListener() {
-            private int initialX;
-            private int initialY;
-            private float initialTouchX;
-            private float initialTouchY;
+        // Gesture detector for icon
+        final GestureDetectorCompat detector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
 
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        initialX = params.x;
-                        initialY = params.y;
-                        initialTouchX = event.getRawX();
-                        initialTouchY = event.getRawY();
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
-                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
-                        windowManager.updateViewLayout(head, params);
-                        return true;
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                params.x = (int) e2.getRawX();
+                params.y = (int) e2.getRawY();
+                windowManager.updateViewLayout(rootView, params);
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                // When clicked, show/hide window
+                if (showing) {
+                    window.setVisibility(View.GONE);
+                } else {
+                    window.setVisibility(View.VISIBLE);
                 }
-                return false;
+                showing = !showing;
+                return true;
+            }
+        });
+        icon.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                detector.onTouchEvent(event);
+                return true;
             }
         });
 
+        // When view touched, move with finger
+//        icon.setOnTouchListener(new View.OnTouchListener() {
+//            private int initialX;
+//            private int initialY;
+//            private float initialTouchX;
+//            private float initialTouchY;
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        initialX = params.x;
+//                        initialY = params.y;
+//                        initialTouchX = event.getRawX();
+//                        initialTouchY = event.getRawY();
+//                        return true;
+//                    case MotionEvent.ACTION_UP:
+//                        return true;
+//                    case MotionEvent.ACTION_MOVE:
+//                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
+//                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
+//                        windowManager.updateViewLayout(rootView, params);
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+
         // Add
-        windowManager.addView(head, params);
+        windowManager.addView(rootView, params);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (head != null) {
-            windowManager.removeView(head);
+        if (rootView != null) {
+            windowManager.removeView(rootView);
         }
     }
 }
