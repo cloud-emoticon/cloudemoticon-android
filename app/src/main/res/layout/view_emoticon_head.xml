@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list"
+        android:background="#EEEEEE"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/icon"
@@ -23,4 +24,16 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="18dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/emoticon_head_prompt"
+        android:textColor="@android:color/black"
+        android:id="@+id/prompt"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/list" />
 </RelativeLayout>

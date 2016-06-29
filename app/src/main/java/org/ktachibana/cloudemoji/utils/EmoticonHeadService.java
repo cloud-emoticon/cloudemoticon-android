@@ -51,6 +51,9 @@ public class EmoticonHeadService extends Service {
     @Bind(R.id.icon)
     ImageView icon;
 
+    @Bind(R.id.prompt)
+    TextView prompt;
+
     List<Favorite> favorites;
     Adapter adapter;
     @Bind(R.id.list)
@@ -123,8 +126,10 @@ public class EmoticonHeadService extends Service {
                 // When clicked, show/hide window
                 if (showing) {
                     list.setVisibility(View.GONE);
+                    prompt.setVisibility(View.GONE);
                 } else {
                     list.setVisibility(View.VISIBLE);
+                    prompt.setVisibility(View.VISIBLE);
                 }
                 showing = !showing;
                 return true;

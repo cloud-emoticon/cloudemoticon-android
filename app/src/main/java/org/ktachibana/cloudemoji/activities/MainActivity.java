@@ -92,34 +92,29 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Setup notification
         setupNotification();
 
-        // Show overlay rationale if needed
-        showOverlayRationaleIfNeeded();
-
         // Setup emoticon head
         setupEmoticonHead();
-
-        // DO NOT PUT ANY INIT CODE AFTER THIS
     }
 
     @TargetApi(23)
-    private void showOverlayRationaleIfNeeded() {
-        if (!EmoticonHeadUtils.isOverlayAllowed(this)) {
-            new AlertDialogWrapper.Builder(this)
-                    .setMessage(R.string.overlay_rationale)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                            startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE);
-                        }
-                    })
-                    .show();
-        }
+    private void showOverlayRationale() {
+        new AlertDialogWrapper.Builder(this)
+                .setMessage(R.string.overlay_rationale)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE);
+                    }
+                })
+                .show();
     }
 
     private void setupEmoticonHead() {
         if (EmoticonHeadUtils.isOverlayAllowed(this)) {
             EmoticonHeadUtils.setupEmoticonHeadWithPref(this, mPreferences.getBoolean(Constants.PREF_EMOTICON_HEAD_VISIBILITY, Constants.EMOTICON_HEAD_DEFAULT_VISIBILITY));
+        } else {
+            showOverlayRationale();
         }
     }
 
@@ -308,12 +303,12 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Coming back from preference
         // Favorites may be changed
         // Need to re-render favorites
-        if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
+        else if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
             render();
         }
 
         // Coming back from overlay permission
-        if (requestCode == OVERLAY_PERMISSION_REQUEST_CODE) {
+        else if (requestCode == OVERLAY_PERMISSION_REQUEST_CODE) {
             if (EmoticonHeadUtils.isOverlayAllowed(this)) {
                 setupEmoticonHead();
             }

@@ -81,5 +81,6 @@
     <string name="emoticon_head">Emoticon head</string>
     <string name="emoticon_head_visibility">Emoticon head visibility</string>
     <string name="show_emoticon_head_after_boot_up">Show emoticon head after boot-up</string>
-    <string name="overlay_rationale">We need overlay permission in order to show emoticon head.\nDon\'t worry, you can always disable it.</string>
+    <string name="overlay_rationale">We need overlay permission in order to show emoticon head.\nEmoticon head is a floating icon on top of your screen from which you can quickly access your bookmarks without opening the app.\nDon\'t worry, you can always disable it.</string>
+    <string name="emoticon_head_prompt">Single tap to show/hide, double tap to refresh from bookmarks</string>
 </resources>
