@@ -3,12 +3,16 @@ package org.ktachibana.cloudemoji.utils;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +30,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
@@ -39,6 +44,7 @@ import butterknife.ButterKnife;
 
 public class EmoticonHeadService extends Service {
     private WindowManager windowManager;
+    private WindowManager.LayoutParams params;
     private View rootView;
 
     private boolean showing;
@@ -67,7 +73,7 @@ public class EmoticonHeadService extends Service {
         showing = true;
 
         // Window params
-        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
@@ -79,13 +85,6 @@ public class EmoticonHeadService extends Service {
 
         // Add
         windowManager.addView(rootView, params);
-
-        rootView.post(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
 
         // Gesture detector for icon
         final GestureDetectorCompat detector = new GestureDetectorCompat(EmoticonHeadService.this, new GestureDetector.SimpleOnGestureListener() {
@@ -100,8 +99,14 @@ public class EmoticonHeadService extends Service {
             }
 
             @Override
-            public void onLongPress(MotionEvent e) {
-                // todo: refresh
+            public boolean onDoubleTap(MotionEvent e) {
+                favorites = Favorite.listAll(Favorite.class);
+                adapter.clear();
+                for (Favorite f : favorites) {
+                    adapter.add(f);
+                }
+                adapter.notifyDataSetChanged();
+                return true;
             }
 
             @Override
@@ -140,7 +145,10 @@ public class EmoticonHeadService extends Service {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CopyUtils.copyToClipboard(EmoticonHeadService.this, favorites.get(position).getEmoticon());
+                String emoticon = favorites.get(position).getEmoticon();
+                CopyUtils.copyToClipboard(EmoticonHeadService.this, emoticon);
+
+                Toast.makeText(EmoticonHeadService.this, emoticon + "\n" + getString(R.string.copied), Toast.LENGTH_SHORT).show();
             }
         });
     }
