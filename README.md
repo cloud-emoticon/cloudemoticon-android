@@ -4,23 +4,24 @@ A cloud solution for your favorite emoticons
 
 <a href="https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a>
 
-## This app
+## Features
+
+### This app
 * downloads emoticon repositories from remote servers
 * shows them on categorized lists
 * is one-click copy capable
 
-## You only need to
-* host your emoticons (Json or XML) on a remote server, e.g.
-    * Dropbox public shared folder
-    * your own server
+### You only need to host your emoticons (Json or XML) on a remote server, e.g.
+* Dropbox public shared folders
+* your own server
 * add others' repositories from our repository store
 
-## So that you don't have to
+### So that you don't have to
 * hack IME's and make changes manually when you need to
 * use other cloud apps that is not one-click copy capable
 * use other un-customizable emoticon apps
 
-## Features
+### Features
 * Multi-repository management
 * Bookmarks
 * History
@@ -31,5 +32,29 @@ A cloud solution for your favorite emoticons
 * Add your bookmarks to your user dictionary (some IME's can use it!)
 * More...
 
-## Screenshot
+### Screenshot
 ![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
+
+## Develop
+
+On Windows, replace `./gradlew` with `gradlew`
+
+### Clean
+```bash
+./gradlew clean
+```
+
+### Build debug variant
+```bash
+./gradlew assembleDebug
+```
+
+### Build and install debug variant
+```bash
+./gradlew installDebug
+```
+
+### Build release variant (requires `keystores.properties` under root project directory)
+```bash
+./gradlew assembleRelease
+```

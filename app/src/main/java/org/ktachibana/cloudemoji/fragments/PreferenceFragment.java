@@ -222,7 +222,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void backupFavorites() {
         boolean success = BackupUtils.backupFavorites();
         if (success) {
@@ -232,7 +232,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         }
     }
 
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void restoreFavorites() {
         boolean success = BackupUtils.restoreFavorites();
         if (success) {
