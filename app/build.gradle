@@ -12,18 +12,6 @@ android {
         versionName '1.1.0'
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            debuggable true
-            versionNameSuffix '.debug'
-            zipAlignEnabled true
-        }
-        release {
-            debuggable false
-            zipAlignEnabled true
-        }
-    }
 
     // load keystore.properties
     def keystorePropertiesFile = rootProject.file("keystores.properties")
@@ -36,6 +24,20 @@ android {
             keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            versionNameSuffix '.debug'
+            zipAlignEnabled true
+        }
+        release {
+            debuggable false
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
         }
     }
 }

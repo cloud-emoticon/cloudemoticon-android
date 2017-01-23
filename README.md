@@ -35,7 +35,7 @@ A cloud solution for your favorite emoticons
 ### Screenshot
 ![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
 
-## Develop
+## Development
 
 On Windows, replace `./gradlew` with `gradlew`
 
