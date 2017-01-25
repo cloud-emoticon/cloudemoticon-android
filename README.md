@@ -41,20 +41,22 @@ On Windows, replace `./gradlew` with `gradlew`
 
 ### Clean
 ```bash
-./gradlew clean
+./gradlew app:clean
 ```
 
 ### Build debug variant
 ```bash
-./gradlew assembleDebug
+./gradlew app:assembleDebug
+# Then find apk under app/build/outputs/apk/app-debug.apk
 ```
 
 ### Build and install debug variant
 ```bash
-./gradlew installDebug
+./gradlew app:installDebug
 ```
 
 ### Build release variant (requires `keystores.properties` under root project directory)
 ```bash
-./gradlew assembleRelease
+./gradlew app:assembleRelease
+# Then find apk under app/build/outputs/apk/app-release.apk
 ```
