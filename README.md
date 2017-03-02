@@ -11,10 +11,9 @@ A cloud solution for your favorite emoticons
 * shows them on categorized lists
 * is one-click copy capable
 
-### You only need to host your emoticons (Json or XML) on a remote server, e.g.
-* Dropbox public shared folders
+### You only need to add your emoticons (Json or XML) from
 * your own server
-* add others' repositories from our repository store
+* others' repositories from our repository store
 
 ### So that you don't have to
 * hack IME's and make changes manually when you need to
