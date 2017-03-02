@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import org.ktachibana.cloudemoji.Constants;
@@ -58,7 +59,7 @@ public class NotificationUtils {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(title)                     // Title
                 .setContentText(text)                       // Text
-                .setSmallIcon(R.drawable.ic_launcher)       // Icon
+                .setSmallIcon(R.drawable.ic_notification)   // Icon
                 .setContentIntent(pIntent)                  // Intent to launch this app
                 .setWhen(0)                                 // No time to display
                 .setPriority(priority)                      // Given priority
