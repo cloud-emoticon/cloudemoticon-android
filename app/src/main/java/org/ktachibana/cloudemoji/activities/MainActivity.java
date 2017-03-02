@@ -258,26 +258,28 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Get current version and compare
         int versionCode = BuildConfig.VERSION_CODE;
 
-        // Already latest
         if (latestVersionCode == versionCode) {
+            // Already latest
             showSnackBar(R.string.already_latest_version);
-            return;
+        } else if (latestVersionCode < versionCode) {
+            // More latest than latest
+            showSnackBar(R.string.cool_kid);
+        } else {
+            // New version available, show dialog
+            new MaterialDialog.Builder(MainActivity.this)
+                    .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
+                    .positiveText(R.string.go_to_play_store)
+                    .negativeText(android.R.string.cancel)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            Intent intent = new Intent();
+                            intent.setData(Uri.parse(Constants.PLAY_STORE_URL));
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
         }
-
-        // New version available, show dialog
-        new MaterialDialog.Builder(MainActivity.this)
-                .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
-                .positiveText(R.string.go_to_play_store)
-                .negativeText(android.R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        Intent intent = new Intent();
-                        intent.setData(Uri.parse(Constants.PLAY_STORE_URL));
-                        startActivity(intent);
-                    }
-                })
-                .show();
     }
 
     private void replaceMainContainer(Fragment fragment) {
