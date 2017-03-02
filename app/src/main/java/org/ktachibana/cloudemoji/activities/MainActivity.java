@@ -339,12 +339,12 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     @SuppressWarnings("unchecked")
     private void setupDefaultRepoIfNotExists() {
         // Find repository with default url
-        List<Repository> kt = Select
+        List<Repository> candidateDefaultRepositories = Select
                 .from(Repository.class)
                 .where(Condition.prop("url")
                         .eq(Constants.DEFAULT_REPOSITORY_URL))
                 .list();
-        if (kt.size() != 0) {
+        if (candidateDefaultRepositories.size() != 0) {
             // If found, ignore below
             return;
         }
@@ -353,11 +353,11 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         OutputStream outputStream = null;
         try {
             // Save record to database
-            Repository defaultRepository = new Repository(Constants.DEFAULT_REPOSITORY_URL, "KT");
+            Repository defaultRepository = new Repository(Constants.DEFAULT_REPOSITORY_URL, "KT's favorites");
             defaultRepository.save();
 
             // Load file from assets and save to file system
-            inputStream = getAssets().open("test.xml");
+            inputStream = getAssets().open("default.json");
             File file = new File(BaseApplication.context().getFilesDir(), defaultRepository.getFileName());
             outputStream = new FileOutputStream(file);
 

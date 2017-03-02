@@ -33,7 +33,7 @@ public class SourceReader {
             if (formatType == Constants.FORMAT_TYPE_XML) {
                 source = new SourceXmlParser().parse(alias, fileReader);
             } else if (formatType == Constants.FORMAT_TYPE_JSON) {
-                source = new SourceJsonParser().parse(IOUtils.toString(fileReader));
+                source = new SourceJsonParser().parse(alias, fileReader);
             }
         } catch (XmlPullParserException e) {
             throw new SourceParsingException(Constants.FORMAT_TYPE_XML);

@@ -12,6 +12,7 @@ import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,14 +49,11 @@ public class BackupUtils {
 
         // Get backup file
         File backupFile = new File(Constants.FAVORITES_BACKUP_FILE_PATH);
-
-        // Read from file
-        FileInputStream inputStream = null;
+        FileReader fileReader = null;
         try {
             // Get backed up favorites
-            inputStream = new FileInputStream(backupFile);
-            String json = IOUtils.toString(inputStream);
-            Source source = new SourceJsonParser().parse(json);
+            fileReader = new FileReader(backupFile);
+            Source source = new SourceJsonParser().parse(null, fileReader);
             List<Entry> backedUpFavorites = source.getCategories().get(0).getEntries();
 
             // Get current favorites
@@ -83,7 +81,7 @@ public class BackupUtils {
         } catch (IOException e) {
             return false;
         } finally {
-            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(fileReader);
         }
         return true;
     }

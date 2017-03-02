@@ -4,6 +4,8 @@ import android.os.Environment;
 import android.support.annotation.IntDef;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public interface Constants {
     // General
@@ -43,11 +45,11 @@ public interface Constants {
     }
 
     // URLs
-    String DEFAULT_REPOSITORY_URL = "https://dl.dropboxusercontent.com/u/120725807/test.xml";
+    String DEFAULT_REPOSITORY_URL = "http://ktachibana.party/cloudemoticon/default.json";
     String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
     String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
     String STORE_URL = "http://emoticon.moe/store.json";
-    String UPDATE_CHECKER_URL = "https://cloudemoticonbackend.herokuapp.com/version";
+    String UPDATE_CHECKER_URL = "http://ktachibana.party/cloudemoticon/version.json";
     String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
 
     // Intent
