@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         setupNotification();
 
         // Setup emoticon head
-        setupEmoticonHead();
+//        setupEmoticonHead();
     }
 
     @TargetApi(23)

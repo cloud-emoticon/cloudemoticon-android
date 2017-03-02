@@ -13,14 +13,14 @@
             android:defaultValue="true"
             android:key="pref_show_after_boot_up"
             android:title="@string/show_after_boot_up" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_emoticon_head_visibility"
-            android:title="@string/emoticon_head_visibility" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_show_emoticon_head_after_boot_up"
-            android:title="@string/show_emoticon_head_after_boot_up" />
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="pref_emoticon_head_visibility"-->
+            <!--android:title="@string/emoticon_head_visibility" />-->
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="pref_show_emoticon_head_after_boot_up"-->
+            <!--android:title="@string/show_emoticon_head_after_boot_up" />-->
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_close_after_copy"

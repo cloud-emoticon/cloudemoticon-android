@@ -133,12 +133,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         });
 
         // Emoticon head
-        Preference emoticonHeadVisibilityPref = findPreference(Constants.PREF_EMOTICON_HEAD_VISIBILITY);
-        Preference showEmoticonHeadAfterBootUpPref = findPreference(Constants.PREF_SHOW_EMOTICON_HEAD_AFTER_BOOT_UP);
-        if (!EmoticonHeadUtils.isOverlayAllowed(getContext())) {
-            emoticonHeadVisibilityPref.setEnabled(false);
-            showEmoticonHeadAfterBootUpPref.setEnabled(false);
-        }
+//        Preference emoticonHeadVisibilityPref = findPreference(Constants.PREF_EMOTICON_HEAD_VISIBILITY);
+//        Preference showEmoticonHeadAfterBootUpPref = findPreference(Constants.PREF_SHOW_EMOTICON_HEAD_AFTER_BOOT_UP);
+//        if (!EmoticonHeadUtils.isOverlayAllowed(getContext())) {
+//            emoticonHeadVisibilityPref.setEnabled(false);
+//            showEmoticonHeadAfterBootUpPref.setEnabled(false);
+//        }
 
         // Import favorites into IME
         Preference importImePref = findPreference(Constants.PREF_IMPORT_IME);
