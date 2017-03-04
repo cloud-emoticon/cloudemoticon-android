@@ -32,7 +32,7 @@ A cloud solution for your favorite emoticons
 * More...
 
 ### Screenshot
-![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/main.png)
+![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png)
 
 ## Development
 
