@@ -71,14 +71,14 @@ public class Favorite extends SugarRecord implements Serializable {
         return lastModifiedTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) return false;
-        if (!(o instanceof Favorite)) return false;
-        Favorite another = (Favorite) o;
-        if (!this.emoticon.equals(another.emoticon)) return false;
-        if (!this.description.equals(another.description)) return false;
-        if (!this.shortcut.equals(another.shortcut)) return false;
-        return true;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (o == null) return false;
+//        if (!(o instanceof Favorite)) return false;
+//        Favorite another = (Favorite) o;
+//        if (!this.emoticon.equals(another.emoticon)) return false;
+//        if (!this.description.equals(another.description)) return false;
+//        if (!this.shortcut.equals(another.shortcut)) return false;
+//        return true;
+//    }
 }
