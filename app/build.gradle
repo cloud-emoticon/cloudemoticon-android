@@ -8,10 +8,10 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 25
-        versionName '1.1.3'
+        versionCode 26
+        versionName '1.1.4'
+        archivesBaseName = "$versionName-$versionCode"
     }
-
 
     // load keystore.properties
     def keystorePropertiesFile = rootProject.file("keystores.properties")

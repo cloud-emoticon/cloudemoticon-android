@@ -46,7 +46,7 @@ On Windows, replace `./gradlew` with `gradlew`
 ### Build debug variant
 ```bash
 ./gradlew app:assembleDebug
-# Then find apk under app/build/outputs/apk/app-debug.apk
+# Then find apk under app/build/outputs/apk/$versionName-$versionCode-debug.apk
 ```
 
 ### Build and install debug variant
@@ -57,5 +57,5 @@ On Windows, replace `./gradlew` with `gradlew`
 ### Build release variant (requires `keystores.properties` under root project directory)
 ```bash
 ./gradlew app:assembleRelease
-# Then find apk under app/build/outputs/apk/app-release.apk
+# Then find apk under app/build/outputs/apk/$versionName-$versionCode-release.apk
 ```
