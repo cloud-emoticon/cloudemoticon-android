@@ -1,7 +1,5 @@
 package org.ktachibana.cloudemoji;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,7 +19,6 @@ import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.CopyUtils;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 
 /**

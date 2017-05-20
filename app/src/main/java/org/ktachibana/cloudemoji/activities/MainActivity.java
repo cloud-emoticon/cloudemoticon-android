@@ -1,9 +1,7 @@
 package org.ktachibana.cloudemoji.activities;
 
-import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -11,13 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -40,7 +36,6 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
-import org.ktachibana.cloudemoji.utils.EmoticonHeadUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.parceler.Parcels;
 
@@ -56,7 +51,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final int OVERLAY_PERMISSION_REQUEST_CODE = 1234;
     public static final String SOURCE_CACHE_TAG = "sourceCache";
     private static final String CURRENT_ITEM_TAG = "currentItem";
     private LinkedHashMap<Long, Source> sourceCache;
@@ -91,31 +85,6 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
         // Setup notification
         setupNotification();
-
-        // Setup emoticon head
-//        setupEmoticonHead();
-    }
-
-    @TargetApi(23)
-    private void showOverlayRationale() {
-        new AlertDialogWrapper.Builder(this)
-                .setMessage(R.string.overlay_rationale)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE);
-                    }
-                })
-                .show();
-    }
-
-    private void setupEmoticonHead() {
-        if (EmoticonHeadUtils.isOverlayAllowed(this)) {
-            EmoticonHeadUtils.setupEmoticonHeadWithPref(this, mPreferences.getBoolean(Constants.PREF_EMOTICON_HEAD_VISIBILITY, Constants.EMOTICON_HEAD_DEFAULT_VISIBILITY));
-        } else {
-            showOverlayRationale();
-        }
     }
 
     private void render() {
@@ -155,9 +124,6 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
         if (Constants.PREF_NOTIFICATION_VISIBILITY.equals(key)) {
             setupNotification();
-        }
-        if (Constants.PREF_EMOTICON_HEAD_VISIBILITY.equals(key)) {
-            setupEmoticonHead();
         }
     }
 
@@ -307,13 +273,6 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         // Need to re-render favorites
         else if (requestCode == Constants.PREFERENCE_REQUEST_CODE) {
             render();
-        }
-
-        // Coming back from overlay permission
-        else if (requestCode == OVERLAY_PERMISSION_REQUEST_CODE) {
-            if (EmoticonHeadUtils.isOverlayAllowed(this)) {
-                setupEmoticonHead();
-            }
         }
     }
 

@@ -10,7 +10,6 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;

@@ -4,8 +4,6 @@ import android.os.Environment;
 import android.support.annotation.IntDef;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 public interface Constants {
     // General
@@ -15,15 +13,10 @@ public interface Constants {
     int PERSISTENT_NOTIFICATION_ID = 0;
     String PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY = "both";
 
-    // Emoticon head
-    boolean EMOTICON_HEAD_DEFAULT_VISIBILITY = true;
-
     // Preferences
     String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";
     String PREF_NOTIFICATION_VISIBILITY = "pref_notification_visibility";
     String PREF_SHOW_AFTER_BOOT_UP = "pref_show_after_boot_up";
-    String PREF_EMOTICON_HEAD_VISIBILITY = "pref_emoticon_head_visibility";
-    String PREF_SHOW_EMOTICON_HEAD_AFTER_BOOT_UP = "pref_show_emoticon_head_after_boot_up";
     String PREF_VERSION = "pref_version";
     String PREF_GIT_HUB_RELEASE = "pref_git_hub_release";
     String PREF_GIT_HUB_REPO = "pref_git_hub_repo";

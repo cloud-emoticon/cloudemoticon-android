@@ -104,8 +104,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
-
-        <service android:name=".utils.EmoticonHeadService" />
     </application>
 
 </manifest>
