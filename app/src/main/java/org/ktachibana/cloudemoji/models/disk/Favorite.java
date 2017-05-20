@@ -10,13 +10,27 @@ import java.util.List;
 /**
  * POJO class holding an entry with arrangingOrder
  */
-public class Favorite extends SugarRecord implements Serializable {
+public class Favorite extends SugarRecord implements Serializable, Reorderable<Favorite> {
     private String emoticon;
     private String description;
     private String shortcut = "";
     private long lastModifiedTime = System.currentTimeMillis();
 
     public Favorite() {
+    }
+
+    public Favorite copy() {
+        Favorite clonedFavorite = new Favorite(this.emoticon, this.description, this.shortcut);
+        clonedFavorite.lastModifiedTime = this.lastModifiedTime;
+        return clonedFavorite;
+    }
+
+    public void overwrite(Favorite favorite) {
+        this.emoticon = favorite.getEmoticon();
+        this.description = favorite.getDescription();
+        this.shortcut = favorite.getShortcut();
+        this.lastModifiedTime = favorite.getLastModifiedTime();
+        this.save();
     }
 
     public Favorite(String emoticon, String description, String shortcut) {
