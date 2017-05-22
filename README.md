@@ -6,7 +6,7 @@ A cloud solution for your favorite emoticons
 
 请 **不要** 使用[小米商店的这个版本](http://app.mi.com/details?id=com.vrem.yunwenzisyj)。
 
-这个版本并不是由我本人发布，并且夹带了广告和无用的菜单选项。
+这个版本并不是由我本人发布，并且夹带了广告和无用的菜单选项。
 
 我不能保证这个版本不包含其他未经开源社区审核的代码（甚至是恶意代码），我也不能保证这个版本能够够维持更新，以跟进最新的特性和bug修复。
 
