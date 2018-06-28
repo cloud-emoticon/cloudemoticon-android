@@ -3,7 +3,7 @@
 * ORM (prevents Instant Run!)
 * ListViews
 * EventBus
-* Lack of clean architecture and tests
+* Lack of DI and clean architecture and tests
 * Base classes?
 * Manual deployment
 
