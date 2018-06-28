@@ -23,7 +23,7 @@ public class RepositoryDownloaderClient extends BaseHttpClient {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             // Write to file
-                            File repositoryFile = new File(BaseApplication.context().getFilesDir(), item.getFileName());
+                            File repositoryFile = new File(BaseApplication.Companion.context().getFilesDir(), item.getFileName());
                             FileOutputStream outputStream = null;
                             try {
                                 outputStream = new FileOutputStream(repositoryFile);

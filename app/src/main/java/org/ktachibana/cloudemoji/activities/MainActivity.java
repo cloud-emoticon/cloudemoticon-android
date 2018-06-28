@@ -319,7 +319,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
             // Load file from assets and save to file system
             inputStream = getAssets().open("default.json");
-            File file = new File(BaseApplication.context().getFilesDir(), defaultRepository.getFileName());
+            File file = new File(BaseApplication.Companion.context().getFilesDir(), defaultRepository.getFileName());
             outputStream = new FileOutputStream(file);
 
             // Copying

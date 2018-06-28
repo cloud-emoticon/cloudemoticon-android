@@ -22,7 +22,7 @@ public class SourceReader {
         String fileName = repository.getFileName();
 
         // Read the file from file system
-        File file = new File(BaseApplication.context().getFilesDir(), fileName);
+        File file = new File(BaseApplication.Companion.context().getFilesDir(), fileName);
         FileReader fileReader = null;
         try {
             // Read it
