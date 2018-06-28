@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
@@ -42,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // Support
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -55,8 +57,15 @@ dependencies {
     implementation('com.github.afollestad.material-dialogs:core:0.8.5.2@aar') { transitive = true }
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.jakewharton:butterknife:7.0.1'
+    annotationProcessor 'com.jakewharton:butterknife:7.0.1'
     // Database
     implementation 'com.github.satyan:sugar:b16e65326a'
+    def room_version = "1.1.1"
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    implementation "android.arch.persistence.room:rxjava2:$room_version"
+    implementation "android.arch.persistence.room:guava:$room_version"
+    testImplementation "android.arch.persistence.room:testing:$room_version"
     // Networking
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.loopj.android:android-async-http:1.4.8'
