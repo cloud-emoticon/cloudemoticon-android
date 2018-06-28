@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SearchResultListViewAdapter extends BaseAdapter {
@@ -85,10 +85,10 @@ public class SearchResultListViewAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.emoticonTextView)
+        @BindView(R.id.emoticonTextView)
         TextView emoticon;
 
-        @Bind(R.id.descriptionTextView)
+        @BindView(R.id.descriptionTextView)
         TextView description;
 
         ViewHolder(View view) {

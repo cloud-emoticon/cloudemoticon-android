@@ -19,12 +19,12 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView mList;
     private List<StoreRepository> mRepositories;
 

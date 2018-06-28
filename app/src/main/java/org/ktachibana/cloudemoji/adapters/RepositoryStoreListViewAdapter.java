@@ -19,7 +19,7 @@ import org.ktachibana.cloudemoji.models.memory.StoreRepository;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
@@ -84,17 +84,17 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.root)
+        @BindView(R.id.root)
         LinearLayout root;
-        @Bind(R.id.alias)
+        @BindView(R.id.alias)
         TextView alias;
-        @Bind(R.id.url)
+        @BindView(R.id.url)
         TextView url;
-        @Bind(R.id.description)
+        @BindView(R.id.description)
         TextView description;
-        @Bind(R.id.authorImage)
+        @BindView(R.id.authorImage)
         ImageView authorImage;
-        @Bind(R.id.author)
+        @BindView(R.id.author)
         TextView author;
 
         ViewHolder(View view) {

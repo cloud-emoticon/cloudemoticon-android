@@ -27,20 +27,20 @@ import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FavoriteFragment extends BaseFragment {
-    @Bind(R.id.favoriteListView)
+    @BindView(R.id.favoriteListView)
     DragSortListView mFavoriteListView;
 
-    @Bind(R.id.emptyView)
+    @BindView(R.id.emptyView)
     RelativeLayout mFavoriteEmptyView;
 
-    @Bind(R.id.emptyViewTextView)
+    @BindView(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton mFab;
 
     FavoriteListViewAdapter mAdapter;

@@ -23,15 +23,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SearchResultFragment extends BaseFragment {
-    @Bind(R.id.searchResultListView)
+    @BindView(R.id.searchResultListView)
     ListView mSearchResultListView;
-    @Bind(R.id.emptyView)
+    @BindView(R.id.emptyView)
     RelativeLayout mSearchResultEmptyView;
-    @Bind(R.id.emptyViewTextView)
+    @BindView(R.id.emptyViewTextView)
     TextView mSearchResultEmptyViewTextView;
     @Arg
     String mSearchQuery;

@@ -17,7 +17,7 @@ import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSortListView.DropListener {
@@ -132,13 +132,13 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
     }
 
     static class ViewHolder {
-        @Bind(R.id.emoticonTextView)
+        @BindView(R.id.emoticonTextView)
         TextView emoticon;
-        @Bind(R.id.descriptionTextView)
+        @BindView(R.id.descriptionTextView)
         TextView description;
-        @Bind(R.id.favoriteStarImageView)
+        @BindView(R.id.favoriteStarImageView)
         ImageView star;
-        @Bind(R.id.favoriteEditImageView)
+        @BindView(R.id.favoriteEditImageView)
         ImageView edit;
 
         ViewHolder(View view) {

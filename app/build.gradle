@@ -12,6 +12,7 @@ android {
         versionCode 26
         versionName '1.1.4'
         archivesBaseName = "$versionName-$versionCode"
+        multiDexEnabled true
     }
 
     // load keystore.properties
@@ -58,8 +59,9 @@ dependencies {
     implementation 'com.github.mrengineer13:snackbar:1.2.0'
     implementation('com.github.afollestad.material-dialogs:core:0.8.5.2@aar') { transitive = true }
     implementation 'org.greenrobot:eventbus:3.0.0'
-    implementation 'com.jakewharton:butterknife:7.0.1'
-    annotationProcessor 'com.jakewharton:butterknife:7.0.1'
+    def butter_knife_version = "8.8.1"
+    implementation "com.jakewharton:butterknife:$butter_knife_version"
+    kapt "com.jakewharton:butterknife-compiler:$butter_knife_version"
     // Database
     implementation 'com.github.satyan:sugar:b16e65326a'
     def room_version = "1.1.1"
@@ -78,15 +80,15 @@ dependencies {
     // Parcel
     def parceler_version = "1.0.3"
     implementation "org.parceler:parceler-api:$parceler_version"
-    annotationProcessor "org.parceler:parceler:$parceler_version"
+    kapt "org.parceler:parceler:$parceler_version"
     // Fragment
     def fragmentargs_version = "4.0.0-RC1"
     implementation "com.hannesdorfmann.fragmentargs:annotation:$fragmentargs_version"
-    annotationProcessor "com.hannesdorfmann.fragmentargs:processor:$fragmentargs_version"
+    kapt "com.hannesdorfmann.fragmentargs:processor:$fragmentargs_version"
     implementation "com.hannesdorfmann.fragmentargs:bundler-parceler:$fragmentargs_version"
     // Permission
     implementation 'com.github.hotchemi:permissionsdispatcher:2.1.3'
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.1.3'
+    kapt 'com.github.hotchemi:permissionsdispatcher-processor:2.1.3'
     // Debug
     implementation 'com.facebook.stetho:stetho:1.3.1'
 }

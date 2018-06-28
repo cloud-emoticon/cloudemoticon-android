@@ -12,7 +12,7 @@ import org.ktachibana.cloudemoji.models.disk.History;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HistoryListViewAdapter extends BaseAdapter {
@@ -71,10 +71,10 @@ public class HistoryListViewAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.emoticonTextView)
+        @BindView(R.id.emoticonTextView)
         TextView emoticon;
 
-        @Bind(R.id.descriptionTextView)
+        @BindView(R.id.descriptionTextView)
         TextView description;
 
         ViewHolder(View view) {

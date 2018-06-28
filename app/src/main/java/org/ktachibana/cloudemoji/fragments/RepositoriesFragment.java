@@ -20,13 +20,13 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 
 import java.util.LinkedHashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepositoriesFragment extends BaseFragment {
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     protected ViewPager mPager;
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     protected PagerSlidingTabStrip mTabs;
     @Arg(bundler = ParcelerArgsBundler.class)
     LinkedHashMap<Long, Source> mCache;

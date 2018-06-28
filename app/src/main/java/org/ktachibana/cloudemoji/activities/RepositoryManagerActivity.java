@@ -26,20 +26,20 @@ import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepositoryManagerActivity extends BaseActivity {
-    @Bind(R.id.repositoryListView)
+    @BindView(R.id.repositoryListView)
     ListView mRepositoryListView;
 
-    @Bind(R.id.emptyView)
+    @BindView(R.id.emptyView)
     RelativeLayout mRepositoryEmptyView;
 
-    @Bind(R.id.emptyViewTextView)
+    @BindView(R.id.emptyViewTextView)
     TextView mEmptyViewTextView;
 
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton mFab;
 
     private RepositoryListViewAdapter mAdapter;

@@ -25,7 +25,7 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
@@ -218,13 +218,13 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     }
 
     static class EntryViewHolder {
-        @Bind(R.id.root)
+        @BindView(R.id.root)
         RelativeLayout root;
-        @Bind(R.id.emoticonTextView)
+        @BindView(R.id.emoticonTextView)
         TextView emoticon;
-        @Bind(R.id.descriptionTextView)
+        @BindView(R.id.descriptionTextView)
         TextView description;
-        @Bind(R.id.entryStarImageView)
+        @BindView(R.id.entryStarImageView)
         ImageView favorite;
 
         EntryViewHolder(View view) {
@@ -233,7 +233,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     }
 
     static class SectionHeaderViewHolder {
-        @Bind(R.id.sectionHeaderTextView)
+        @BindView(R.id.sectionHeaderTextView)
         TextView text;
 
         SectionHeaderViewHolder(View view) {

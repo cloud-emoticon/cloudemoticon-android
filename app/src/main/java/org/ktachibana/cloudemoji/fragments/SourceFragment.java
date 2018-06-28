@@ -18,12 +18,12 @@ import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends BaseFragment {
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     PinnedHeaderListView mList;
     @Arg(bundler = ParcelerArgsBundler.class)
     Source mSource;

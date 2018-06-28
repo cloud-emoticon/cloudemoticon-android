@@ -30,7 +30,7 @@ import org.ktachibana.cloudemoji.utils.BackupUtils;
 import java.io.File;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepositoryListViewAdapter extends BaseBaseAdapter {
@@ -168,17 +168,17 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.repositoryAliasTextView)
+        @BindView(R.id.repositoryAliasTextView)
         TextView aliasTextView;
-        @Bind(R.id.repositoryUrlTextView)
+        @BindView(R.id.repositoryUrlTextView)
         TextView urlTextView;
-        @Bind(R.id.repositoryDownloadButton)
+        @BindView(R.id.repositoryDownloadButton)
         ImageView downloadButton;
-        @Bind(R.id.repositoryEditButton)
+        @BindView(R.id.repositoryEditButton)
         ImageView editButton;
-        @Bind(R.id.repositoryExportButton)
+        @BindView(R.id.repositoryExportButton)
         ImageView exportButton;
-        @Bind(R.id.repositoryDeleteButton)
+        @BindView(R.id.repositoryDeleteButton)
         ImageView deleteButton;
 
         ViewHolder(View view) {
