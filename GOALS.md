@@ -1,5 +1,13 @@
-# Goals
+# Tech debts
 
-* Clean architecture
-* Tests
-* Personal account
+* ORM (prevents Instant Run!)
+* ListViews
+* EventBus
+* Lack of clean architecture and tests
+* Base classes?
+
+# Features
+
+* Chat head & instant paste
+* Cloud account!
+* UI overhaul?
