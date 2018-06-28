@@ -13,19 +13,19 @@ class BaseApplication : SugarApp() {
         super.onCreate()
         mContext = applicationContext
         mAppDatabase = Room.databaseBuilder(
-        this,
-            AppDatabase::class.java,
-            "ce.db"
+                this,
+                AppDatabase::class.java,
+                "ce.db"
         ).build()
 
         if (BuildConfig.DEBUG) {
             Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                    .enableDumpapp(
-                            Stetho.defaultDumperPluginsProvider(this))
-                    .enableWebKitInspector(
-                            Stetho.defaultInspectorModulesProvider(this))
-                    .build())
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build())
         }
     }
 

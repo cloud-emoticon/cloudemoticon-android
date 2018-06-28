@@ -115,7 +115,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
 
             // Clone
             Favorite[] shiftedFavorites = new Favorite[updateRange];
-            for (int i = updateLowIndex ; i <= updateHighIndex ; ++i) {
+            for (int i = updateLowIndex; i <= updateHighIndex; ++i) {
                 shiftedFavorites[i - updateLowIndex] = this.mFavorites.get(i).copy();
             }
 
@@ -123,7 +123,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
             this.mFavorites.add(from, this.mFavorites.remove(to));
 
             // Overwrite
-            for (int i = updateLowIndex ; i <= updateHighIndex ; ++i) {
+            for (int i = updateLowIndex; i <= updateHighIndex; ++i) {
                 this.mFavorites.get(i).overwrite(shiftedFavorites[i - updateLowIndex]);
             }
 
