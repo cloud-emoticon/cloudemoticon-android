@@ -12,7 +12,7 @@ import org.ktachibana.cloudemoji.BaseApplication;
  */
 public class SystemUtils {
     public static boolean networkAvailable() {
-        Context context = BaseApplication.context();
+        Context context = BaseApplication.Companion.context();
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         if (info == null) return false;

@@ -5,6 +5,6 @@ import org.ktachibana.cloudemoji.R;
 
 public class NetworkUnavailableException extends Exception {
     public NetworkUnavailableException() {
-        super(BaseApplication.context().getString(R.string.bad_conn));
+        super(BaseApplication.Companion.context().getString(R.string.bad_conn));
     }
 }

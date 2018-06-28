@@ -150,7 +150,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
             public void onClick(View view) {
                 // Delete repository file from file system
                 item.delete();
-                File deletedFile = new File(BaseApplication.context().getFilesDir(), item.getFileName());
+                File deletedFile = new File(BaseApplication.Companion.context().getFilesDir(), item.getFileName());
                 deletedFile.delete();
 
                 // Update list

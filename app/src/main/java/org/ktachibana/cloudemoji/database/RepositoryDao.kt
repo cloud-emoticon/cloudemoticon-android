@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query
 @Dao
 interface RepositoryDao {
     @Insert(onConflict = OnConflictStrategy.FAIL)
-    fun add(url: String, alias: String)
+    fun add(repository: Repository)
 
     @Query("SELECT * FROM REPOSITORY")
     fun getAll(): List<Repository>
