@@ -5,6 +5,7 @@
 * EventBus
 * Lack of clean architecture and tests
 * Base classes?
+* Manual deployment
 
 # Features
 
