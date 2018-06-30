@@ -7,6 +7,8 @@ import android.support.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import com.orm.SugarApp
 import org.ktachibana.cloudemoji.database.AppDatabase
+import org.ktachibana.cloudemoji.database.MigrationFrom2To3
+import org.ktachibana.cloudemoji.database.MigrationFrom3To4
 
 class BaseApplication : SugarApp() {
     override fun onCreate() {
@@ -16,7 +18,13 @@ class BaseApplication : SugarApp() {
                 this,
                 AppDatabase::class.java,
                 "ce.db"
-        ).allowMainThreadQueries().build() // TODO: remove!
+        )
+                .addMigrations(
+                        MigrationFrom2To3(),
+                        MigrationFrom3To4()
+                )
+                .allowMainThreadQueries()
+                .build() // TODO: remove!
 
         if (BuildConfig.DEBUG) {
             Stetho.initialize(

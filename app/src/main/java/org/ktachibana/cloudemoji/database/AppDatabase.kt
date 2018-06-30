@@ -6,7 +6,7 @@ import android.arch.persistence.room.TypeConverters
 
 @Database(entities = [
     Repository::class
-], version = 5)
+], version = 4)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun repositoryDao(): RepositoryDao
