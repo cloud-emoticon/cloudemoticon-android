@@ -55,6 +55,7 @@ dependencies {
     implementation('com.github.afollestad.material-dialogs:core:0.8.5.2@aar') { transitive = true }
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.jakewharton:butterknife:7.0.1'
+    annotationProcessor 'com.jakewharton:butterknife:7.0.1'
     // Database
     implementation 'com.github.satyan:sugar:b16e65326a'
     // Networking
