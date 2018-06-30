@@ -1,15 +1,17 @@
 # Tech debts
 
 * ORM (prevents Instant Run!)
-* ListViews (also removes two bad dependencies)
+* ListViews (also two bad dependencies)
 * EventBus
-* Lack of DI and clean architecture and tests
+* Lack of DI
+* Lack of clean architecture
+* Lack of tests
 * Access DB from main thread
-* Base classes?
 * Manual deployment
+* Base classes?
 
 # Features
 
-* Chat head & instant paste
+* Emoticon head & instant paste
 * Cloud account!
-* UI overhaul?
+* UI overhaul??
