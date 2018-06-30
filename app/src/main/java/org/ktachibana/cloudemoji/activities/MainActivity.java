@@ -26,12 +26,14 @@ import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.database.Repository;
+import org.ktachibana.cloudemoji.database.RepositoryDao;
+import org.ktachibana.cloudemoji.database.RepositoryFactory;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.events.RepositoriesPagerItemSelectedEvent;
 import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
-import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
@@ -55,12 +57,15 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     private static final String CURRENT_ITEM_TAG = "currentItem";
     private LinkedHashMap<Long, Source> sourceCache;
     private int currentItem;
+    private RepositoryDao repositoryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        this.repositoryDao = BaseApplication.Companion.database().repositoryDao();
 
         // Check first time run
         firstTimeCheck();
@@ -95,16 +100,14 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
      * Put every source into source cache
      */
     private LinkedHashMap<Long, Source> initializeSourceCache() {
-        LinkedHashMap<Long, Source> sourceCache = new LinkedHashMap<Long, Source>();
-
-        List<Repository> allRepositories = Repository.listAll(Repository.class);
-        for (Repository repository : allRepositories) {
+        LinkedHashMap<Long, Source> sourceCache = new LinkedHashMap<>();
+        final List<Repository> allRepositories = repositoryDao.getAll();
+        for (int i = 0 ; i < allRepositories.size() ; ++i) {
+            final Repository repository = allRepositories.get(i);
             if (repository.isAvailable()) {
                 try {
-                    long id = repository.getId();
-                    Source source =
-                            new SourceReader().readSourceFromDatabaseId(repository.getAlias(), id);
-                    sourceCache.put(id, source);
+                    Source source = new SourceReader().readSourceFromDatabase(repository);
+                    sourceCache.put(new Long(i), source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format));
                 } catch (Exception e) {
@@ -278,6 +281,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelable(SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
         outState.putInt(CURRENT_ITEM_TAG, currentItem);
     }
@@ -314,8 +318,9 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         OutputStream outputStream = null;
         try {
             // Save record to database
-            Repository defaultRepository = new Repository(Constants.DEFAULT_REPOSITORY_URL, "KT's favorites");
-            defaultRepository.save();
+            final Repository defaultRepository =
+                    RepositoryFactory.INSTANCE.newRepository(Constants.DEFAULT_REPOSITORY_URL, "KT's favorites");
+            repositoryDao.add(defaultRepository);
 
             // Load file from assets and save to file system
             inputStream = getAssets().open("default.json");
@@ -326,8 +331,15 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
             IOUtils.copy(inputStream, outputStream);
 
             // Set available to true and SAVE
-            defaultRepository.setAvailable(true);
-            defaultRepository.save();
+            final Repository newDefaultRepository = defaultRepository.copy(
+                    defaultRepository.getUrl(),
+                    defaultRepository.getAlias(),
+                    defaultRepository.getFormatType(),
+                    defaultRepository.getFileName(),
+                    true,
+                    defaultRepository.isVisible()
+            );
+            repositoryDao.update(newDefaultRepository);
         } catch (IOException e) {
             Log.e(Constants.DEBUG_TAG, e.getLocalizedMessage());
         } finally {

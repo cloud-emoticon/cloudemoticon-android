@@ -15,11 +15,12 @@ import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.database.Repository;
+import org.ktachibana.cloudemoji.database.RepositoryDao;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
-import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.RepositoryDownloaderClient;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
@@ -34,11 +35,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepositoryListViewAdapter extends BaseBaseAdapter {
+    private RepositoryDao mRepositoryDao;
     private List<Repository> mRepositories;
     private Context mContext;
 
     public RepositoryListViewAdapter(Context context) {
-        this.mRepositories = Repository.listAll(Repository.class);
+        this.mRepositoryDao = BaseApplication.Companion.database().repositoryDao();
+        this.mRepositories = this.mRepositoryDao.getAll();
         this.mContext = context;
     }
 
@@ -126,8 +129,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
             public void onClick(View v) {
                 try {
                     // Get Source object
-                    Source source =
-                            new SourceReader().readSourceFromDatabaseId(item.getAlias(), item.getId());
+                    Source source = new SourceReader().readSourceFromDatabase(item);
 
                     // Parse Source
                     String json = new SourceJsonParser().serialize(source);
@@ -149,7 +151,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
             @Override
             public void onClick(View view) {
                 // Delete repository file from file system
-                item.delete();
+                mRepositoryDao.delete(item);
                 File deletedFile = new File(BaseApplication.Companion.context().getFilesDir(), item.getFileName());
                 deletedFile.delete();
 
@@ -163,7 +165,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
     }
 
     public void updateRepositories() {
-        this.mRepositories = Repository.listAll(Repository.class);
+        this.mRepositories = this.mRepositoryDao.getAll();
         notifyDataSetChanged();
     }
 

@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseBaseAdapter;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.database.Repository;
+import org.ktachibana.cloudemoji.database.RepositoryDao;
+import org.ktachibana.cloudemoji.database.RepositoryFactory;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDuplicatedEvent;
-import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.StoreRepository;
 
 import java.util.List;
@@ -25,10 +28,12 @@ import butterknife.ButterKnife;
 public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
     private List<StoreRepository> mRepositories;
     private Context mContext;
+    private RepositoryDao mRepositoryDao;
 
     public RepositoryStoreListViewAdapter(Context context, List<StoreRepository> repositories) {
         this.mRepositories = repositories;
         this.mContext = context;
+        this.mRepositoryDao = BaseApplication.Companion.database().repositoryDao();
     }
 
     @Override
@@ -70,11 +75,14 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
         viewHolder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Repository.hasDuplicateUrl(item.getUrl())) {
+                if (mRepositoryDao.exists(item.getUrl())) {
                     mBus.post(new RepositoryDuplicatedEvent());
                 } else {
-                    Repository repository = new Repository(item.getUrl(), item.getAlias());
-                    repository.save();
+                    final Repository repository = RepositoryFactory.INSTANCE.newRepository(
+                            item.getUrl(),
+                            item.getAlias()
+                    );
+                    mRepositoryDao.add(repository);
                     mBus.post(new RepositoryAddedEvent(repository));
                 }
             }

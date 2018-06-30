@@ -68,6 +68,7 @@ public class RepositoryStoreActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_TAG, Parcels.wrap(mRepositories));
     }
 

@@ -1,6 +1,6 @@
 package org.ktachibana.cloudemoji.events;
 
-import org.ktachibana.cloudemoji.models.disk.Repository;
+import org.ktachibana.cloudemoji.database.Repository;
 
 /**
  * A repository is removed from database
