@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
-    private LinkedHashMap<Long, Source> sourceCache;
+    private List<Source> sourceCache;
     private HashMap<Entry, HashSet<String>> searchCache;
 
     @Override
@@ -46,7 +46,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     /**
      * Put all entries of favorites, histories and all sources into search cache
      */
-    private HashMap<Entry, HashSet<String>> initializeSearchCache(LinkedHashMap<Long, Source> sourceCache) {
+    private HashMap<Entry, HashSet<String>> initializeSearchCache(List<Source> sourceCache) {
         HashMap<Entry, HashSet<String>> searchCache = new HashMap<>();
 
         // Favorites
@@ -60,10 +60,10 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         }
 
         // Sources
-        for (Map.Entry<Long, Source> source : sourceCache.entrySet()) {
-            for (Category category : source.getValue().getCategories()) {
+        for (final Source source : sourceCache) {
+            for (Category category : source.getCategories()) {
                 for (Entry entry : category.getEntries()) {
-                    addToSearchCache(searchCache, entry, source.getValue().getAlias());
+                    addToSearchCache(searchCache, entry, source.getAlias());
                 }
             }
         }
@@ -80,6 +80,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelable(MainActivity.SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
     }
 

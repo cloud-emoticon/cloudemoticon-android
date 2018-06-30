@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
-    private LinkedHashMap<Long, Source> mCache;
+    private List<Source> mCache;
     private List<Long> mIdList;
     private Context mContext;
 
@@ -25,14 +25,10 @@ public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
-    public RepositoriesPagerAdapter(Context context, FragmentManager fm, LinkedHashMap<Long, Source> cache) {
+    public RepositoriesPagerAdapter(Context context, FragmentManager fm, List<Source> cache) {
         super(fm);
         mContext = context;
         mCache = cache;
-        mIdList = new ArrayList<>();
-        for (Map.Entry<Long, Source> entry : mCache.entrySet()) {
-            mIdList.add(entry.getKey());
-        }
     }
 
     @Override
@@ -42,7 +38,7 @@ public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
         } else if (position == 1) {
             return mContext.getString(R.string.history);
         } else {
-            return mCache.get(fromPositionToKey(position - 2)).getAlias();
+            return mCache.get(position - 2).getAlias();
         }
     }
 
@@ -53,16 +49,12 @@ public class RepositoriesPagerAdapter extends FragmentStatePagerAdapter {
         } else if (position == 1) {
             return new HistoryFragment();
         } else {
-            return new SourceFragmentBuilder(mCache.get(fromPositionToKey(position - 2))).build();
+            return new SourceFragmentBuilder(mCache.get(position - 2)).build();
         }
     }
 
     @Override
     public int getCount() {
         return mCache.size() + 2;
-    }
-
-    private long fromPositionToKey(int position) {
-        return mIdList.get(position);
     }
 }

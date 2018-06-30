@@ -19,6 +19,7 @@ import org.ktachibana.cloudemoji.events.RepositoriesPagerItemSelectedEvent;
 import org.ktachibana.cloudemoji.models.memory.Source;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public class RepositoriesFragment extends BaseFragment {
     @BindView(R.id.tabs)
     protected PagerSlidingTabStrip mTabs;
     @Arg(bundler = ParcelerArgsBundler.class)
-    LinkedHashMap<Long, Source> mCache;
+    List<Source> mCache;
     @Arg
     int currentItem;
 

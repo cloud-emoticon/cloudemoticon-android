@@ -16,7 +16,7 @@ class BaseApplication : SugarApp() {
                 this,
                 AppDatabase::class.java,
                 "ce.db"
-        ).build()
+        ).allowMainThreadQueries().build() // TODO: remove!
 
         if (BuildConfig.DEBUG) {
             Stetho.initialize(

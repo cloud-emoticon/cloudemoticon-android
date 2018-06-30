@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -55,7 +54,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String SOURCE_CACHE_TAG = "sourceCache";
     private static final String CURRENT_ITEM_TAG = "currentItem";
-    private LinkedHashMap<Long, Source> sourceCache;
+    private List<Source> sourceCache;
     private int currentItem;
     private RepositoryDao repositoryDao;
 
@@ -99,15 +98,15 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     /**
      * Put every source into source cache
      */
-    private LinkedHashMap<Long, Source> initializeSourceCache() {
-        LinkedHashMap<Long, Source> sourceCache = new LinkedHashMap<>();
+    private List<Source> initializeSourceCache() {
+        List<Source> sourceCache = new ArrayList<>();
         final List<Repository> allRepositories = repositoryDao.getAll();
         for (int i = 0 ; i < allRepositories.size() ; ++i) {
             final Repository repository = allRepositories.get(i);
             if (repository.isAvailable()) {
                 try {
                     Source source = new SourceReader().readSourceFromDatabase(repository);
-                    sourceCache.put(new Long(i), source);
+                    sourceCache.add(source);
                 } catch (SourceParsingException e) {
                     showSnackBar(getString(R.string.invalid_repo_format));
                 } catch (Exception e) {
