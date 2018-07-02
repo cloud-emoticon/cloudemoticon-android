@@ -303,12 +303,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     @SuppressWarnings("unchecked")
     private void setupDefaultRepoIfNotExists() {
         // Find repository with default url
-        List<Repository> candidateDefaultRepositories = Select
-                .from(Repository.class)
-                .where(Condition.prop("url")
-                        .eq(Constants.DEFAULT_REPOSITORY_URL))
-                .list();
-        if (candidateDefaultRepositories.size() != 0) {
+        if (repositoryDao.get(Constants.DEFAULT_REPOSITORY_URL) != null) {
             // If found, ignore below
             return;
         }
