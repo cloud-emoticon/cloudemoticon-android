@@ -40,7 +40,7 @@ or
 * More...
 
 ### Screenshot
-![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png | width=250)
+![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png)
 
 ## Development
 
