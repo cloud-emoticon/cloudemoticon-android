@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
-import com.github.mrengineer13.snackbar.SnackBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -62,10 +61,11 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void showSnackBar(String message) {
-        new SnackBar.Builder(this)
-                .withMessage(message)
-                .withDuration(SnackBar.SHORT_SNACK)
-                .show();
+        Snackbar.make(
+            findViewById(R.id.coordinator),
+            message,
+            Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     protected void showSnackBar(@StringRes int resId) {
