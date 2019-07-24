@@ -43,7 +43,7 @@ public class RepositoryStoreActivity extends BaseActivity {
 
         final MaterialDialog dialog = new NonCancelableProgressMaterialDialogBuilder(this)
                 .title(R.string.please_wait)
-                .content(R.string.downloading)
+                .content(R.string.loading_repository_store)
                 .show();
 
         new RepositoryStoreDownloaderClient().downloadRepositoryStore(

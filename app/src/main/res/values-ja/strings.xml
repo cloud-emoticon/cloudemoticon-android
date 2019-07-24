@@ -77,4 +77,5 @@
     <string name="restored_favorites">Restored bookmarks</string>
     <string name="notification">Notification</string>
     <string name="cool_kid">Hey running debug/beta versions, cool kid?</string>
+    <string name="loading_repository_store">Loading repository store…</string>
 </resources>
