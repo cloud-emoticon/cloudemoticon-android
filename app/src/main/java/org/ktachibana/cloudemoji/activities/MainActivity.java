@@ -286,7 +286,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         boolean hasRunBefore = mPreferences.getBoolean(Constants.PREF_HAS_RUN_BEFORE, false);
 
         upgradeFavoriteDatabaseIfExists();
-        setupDefaultRepoIfNotExists();
+        setupDefaultRepoIfNecessary();
 
         // If hasn't run before
         if (!hasRunBefore) {
@@ -298,15 +298,9 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     @SuppressWarnings("unchecked")
-    private void setupDefaultRepoIfNotExists() {
-        // Find repository with default url
-        List<Repository> candidateDefaultRepositories = Select
-                .from(Repository.class)
-                .where(Condition.prop("url")
-                        .eq(Constants.DEFAULT_REPOSITORY_URL))
-                .list();
-        if (candidateDefaultRepositories.size() != 0) {
-            // If found, ignore below
+    private void setupDefaultRepoIfNecessary() {
+        if (Repository.listAll(Repository.class).size() != 0) {
+            // If there are already repositories, ignore
             return;
         }
 
