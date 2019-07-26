@@ -83,4 +83,6 @@
     <string name="repository_store_contribution_prompt">Want to contribute?</string>
     <string name="repository_store_contribution_warning">It is assumed that you have some minimal knowledge on GitHub, JSON and programming. Do you still want to proceed?</string>
     <string name="proceed">Proceed</string>
+    <string name="quick_trigger_notification_channel_name">Quick trigger</string>
+    <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
 </resources>

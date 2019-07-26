@@ -12,6 +12,7 @@ public interface Constants {
     // Notification
     int PERSISTENT_NOTIFICATION_ID = 0;
     String PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY = "both";
+    String QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID = "quick_trigger";
 
     // Preferences
     String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";

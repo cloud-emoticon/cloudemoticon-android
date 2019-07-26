@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 27
-        versionName '1.1.5'
+        versionCode 28
+        versionName '1.2'
         archivesBaseName = "$versionName-$versionCode"
     }
 

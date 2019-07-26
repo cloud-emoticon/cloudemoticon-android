@@ -82,4 +82,6 @@
     <string name="repository_store_contribution_prompt">想要贡献源吗？</string>
     <string name="repository_store_contribution_warning">这需要最基础的 GitHub, JSON 以及编程知识。你确定要继续吗？</string>
     <string name="proceed">继续</string>
+    <string name="quick_trigger_notification_channel_name">快速打开</string>
+    <string name="quick_trigger_notification_channel_description">从通知面板中快速打开 App</string>
 </resources>
