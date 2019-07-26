@@ -22,8 +22,9 @@ public class NotificationUtils {
      * Setup notification with user preference
      */
     public static void setupNotificationWithPref(Context context, String notificationVisibility) {
-        // Cancel current notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Cancel current notification
         notificationManager.cancel(Constants.PERSISTENT_NOTIFICATION_ID);
 
         // If not showing
@@ -33,25 +34,23 @@ public class NotificationUtils {
 
         // If only shows in panel
         else if (notificationVisibility.equals("panel")) {
-            createQuickTriggerNotificationChannel(context, Notification.PRIORITY_MIN);
-            Notification notification = buildNotification(context, Notification.PRIORITY_MIN);
-            notification.flags = Notification.FLAG_NO_CLEAR;
-            notificationManager.notify(Constants.PERSISTENT_NOTIFICATION_ID, notification);
+            createQuickTriggerNotificationChannel(context, notificationManager, NotificationCompat.PRIORITY_MIN);
+            showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_MIN);
         }
 
         // If shows on both panel and status bar
         else if (notificationVisibility.equals("both")) {
-            createQuickTriggerNotificationChannel(context, Notification.PRIORITY_DEFAULT);
-            Notification notification = buildNotification(context, Notification.PRIORITY_DEFAULT);
-            notification.flags = Notification.FLAG_NO_CLEAR;
-            notificationManager.notify(Constants.PERSISTENT_NOTIFICATION_ID, notification);
+            createQuickTriggerNotificationChannel(context, notificationManager, NotificationCompat.PRIORITY_DEFAULT);
+            showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_DEFAULT);
         }
     }
 
-    private static void createQuickTriggerNotificationChannel(Context context, int priority) {
+    private static void createQuickTriggerNotificationChannel(
+            Context context,
+            NotificationManager notificationManager,
+            int priority
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
             NotificationChannel channel = new NotificationChannel(
                     Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.quick_trigger_notification_channel_name),
@@ -62,18 +61,16 @@ public class NotificationUtils {
         }
     }
 
-    /**
-     * Build notification with a given priority
-     *
-     * @param priority priority from Notification.priority
-     * @return a Notification object
-     */
-    private static Notification buildNotification(Context context, int priority) {
+    private static void showQuickTriggerNotification(
+            Context context,
+            NotificationManager notificationManager,
+            int priority
+    ) {
         String title = context.getString(R.string.app_name);
         String text = context.getString(R.string.touch_to_launch);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        return new NotificationCompat.Builder(context, Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(context, Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID)
                 .setContentTitle(title)                     // Title
                 .setContentText(text)                       // Text
                 .setSmallIcon(R.drawable.ic_notification)   // Icon
@@ -81,5 +78,7 @@ public class NotificationUtils {
                 .setWhen(0)                                 // No time to display
                 .setPriority(priority)                      // Given priority
                 .build();
+        notification.flags = Notification.FLAG_NO_CLEAR;
+        notificationManager.notify(Constants.PERSISTENT_NOTIFICATION_ID, notification);
     }
 }
