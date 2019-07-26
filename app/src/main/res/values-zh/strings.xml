@@ -80,4 +80,6 @@
     <string name="cool_kid">在跑调试/测试版, 屌屌哒!</string>
     <string name="loading_repository_store">读取源商店中…</string>
     <string name="repository_store_contribution_prompt">想要贡献源吗？</string>
+    <string name="repository_store_contribution_warning">这需要最基础的 GitHub, JSON 以及编程知识。你确定要继续吗？</string>
+    <string name="proceed">继续</string>
 </resources>

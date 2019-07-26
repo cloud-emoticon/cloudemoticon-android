@@ -25,7 +25,6 @@ public interface Constants {
     String PREF_BACKUP_FAV = "pref_backup_fav";
     String PREF_RESTORE_FAV = "pref_restore_fav";
     String PREF_IMPORT_IME = "pref_import_into_ime";
-    String PREF_REVOKE_IME = "pref_revoke_from_ime";
     String PREF_BEHAVIORS = "pref_behaviors";
     String PREF_NOW_ON_TAP = "pref_now_on_tap";
 
@@ -44,6 +43,7 @@ public interface Constants {
     String STORE_URL = "http://emoticon.moe/store.json";
     String UPDATE_CHECKER_URL = "http://ktachibana.party/cloudemoticon/version.json";
     String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
+    String REPO_STORE_CONTRIBUTION_URL = "https://github.com/cloud-emoticon/store-repos/blob/master/CONTRIBUTING.md";
 
     // Intent
     int REPOSITORY_MANAGER_REQUEST_CODE = 0;

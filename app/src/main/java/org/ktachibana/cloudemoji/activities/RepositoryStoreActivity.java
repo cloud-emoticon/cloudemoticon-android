@@ -1,13 +1,18 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.BaseHttpClient;
+import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.RepositoryStoreListViewAdapter;
 import org.ktachibana.cloudemoji.events.RepositoryAddedEvent;
@@ -26,6 +31,8 @@ public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
     @Bind(R.id.list)
     ListView mList;
+    @Bind(R.id.contribution_prompt)
+    TextView mContributionPrompt;
     private List<StoreRepository> mRepositories;
 
     @Override
@@ -64,6 +71,26 @@ public class RepositoryStoreActivity extends BaseActivity {
                         dialog.dismiss();
                     }
                 });
+
+        mContributionPrompt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(RepositoryStoreActivity.this)
+                        .title(getString(R.string.repository_store_contribution_prompt))
+                        .content(getString(R.string.repository_store_contribution_warning))
+                        .positiveText(getString(R.string.proceed))
+                        .negativeText(android.R.string.cancel)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                Intent intent = new Intent();
+                                intent.setData(Uri.parse(Constants.REPO_STORE_CONTRIBUTION_URL));
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     @Override
