@@ -58,7 +58,7 @@
 
     <string-array name="notification_options">
         <item>不显示</item>
-        <item>只在通知面板里显示（只在 Android 3.0 以上有效）</item>
+        <item>只在通知面板里显示（Android 3.0 以下及 8.0 以上无效）</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
     <string name="ime">用户词典</string>

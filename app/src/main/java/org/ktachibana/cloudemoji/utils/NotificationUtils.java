@@ -58,6 +58,7 @@ public class NotificationUtils {
                     importance
             );
             channel.setDescription(context.getString(R.string.quick_trigger_notification_channel_description));
+            channel.setShowBadge(false);
             notificationManager.createNotificationChannel(channel);
         }
     }

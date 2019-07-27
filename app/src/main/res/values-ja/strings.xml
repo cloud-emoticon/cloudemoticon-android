@@ -55,7 +55,7 @@
 
     <string-array name="notification_options">
         <item>Don\'t show</item>
-        <item>Only in notification panel(Only works above Android 3.0)</item>
+        <item>Only in notification panel (Only works from Android 3.0 to 7.0)</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
     <string name="ime">User dictionary</string>
