@@ -15,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import org.apache.commons.io.IOUtils;
 import org.greenrobot.eventbus.Subscribe;
@@ -117,7 +115,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     }
 
     private void setupNotification() {
-        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY));
+        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
     }
 
     @Override
@@ -191,7 +189,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
             return true;
         } else if (id == R.id.exit) {
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                    .cancel(Constants.PERSISTENT_NOTIFICATION_ID);
+                    .cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
             finish();
             return true;
         }

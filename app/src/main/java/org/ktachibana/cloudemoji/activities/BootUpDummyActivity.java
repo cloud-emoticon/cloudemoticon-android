@@ -20,7 +20,7 @@ public class BootUpDummyActivity extends Activity {
 
         // Show notification according to prefs
         Boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
-        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY);
+        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY);
         if (showAfterBootUp) {
             NotificationUtils.setupNotificationWithPref(this, notificationVisibility);
         }

@@ -10,8 +10,8 @@ public interface Constants {
     String USER_DICTIONARY_APP_ID = "cloudemoji";
 
     // Notification
-    int PERSISTENT_NOTIFICATION_ID = 0;
-    String PERSISTENT_NOTIFICATION_DEFAULT_VISIBILITY = "both";
+    int QUICK_TRIGGER_NOTIFICATION_ID = 0;
+    String QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY = "both";
     String QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID = "quick_trigger";
 
     // Preferences

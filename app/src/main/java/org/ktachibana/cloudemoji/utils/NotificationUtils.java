@@ -25,11 +25,11 @@ public class NotificationUtils {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Cancel current notification
-        notificationManager.cancel(Constants.PERSISTENT_NOTIFICATION_ID);
+        notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
 
         // If not showing
         if (notificationVisibility.equals("no")) {
-            notificationManager.cancel(Constants.PERSISTENT_NOTIFICATION_ID);
+            notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
         }
 
         // If only shows in panel
@@ -79,6 +79,6 @@ public class NotificationUtils {
                 .setPriority(priority)                      // Given priority
                 .build();
         notification.flags = Notification.FLAG_NO_CLEAR;
-        notificationManager.notify(Constants.PERSISTENT_NOTIFICATION_ID, notification);
+        notificationManager.notify(Constants.QUICK_TRIGGER_NOTIFICATION_ID, notification);
     }
 }
