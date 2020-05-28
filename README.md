@@ -53,7 +53,7 @@ On Windows, replace `./gradlew` with `gradlew`
 ### Build debug variant
 ```bash
 ./gradlew app:assembleDebug
-# Then find apk under app/build/outputs/apk/$versionName-$versionCode-debug.apk
+# Then find apk under app/build/outputs/apk/debug/$versionName-$versionCode-debug.apk
 ```
 
 ### Build and install debug variant
@@ -67,5 +67,5 @@ cp keystores.example.properties keystores.properties
 # fill out keystores.properties
 # storeFile should be the file path to your *.jks keystore file
 ./gradlew app:assembleRelease
-# Then find apk under app/build/outputs/apk/$versionName-$versionCode-release.apk
+# Then find apk under app/build/outputs/apk/release/$versionName-$versionCode-release.apk
 ```
