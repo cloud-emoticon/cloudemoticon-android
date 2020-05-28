@@ -65,7 +65,8 @@ public class SearchResultFragment extends BaseFragment {
         mSearchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Entry entry = (Entry) parent.getAdapter().getItem(position);
+                Map.Entry<Entry, HashSet<String>> item = (Map.Entry<Entry, HashSet<String>>) parent.getAdapter().getItem(position);
+                Entry entry = item.getKey();
                 mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
         });
