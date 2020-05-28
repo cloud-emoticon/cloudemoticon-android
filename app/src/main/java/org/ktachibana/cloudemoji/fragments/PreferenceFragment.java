@@ -10,9 +10,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 
@@ -166,7 +166,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                PreferenceFragmentPermissionsDispatcher.backupFavoritesWithCheck(PreferenceFragment.this);
+                PreferenceFragmentPermissionsDispatcher.backupFavoritesWithPermissionCheck(PreferenceFragment.this);
                 return true;
             }
         });
@@ -176,7 +176,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                PreferenceFragmentPermissionsDispatcher.restoreFavoritesWithCheck(PreferenceFragment.this);
+                PreferenceFragmentPermissionsDispatcher.restoreFavoritesWithPermissionCheck(PreferenceFragment.this);
                 return true;
             }
         });

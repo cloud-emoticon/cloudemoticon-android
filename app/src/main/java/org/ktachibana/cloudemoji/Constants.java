@@ -1,7 +1,7 @@
 package org.ktachibana.cloudemoji;
 
 import android.os.Environment;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.io.File;
 
