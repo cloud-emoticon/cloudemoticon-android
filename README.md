@@ -1,16 +1,10 @@
 # Cloud emoticon
 
-A cloud solution for your favorite emoticons
+A cloud solution to your favorite emoticons on Android
 
-
-
-## Download
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji)
 
 [Unsigned GitHub release apk](https://github.com/cloud-emoticon/cloudemoji/releases)
-
-or
-
-[Google Play](https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji)
 
 ## Features
 
@@ -40,7 +34,12 @@ or
 * More...
 
 ### Screenshot
-![screenshot](https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png)
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/bookmarks.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/history.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_manager.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_store.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/settings.png"  width="500">
 
 ## Development
 
@@ -62,8 +61,11 @@ On Windows, replace `./gradlew` with `gradlew`
 ./gradlew app:installDebug
 ```
 
-### Build release variant (requires `keystores.properties` under root project directory)
+### Build release variant
 ```bash
+cp keystores.example.properties keystores.properties
+# fill out keystores.properties
+# storeFile should be the file path to your *.jks keystore file
 ./gradlew app:assembleRelease
 # Then find apk under app/build/outputs/apk/$versionName-$versionCode-release.apk
 ```
