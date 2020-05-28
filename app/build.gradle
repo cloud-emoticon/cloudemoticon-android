@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:7.0.1'
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
     implementation 'com.android.support:design:28.1.1'
+    implementation 'com.mobeta.android.dslv:library:0.9.0'
     // Database
     implementation 'com.github.satyan:sugar:b16e65326a'
     // Networking
