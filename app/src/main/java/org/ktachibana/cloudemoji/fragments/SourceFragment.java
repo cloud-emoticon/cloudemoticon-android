@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
+import com.hjy.pinnedheaderlistview.PinnedHeaderListView;
 
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
@@ -20,7 +21,6 @@ import org.ktachibana.cloudemoji.models.memory.Source;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 
 public class SourceFragment extends BaseFragment {
     @Bind(R.id.list)
@@ -48,17 +48,15 @@ public class SourceFragment extends BaseFragment {
         // Setup contents
         mAdapter = new SourceListViewAdapter(getActivity(), mSource);
         mList.setAdapter(mAdapter);
-        mList.setOnItemClickListener(new PinnedHeaderListView.OnItemClickListener() {
+        mList.setOnItemClickListener(new PinnedHeaderListView.OnPinnedHeaderListViewItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int section, int position, long id) {
-                Entry entry = (Entry) mAdapter.getItem(section, position);
+            public void onItemClick(AdapterView<?> adapterView, int section, int positionInSection, long id) {
+                Entry entry = mAdapter.getItem(section, positionInSection);
                 mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
             }
 
             @Override
-            public void onSectionClick(AdapterView<?> adapterView, View view, int section, long id) {
-
-            }
+            public void onSectionHeaderClick(AdapterView<?> adapterView, int section, long id) { }
         });
 
         return rootView;
