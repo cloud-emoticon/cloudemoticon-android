@@ -34,12 +34,12 @@ A cloud solution to your favorite emoticons on Android
 * More...
 
 ### Screenshot
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/bookmarks.png"  width="100">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/history.png"  width="100">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png"  width="100">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_manager.png"  width="100">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_store.png"  width="100">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/settings.png"  width="100">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/bookmarks.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/history.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_manager.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_store.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/settings.png"  width="500">
 
 ## Development
 
