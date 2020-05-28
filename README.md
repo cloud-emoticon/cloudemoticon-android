@@ -43,29 +43,38 @@ A cloud solution to your favorite emoticons on Android
 
 ## Development
 
+### Gradle commands
 On Windows, replace `./gradlew` with `gradlew`
 
-### Clean
+#### Clean
 ```bash
 ./gradlew app:clean
 ```
 
-### Build debug variant
+#### Build debug variant
 ```bash
 ./gradlew app:assembleDebug
-# Then find apk under app/build/outputs/apk/debug/$versionName-$versionCode-debug.apk
+# Then find apk under app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### Build and install debug variant
+#### Build and install debug variant
 ```bash
 ./gradlew app:installDebug
 ```
 
-### Build release variant
+#### Build release variant
 ```bash
 cp keystores.example.properties keystores.properties
 # fill out keystores.properties
 # storeFile should be the file path to your *.jks keystore file
 ./gradlew app:assembleRelease
-# Then find apk under app/build/outputs/apk/release/$versionName-$versionCode-release.apk
+# Then find apk under app/build/outputs/apk/release/app-release.apk
+```
+
+### Make commands
+
+```bash
+make  # installs debug variant
+make debug  # builds debug variant and put app-debug.apk under .
+make release  # builds release variants and put app-release.apk under .
 ```
