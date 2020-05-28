@@ -1,6 +1,6 @@
 package org.ktachibana.cloudemoji.net;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
