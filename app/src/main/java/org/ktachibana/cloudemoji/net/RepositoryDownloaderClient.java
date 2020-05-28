@@ -21,7 +21,7 @@ public class RepositoryDownloaderClient extends BaseHttpClient {
                     item.getUrl(),
                     new AsyncHttpResponseHandler() {
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                             // Write to file
                             File repositoryFile = new File(BaseApplication.context().getFilesDir(), item.getFileName());
                             FileOutputStream outputStream = null;
@@ -42,7 +42,7 @@ public class RepositoryDownloaderClient extends BaseHttpClient {
                         }
 
                         @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                             callback.fail(error);
                         }
 

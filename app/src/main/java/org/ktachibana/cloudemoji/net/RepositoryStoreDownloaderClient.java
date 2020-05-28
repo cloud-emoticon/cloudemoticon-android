@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,11 +15,12 @@ import org.ktachibana.cloudemoji.utils.SystemUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+
 public class RepositoryStoreDownloaderClient extends BaseHttpClient {
     public void downloadRepositoryStore(@NonNull final ListCallback callback) {
         if (SystemUtils.networkAvailable()) {
             mClient.get(Constants.STORE_URL, new JsonHttpResponseHandler() {
-                @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     List<StoreRepository> repositories = new ArrayList<>();
                     try {
@@ -43,7 +43,6 @@ public class RepositoryStoreDownloaderClient extends BaseHttpClient {
                     }
                 }
 
-                @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     callback.fail(throwable);
                 }
