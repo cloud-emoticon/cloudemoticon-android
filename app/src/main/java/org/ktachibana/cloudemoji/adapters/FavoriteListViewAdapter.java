@@ -23,10 +23,12 @@ import butterknife.ButterKnife;
 public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSortListView.DropListener {
     private Context mContext;
     private List<Favorite> mFavorites;
+    private boolean mShowEdits;
 
-    public FavoriteListViewAdapter(Context context) {
+    public FavoriteListViewAdapter(Context context, boolean showEdits) {
         this.mContext = context;
         mFavorites = Favorite.listAll(Favorite.class);
+        mShowEdits = showEdits;
     }
 
     @Override
@@ -87,6 +89,9 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
                 notifyDataSetChanged();
             }
         });
+        if (!mShowEdits) {
+            viewHolder.edit.setVisibility(View.GONE);
+        }
         viewHolder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
