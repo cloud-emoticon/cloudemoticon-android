@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.collection.ArrayMap;
 
+import com.hjy.pinnedheaderlistview.PinnedHeaderAdapter;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.R;
@@ -28,9 +30,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
-public class SourceListViewAdapter extends SectionedBaseAdapter implements SectionIndexer {
+public class SourceListViewAdapter extends PinnedHeaderAdapter implements SectionIndexer {
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
@@ -81,14 +82,8 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    public Object getItem(int section, int position) {
+    public Entry getItem(int section, int position) {
         return mSource.getCategories().get(section).getEntries().get(position);
-    }
-
-    @Override
-    public long getItemId(int section, int position) {
-        return 0;
     }
 
     @Override
@@ -102,7 +97,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     }
 
     @Override
-    public View getItemView(int section, int position, View convertView, ViewGroup parent) {
+    public View getSectionItemView(int section, int position, View convertView, ViewGroup parent) {
         // Standard view holder pattern
         final EntryViewHolder viewHolder;
         if (convertView == null) {
@@ -114,7 +109,7 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
         }
 
         // Setup contents
-        final Entry entry = (Entry) getItem(section, position);
+        final Entry entry = getItem(section, position);
         final String emoticon = entry.getEmoticon();
         final String description = entry.getDescription();
         viewHolder.emoticon.setText(emoticon);
@@ -206,11 +201,6 @@ public class SourceListViewAdapter extends SectionedBaseAdapter implements Secti
     @Override
     public Object[] getSections() {
         return mSectionHeaders;
-    }
-
-    @Override
-    public int getPositionForSection(int sectionIndex) {
-        return mSectionIndexToPositionMapping.get(sectionIndex);
     }
 
     @Subscribe
