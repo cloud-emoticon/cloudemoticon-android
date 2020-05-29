@@ -104,6 +104,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
+
+        <service android:name=".ime.MyInputMethodService"
+            android:label="@string/ime_label"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im"
+                android:resource="@xml/ime" />
+        </service>
     </application>
 
 </manifest>

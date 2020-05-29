@@ -140,7 +140,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     int numberAdded = ImeUtils.importAllFavoritesIntoIme(getActivity().getContentResolver());
-                    showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
+                    showSnackBar(String.format(getString(R.string.imported_into_user_dict), numberAdded));
                     return true;
                 }
             });
