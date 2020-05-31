@@ -74,7 +74,7 @@
     <string name="allow">允许</string>
     <string name="deny">拒绝</string>
     <string name="storage_rationale">需要储存权限以备份/恢复收藏</string>
-    <string name="backuped_favorites">收藏已备份到</string>
+    <string name="backed_up_favorites">收藏已备份到</string>
     <string name="restored_favorites">收藏已恢复</string>
     <string name="notification">通知</string>
     <string name="cool_kid">在跑调试/测试版, 屌屌哒!</string>
@@ -85,4 +85,5 @@
     <string name="quick_trigger_notification_channel_name">快速打开</string>
     <string name="quick_trigger_notification_channel_description">从通知面板中快速打开 App</string>
     <string name="ime_label">云颜文字输入法</string>
+    <string name="ime_no_favorite">没有收藏</string>
 </resources>

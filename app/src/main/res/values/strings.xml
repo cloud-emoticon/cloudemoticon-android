@@ -75,7 +75,7 @@
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
     <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>
-    <string name="backuped_favorites">Backuped favorites to</string>
+    <string name="backed_up_favorites">Backed up favorites to</string>
     <string name="restored_favorites">Restored bookmarks</string>
     <string name="notification">Notification</string>
     <string name="cool_kid">Hey running debug/beta versions, cool kid?</string>
@@ -86,4 +86,5 @@
     <string name="quick_trigger_notification_channel_name">Quick trigger</string>
     <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
     <string name="ime_label">Cloud Emoticon Input Method</string>
+    <string name="ime_no_favorite">No bookmark</string>
 </resources>
