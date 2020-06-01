@@ -7,9 +7,12 @@ import android.widget.Button;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.R;
+import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
+import org.ktachibana.cloudemoji.models.disk.History;
+import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,12 +79,21 @@ public class MyInputMethodService extends InputMethodService {
     }
 
     private void updateInputView() {
-        List<Favorite> favorites = Favorite.listAll(Favorite.class);
+        final List<Favorite> favorites = Favorite.listAll(Favorite.class);
 
         for (int i = 0; i < Math.min(favorites.size(), mButtons.size()); ++i) {
+            final Favorite f = favorites.get(i);
             Button b = mButtons.get(i);
-            Favorite f = favorites.get(i);
             b.setText(f.getEmoticon());
+            b.setEnabled(true);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Entry e = new Entry(f.getEmoticon(), f.getDescription());
+                    MyInputMethodService.this.getCurrentInputConnection().commitText(e.getEmoticon(), 1);
+                    mBus.post(new EntryAddedToHistoryEvent(e));
+                }
+            });
         }
 
         if (mButtons.size() > favorites.size()) {
@@ -89,6 +101,7 @@ public class MyInputMethodService extends InputMethodService {
                 Button b = mButtons.get(favorites.size() + j);
                 b.setText(R.string.ime_no_favorite);
                 b.setEnabled(false);
+                b.setOnClickListener(null);
             }
         }
     }

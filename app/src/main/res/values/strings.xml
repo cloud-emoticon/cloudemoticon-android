@@ -85,6 +85,6 @@
     <string name="proceed">Proceed</string>
     <string name="quick_trigger_notification_channel_name">Quick trigger</string>
     <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
-    <string name="ime_label">Cloud Emoticon Input Method</string>
+    <string name="ime_label">Cloud Emoticon IME</string>
     <string name="ime_no_favorite">No bookmark</string>
 </resources>

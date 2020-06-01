@@ -6,10 +6,10 @@ import org.ktachibana.cloudemoji.models.memory.Entry;
 /**
  * An emoticon is copied
  */
-public class EntryCopiedAndAddedToHistoryEvent {
+public class EntryAddedToHistoryEvent {
     private Entry mEntry;
 
-    public EntryCopiedAndAddedToHistoryEvent(Entry entry) {
+    public EntryAddedToHistoryEvent(Entry entry) {
         mEntry = entry;
         // When copied, also add to history
         History newHistory

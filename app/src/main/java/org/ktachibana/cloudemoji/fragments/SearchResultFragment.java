@@ -16,7 +16,7 @@ import com.hannesdorfmann.fragmentargs.bundler.ParcelerArgsBundler;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
-import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import java.util.HashSet;
@@ -67,7 +67,7 @@ public class SearchResultFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Map.Entry<Entry, HashSet<String>> item = (Map.Entry<Entry, HashSet<String>>) parent.getAdapter().getItem(position);
                 Entry entry = item.getKey();
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                mBus.post(new EntryAddedToHistoryEvent(entry));
             }
         });
 

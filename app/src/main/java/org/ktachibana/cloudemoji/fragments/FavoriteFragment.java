@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.FavoriteListViewAdapter;
-import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
@@ -68,7 +68,7 @@ public class FavoriteFragment extends BaseFragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Favorite favorite = (Favorite) mAdapter.getItem(i);
                         Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
-                        mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                        mBus.post(new EntryAddedToHistoryEvent(entry));
                     }
                 });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));
