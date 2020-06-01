@@ -62,20 +62,20 @@
         <item>Only in notification panel (Only works from Android 3.0 to 7.0)</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
-    <string name="ime">User dictionary</string>
-    <string name="import_into_ime">Import all bookmarks into user dictionary</string>
-    <string name="imported_into_ime">Imported %d bookmarks into user dictionary</string>
-    <string name="import_into_ime_summary">Only works for shortcut in English letters and below Android 6.0</string>
+    <string name="user_dict">User dictionary</string>
+    <string name="import_into_user_dict">Import all bookmarks into user dictionary</string>
+    <string name="imported_into_user_dict">Imported %d bookmarks into user dictionary</string>
+    <string name="import_into_user_dict_summary">Only works for shortcut in English letters and below Android 6.0</string>
     <string name="no_description">No description</string>
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="added_to_repo">Added to repositories</string>
-    <string name="import_into_ime_m_below">Sorry! Importing into user dictionary is only supported below Android 6.0</string>
+    <string name="import_into_user_dict_m_below">Sorry! Importing into user dictionary is only supported below Android 6.0</string>
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
     <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>
-    <string name="backuped_favorites">Backuped favorites to</string>
+    <string name="backed_up_favorites">Backed up favorites to</string>
     <string name="restored_favorites">Restored bookmarks</string>
     <string name="notification">Notification</string>
     <string name="cool_kid">Hey running debug/beta versions, cool kid?</string>
@@ -85,4 +85,6 @@
     <string name="proceed">Proceed</string>
     <string name="quick_trigger_notification_channel_name">Quick trigger</string>
     <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
+    <string name="ime_label">Cloud Emoticon IME</string>
+    <string name="ime_no_favorite">No bookmark</string>
 </resources>

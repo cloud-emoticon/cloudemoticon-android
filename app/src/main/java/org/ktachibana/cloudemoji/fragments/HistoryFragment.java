@@ -15,7 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.HistoryListViewAdapter;
-import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.disk.History;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
@@ -63,7 +63,7 @@ public class HistoryFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History history = (History) mAdapter.getItem(position);
                 Entry entry = new Entry(history.getEmoticon(), history.getDescription());
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                mBus.post(new EntryAddedToHistoryEvent(entry));
                 mAdapter.updateHistory();
             }
         });
@@ -80,7 +80,7 @@ public class HistoryFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void handle(EntryCopiedAndAddedToHistoryEvent e) {
+    public void handle(EntryAddedToHistoryEvent e) {
         mAdapter.updateHistory();
     }
 }

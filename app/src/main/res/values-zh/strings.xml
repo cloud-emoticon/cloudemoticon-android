@@ -61,20 +61,20 @@
         <item>只在通知面板里显示（Android 3.0 以下及 8.0 以上无效）</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
-    <string name="ime">用户词典</string>
-    <string name="import_into_ime">将全部收藏导入用户词典</string>
-    <string name="imported_into_ime">已将 %d 个收藏导入用户词典</string>
-    <string name="import_into_ime_summary">只对描述是英文和数字的收藏和Android版本6.0以下有效</string>
+    <string name="user_dict">用户词典</string>
+    <string name="import_into_user_dict">将全部收藏导入用户词典</string>
+    <string name="imported_into_user_dict">已将 %d 个收藏导入用户词典</string>
+    <string name="import_into_user_dict_summary">只对描述是英文和数字的收藏和Android版本6.0以下有效</string>
     <string name="no_description">没有描述</string>
     <string name="no_shortcut">没有快捷输入</string>
     <string name="shortcut">快捷输入</string>
     <string name="please_wait">请稍等&#8230;</string>
     <string name="added_to_repo">已添加到源</string>
-    <string name="import_into_ime_m_below">抱歉! 导入用户词典仅支持Andorid版本6.0以下</string>
+    <string name="import_into_user_dict_m_below">抱歉! 导入用户词典仅支持Andorid版本6.0以下</string>
     <string name="allow">允许</string>
     <string name="deny">拒绝</string>
     <string name="storage_rationale">需要储存权限以备份/恢复收藏</string>
-    <string name="backuped_favorites">收藏已备份到</string>
+    <string name="backed_up_favorites">收藏已备份到</string>
     <string name="restored_favorites">收藏已恢复</string>
     <string name="notification">通知</string>
     <string name="cool_kid">在跑调试/测试版, 屌屌哒!</string>
@@ -84,4 +84,6 @@
     <string name="proceed">继续</string>
     <string name="quick_trigger_notification_channel_name">快速打开</string>
     <string name="quick_trigger_notification_channel_description">从通知面板中快速打开 App</string>
+    <string name="ime_label">云颜文字输入法</string>
+    <string name="ime_no_favorite">没有收藏</string>
 </resources>

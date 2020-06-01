@@ -15,7 +15,7 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
-import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.CopyUtils;
 
@@ -78,7 +78,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void handle(EntryCopiedAndAddedToHistoryEvent event) {
+    public void handle(EntryAddedToHistoryEvent event) {
         // Copy to clipboard
         String copied = event.getEntry().getEmoticon();
         CopyUtils.copyToClipboard(this, copied);

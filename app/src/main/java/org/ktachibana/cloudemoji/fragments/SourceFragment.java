@@ -15,7 +15,7 @@ import com.hjy.pinnedheaderlistview.PinnedHeaderListView;
 import org.ktachibana.cloudemoji.BaseFragment;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
-import org.ktachibana.cloudemoji.events.EntryCopiedAndAddedToHistoryEvent;
+import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
 
@@ -52,7 +52,7 @@ public class SourceFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, int section, int positionInSection, long id) {
                 Entry entry = mAdapter.getItem(section, positionInSection);
-                mBus.post(new EntryCopiedAndAddedToHistoryEvent(entry));
+                mBus.post(new EntryAddedToHistoryEvent(entry));
             }
 
             @Override

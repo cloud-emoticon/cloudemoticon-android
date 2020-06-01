@@ -140,7 +140,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     int numberAdded = ImeUtils.importAllFavoritesIntoIme(getActivity().getContentResolver());
-                    showSnackBar(String.format(getString(R.string.imported_into_ime), numberAdded));
+                    showSnackBar(String.format(getString(R.string.imported_into_user_dict), numberAdded));
                     return true;
                 }
             });
@@ -217,7 +217,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     void backupFavorites() {
         boolean success = BackupUtils.backupFavorites();
         if (success) {
-            showSnackBar(getString(R.string.backuped_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
+            showSnackBar(getString(R.string.backed_up_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
         } else {
             showSnackBar(R.string.fail);
         }
