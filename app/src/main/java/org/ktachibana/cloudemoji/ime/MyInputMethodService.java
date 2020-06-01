@@ -1,7 +1,11 @@
 package org.ktachibana.cloudemoji.ime;
 
 import android.inputmethodservice.InputMethodService;
+import android.os.Build;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import org.greenrobot.eventbus.EventBus;
@@ -11,7 +15,6 @@ import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
-import org.ktachibana.cloudemoji.models.disk.History;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 
 import java.util.Arrays;
@@ -19,6 +22,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static org.ktachibana.cloudemoji.Constants.DEBUG_TAG;
 
 
 public class MyInputMethodService extends InputMethodService {
@@ -43,6 +48,7 @@ public class MyInputMethodService extends InputMethodService {
     List<Button> mButtons;
 
     protected EventBus mBus;
+    private boolean mInputMethodRecovered;
 
     @Override
     public void onCreate() {
@@ -69,9 +75,11 @@ public class MyInputMethodService extends InputMethodService {
 
     @Override
     public View onCreateInputView() {
+        mInputMethodRecovered = false;
+
         View rootView = getLayoutInflater().inflate(R.layout.view_ime_view, null, false);
         ButterKnife.bind(this, rootView);
-        this.mButtons = Arrays.asList(button1, button2, button3, button4, button5, button6);
+        mButtons = Arrays.asList(button1, button2, button3, button4, button5, button6);
 
         updateInputView();
 
@@ -92,6 +100,7 @@ public class MyInputMethodService extends InputMethodService {
                     Entry e = new Entry(f.getEmoticon(), f.getDescription());
                     MyInputMethodService.this.getCurrentInputConnection().commitText(e.getEmoticon(), 1);
                     mBus.post(new EntryAddedToHistoryEvent(e));
+                    switchToLastInputMethod();
                 }
             });
         }
@@ -103,6 +112,28 @@ public class MyInputMethodService extends InputMethodService {
                 b.setEnabled(false);
                 b.setOnClickListener(null);
             }
+        }
+    }
+
+    @Override
+    public void onWindowHidden() {
+        super.onWindowHidden();
+        switchToLastInputMethod();
+    }
+
+    private void switchToLastInputMethod() {
+        if (mInputMethodRecovered) {
+            return;
+        }
+        mInputMethodRecovered = true;
+        try {
+            InputMethodManager imm = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+            final IBinder token = this.getWindow().getWindow().getAttributes().token;
+            imm.switchToLastInputMethod(token);
+        } catch (Throwable t) {
+            // java.lang.NoSuchMethodError if API_level < 11
+            Log.e(DEBUG_TAG, "Cannot switch to previous input method");
+            t.printStackTrace();
         }
     }
 }
