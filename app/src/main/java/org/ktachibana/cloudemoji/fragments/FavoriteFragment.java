@@ -59,7 +59,7 @@ public class FavoriteFragment extends BaseFragment {
         // Setup contents
         mFavoriteListView.setEmptyView(mFavoriteEmptyView);
         mEmptyViewTextView.setText(getString(R.string.no_favorite_prompt));
-        this.mAdapter = new FavoriteListViewAdapter(getActivity(),  true);
+        this.mAdapter = new FavoriteListViewAdapter(getActivity());
         mFavoriteListView
                 .setAdapter(mAdapter);
         mFavoriteListView
