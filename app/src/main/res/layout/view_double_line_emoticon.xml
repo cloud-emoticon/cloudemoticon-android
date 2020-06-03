@@ -7,12 +7,19 @@
     android:layout_centerVertical="true"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/emoticonTextView"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        tools:text="Emoticon" />
+        android:fillViewport="true"
+        android:scrollbars="horizontal">
+        <TextView
+            android:id="@+id/emoticonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Emoticon" />
+    </HorizontalScrollView>
+
 
     <TextView
         android:id="@+id/descriptionTextView"
