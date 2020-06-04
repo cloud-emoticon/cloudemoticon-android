@@ -11,7 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:scrollbars="horizontal">
+        android:scrollbars="horizontal"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false">
         <TextView
             android:id="@+id/emoticonTextView"
             android:layout_width="wrap_content"
