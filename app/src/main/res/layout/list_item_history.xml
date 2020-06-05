@@ -9,6 +9,19 @@
     android:paddingRight="16dp"
     android:paddingTop="18dp">
 
-    <include layout="@layout/view_double_line_emoticon" />
+    <include layout="@layout/view_double_line_emoticon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/historyExpandImageView"
+        android:layout_toStartOf="@+id/historyExpandImageView" />
+
+    <ImageView
+        android:id="@+id/historyExpandImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_expand" />
 
 </RelativeLayout>
