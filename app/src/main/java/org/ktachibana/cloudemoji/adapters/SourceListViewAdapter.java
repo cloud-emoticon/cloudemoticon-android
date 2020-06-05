@@ -24,6 +24,7 @@ import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Category;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SourceListViewAdapter extends PinnedHeaderAdapter implements SectionIndexer {
+    Context mContext;
+
     // Constant drawables
     Drawable mNoStarDrawable;
     Drawable mStarDrawable;
@@ -47,6 +50,8 @@ public class SourceListViewAdapter extends PinnedHeaderAdapter implements Sectio
     private List<Integer> mSectionIndexToPositionMapping;
 
     public SourceListViewAdapter(Context context, Source source) {
+        mContext = context;
+
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mSource = source;
         mEmoticonInFavoritesCache = new ArrayMap<>();
@@ -139,7 +144,17 @@ public class SourceListViewAdapter extends PinnedHeaderAdapter implements Sectio
             @Override
             public void onClick(View v) {
                 addOrRemoveFromFavorites(isStared, emoticon, viewHolder, description);
+            }
+        });
 
+        // Setup on expand clicked
+        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+                        .setEmoticon(emoticon)
+                        .build()
+                        .show();
             }
         });
 
@@ -217,6 +232,8 @@ public class SourceListViewAdapter extends PinnedHeaderAdapter implements Sectio
         TextView description;
         @Bind(R.id.entryStarImageView)
         ImageView favorite;
+        @Bind(R.id.entryExpandImageView)
+        ImageView expand;
 
         EntryViewHolder(View view) {
             ButterKnife.bind(this, view);

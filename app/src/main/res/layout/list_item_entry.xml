@@ -13,6 +13,16 @@
         layout="@layout/view_double_line_emoticon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/entryExpandImageView"
+        android:layout_toStartOf="@+id/entryExpandImageView" />
+
+    <ImageView
+        android:id="@+id/entryExpandImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_expand"
         android:layout_toLeftOf="@+id/entryStarImageView"
         android:layout_toStartOf="@+id/entryStarImageView" />
 
