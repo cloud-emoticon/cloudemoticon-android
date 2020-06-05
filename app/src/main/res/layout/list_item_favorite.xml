@@ -14,7 +14,16 @@
         layout="@layout/view_double_line_emoticon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/favoriteDragHandlerImageView" />
+        android:layout_toLeftOf="@+id/favoriteExpandImageView" />
+
+    <ImageView
+        android:id="@+id/favoriteExpandImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/favoriteDragHandlerImageView"
+        android:src="@drawable/ic_expand" />
 
     <ImageView
         android:id="@+id/favoriteDragHandlerImageView"
