@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.disk.History;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import java.util.List;
 
@@ -16,13 +18,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class HistoryListViewAdapter extends BaseAdapter {
+    private Context mContext;
     private List<History> mHistory;
     private LayoutInflater mInflater;
 
-    public HistoryListViewAdapter(Context mContext) {
+    public HistoryListViewAdapter(Context context) {
+        mContext = context;
         mHistory = History.listAll(History.class);
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -62,6 +65,16 @@ public class HistoryListViewAdapter extends BaseAdapter {
             viewHolder.description.setText(history.getDescription());
         }
 
+        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+                        .setEmoticon(history.getEmoticon())
+                        .build()
+                        .show();
+            }
+        });
+
         return convertView;
     }
 
@@ -76,6 +89,9 @@ public class HistoryListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.descriptionTextView)
         TextView description;
+
+        @Bind(R.id.historyExpandImageView)
+        ImageView expand;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

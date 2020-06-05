@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.models.memory.Entry;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,12 +21,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SearchResultListViewAdapter extends BaseAdapter {
+    private Context mContext;
     private List<Map.Entry<Entry, HashSet<String>>> mResults;
     private LayoutInflater mInflater;
 
-    public SearchResultListViewAdapter(Context mContext, List<Map.Entry<Entry, HashSet<String>>> results) {
+    public SearchResultListViewAdapter(Context context, List<Map.Entry<Entry, HashSet<String>>> results) {
+        mContext = context;
         mResults = results;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -81,6 +85,16 @@ public class SearchResultListViewAdapter extends BaseAdapter {
         viewHolder.emoticon.setText(entry.getEmoticon());
         viewHolder.description.setText(description);
 
+        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+                        .setEmoticon(entry.getEmoticon())
+                        .build()
+                        .show();
+            }
+        });
+
         return convertView;
     }
 
@@ -90,6 +104,9 @@ public class SearchResultListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.descriptionTextView)
         TextView description;
+
+        @Bind(R.id.historyExpandImageView)
+        ImageView expand;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

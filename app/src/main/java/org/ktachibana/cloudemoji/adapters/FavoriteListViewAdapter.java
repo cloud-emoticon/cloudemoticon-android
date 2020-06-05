@@ -14,6 +14,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import java.util.List;
 
@@ -93,6 +94,15 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
                 mBus.post(new FavoriteBeginEditingEvent(favorite));
             }
         });
+        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+                        .setEmoticon(favorite.getEmoticon())
+                        .build()
+                        .show();
+            }
+        });
 
         return view;
     }
@@ -140,6 +150,8 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
         ImageView star;
         @Bind(R.id.favoriteEditImageView)
         ImageView edit;
+        @Bind(R.id.favoriteExpandImageView)
+        ImageView expand;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
