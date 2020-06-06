@@ -65,13 +65,11 @@
     <string name="user_dict">User dictionary</string>
     <string name="import_into_user_dict">Import all bookmarks into user dictionary</string>
     <string name="imported_into_user_dict">Imported %d bookmarks into user dictionary</string>
-    <string name="import_into_user_dict_summary">Only works for shortcut in English letters and below Android 6.0</string>
     <string name="no_description">No description</string>
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="added_to_repo">Added to repositories</string>
-    <string name="import_into_user_dict_m_below">Sorry! Importing into user dictionary is only supported below Android 6.0</string>
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
     <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>

@@ -9,8 +9,8 @@ import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.util.List;
 
-public class ImeUtils {
-    public static int importAllFavoritesIntoIme(ContentResolver contentResolver) {
+public class PersonalDictionaryUtils {
+    public static int importAllFavorites(ContentResolver contentResolver) {
         List<Favorite> favorites = FavoritesUtils.getFavoritesAsList();
 
         // Add all favorites into user dictionary
@@ -31,7 +31,7 @@ public class ImeUtils {
         return counter;
     }
 
-    public static int revokeAllFavoritesFromIme(ContentResolver contentResolver) {
+    public static int revokeAllFavorites(ContentResolver contentResolver) {
         String clause = UserDictionary.Words.APP_ID + "=?";
         String[] args = {Constants.USER_DICTIONARY_APP_ID};
 

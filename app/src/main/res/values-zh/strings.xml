@@ -64,13 +64,11 @@
     <string name="user_dict">用户词典</string>
     <string name="import_into_user_dict">将全部收藏导入用户词典</string>
     <string name="imported_into_user_dict">已将 %d 个收藏导入用户词典</string>
-    <string name="import_into_user_dict_summary">只对描述是英文和数字的收藏和Android版本6.0以下有效</string>
     <string name="no_description">没有描述</string>
     <string name="no_shortcut">没有快捷输入</string>
     <string name="shortcut">快捷输入</string>
     <string name="please_wait">请稍等&#8230;</string>
     <string name="added_to_repo">已添加到源</string>
-    <string name="import_into_user_dict_m_below">抱歉! 导入用户词典仅支持Andorid版本6.0以下</string>
     <string name="allow">允许</string>
     <string name="deny">拒绝</string>
     <string name="storage_rationale">需要储存权限以备份/恢复收藏</string>

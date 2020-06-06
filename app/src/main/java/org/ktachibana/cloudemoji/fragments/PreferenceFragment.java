@@ -24,7 +24,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
-import org.ktachibana.cloudemoji.utils.ImeUtils;
+import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import permissions.dispatcher.NeedsPermission;
@@ -131,20 +131,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             }
         });
 
-        // Import favorites into IME
+        // Import favorites into personal dictionary
         Preference importImePref = findPreference(Constants.PREF_IMPORT_IME);
-        if (SystemUtils.aboveMarshmallow()) {
-            importImePref.setEnabled(false);
-        } else {
-            importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    int numberAdded = ImeUtils.importAllFavoritesIntoIme(getActivity().getContentResolver());
-                    showSnackBar(String.format(getString(R.string.imported_into_user_dict), numberAdded));
-                    return true;
-                }
-            });
-        }
+        importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                int numberAdded = PersonalDictionaryUtils.importAllFavorites(getActivity().getContentResolver());
+                showSnackBar(String.format(getString(R.string.imported_into_user_dict), numberAdded));
+                return true;
+            }
+        });
 
         // Revoke favorite from IME
         /**

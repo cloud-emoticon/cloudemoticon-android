@@ -33,7 +33,6 @@
         android:title="@string/user_dict">
         <Preference
             android:key="pref_import_into_ime"
-            android:summary="@string/import_into_user_dict_summary"
             android:title="@string/import_into_user_dict" />
         <!--
         <Preference
