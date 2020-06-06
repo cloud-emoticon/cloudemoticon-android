@@ -26,6 +26,7 @@ public interface Constants {
     String PREF_BACKUP_FAV = "pref_backup_fav";
     String PREF_RESTORE_FAV = "pref_restore_fav";
     String PREF_IMPORT_PERSONAL_DICT = "pref_import_into_personal_dict";
+    String PREF_REVOKE_PERSONAL_DICT = "pref_revoke_from_personal_dict";
     String PREF_BEHAVIORS = "pref_behaviors";
     String PREF_NOW_ON_TAP = "pref_now_on_tap";
 

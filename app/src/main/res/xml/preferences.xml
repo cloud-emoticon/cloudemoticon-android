@@ -34,11 +34,9 @@
         <Preference
             android:key="pref_import_into_personal_dict"
             android:title="@string/import_into_personal_dict" />
-        <!--
         <Preference
-            android:key="pref_revoke_from_ime"
-            android:title="@string/revoke_from_ime" />
-        -->
+            android:key="pref_revoke_from_personal_dict"
+            android:title="@string/revoke_from_personal_dict" />
     </PreferenceCategory>
 
     <PreferenceCategory

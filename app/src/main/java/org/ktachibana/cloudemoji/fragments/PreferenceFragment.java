@@ -142,20 +142,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             }
         });
 
-        // Revoke favorite from IME
-        /**
-         Preference revokeImePref = findPreference(PREF_REVOKE_IME);
-         revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-        @Override public boolean onPreferenceClick(Preference preference) {
-        int numberRevoked = ImeUtils.revokeAllFavoritesFromIme(getContentResolver());
-        Toast.makeText(
-        PreferenceActivity.this,
-        String.format(getString(R.string.revoked_from_ime), numberRevoked),
-        Toast.LENGTH_SHORT).show();
-        return true;
-        }
+        // Revoke favorite from personal dictionary
+        Preference revokeImePref = findPreference(Constants.PREF_REVOKE_PERSONAL_DICT);
+        revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                int numberRevoked = PersonalDictionaryUtils.revokeAllFavorites(getActivity().getContentResolver());
+                showSnackBar(String.format(getString(R.string.revoked_from_personal_dict), numberRevoked));
+                return true;
+            }
         });
-         **/
 
         // Backup favorites
         Preference backupPref = findPreference(Constants.PREF_BACKUP_FAV);

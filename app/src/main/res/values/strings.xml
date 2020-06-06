@@ -85,4 +85,6 @@
     <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
     <string name="ime_label">Cloud Emoticon IME</string>
     <string name="ime_no_favorite">No bookmark</string>
+    <string name="revoke_from_personal_dict">Reoke all bookmarks from personal dictionary</string>
+    <string name="revoked_from_personal_dict">Revoked %d bookmarks from personal dictionary</string>
 </resources>
