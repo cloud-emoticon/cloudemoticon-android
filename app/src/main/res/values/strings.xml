@@ -62,9 +62,9 @@
         <item>Only in notification panel (Only works from Android 3.0 to 7.0)</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
-    <string name="user_dict">User dictionary</string>
-    <string name="import_into_user_dict">Import all bookmarks into user dictionary</string>
-    <string name="imported_into_user_dict">Imported %d bookmarks into user dictionary</string>
+    <string name="personal_dict">Personal dictionary</string>
+    <string name="import_into_personal_dict">Import all bookmarks into personal dictionary</string>
+    <string name="imported_into_personal_dict">Imported %d bookmarks into personal dictionary</string>
     <string name="no_description">No description</string>
     <string name="no_shortcut">No shortcut</string>
     <string name="shortcut">Shortcut</string>

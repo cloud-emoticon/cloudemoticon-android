@@ -25,7 +25,7 @@ public interface Constants {
     String PREF_NAVBAR_GESTURE = "pref_navbar_gesture";
     String PREF_BACKUP_FAV = "pref_backup_fav";
     String PREF_RESTORE_FAV = "pref_restore_fav";
-    String PREF_IMPORT_IME = "pref_import_into_ime";
+    String PREF_IMPORT_PERSONAL_DICT = "pref_import_into_personal_dict";
     String PREF_BEHAVIORS = "pref_behaviors";
     String PREF_NOW_ON_TAP = "pref_now_on_tap";
 
@@ -34,8 +34,7 @@ public interface Constants {
     int FORMAT_TYPE_JSON = 1;
 
     @IntDef({FORMAT_TYPE_XML, FORMAT_TYPE_JSON})
-    @interface FormatType {
-    }
+    @interface FormatType { }
 
     // URLs
     String DEFAULT_REPOSITORY_URL = "http://ktachibana.party/cloudemoticon/default.json";

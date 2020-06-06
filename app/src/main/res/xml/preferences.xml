@@ -30,10 +30,10 @@
 
     <PreferenceCategory
         android:key="pref_ime"
-        android:title="@string/user_dict">
+        android:title="@string/personal_dict">
         <Preference
-            android:key="pref_import_into_ime"
-            android:title="@string/import_into_user_dict" />
+            android:key="pref_import_into_personal_dict"
+            android:title="@string/import_into_personal_dict" />
         <!--
         <Preference
             android:key="pref_revoke_from_ime"

@@ -132,12 +132,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         });
 
         // Import favorites into personal dictionary
-        Preference importImePref = findPreference(Constants.PREF_IMPORT_IME);
+        Preference importImePref = findPreference(Constants.PREF_IMPORT_PERSONAL_DICT);
         importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 int numberAdded = PersonalDictionaryUtils.importAllFavorites(getActivity().getContentResolver());
-                showSnackBar(String.format(getString(R.string.imported_into_user_dict), numberAdded));
+                showSnackBar(String.format(getString(R.string.imported_into_personal_dict), numberAdded));
                 return true;
             }
         });

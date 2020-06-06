@@ -61,9 +61,9 @@
         <item>只在通知面板里显示（Android 3.0 以下及 8.0 以上无效）</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
-    <string name="user_dict">用户词典</string>
-    <string name="import_into_user_dict">将全部收藏导入用户词典</string>
-    <string name="imported_into_user_dict">已将 %d 个收藏导入用户词典</string>
+    <string name="personal_dict">个人词典</string>
+    <string name="import_into_personal_dict">将全部收藏导入个人词典</string>
+    <string name="imported_into_personal_dict">已将 %d 个收藏导入个人词典</string>
     <string name="no_description">没有描述</string>
     <string name="no_shortcut">没有快捷输入</string>
     <string name="shortcut">快捷输入</string>
