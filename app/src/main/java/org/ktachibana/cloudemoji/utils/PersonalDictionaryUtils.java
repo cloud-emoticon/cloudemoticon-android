@@ -9,8 +9,8 @@ import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.util.List;
 
-public class ImeUtils {
-    public static int importAllFavoritesIntoIme(ContentResolver contentResolver) {
+public class PersonalDictionaryUtils {
+    public static int importAllFavorites(ContentResolver contentResolver) {
         List<Favorite> favorites = FavoritesUtils.getFavoritesAsList();
 
         // Add all favorites into user dictionary
@@ -18,7 +18,6 @@ public class ImeUtils {
         for (Favorite favorite : favorites) {
             if (!favorite.getShortcut().equals("")) {
                 ContentValues newValue = new ContentValues();
-                newValue.put(UserDictionary.Words.APP_ID, Constants.USER_DICTIONARY_APP_ID);
                 newValue.put(UserDictionary.Words.WORD, favorite.getEmoticon());
                 if (SystemUtils.aboveJellybean()) {
                     newValue.put(UserDictionary.Words.SHORTCUT, favorite.getShortcut());
@@ -31,11 +30,20 @@ public class ImeUtils {
         return counter;
     }
 
-    public static int revokeAllFavoritesFromIme(ContentResolver contentResolver) {
-        String clause = UserDictionary.Words.APP_ID + "=?";
-        String[] args = {Constants.USER_DICTIONARY_APP_ID};
+    public static int revokeAllFavorites(ContentResolver contentResolver) {
+        List<Favorite> favorites = FavoritesUtils.getFavoritesAsList();
 
-        // TODO: Remove all entries belonging to this app
-        return contentResolver.delete(UserDictionary.Words.CONTENT_URI, clause, args);
+        int counter = 0;
+        for (Favorite favorite : favorites) {
+            if (!favorite.getShortcut().equals("")) {
+                String clause = UserDictionary.Words.WORD + "=?";
+                String[] args = {favorite.getEmoticon()};
+
+                contentResolver.delete(UserDictionary.Words.CONTENT_URI, clause, args);
+                counter++;
+            }
+        }
+
+        return counter;
     }
 }
