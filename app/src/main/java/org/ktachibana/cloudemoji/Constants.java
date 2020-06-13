@@ -6,9 +6,6 @@ import androidx.annotation.IntDef;
 import java.io.File;
 
 public interface Constants {
-    // General
-    String USER_DICTIONARY_APP_ID = "cloudemoji";
-
     // Notification
     int QUICK_TRIGGER_NOTIFICATION_ID = 0;
     String QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY = "both";
