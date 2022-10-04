@@ -35,7 +35,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +47,8 @@
         <activity-alias
             android:name=".activities.AssistActivity"
             android:enabled="false"
-            android:targetActivity=".activities.MainActivity">
+            android:targetActivity=".activities.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />
 
@@ -107,7 +109,8 @@
 
         <service android:name=".ime.MyInputMethodService"
             android:label="@string/ime_label"
-            android:permission="android.permission.BIND_INPUT_METHOD">
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>

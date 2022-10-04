@@ -71,7 +71,14 @@ public class NotificationUtils {
         String title = context.getString(R.string.app_name);
         String text = context.getString(R.string.touch_to_launch);
         Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pIntent = PendingIntent.getActivity
+                    (context, 0, intent, PendingIntent.FLAG_MUTABLE);
+        } else {
+            pIntent = PendingIntent.getActivity
+                    (context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
         Notification notification = new NotificationCompat.Builder(context, Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID)
                 .setContentTitle(title)                     // Title
                 .setContentText(text)                       // Text
