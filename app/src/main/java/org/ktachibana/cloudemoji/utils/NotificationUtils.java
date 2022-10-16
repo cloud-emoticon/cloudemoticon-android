@@ -51,7 +51,7 @@ public class NotificationUtils {
             NotificationManager notificationManager,
             int importance
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (SystemUtils.aboveOreo()) {
             NotificationChannel channel = new NotificationChannel(
                     Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.quick_trigger_notification_channel_name),

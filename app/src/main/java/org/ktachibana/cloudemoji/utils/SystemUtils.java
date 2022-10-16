@@ -47,4 +47,8 @@ public class SystemUtils {
     public static boolean aboveMarshmallow() {
         return !belowMarshmallow();
     }
+
+    public static boolean aboveOreo() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
 }
