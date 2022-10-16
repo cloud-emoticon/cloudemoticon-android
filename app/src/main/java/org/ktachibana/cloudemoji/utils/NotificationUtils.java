@@ -86,6 +86,7 @@ public class NotificationUtils {
                 .setContentIntent(pIntent)                  // Intent to launch this app
                 .setWhen(0)                                 // No time to display
                 .setPriority(priority)                      // Given priority
+                .setChannelId(Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID)
                 .build();
         notification.flags = Notification.FLAG_NO_CLEAR;
         notificationManager.notify(Constants.QUICK_TRIGGER_NOTIFICATION_ID, notification);
