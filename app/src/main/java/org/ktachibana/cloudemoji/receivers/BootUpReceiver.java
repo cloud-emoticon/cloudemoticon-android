@@ -19,22 +19,30 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class BootUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-            // Show notification according to prefs
-            boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
-            String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY);
-            if (showAfterBootUp) {
-                if (SystemUtils.aboveTiramisu()) {
-                    String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
-                    if (EasyPermissions.hasPermissions(context, perms)) {
-                        NotificationUtils.setupNotificationWithPref(context, notificationVisibility);
-                    }
-                } else {
-                    NotificationUtils.setupNotificationWithPref(context, notificationVisibility);
-                }
-            }
+        if (!"android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+            return;
         }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Show notification according to prefs
+        boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
+        if (!showAfterBootUp) {
+            return;
+        }
+
+        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY);
+        if (!SystemUtils.aboveTiramisu33()) {
+            _setupNotification(context, notificationVisibility);
+            return;
+        }
+        String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
+        if (EasyPermissions.hasPermissions(context, perms)) {
+            _setupNotification(context, notificationVisibility);
+        }
+    }
+
+    private void _setupNotification(Context context, String notificationVisibility) {
+        NotificationUtils.setupNotificationWithPref(context, notificationVisibility);
     }
 }

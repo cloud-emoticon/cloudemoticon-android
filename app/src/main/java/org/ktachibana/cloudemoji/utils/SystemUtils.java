@@ -20,31 +20,19 @@ public class SystemUtils {
         return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 
-    public static boolean belowJellybean() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN;
+    public static boolean aboveMarshmallow23() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    public static boolean aboveJellybean() {
-        return !belowJellybean();
-    }
-
-    public static boolean belowMarshmallow() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
-    }
-
-    public static boolean aboveMarshmallow() {
-        return !belowMarshmallow();
-    }
-
-    public static boolean aboveOreo() {
+    public static boolean aboveOreo26() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
-    public static boolean aboveS() {
+    public static boolean aboveS31() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
-    public static boolean aboveTiramisu() {
+    public static boolean aboveTiramisu33() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
     }
 }

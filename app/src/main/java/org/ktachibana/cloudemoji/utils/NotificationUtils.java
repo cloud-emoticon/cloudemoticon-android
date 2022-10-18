@@ -53,7 +53,7 @@ public class NotificationUtils {
             NotificationManager notificationManager,
             int importance
     ) {
-        if (SystemUtils.aboveOreo()) {
+        if (SystemUtils.aboveOreo26()) {
             NotificationChannel channel = new NotificationChannel(
                     Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.quick_trigger_notification_channel_name),
@@ -75,7 +75,7 @@ public class NotificationUtils {
         String text = context.getString(R.string.touch_to_launch);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pIntent;
-        if (SystemUtils.aboveS()) {
+        if (SystemUtils.aboveS31()) {
             pIntent = PendingIntent.getActivity
                     (context, 0, intent, PendingIntent.FLAG_MUTABLE);
         } else {

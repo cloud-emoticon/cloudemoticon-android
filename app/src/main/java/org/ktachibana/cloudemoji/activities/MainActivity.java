@@ -124,16 +124,20 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
     @AfterPermissionGranted(RC_POST_NOTIFICATIONS)
     private void setupNotification() {
-        if (SystemUtils.aboveTiramisu()) {
-            String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
-            if (EasyPermissions.hasPermissions(this, perms)) {
-                NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
-            } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.notification_rationale), RC_POST_NOTIFICATIONS, perms);
-            }
-        } else {
-            NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
+        if (!SystemUtils.aboveTiramisu33()) {
+            _setupNotification();
+            return;
         }
+        String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            _setupNotification();
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.notification_rationale), RC_POST_NOTIFICATIONS, perms);
+        }
+    }
+
+    private void _setupNotification() {
+        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
     }
 
     @Override
