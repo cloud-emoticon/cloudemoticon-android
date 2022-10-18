@@ -40,6 +40,10 @@ public class SystemUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean aboveS() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
     public static boolean aboveTiramisu() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
     }

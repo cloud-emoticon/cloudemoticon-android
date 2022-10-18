@@ -73,10 +73,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.ktachibana.cloudemoji.activities.MainActivity" />
         </activity>
-        <activity
-            android:name=".activities.BootUpDummyActivity"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoDisplay" />
 
         <receiver
             android:name=".receivers.BootUpReceiver"
