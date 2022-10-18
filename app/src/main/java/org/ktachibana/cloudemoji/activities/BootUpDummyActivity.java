@@ -6,10 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import androidx.annotation.NonNull;
-
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
