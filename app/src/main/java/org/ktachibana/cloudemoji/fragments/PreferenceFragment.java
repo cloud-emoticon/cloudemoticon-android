@@ -35,8 +35,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     SharedPreferences mPreferences;
     private Context mContext;
     private EventBus mBus;
-    private static final int RC_READ_AND_WRITE_EXTERNAL_STORAGE_FOR_BACKUP = 125;
-    private static final int RC_READ_AND_WRITE_EXTERNAL_STORAGE_FOR_RESTORE = 126;
+    private static final int RC_WRITE_EXTERNAL_STORAGE_FOR_BACKUP = 123;
+    private static final int RC_READ_EXTERNAL_STORAGE_FOR_RESTORE = 124;
 
     @Override
     public void onAttach(Context context) {
@@ -180,19 +180,19 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
     }
 
-    @AfterPermissionGranted(RC_READ_AND_WRITE_EXTERNAL_STORAGE_FOR_BACKUP)
+    @AfterPermissionGranted(RC_WRITE_EXTERNAL_STORAGE_FOR_BACKUP)
     void backupFavorites() {
         if (!SystemUtils.aboveMarshmallow23()) {
             _backupFavorites();
             return;
         }
-        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(mContext, perms)) {
             _backupFavorites();
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, mContext.getString(R.string.storage_rationale),
-                    RC_READ_AND_WRITE_EXTERNAL_STORAGE_FOR_BACKUP, perms);
+                    RC_WRITE_EXTERNAL_STORAGE_FOR_BACKUP, perms);
         }
     }
 
@@ -205,19 +205,19 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         }
     }
 
-    @AfterPermissionGranted(RC_READ_AND_WRITE_EXTERNAL_STORAGE_FOR_RESTORE)
+    @AfterPermissionGranted(RC_READ_EXTERNAL_STORAGE_FOR_RESTORE)
     void restoreFavorites() {
         if (!SystemUtils.aboveMarshmallow23()) {
             _restoreFavorites();
             return;
         }
-        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(mContext, perms)) {
             _restoreFavorites();
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, mContext.getString(R.string.storage_rationale),
-                    RC_READ_AND_WRITE_EXTERNAL_STORAGE_FOR_RESTORE, perms);
+                    RC_READ_EXTERNAL_STORAGE_FOR_RESTORE, perms);
         }
     }
 
