@@ -1,12 +1,19 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
+
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Dummy activity that shows notification after boot up
@@ -19,10 +26,17 @@ public class BootUpDummyActivity extends Activity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Show notification according to prefs
-        Boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
+        boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
         String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY);
         if (showAfterBootUp) {
-            NotificationUtils.setupNotificationWithPref(this, notificationVisibility);
+            if (SystemUtils.aboveTiramisu()) {
+                String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
+                if (EasyPermissions.hasPermissions(this, perms)) {
+                    NotificationUtils.setupNotificationWithPref(this, notificationVisibility);
+                }
+            } else {
+                NotificationUtils.setupNotificationWithPref(this, notificationVisibility);
+            }
         }
 
         finish();

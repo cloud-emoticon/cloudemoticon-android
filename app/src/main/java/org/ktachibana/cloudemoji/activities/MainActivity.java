@@ -395,4 +395,5 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }}
+    }
+}
