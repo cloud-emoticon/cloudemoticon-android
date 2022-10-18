@@ -51,7 +51,7 @@
     <string name="update_checker">检查新版本</string>
     <string name="update_checker_failed">检查新版本失败</string>
     <string name="already_latest_version">已经是最新版本</string>
-    <string name="new_version_available">有新版本辣！</string>
+    <string name="new_version_available">有新版本辣！(%d)</string>
     <string name="go_to_play_store">去 Play Store 看看</string>
     <string name="search_result_not_found">没找到</string>
 
@@ -86,4 +86,5 @@
     <string name="ime_no_favorite">没有收藏</string>
     <string name="revoke_from_personal_dict">将全部收藏从个人词典中撤出</string>
     <string name="revoked_from_personal_dict">已将 %d 个收藏从个人词典中撤出</string>
+    <string name="notification_rationale">需要通知权限，这样的话您可以从通知面板中快速打开 App</string>
 </resources>

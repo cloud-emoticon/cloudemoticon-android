@@ -53,7 +53,7 @@
     <string name="update_checker">Check for update</string>
     <string name="update_checker_failed">Failed to check for update</string>
     <string name="already_latest_version">Already latest version</string>
-    <string name="new_version_available">New version is available!</string>
+    <string name="new_version_available">New version is available! (%d)</string>
     <string name="go_to_play_store">Go to Play Store</string>
     <string name="search_result_not_found">Result not found</string>
 
@@ -87,4 +87,5 @@
     <string name="ime_no_favorite">No bookmark</string>
     <string name="revoke_from_personal_dict">Reoke all bookmarks from personal dictionary</string>
     <string name="revoked_from_personal_dict">Revoked %d bookmarks from personal dictionary</string>
+    <string name="notification_rationale">We need to put a sticky \"quick trigger\" notification so that you can launch Cloud Emoticon conveniently.</string>
 </resources>

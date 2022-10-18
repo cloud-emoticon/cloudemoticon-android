@@ -1,5 +1,6 @@
 package org.ktachibana.cloudemoji.activities;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,11 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.commons.io.IOUtils;
@@ -35,6 +39,7 @@ import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -47,12 +52,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String SOURCE_CACHE_TAG = "sourceCache";
     private static final String CURRENT_ITEM_TAG = "currentItem";
     private LinkedHashMap<Long, Source> sourceCache;
     private int currentItem;
+    private static final int RC_POST_NOTIFICATIONS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +101,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
      * Put every source into source cache
      */
     private LinkedHashMap<Long, Source> initializeSourceCache() {
-        LinkedHashMap<Long, Source> sourceCache = new LinkedHashMap<Long, Source>();
+        LinkedHashMap<Long, Source> sourceCache = new LinkedHashMap<>();
 
         List<Repository> allRepositories = Repository.listAll(Repository.class);
         for (Repository repository : allRepositories) {
@@ -114,8 +122,18 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         return sourceCache;
     }
 
+    @AfterPermissionGranted(RC_POST_NOTIFICATIONS)
     private void setupNotification() {
-        NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
+        if (SystemUtils.aboveTiramisu()) {
+            String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
+            if (EasyPermissions.hasPermissions(this, perms)) {
+                NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.notification_rationale), RC_POST_NOTIFICATIONS, perms);
+            }
+        } else {
+            NotificationUtils.setupNotificationWithPref(this, mPreferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY));
+        }
     }
 
     @Override
@@ -231,12 +249,12 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         } else {
             // New version available, show dialog
             new MaterialDialog.Builder(MainActivity.this)
-                    .title(getString(R.string.new_version_available) + String.format(" (%d)", latestVersionCode))
+                    .title(String.format(getString(R.string.new_version_available), latestVersionCode))
                     .positiveText(R.string.go_to_play_store)
                     .negativeText(android.R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onPositive(MaterialDialog dialog) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             Intent intent = new Intent();
                             intent.setData(Uri.parse(Constants.PLAY_STORE_URL));
                             startActivity(intent);
@@ -276,6 +294,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelable(SOURCE_CACHE_TAG, Parcels.wrap(sourceCache));
         outState.putInt(CURRENT_ITEM_TAG, currentItem);
     }
@@ -295,7 +314,6 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void setupDefaultRepoIfNecessary() {
         if (Repository.listAll(Repository.class).size() != 0) {
             // If there are already repositories, ignore
@@ -370,4 +388,11 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
             e.printStackTrace();
         }
     }
-}
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }}
