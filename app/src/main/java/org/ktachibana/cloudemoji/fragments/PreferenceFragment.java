@@ -106,8 +106,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
             packageManager.setComponentEnabledSetting(componentName,
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            nowOnTapPref.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent();
+                // Didn't found it in android.provider.Settings... Just hardcoded it.
+                ComponentName componentName1 = new ComponentName(
+                        Constants.PACKAGE_NAME_ANDROID_SETTINGS,
+                        Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
+                intent.setComponent(componentName1);
+                startActivity(intent);
+                return true;
+            });
         } else {
-            navbarGesturePref.setVisible(false);
+            nowOnTapPref.setVisible(false);
 
             // Navbar Gesture
             navbarGesturePref.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -121,18 +131,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 return true;
             });
         }
-
-        nowOnTapPref.setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent();
-            // Didn't found it in android.provider.Settings... Just hardcoded it.
-            ComponentName componentName = new ComponentName(
-                    Constants.PACKAGE_NAME_ANDROID_SETTINGS,
-                    Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
-            intent.setComponent(componentName);
-            startActivity(intent);
-            return true;
-        });
-
 
         PreferenceCategory personalDictionaryPref = (PreferenceCategory) findPreference(Constants.PREF_PERSONAL_DICTIONARY);
         if (CapabilityUtils.personalDictionaryUnavailable()) {
@@ -153,7 +151,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 showSnackBar(String.format(getString(R.string.revoked_from_personal_dict), numberRevoked));
                 return true;
             });
-            revokeImePref.setEnabled(false);
         }
 
         // Backup favorites

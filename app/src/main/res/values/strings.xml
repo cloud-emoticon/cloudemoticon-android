@@ -84,7 +84,7 @@
     <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification panel</string>
     <string name="ime_label">Cloud Emoticon IME</string>
     <string name="ime_no_favorite">No bookmark</string>
-    <string name="revoke_from_personal_dict">Reoke all bookmarks from personal dictionary</string>
+    <string name="revoke_from_personal_dict">Revoke all bookmarks from personal dictionary</string>
     <string name="revoked_from_personal_dict">Revoked %d bookmarks from personal dictionary</string>
     <string name="notification_rationale">We need to put a sticky \"quick trigger\" notification so that you can launch Cloud Emoticon conveniently.</string>
     <string name="exported_repo">Repo exported</string>
