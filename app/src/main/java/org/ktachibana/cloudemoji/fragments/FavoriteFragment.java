@@ -23,7 +23,7 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
+import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 
 import java.util.List;
 
@@ -97,12 +97,12 @@ public class FavoriteFragment extends BaseFragment {
                     }
                 })
                 .addInput(null, getString(R.string.description))
-                .addInput(null, getString(R.string.shortcut), SystemUtils.aboveMarshmallow23())
+                .addInput(null, getString(R.string.shortcut), CapabilityUtils.personalDictionaryUnavailable())
                 .inputs((dialog, inputs, allInputsValidated) -> {
                     if (allInputsValidated) {
                         String emoticon = inputs.get(0).toString();
                         String description = inputs.get(1).toString();
-                        String shortcut = SystemUtils.aboveMarshmallow23() ? "" : inputs.get(2).toString();
+                        String shortcut = CapabilityUtils.personalDictionaryUnavailable() ? "" : inputs.get(2).toString();
 
                         Favorite favorite = new Favorite(emoticon, description, shortcut);
                         favorite.save();
@@ -122,10 +122,10 @@ public class FavoriteFragment extends BaseFragment {
         final Favorite favorite = event.getFavorite();
         new MultiInputMaterialDialogBuilder(mContext)
                 .addInput(favorite.getDescription(), getString(R.string.description))
-                .addInput(favorite.getShortcut(), getString(R.string.shortcut), SystemUtils.aboveMarshmallow23())
+                .addInput(favorite.getShortcut(), getString(R.string.shortcut), CapabilityUtils.personalDictionaryUnavailable())
                 .inputs((dialog, inputs, allInputsValidated) -> {
                     String description = inputs.get(0).toString();
-                    String shortcut = SystemUtils.aboveMarshmallow23() ? "" : inputs.get(1).toString();
+                    String shortcut = CapabilityUtils.personalDictionaryUnavailable() ? "" : inputs.get(1).toString();
 
                     // Get the new favorite and SAVE
                     favorite.setDescription(description);

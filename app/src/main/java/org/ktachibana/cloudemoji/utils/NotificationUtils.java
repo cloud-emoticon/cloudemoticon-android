@@ -90,7 +90,7 @@ public class NotificationUtils implements Constants {
     private static boolean doesQuickTriggerNotificationExist(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (!SystemUtils.aboveMarshmallow23()) {
+        if (CapabilityUtils.cannotGetActiveNotifications()) {
             return false;
         }
 

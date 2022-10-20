@@ -29,6 +29,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
+import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
@@ -100,7 +101,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // Now on Tap or Navbar Gesture
         Preference navbarGesturePref = findPreference(Constants.PREF_NAVBAR_GESTURE);
         Preference nowOnTapPref = findPreference(Constants.PREF_NOW_ON_TAP);
-        if (SystemUtils.aboveMarshmallow23()) {
+        if (CapabilityUtils.nowOnTapAvailable()) {
             navbarGesturePref.setVisible(false);
 
             // Now on Tap
@@ -137,7 +138,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
 
         PreferenceCategory personalDictionaryPref = (PreferenceCategory) findPreference(Constants.PREF_PERSONAL_DICTIONARY);
-        if (SystemUtils.aboveMarshmallow23()) {
+        if (CapabilityUtils.personalDictionaryUnavailable()) {
             personalDictionaryPref.setVisible(false);
         } else {
             // Import favorites into personal dictionary

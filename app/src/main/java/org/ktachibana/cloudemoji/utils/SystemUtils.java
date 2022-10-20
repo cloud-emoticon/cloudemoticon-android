@@ -20,10 +20,6 @@ public class SystemUtils {
         return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
     }
 
-    public static boolean aboveMarshmallow23() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
     public static boolean aboveNougat24() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }

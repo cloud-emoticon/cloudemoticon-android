@@ -15,7 +15,7 @@ import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
+import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
 
         // Setup contents
         viewHolder.emoticon.setText(favorite.getEmoticon());
-        if (favorite.getDescription().equals("") && (SystemUtils.aboveMarshmallow23() || favorite.getShortcut().equals(""))) {
+        if (favorite.getDescription().equals("") && (CapabilityUtils.personalDictionaryUnavailable() || favorite.getShortcut().equals(""))) {
             viewHolder.description.setVisibility(View.GONE);
         } else {
             viewHolder.description.setVisibility(View.VISIBLE);
@@ -73,7 +73,7 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
                             ? "(" + mContext.getString(R.string.no_description) + ")"
                             : favorite.getDescription();
 
-            if (SystemUtils.aboveMarshmallow23()) {
+            if (CapabilityUtils.personalDictionaryUnavailable()) {
                 viewHolder.description.setText(descriptionText);
             } else {
                 String shortcutText =
