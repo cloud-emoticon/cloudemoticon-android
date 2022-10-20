@@ -29,13 +29,13 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
+import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Optional;
 
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
@@ -84,6 +84,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             notificationLegacyVisibilityPref.setVisible(false);
             showNotificationPref.setOnPreferenceChangeListener((preference, newValue) -> {
                 syncShowAfterBootUpToNotificationVisibility(newValue);
+                NotificationUtils.setupNotification(mContext, newValue);
                 return true;
             });
 
@@ -91,6 +92,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             showNotificationPref.setVisible(false);
             notificationLegacyVisibilityPref.setOnPreferenceChangeListener((preference, newValue) -> {
                 syncShowAfterBootUpToNotificationVisibility(newValue);
+                NotificationUtils.setupNotification(mContext, newValue);
                 return true;
             });
         }

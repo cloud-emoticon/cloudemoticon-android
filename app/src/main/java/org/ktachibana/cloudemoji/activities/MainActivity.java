@@ -55,7 +55,7 @@ import butterknife.ButterKnife;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends BaseActivity {
     public static final String SOURCE_CACHE_TAG = "sourceCache";
     private static final String CURRENT_ITEM_TAG = "currentItem";
     private LinkedHashMap<Long, Source> sourceCache;
@@ -125,34 +125,15 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
     @AfterPermissionGranted(RC_POST_NOTIFICATIONS)
     private void setupNotification() {
         if (SystemUtils.belowTiramisu33()) {
-            NotificationUtils.setupNotification(this);
+            NotificationUtils.setupNotification(this, null);
             return;
         }
         String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            NotificationUtils.setupNotification(this);
+            NotificationUtils.setupNotification(this, null);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.notification_rationale), RC_POST_NOTIFICATIONS, perms);
         }
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
-        if (Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY.equals(key)) {
-            setupNotification();
-        }
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        mPreferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override

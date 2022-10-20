@@ -32,12 +32,12 @@ public class BootUpReceiver extends BroadcastReceiver {
         }
 
         if (SystemUtils.belowTiramisu33()) {
-            NotificationUtils.setupNotification(context);
+            NotificationUtils.setupNotification(context, null);
             return;
         }
         String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
         if (EasyPermissions.hasPermissions(context, perms)) {
-            NotificationUtils.setupNotification(context);
+            NotificationUtils.setupNotification(context, null);
         }
     }
 }

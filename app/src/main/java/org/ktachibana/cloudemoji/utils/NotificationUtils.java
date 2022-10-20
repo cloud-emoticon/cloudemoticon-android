@@ -25,11 +25,14 @@ public class NotificationUtils implements Constants {
     /**
      * Setup notification with user preference
      */
-    public static void setupNotification(Context context) {
+    public static void setupNotification(Context context, Object newVisibleOrVisibility) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (SystemUtils.aboveNougat24()) {
             boolean visible = preferences.getBoolean(Constants.PREF_SHOW_NOTIFICATION, true);
+            if (newVisibleOrVisibility != null) {
+                visible = (boolean) newVisibleOrVisibility;
+            }
             if (visible) {
                 setupLegacyVisibilityBoth(context);
             } else {
@@ -40,6 +43,9 @@ public class NotificationUtils implements Constants {
                     Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY,
                     Constants.QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH
             );
+            if (newVisibleOrVisibility != null) {
+                legacyVisibility = (String) newVisibleOrVisibility;
+            }
             switch (legacyVisibility) {
                 case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO:
                     setupLegacyVisibilityNo(context);
