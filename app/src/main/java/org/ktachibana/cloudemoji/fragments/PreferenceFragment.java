@@ -198,6 +198,17 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
     }
 
+    /**
+     * This method sync the state of "show it after boot-up" preference
+     * to the state of "show notification"/"notification visibility" preference
+     *
+     * e.g. if "show notification"/"notification visibility" is false or no
+     *      "show it after boot-up" cannot be true
+     *      hence we programmatically set it to false, and disable it
+     *      otherwise, we enable the "show it after boot-up" preference
+     *
+     * @param newVisibleOrVisibility
+     */
     private void syncShowAfterBootUpToNotificationVisibility(Object newVisibleOrVisibility) {
         CheckBoxPreference showAfterBootUpPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_AFTER_BOOT_UP);
 
