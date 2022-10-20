@@ -19,7 +19,7 @@
     <string name="add_to_fav">添加到收藏</string>
     <string name="added_to_fav">已添加到收藏</string>
     <string name="removed_from_fav">已从收藏中移除</string>
-    <string name="notification_visibility">通知可见性</string>
+    <string name="notification_visibility">快捷启动通知的可见性</string>
     <string name="show_after_boot_up">启动后显示通知</string>
     <string name="emoticon">颜文字</string>
     <string name="description">描述</string>
@@ -78,13 +78,14 @@
     <string name="repository_store_contribution_prompt">想要贡献源吗？</string>
     <string name="repository_store_contribution_warning">这需要最基础的 GitHub, JSON 以及编程知识。你确定要继续吗？</string>
     <string name="proceed">继续</string>
-    <string name="quick_trigger_notification_channel_name">快速打开</string>
-    <string name="quick_trigger_notification_channel_description">从通知面板中快速打开 App</string>
+    <string name="quick_trigger_notification_channel_name">快捷启动通知</string>
+    <string name="quick_trigger_notification_channel_description">从通知面板中打开 App</string>
     <string name="ime_label">云颜文字输入法</string>
     <string name="ime_no_favorite">没有收藏</string>
     <string name="revoke_from_personal_dict">将全部收藏从个人词典中撤出</string>
     <string name="revoked_from_personal_dict">已将 %d 个收藏从个人词典中撤出</string>
-    <string name="notification_rationale">需要通知权限，这样的话您可以从通知面板中快速打开 App</string>
+    <string name="notification_rationale">需要通知权限，这样的话您可以从通知面板中打开 App</string>
     <string name="fail">出错辣！请再试一下</string>
     <string name="exported_repo">源已导出</string>
+    <string name="show_notification">启用快捷启动通知</string>
 </resources>

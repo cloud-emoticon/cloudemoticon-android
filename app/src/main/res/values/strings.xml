@@ -21,8 +21,8 @@
     <string name="add_to_fav">Add to bookmarks</string>
     <string name="added_to_fav">Added to bookmarks</string>
     <string name="removed_from_fav">Removed from bookmarks</string>
-    <string name="notification_visibility">Notification visibility</string>
-    <string name="show_after_boot_up">Show notification after boot-up</string>
+    <string name="notification_visibility">Quick trigger notification visibility</string>
+    <string name="show_after_boot_up">Show quick trigger notification after boot-up</string>
     <string name="emoticon">Emoticon</string>
     <string name="description">Description</string>
     <string name="edit_repository">Edit Repository</string>
@@ -81,11 +81,12 @@
     <string name="repository_store_contribution_warning">It is assumed that you have some minimal knowledge on GitHub, JSON and programming. Do you still want to proceed?</string>
     <string name="proceed">Proceed</string>
     <string name="quick_trigger_notification_channel_name">Quick trigger</string>
-    <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
+    <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification panel</string>
     <string name="ime_label">Cloud Emoticon IME</string>
     <string name="ime_no_favorite">No bookmark</string>
     <string name="revoke_from_personal_dict">Reoke all bookmarks from personal dictionary</string>
     <string name="revoked_from_personal_dict">Revoked %d bookmarks from personal dictionary</string>
     <string name="notification_rationale">We need to put a sticky \"quick trigger\" notification so that you can launch Cloud Emoticon conveniently.</string>
     <string name="exported_repo">Repo exported</string>
+    <string name="show_notification">Show quick trigger notification</string>
 </resources>
