@@ -26,36 +26,47 @@ public class NotificationUtils implements Constants {
      * Setup notification with user preference
      */
     public static void setupNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH);
         switch (notificationVisibility) {
             case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_NO:
-                // If not showing
-                notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
+                setupLegacyVisibilityNo(context);
                 break;
 
             case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_PANEL:
-                // If only shows in panel
-                if (doesQuickTriggerNotificationExist(context)) {
-                    break;
-                }
-                notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
-                createQuickTriggerNotificationChannel(context, notificationManager, NotificationManagerCompat.IMPORTANCE_MIN);
-                showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_MIN);
+                setupLegacyVisibilityPanel(context);
                 break;
 
             case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH:
-                // If shows on both panel and status bar
-                if (doesQuickTriggerNotificationExist(context)) {
-                    break;
-                }
-                notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
-                createQuickTriggerNotificationChannel(context, notificationManager, NotificationManagerCompat.IMPORTANCE_DEFAULT);
-                showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_DEFAULT);
+                setupLegacyVisibilityBoth(context);
                 break;
         }
+    }
+
+    private static void setupLegacyVisibilityNo(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
+    }
+
+    private static void setupLegacyVisibilityPanel(Context context) {
+        if (doesQuickTriggerNotificationExist(context)) {
+            return;
+        }
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
+        createQuickTriggerNotificationChannel(context, NotificationManagerCompat.IMPORTANCE_MIN);
+        showQuickTriggerNotification(context, NotificationCompat.PRIORITY_MIN);
+    }
+
+    private static void setupLegacyVisibilityBoth(Context context) {
+        if (doesQuickTriggerNotificationExist(context)) {
+            return;
+        }
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
+        createQuickTriggerNotificationChannel(context, NotificationManagerCompat.IMPORTANCE_DEFAULT);
+        showQuickTriggerNotification(context, NotificationCompat.PRIORITY_DEFAULT);
     }
 
     private static boolean doesQuickTriggerNotificationExist(Context context) {
@@ -76,7 +87,6 @@ public class NotificationUtils implements Constants {
 
     private static void createQuickTriggerNotificationChannel(
             Context context,
-            NotificationManager notificationManager,
             int importance
     ) {
         if (SystemUtils.aboveOreo26()) {
@@ -87,6 +97,7 @@ public class NotificationUtils implements Constants {
             );
             channel.setDescription(context.getString(R.string.quick_trigger_notification_channel_description));
             channel.setShowBadge(false);
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -94,7 +105,6 @@ public class NotificationUtils implements Constants {
     @SuppressLint("UnspecifiedImmutableFlag")
     private static void showQuickTriggerNotification(
             Context context,
-            NotificationManager notificationManager,
             int priority
     ) {
         String title = context.getString(R.string.app_name);
@@ -118,6 +128,7 @@ public class NotificationUtils implements Constants {
                 .setChannelId(Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID)
                 .build();
         notification.flags = Notification.FLAG_NO_CLEAR;
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(Constants.QUICK_TRIGGER_NOTIFICATION_ID, notification);
     }
 }
