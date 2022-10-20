@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.service.notification.StatusBarNotification;
 
 import androidx.core.app.NotificationCompat;
@@ -19,35 +21,37 @@ import org.ktachibana.cloudemoji.activities.MainActivity;
 /**
  * Abstract Notification codes from MainActivity to be shared among MainActivity and BootUpReceiver
  */
-public class NotificationUtils {
-
+public class NotificationUtils implements Constants {
     /**
      * Setup notification with user preference
      */
-    public static void setupNotificationWithPref(Context context, String notificationVisibility) {
+    public static void setupNotification(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (doesQuickTriggerNotificationExist(context)) {
-            return;
-        }
-
-        // Cancel current notification
-        notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
-
+        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH);
         switch (notificationVisibility) {
-            case "no":
+            case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_NO:
                 // If not showing
                 notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
                 break;
 
-            case "panel":
+            case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_PANEL:
                 // If only shows in panel
+                if (doesQuickTriggerNotificationExist(context)) {
+                    break;
+                }
+                notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
                 createQuickTriggerNotificationChannel(context, notificationManager, NotificationManagerCompat.IMPORTANCE_MIN);
                 showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_MIN);
                 break;
 
-            case "both":
+            case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH:
                 // If shows on both panel and status bar
+                if (doesQuickTriggerNotificationExist(context)) {
+                    break;
+                }
+                notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
                 createQuickTriggerNotificationChannel(context, notificationManager, NotificationManagerCompat.IMPORTANCE_DEFAULT);
                 showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_DEFAULT);
                 break;

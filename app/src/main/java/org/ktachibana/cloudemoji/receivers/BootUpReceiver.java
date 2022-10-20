@@ -31,18 +31,13 @@ public class BootUpReceiver extends BroadcastReceiver {
             return;
         }
 
-        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY);
         if (!SystemUtils.aboveTiramisu33()) {
-            _setupNotification(context, notificationVisibility);
+            NotificationUtils.setupNotification(context);
             return;
         }
         String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
         if (EasyPermissions.hasPermissions(context, perms)) {
-            _setupNotification(context, notificationVisibility);
+            NotificationUtils.setupNotification(context);
         }
-    }
-
-    private void _setupNotification(Context context, String notificationVisibility) {
-        NotificationUtils.setupNotificationWithPref(context, notificationVisibility);
     }
 }

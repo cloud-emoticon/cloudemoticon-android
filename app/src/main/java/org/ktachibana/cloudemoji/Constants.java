@@ -5,7 +5,9 @@ import androidx.annotation.IntDef;
 public interface Constants {
     // Notification
     int QUICK_TRIGGER_NOTIFICATION_ID = 0;
-    String QUICK_TRIGGER_NOTIFICATION_DEFAULT_VISIBILITY = "both";
+    String QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH = "both";
+    String QUICK_TRIGGER_NOTIFICATION_VISIBILITY_NO = "no";
+    String QUICK_TRIGGER_NOTIFICATION_VISIBILITY_PANEL = "panel";
     String QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID = "quick_trigger";
 
     // Preferences
