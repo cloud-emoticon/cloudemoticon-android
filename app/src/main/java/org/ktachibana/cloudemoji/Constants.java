@@ -1,9 +1,6 @@
 package org.ktachibana.cloudemoji;
 
-import android.os.Environment;
 import androidx.annotation.IntDef;
-
-import java.io.File;
 
 public interface Constants {
     // Notification
@@ -24,8 +21,8 @@ public interface Constants {
     String PREF_RESTORE_FAV = "pref_restore_fav";
     String PREF_IMPORT_PERSONAL_DICT = "pref_import_into_personal_dict";
     String PREF_REVOKE_PERSONAL_DICT = "pref_revoke_from_personal_dict";
-    String PREF_BEHAVIORS = "pref_behaviors";
     String PREF_NOW_ON_TAP = "pref_now_on_tap";
+    String PREF_PERSONAL_DICTIONARY = "pref_ime";
 
     // Repository
     int FORMAT_TYPE_XML = 0;
