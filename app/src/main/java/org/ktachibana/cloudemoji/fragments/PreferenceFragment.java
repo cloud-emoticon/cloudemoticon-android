@@ -14,6 +14,8 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -33,6 +35,7 @@ import org.ktachibana.cloudemoji.utils.SystemUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
@@ -74,14 +77,25 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         // Setup notification settings
+        syncShowAfterBootUpToNotificationVisibility(null);
         Preference notificationLegacyVisibilityPref = findPreference(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY);
         Preference showNotificationPref = findPreference(Constants.PREF_SHOW_NOTIFICATION);
         if (SystemUtils.aboveNougat24()) {
             notificationLegacyVisibilityPref.setVisible(false);
+            showNotificationPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                syncShowAfterBootUpToNotificationVisibility(newValue);
+                return true;
+            });
+
         } else {
             showNotificationPref.setVisible(false);
+            notificationLegacyVisibilityPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                syncShowAfterBootUpToNotificationVisibility(newValue);
+                return true;
+            });
         }
 
+        // Now on Tap or Navbar Gesture
         Preference navbarGesturePref = findPreference(Constants.PREF_NAVBAR_GESTURE);
         Preference nowOnTapPref = findPreference(Constants.PREF_NOW_ON_TAP);
         if (SystemUtils.aboveMarshmallow23()) {
@@ -180,6 +194,42 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         int versionCode = BuildConfig.VERSION_CODE;
         versionPref.setTitle(getString(R.string.version) + " " + version);
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
+    }
+
+    private void syncShowAfterBootUpToNotificationVisibility(Object newVisibleOrVisibility) {
+        CheckBoxPreference showAfterBootUpPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_AFTER_BOOT_UP);
+
+        if (SystemUtils.aboveNougat24()) {
+            CheckBoxPreference showNotificationPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_NOTIFICATION);
+            boolean visible = showNotificationPref.isChecked();
+            if (newVisibleOrVisibility != null) {
+                visible = (boolean) newVisibleOrVisibility;
+            }
+            if (!visible) {
+                SharedPreferences.Editor edit = mPreferences.edit();
+                edit.putBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, false);
+                edit.apply();
+                showAfterBootUpPref.setChecked(false);
+                showAfterBootUpPref.setEnabled(false);
+            } else {
+                showAfterBootUpPref.setEnabled(true);
+            }
+        } else {
+            ListPreference notificationLegacyVisibilityPref = (ListPreference) findPreference(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY);
+            String visibility = notificationLegacyVisibilityPref.getValue();
+            if (newVisibleOrVisibility != null) {
+                visibility = (String) newVisibleOrVisibility;
+            }
+            if (Constants.QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO.equals(visibility)) {
+                SharedPreferences.Editor edit = mPreferences.edit();
+                edit.putBoolean(Constants.PREF_PERSONAL_DICTIONARY, false);
+                edit.apply();
+                showAfterBootUpPref.setChecked(false);
+                showAfterBootUpPref.setEnabled(false);
+            } else {
+                showAfterBootUpPref.setEnabled(true);
+            }
+        }
     }
 
     void backupFavorites() {

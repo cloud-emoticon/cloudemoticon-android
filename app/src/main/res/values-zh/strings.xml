@@ -20,7 +20,7 @@
     <string name="added_to_fav">已添加到收藏</string>
     <string name="removed_from_fav">已从收藏中移除</string>
     <string name="notification_visibility">快捷启动通知的可见性</string>
-    <string name="show_after_boot_up">启动后显示通知</string>
+    <string name="show_after_boot_up">启动后显示</string>
     <string name="emoticon">颜文字</string>
     <string name="description">描述</string>
     <string name="edit_repository">编辑源</string>

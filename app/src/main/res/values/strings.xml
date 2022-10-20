@@ -22,7 +22,7 @@
     <string name="added_to_fav">Added to bookmarks</string>
     <string name="removed_from_fav">Removed from bookmarks</string>
     <string name="notification_visibility">Quick trigger notification visibility</string>
-    <string name="show_after_boot_up">Show quick trigger notification after boot-up</string>
+    <string name="show_after_boot_up">Show it after boot-up</string>
     <string name="emoticon">Emoticon</string>
     <string name="description">Description</string>
     <string name="edit_repository">Edit Repository</string>
