@@ -183,7 +183,7 @@ public class RepositoryManagerActivity extends BaseActivity {
                 if (requestCode == RC_EXPORT_REPOSITORY) {
                     os = getContentResolver().openOutputStream(data.getData());
                     IOUtils.write(mCurrentExportingJson, os);
-                    showSnackBar("Exported");
+                    showSnackBar(R.string.exported_repo);
                 }
             } else {
                 showSnackBar(getString(R.string.fail));
