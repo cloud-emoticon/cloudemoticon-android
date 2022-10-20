@@ -138,7 +138,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
-        if (Constants.PREF_NOTIFICATION_VISIBILITY.equals(key)) {
+        if (Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY.equals(key)) {
             setupNotification();
         }
     }

@@ -5,14 +5,14 @@ import androidx.annotation.IntDef;
 public interface Constants {
     // Notification
     int QUICK_TRIGGER_NOTIFICATION_ID = 0;
-    String QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH = "both";
-    String QUICK_TRIGGER_NOTIFICATION_VISIBILITY_NO = "no";
-    String QUICK_TRIGGER_NOTIFICATION_VISIBILITY_PANEL = "panel";
     String QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID = "quick_trigger";
 
     // Preferences
     String PREF_CLOSE_AFTER_COPY = "pref_close_after_copy";
-    String PREF_NOTIFICATION_VISIBILITY = "pref_notification_visibility";
+    String PREF_NOTIFICATION_LEGACY_VISIBILITY = "pref_notification_legacy_visibility";
+    String QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH = "both";
+    String QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO = "no";
+    String QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_PANEL = "panel";
     String PREF_SHOW_AFTER_BOOT_UP = "pref_show_after_boot_up";
     String PREF_VERSION = "pref_version";
     String PREF_GIT_HUB_RELEASE = "pref_git_hub_release";

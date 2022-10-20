@@ -4,9 +4,9 @@
         android:title="@string/behaviors">
         <ListPreference
             android:defaultValue="both"
-            android:entries="@array/notification_options"
+            android:entries="@array/notification_legacy_visibility_options"
             android:entryValues="@array/notification_options_alias"
-            android:key="pref_notification_visibility"
+            android:key="pref_notification_legacy_visibility"
             android:title="@string/notification_visibility" />
         <CheckBoxPreference
             android:defaultValue="true"

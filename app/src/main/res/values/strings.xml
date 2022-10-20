@@ -57,9 +57,9 @@
     <string name="go_to_play_store">Go to Play Store</string>
     <string name="search_result_not_found">Result not found</string>
 
-    <string-array name="notification_options">
+    <string-array name="notification_legacy_visibility_options">
         <item>Don\'t show</item>
-        <item>Only in notification panel (Only works from Android 3.0 to 7.0)</item>
+        <item>Only in notification panel</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
     <string name="personal_dict">Personal dictionary</string>

@@ -28,17 +28,17 @@ public class NotificationUtils implements Constants {
     public static void setupNotification(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH);
+        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH);
         switch (notificationVisibility) {
-            case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_NO:
+            case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO:
                 setupLegacyVisibilityNo(context);
                 break;
 
-            case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_PANEL:
+            case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_PANEL:
                 setupLegacyVisibilityPanel(context);
                 break;
 
-            case QUICK_TRIGGER_NOTIFICATION_VISIBILITY_BOTH:
+            case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH:
                 setupLegacyVisibilityBoth(context);
                 break;
         }
