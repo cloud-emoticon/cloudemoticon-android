@@ -87,4 +87,5 @@
     <string name="revoke_from_personal_dict">Reoke all bookmarks from personal dictionary</string>
     <string name="revoked_from_personal_dict">Revoked %d bookmarks from personal dictionary</string>
     <string name="notification_rationale">We need to put a sticky \"quick trigger\" notification so that you can launch Cloud Emoticon conveniently.</string>
+    <string name="exported_repo">Repo exported</string>
 </resources>

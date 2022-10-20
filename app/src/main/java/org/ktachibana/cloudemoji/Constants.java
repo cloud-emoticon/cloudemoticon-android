@@ -48,10 +48,6 @@ public interface Constants {
     int PREFERENCE_REQUEST_CODE = 1;
     int REPOSITORY_STORE_REQUEST_CODE = 2;
 
-    // File
-    String EXPORT_FILE_PATH
-            = Environment.getExternalStorageDirectory().getPath() + File.separator + "%s";
-
     // Hacking
     String PACKAGE_NAME_ANDROID_SETTINGS = "com.android.settings";
     String CLASS_NAME_MANAGE_ASSIST_ACTIVITY = "com.android.settings.Settings$ManageAssistActivity";

@@ -86,4 +86,5 @@
     <string name="revoked_from_personal_dict">已将 %d 个收藏从个人词典中撤出</string>
     <string name="notification_rationale">需要通知权限，这样的话您可以从通知面板中快速打开 App</string>
     <string name="fail">出错辣！请再试一下</string>
+    <string name="exported_repo">源已导出</string>
 </resources>

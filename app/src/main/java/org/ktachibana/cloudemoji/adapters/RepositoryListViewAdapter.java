@@ -18,14 +18,13 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.RepositoryBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadFailedEvent;
 import org.ktachibana.cloudemoji.events.RepositoryDownloadedEvent;
-import org.ktachibana.cloudemoji.events.RepositoryExportedEvent;
+import org.ktachibana.cloudemoji.events.RepositoryExportEvent;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.net.RepositoryDownloaderClient;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.ui.NonCancelableProgressMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.BackupUtils;
 
 import java.io.File;
 import java.util.List;
@@ -33,9 +32,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RepositoryListViewAdapter extends BaseBaseAdapter {
+public class RepositoryListViewAdapter extends BaseBaseAdapter implements Constants {
     private List<Repository> mRepositories;
     private Context mContext;
+
 
     public RepositoryListViewAdapter(Context context) {
         this.mRepositories = Repository.listAll(Repository.class);
@@ -132,13 +132,7 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
                     // Parse Source
                     String json = new SourceJsonParser().serialize(source);
 
-                    // Get file and write
-                    String filePath = String.format(Constants.EXPORT_FILE_PATH, item.getAlias() + ".json");
-                    File exportFile = new File(filePath);
-                    // TODO
-//                    BackupUtils.writeFileToExternalStorage(json, exportFile);
-
-                    mBus.post(new RepositoryExportedEvent(filePath));
+                    mBus.post(new RepositoryExportEvent(json, item.getAlias()));
                 } catch (Exception e) {
                     Log.e(Constants.DEBUG_TAG, e.getLocalizedMessage());
                 }
