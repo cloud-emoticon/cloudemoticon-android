@@ -53,6 +53,18 @@ public class MultiInputMaterialDialogBuilder extends MaterialDialog.Builder {
         });
     }
 
+    public MultiInputMaterialDialogBuilder addInput(CharSequence preFill, CharSequence hint, boolean optional) {
+        if (optional) {
+            return this;
+        }
+        return addInput(preFill, hint, new InputValidator() {
+            @Override
+            public CharSequence validate(CharSequence input) {
+                return null;
+            }
+        });
+    }
+
     public MultiInputMaterialDialogBuilder addInput(@StringRes int preFill, @StringRes int hint, @NonNull InputValidator validator) {
         return addInput(
                 preFill == 0 ? null : mContext.getString(preFill),

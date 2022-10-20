@@ -1,15 +1,14 @@
 package org.ktachibana.cloudemoji.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 import com.mobeta.android.dslv.DragSortListView;
 
@@ -24,6 +23,7 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.util.List;
 
@@ -44,9 +44,16 @@ public class FavoriteFragment extends BaseFragment {
     FloatingActionButton mFab;
 
     FavoriteListViewAdapter mAdapter;
+    private Context mContext;
 
     public FavoriteFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -63,59 +70,45 @@ public class FavoriteFragment extends BaseFragment {
         mFavoriteListView
                 .setAdapter(mAdapter);
         mFavoriteListView
-                .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Favorite favorite = (Favorite) mAdapter.getItem(i);
-                        Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
-                        mBus.post(new EntryAddedToHistoryEvent(entry));
-                    }
+                .setOnItemClickListener((adapterView, view, i, l) -> {
+                    Favorite favorite = (Favorite) mAdapter.getItem(i);
+                    Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
+                    mBus.post(new EntryAddedToHistoryEvent(entry));
                 });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));
         mFab.attachToListView(mFavoriteListView);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupAddFavoriteDialog();
-            }
-        });
+        mFab.setOnClickListener(v -> popupAddFavoriteDialog());
         return rootView;
     }
 
     private void popupAddFavoriteDialog() {
-        new MultiInputMaterialDialogBuilder(getActivity())
-                .addInput(null, getString(R.string.emoticon), new MultiInputMaterialDialogBuilder.InputValidator() {
-                    @Override
-                    public CharSequence validate(CharSequence input) {
-                        if (TextUtils.isEmpty(input)) {
-                            return getString(R.string.empty_emoticon);
-                        } else {
-                            List<Favorite> favorites = Favorite.listAll(Favorite.class);
-                            for (Favorite favorite : favorites) {
-                                if (TextUtils.equals(favorite.getEmoticon(), input)) {
-                                    return getString(R.string.duplicate_emoticon);
-                                }
+        new MultiInputMaterialDialogBuilder(mContext)
+                .addInput(null, getString(R.string.emoticon), input -> {
+                    if (TextUtils.isEmpty(input)) {
+                        return getString(R.string.empty_emoticon);
+                    } else {
+                        List<Favorite> favorites = Favorite.listAll(Favorite.class);
+                        for (Favorite favorite : favorites) {
+                            if (TextUtils.equals(favorite.getEmoticon(), input)) {
+                                return getString(R.string.duplicate_emoticon);
                             }
-                            return null;
                         }
+                        return null;
                     }
                 })
                 .addInput(null, getString(R.string.description))
-                .addInput(null, getString(R.string.shortcut))
-                .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
-                    @Override
-                    public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
-                        if (allInputsValidated) {
-                            String emoticon = inputs.get(0).toString();
-                            String description = inputs.get(1).toString();
-                            String shortcut = inputs.get(2).toString();
+                .addInput(null, getString(R.string.shortcut), SystemUtils.aboveMarshmallow23())
+                .inputs((dialog, inputs, allInputsValidated) -> {
+                    if (allInputsValidated) {
+                        String emoticon = inputs.get(0).toString();
+                        String description = inputs.get(1).toString();
+                        String shortcut = SystemUtils.aboveMarshmallow23() ? "" : inputs.get(2).toString();
 
-                            Favorite favorite = new Favorite(emoticon, description, shortcut);
-                            favorite.save();
+                        Favorite favorite = new Favorite(emoticon, description, shortcut);
+                        favorite.save();
 
-                            mAdapter.updateFavorites();
-                            showSnackBar(emoticon + "\n" + getString(R.string.added_to_fav));
-                        }
+                        mAdapter.updateFavorites();
+                        showSnackBar(emoticon + "\n" + getString(R.string.added_to_fav));
                     }
                 })
                 .title(R.string.add_to_fav)
@@ -127,22 +120,19 @@ public class FavoriteFragment extends BaseFragment {
     @Subscribe
     public void handle(FavoriteBeginEditingEvent event) {
         final Favorite favorite = event.getFavorite();
-        new MultiInputMaterialDialogBuilder(getActivity())
+        new MultiInputMaterialDialogBuilder(mContext)
                 .addInput(favorite.getDescription(), getString(R.string.description))
-                .addInput(favorite.getShortcut(), getString(R.string.shortcut))
-                .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
-                    @Override
-                    public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
-                        String description = inputs.get(0).toString();
-                        String shortcut = inputs.get(1).toString();
+                .addInput(favorite.getShortcut(), getString(R.string.shortcut), SystemUtils.aboveMarshmallow23())
+                .inputs((dialog, inputs, allInputsValidated) -> {
+                    String description = inputs.get(0).toString();
+                    String shortcut = SystemUtils.aboveMarshmallow23() ? "" : inputs.get(1).toString();
 
-                        // Get the new favorite and SAVE
-                        favorite.setDescription(description);
-                        favorite.setShortcut(shortcut);
-                        favorite.save();
+                    // Get the new favorite and SAVE
+                    favorite.setDescription(description);
+                    favorite.setShortcut(shortcut);
+                    favorite.save();
 
-                        mAdapter.updateFavorites();
-                    }
+                    mAdapter.updateFavorites();
                 })
                 .title(R.string.edit_favorite)
                 .positiveText(android.R.string.ok)
