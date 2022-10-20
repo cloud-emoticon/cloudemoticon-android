@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.service.notification.StatusBarNotification;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -24,6 +26,10 @@ public class NotificationUtils {
      */
     public static void setupNotificationWithPref(Context context, String notificationVisibility) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (doesQuickTriggerNotificationExist(context)) {
+            return;
+        }
 
         // Cancel current notification
         notificationManager.cancel(Constants.QUICK_TRIGGER_NOTIFICATION_ID);
@@ -46,6 +52,22 @@ public class NotificationUtils {
                 showQuickTriggerNotification(context, notificationManager, NotificationCompat.PRIORITY_DEFAULT);
                 break;
         }
+    }
+
+    private static boolean doesQuickTriggerNotificationExist(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (!SystemUtils.aboveMarshmallow23()) {
+            return false;
+        }
+
+        StatusBarNotification[] notifications = notificationManager.getActiveNotifications();
+        for (StatusBarNotification notification : notifications) {
+            if (notification.getId() == Constants.QUICK_TRIGGER_NOTIFICATION_ID) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void createQuickTriggerNotificationChannel(
