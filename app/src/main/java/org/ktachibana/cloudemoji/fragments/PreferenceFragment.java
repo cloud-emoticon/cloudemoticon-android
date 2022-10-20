@@ -230,9 +230,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 if (requestCode == RC_BACKUP) {
                     os = mContentResolver.openOutputStream(data.getData());
                     BackupUtils.writeFavorites(os);
+                    showSnackBar(getString(R.string.backed_up_favorites));
                 } else if (requestCode == RC_RESTORE) {
                     is = mContentResolver.openInputStream(data.getData());
                     BackupUtils.readFavorites(is);
+                    showSnackBar(getString(R.string.restored_favorites));
                 }
             } else {
                 showSnackBar(getString(R.string.fail));
