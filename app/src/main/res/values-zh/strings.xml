@@ -70,7 +70,6 @@
     <string name="added_to_repo">已添加到源</string>
     <string name="allow">允许</string>
     <string name="deny">拒绝</string>
-    <string name="storage_rationale">需要储存权限以备份/恢复收藏</string>
     <string name="backed_up_favorites">收藏已备份到</string>
     <string name="restored_favorites">收藏已恢复</string>
     <string name="notification">通知</string>
@@ -86,4 +85,5 @@
     <string name="revoke_from_personal_dict">将全部收藏从个人词典中撤出</string>
     <string name="revoked_from_personal_dict">已将 %d 个收藏从个人词典中撤出</string>
     <string name="notification_rationale">需要通知权限，这样的话您可以从通知面板中快速打开 App</string>
+    <string name="fail">出错辣！请再试一下</string>
 </resources>

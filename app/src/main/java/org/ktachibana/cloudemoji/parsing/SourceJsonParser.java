@@ -12,6 +12,10 @@ public class SourceJsonParser {
 
     public Source parse(String alias, Reader reader) throws IOException {
         String json = IOUtils.toString(reader);
+        return parse(alias, json);
+    }
+
+    public Source parse(String alias, String json) throws IOException {
         Source newSource = new Gson().fromJson(json, Source.class);
         newSource.setAlias(alias);
         return newSource;

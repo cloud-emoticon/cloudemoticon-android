@@ -49,8 +49,6 @@ public interface Constants {
     int REPOSITORY_STORE_REQUEST_CODE = 2;
 
     // File
-    String FAVORITES_BACKUP_FILE_PATH
-            = Environment.getExternalStorageDirectory().getPath() + File.separator + "ce.json";
     String EXPORT_FILE_PATH
             = Environment.getExternalStorageDirectory().getPath() + File.separator + "%s";
 

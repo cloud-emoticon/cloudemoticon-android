@@ -6,7 +6,7 @@
     <string name="exit">Exit</string>
     <string name="copied">Copied to clipboard</string>
     <string name="bad_conn">Bad connection, please retry</string>
-    <string name="fail" translatable="false">ლ(╹◡╹ლ)</string>
+    <string name="fail">Something went wrong, please try again</string>
     <string name="empty" translatable="false">╮(￣▽￣&quot;)╭</string>
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
@@ -72,7 +72,6 @@
     <string name="added_to_repo">Added to repositories</string>
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
-    <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>
     <string name="backed_up_favorites">Backed up favorites to</string>
     <string name="restored_favorites">Restored bookmarks</string>
     <string name="notification">Notification</string>

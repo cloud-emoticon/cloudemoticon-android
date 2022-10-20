@@ -1,20 +1,24 @@
 package org.ktachibana.cloudemoji.fragments;
 
-import android.Manifest;
+import static android.app.Activity.RESULT_OK;
+
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
 
-import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 
+import org.apache.commons.io.IOUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BuildConfig;
@@ -26,17 +30,23 @@ import org.ktachibana.cloudemoji.utils.BackupUtils;
 import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
 import org.ktachibana.cloudemoji.utils.SystemUtils;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
+    private static final String BACKUP_FILE_MIME_TYPE = "application/json";
+    private static final String BACKUP_FILENAME = "ce.json";
+    private static final int RC_BACKUP = 1;
+    private static final int RC_RESTORE = 2;
+
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     SharedPreferences mPreferences;
     private Context mContext;
     private EventBus mBus;
-    private static final int RC_WRITE_EXTERNAL_STORAGE_FOR_BACKUP = 123;
-    private static final int RC_READ_EXTERNAL_STORAGE_FOR_RESTORE = 124;
+    private ContentResolver mContentResolver;
 
     @Override
     public void onAttach(Context context) {
@@ -44,6 +54,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         mBus = EventBus.getDefault();
         mBus.register(this);
         mContext = context;
+        mContentResolver = context.getContentResolver();
     }
 
     @Override
@@ -180,53 +191,57 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
     }
 
-    @AfterPermissionGranted(RC_WRITE_EXTERNAL_STORAGE_FOR_BACKUP)
     void backupFavorites() {
-        if (!SystemUtils.aboveMarshmallow23()) {
-            _backupFavorites();
-            return;
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(BACKUP_FILE_MIME_TYPE);
+        intent.putExtra(Intent.EXTRA_TITLE, BACKUP_FILENAME);
+
+        if (SystemUtils.aboveOreo26()) {
+            // Optionally, specify a URI for the directory that should be opened in
+            // the system file picker when your app creates the document.
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Environment.DIRECTORY_DOCUMENTS);
         }
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(mContext, perms)) {
-            _backupFavorites();
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this, mContext.getString(R.string.storage_rationale),
-                    RC_WRITE_EXTERNAL_STORAGE_FOR_BACKUP, perms);
-        }
+
+        startActivityForResult(intent, RC_BACKUP);
     }
 
-    void _backupFavorites() {
-        boolean success = BackupUtils.backupFavorites();
-        if (success) {
-            showSnackBar(getString(R.string.backed_up_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
-        } else {
-            showSnackBar(R.string.fail);
-        }
-    }
-
-    @AfterPermissionGranted(RC_READ_EXTERNAL_STORAGE_FOR_RESTORE)
     void restoreFavorites() {
-        if (!SystemUtils.aboveMarshmallow23()) {
-            _restoreFavorites();
-            return;
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(BACKUP_FILE_MIME_TYPE);
+
+        if (SystemUtils.aboveOreo26()) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Environment.DIRECTORY_DOCUMENTS);
         }
-        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(mContext, perms)) {
-            _restoreFavorites();
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this, mContext.getString(R.string.storage_rationale),
-                    RC_READ_EXTERNAL_STORAGE_FOR_RESTORE, perms);
-        }
+        // Optionally, specify a URI for the file that should appear in the
+        // system file picker when it loads.
+
+        startActivityForResult(intent, RC_RESTORE);
     }
 
-    void _restoreFavorites() {
-        boolean success = BackupUtils.restoreFavorites();
-        if (success) {
-            showSnackBar(R.string.restored_favorites);
-        } else {
-            showSnackBar(R.string.fail);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        OutputStream os = null;
+        InputStream is = null;
+        try {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == RC_BACKUP) {
+                    os = mContentResolver.openOutputStream(data.getData());
+                    BackupUtils.writeFavorites(os);
+                } else if (requestCode == RC_RESTORE) {
+                    is = mContentResolver.openInputStream(data.getData());
+                    BackupUtils.readFavorites(is);
+                }
+            } else {
+                showSnackBar(getString(R.string.fail));
+            }
+        } catch (IOException e) {
+            showSnackBar(getString(R.string.fail));
+        } finally {
+            IOUtils.closeQuietly(os);
+            IOUtils.closeQuietly(is);
         }
     }
 
@@ -238,17 +253,5 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     private void showSnackBar(String message) {
         mBus.post(new ShowSnackBarOnBaseActivityEvent(message));
-    }
-
-    private void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 }

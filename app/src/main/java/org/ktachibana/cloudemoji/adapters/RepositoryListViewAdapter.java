@@ -135,7 +135,8 @@ public class RepositoryListViewAdapter extends BaseBaseAdapter {
                     // Get file and write
                     String filePath = String.format(Constants.EXPORT_FILE_PATH, item.getAlias() + ".json");
                     File exportFile = new File(filePath);
-                    BackupUtils.writeFileToExternalStorage(json, exportFile);
+                    // TODO
+//                    BackupUtils.writeFileToExternalStorage(json, exportFile);
 
                     mBus.post(new RepositoryExportedEvent(filePath));
                 } catch (Exception e) {
