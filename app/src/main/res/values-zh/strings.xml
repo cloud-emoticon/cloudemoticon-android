@@ -9,7 +9,7 @@
     <string name="touch_to_launch">触摸以启动</string>
     <string name="title_activity_settings">设置</string>
     <string name="behaviors">行为</string>
-    <string name="close_after_copy">复制之后关闭</string>
+    <string name="close_after_copy">复制之后关闭 App</string>
     <string name="repo_url">源URL</string>
     <string name="about">关于</string>
     <string name="github_repo">GitHub 源</string>
@@ -19,8 +19,8 @@
     <string name="add_to_fav">添加到收藏</string>
     <string name="added_to_fav">已添加到收藏</string>
     <string name="removed_from_fav">已从收藏中移除</string>
-    <string name="notification_visibility">通知可见性</string>
-    <string name="show_after_boot_up">启动后显示通知</string>
+    <string name="notification_visibility">快捷启动通知的可见性</string>
+    <string name="show_after_boot_up">启动后显示</string>
     <string name="emoticon">颜文字</string>
     <string name="description">描述</string>
     <string name="edit_repository">编辑源</string>
@@ -37,7 +37,7 @@
     <string name="duplicate_emoticon">重复的颜文字</string>
     <string name="navbar_gesture_title">导航栏手势</string>
     <string name="navbar_gesture_summary">从导航栏上划以启动</string>
-    <string name="now_on_tap_title">长按 Home 键启动</string>
+    <string name="now_on_tap_title">长按 Home 键启动 App</string>
     <string name="now_on_tap_summary">请点击打开系统设置，在「辅助应用」中选择</string>
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
@@ -51,14 +51,13 @@
     <string name="update_checker">检查新版本</string>
     <string name="update_checker_failed">检查新版本失败</string>
     <string name="already_latest_version">已经是最新版本</string>
-    <string name="new_version_available">有新版本辣！</string>
+    <string name="new_version_available">有新版本辣！(%d)</string>
     <string name="go_to_play_store">去 Play Store 看看</string>
     <string name="search_result_not_found">没找到</string>
 
-
-    <string-array name="notification_options">
+    <string-array name="notification_legacy_visibility_options">
         <item>不显示</item>
-        <item>只在通知面板里显示（Android 3.0 以下及 8.0 以上无效）</item>
+        <item>只在通知面板里显示</item>
         <item>同时在通知面板和状态栏里显示</item>
     </string-array>
     <string name="personal_dict">个人词典</string>
@@ -71,8 +70,7 @@
     <string name="added_to_repo">已添加到源</string>
     <string name="allow">允许</string>
     <string name="deny">拒绝</string>
-    <string name="storage_rationale">需要储存权限以备份/恢复收藏</string>
-    <string name="backed_up_favorites">收藏已备份到</string>
+    <string name="backed_up_favorites">收藏已备份</string>
     <string name="restored_favorites">收藏已恢复</string>
     <string name="notification">通知</string>
     <string name="cool_kid">在跑调试/测试版, 屌屌哒!</string>
@@ -80,10 +78,14 @@
     <string name="repository_store_contribution_prompt">想要贡献源吗？</string>
     <string name="repository_store_contribution_warning">这需要最基础的 GitHub, JSON 以及编程知识。你确定要继续吗？</string>
     <string name="proceed">继续</string>
-    <string name="quick_trigger_notification_channel_name">快速打开</string>
-    <string name="quick_trigger_notification_channel_description">从通知面板中快速打开 App</string>
+    <string name="quick_trigger_notification_channel_name">快捷启动通知</string>
+    <string name="quick_trigger_notification_channel_description">从通知面板中打开 App</string>
     <string name="ime_label">云颜文字输入法</string>
     <string name="ime_no_favorite">没有收藏</string>
     <string name="revoke_from_personal_dict">将全部收藏从个人词典中撤出</string>
     <string name="revoked_from_personal_dict">已将 %d 个收藏从个人词典中撤出</string>
+    <string name="notification_rationale">需要通知权限，这样的话您可以从通知面板中打开 App</string>
+    <string name="fail">出错辣！请再试一下</string>
+    <string name="exported_repo">源已导出</string>
+    <string name="show_notification">启用快捷启动通知</string>
 </resources>

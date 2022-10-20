@@ -1,110 +1,47 @@
 package org.ktachibana.cloudemoji.utils;
 
-import android.os.Environment;
-
 import org.apache.commons.io.IOUtils;
-import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
 import org.ktachibana.cloudemoji.parsing.SourceJsonParser;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class BackupUtils {
+    public static void readFavorites(InputStream is) throws IOException {
+        // Get backed up favorites
+        String json = IOUtils.toString(is);
+        Source source = new SourceJsonParser().parse(null, json);
+        List<Entry> backedUpFavorites = source.getCategories().get(0).getEntries();
 
-    public static boolean backupFavorites() {
-        // If external storage not writable
-        if (!isExternalStorageWritable()) {
-            return false;
+        // Get current favorites
+        List<Favorite> favorites = Favorite.listAll(Favorite.class);
+        List<Entry> currentFavorites = new ArrayList<>();
+        for (Favorite favorite : favorites) {
+            currentFavorites.add(new Entry(favorite.getEmoticon(), favorite.getDescription()));
         }
 
-        // Get backup file
-        File backupFile = new File(Constants.FAVORITES_BACKUP_FILE_PATH);
-        if (backupFile.exists()) backupFile.delete();
+        // Merge backed up and current favorites
+        Set<Entry> mergedFavorites = new HashSet<>(backedUpFavorites);
+        mergedFavorites.addAll(currentFavorites);
 
-        // Write to file
-        try {
-            String json = new SourceJsonParser().serialize(FavoritesUtils.getFavoritesAsSource());
-            writeFileToExternalStorage(json, backupFile);
-        } catch (IOException e) {
-            return false;
+        // Remove all current favorites and add back merged favorites
+        Favorite.deleteAll(Favorite.class);
+        for (Entry entry : mergedFavorites) {
+            Favorite favorite = new Favorite(entry.getEmoticon(), entry.getDescription(), "");
+            favorite.save();
         }
-        return true;
     }
 
-    public static boolean restoreFavorites() {
-        // If external storage not readable
-        if (!isExternalStorageReadable()) {
-            return false;
-        }
-
-        // Get backup file
-        File backupFile = new File(Constants.FAVORITES_BACKUP_FILE_PATH);
-        FileReader fileReader = null;
-        try {
-            // Get backed up favorites
-            fileReader = new FileReader(backupFile);
-            Source source = new SourceJsonParser().parse(null, fileReader);
-            List<Entry> backedUpFavorites = source.getCategories().get(0).getEntries();
-
-            // Get current favorites
-            List<Favorite> favorites = Favorite.listAll(Favorite.class);
-            List<Entry> currentFavorites = new ArrayList<Entry>();
-            for (Favorite favorite : favorites) {
-                currentFavorites.add(new Entry(favorite.getEmoticon(), favorite.getDescription()));
-            }
-
-            // Merge backed up and current favorites
-            Set<Entry> mergedFavorites = new HashSet<Entry>();
-            for (Entry backedUp : backedUpFavorites) {
-                mergedFavorites.add(backedUp);
-            }
-            for (Entry current : currentFavorites) {
-                mergedFavorites.add(current);
-            }
-
-            // Remove all current favorites and add back merged favorites
-            Favorite.deleteAll(Favorite.class);
-            for (Entry entry : mergedFavorites) {
-                Favorite favorite = new Favorite(entry.getEmoticon(), entry.getDescription(), "");
-                favorite.save();
-            }
-        } catch (IOException e) {
-            return false;
-        } finally {
-            IOUtils.closeQuietly(fileReader);
-        }
-        return true;
-    }
-
-    public static void writeFileToExternalStorage(String string, File file) throws IOException {
-        // If external storage not writable
-        if (!isExternalStorageWritable()) {
-            return;
-        }
-
-        // Write to file
-        FileOutputStream outputStream = new FileOutputStream(file);
-        IOUtils.write(string, outputStream);
-        IOUtils.closeQuietly(outputStream);
-    }
-
-    private static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    private static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state)
-                || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
+    public static void writeFavorites(OutputStream os) throws IOException {
+        String json = new SourceJsonParser().serialize(FavoritesUtils.getFavoritesAsSource());
+        IOUtils.write(json, os);
     }
 }

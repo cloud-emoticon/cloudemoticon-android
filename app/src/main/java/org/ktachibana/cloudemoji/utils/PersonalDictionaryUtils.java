@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.provider.UserDictionary;
 
-import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 
 import java.util.List;
@@ -19,9 +18,7 @@ public class PersonalDictionaryUtils {
             if (!favorite.getShortcut().equals("")) {
                 ContentValues newValue = new ContentValues();
                 newValue.put(UserDictionary.Words.WORD, favorite.getEmoticon());
-                if (SystemUtils.aboveJellybean()) {
-                    newValue.put(UserDictionary.Words.SHORTCUT, favorite.getShortcut());
-                }
+                newValue.put(UserDictionary.Words.SHORTCUT, favorite.getShortcut());
                 contentResolver.insert(UserDictionary.Words.CONTENT_URI, newValue);
                 counter++;
             }

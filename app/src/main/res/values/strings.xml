@@ -6,12 +6,12 @@
     <string name="exit">Exit</string>
     <string name="copied">Copied to clipboard</string>
     <string name="bad_conn">Bad connection, please retry</string>
-    <string name="fail" translatable="false">ლ(╹◡╹ლ)</string>
+    <string name="fail">Something went wrong, please try again</string>
     <string name="empty" translatable="false">╮(￣▽￣&quot;)╭</string>
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
     <string name="behaviors">Behaviors</string>
-    <string name="close_after_copy">Close after copy</string>
+    <string name="close_after_copy">Close app after copy</string>
     <string name="repo_url">Repository URL</string>
     <string name="about">About</string>
     <string name="github_repo">GitHub repository</string>
@@ -21,8 +21,8 @@
     <string name="add_to_fav">Add to bookmarks</string>
     <string name="added_to_fav">Added to bookmarks</string>
     <string name="removed_from_fav">Removed from bookmarks</string>
-    <string name="notification_visibility">Notification visibility</string>
-    <string name="show_after_boot_up">Show notification after boot-up</string>
+    <string name="notification_visibility">Quick trigger notification visibility</string>
+    <string name="show_after_boot_up">Show it after boot-up</string>
     <string name="emoticon">Emoticon</string>
     <string name="description">Description</string>
     <string name="edit_repository">Edit Repository</string>
@@ -39,7 +39,7 @@
     <string name="duplicate_emoticon">Duplicate emoticon</string>
     <string name="navbar_gesture_title">Navigation bar gesture</string>
     <string name="navbar_gesture_summary">Swipe-up from the navigation bar to start</string>
-    <string name="now_on_tap_title">Hold Home button to startup</string>
+    <string name="now_on_tap_title">Hold Home button to launch app</string>
     <string name="now_on_tap_summary">Touch to open system settings, then select "Assist app"</string>
     <string name="no_favorite_prompt">You don\'t have any bookmarks</string>
     <string name="no_history_prompt">You don\'t have any history</string>
@@ -53,13 +53,13 @@
     <string name="update_checker">Check for update</string>
     <string name="update_checker_failed">Failed to check for update</string>
     <string name="already_latest_version">Already latest version</string>
-    <string name="new_version_available">New version is available!</string>
+    <string name="new_version_available">New version is available! (%d)</string>
     <string name="go_to_play_store">Go to Play Store</string>
     <string name="search_result_not_found">Result not found</string>
 
-    <string-array name="notification_options">
+    <string-array name="notification_legacy_visibility_options">
         <item>Don\'t show</item>
-        <item>Only in notification panel (Only works from Android 3.0 to 7.0)</item>
+        <item>Only in notification panel</item>
         <item>Both in notification panel and status bar</item>
     </string-array>
     <string name="personal_dict">Personal dictionary</string>
@@ -72,8 +72,7 @@
     <string name="added_to_repo">Added to repositories</string>
     <string name="allow">Allow</string>
     <string name="deny">Deny</string>
-    <string name="storage_rationale">We need storage permission in order to backup/restore your bookmarks.</string>
-    <string name="backed_up_favorites">Backed up favorites to</string>
+    <string name="backed_up_favorites">Backed up bookmarks</string>
     <string name="restored_favorites">Restored bookmarks</string>
     <string name="notification">Notification</string>
     <string name="cool_kid">Hey running debug/beta versions, cool kid?</string>
@@ -82,9 +81,12 @@
     <string name="repository_store_contribution_warning">It is assumed that you have some minimal knowledge on GitHub, JSON and programming. Do you still want to proceed?</string>
     <string name="proceed">Proceed</string>
     <string name="quick_trigger_notification_channel_name">Quick trigger</string>
-    <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification pannel</string>
+    <string name="quick_trigger_notification_channel_description">Quickly trigger the app from notification panel</string>
     <string name="ime_label">Cloud Emoticon IME</string>
     <string name="ime_no_favorite">No bookmark</string>
-    <string name="revoke_from_personal_dict">Reoke all bookmarks from personal dictionary</string>
+    <string name="revoke_from_personal_dict">Revoke all bookmarks from personal dictionary</string>
     <string name="revoked_from_personal_dict">Revoked %d bookmarks from personal dictionary</string>
+    <string name="notification_rationale">We need to put a sticky \"quick trigger\" notification so that you can launch Cloud Emoticon conveniently.</string>
+    <string name="exported_repo">Repo exported</string>
+    <string name="show_notification">Show quick trigger notification</string>
 </resources>

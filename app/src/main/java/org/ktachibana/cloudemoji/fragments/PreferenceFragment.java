@@ -1,21 +1,24 @@
 package org.ktachibana.cloudemoji.fragments;
 
-import android.Manifest;
+import static android.app.Activity.RESULT_OK;
+
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-
+import org.apache.commons.io.IOUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BuildConfig;
@@ -24,26 +27,35 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
+import org.ktachibana.cloudemoji.utils.CapabilityUtils;
+import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
-import permissions.dispatcher.RuntimePermissions;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-@RuntimePermissions
+
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String CLS_ASSIST_ACTIVITY = "org.ktachibana.cloudemoji.activities.AssistActivity";
+    private static final String BACKUP_FILE_MIME_TYPE = "application/json";
+    private static final String BACKUP_FILENAME = "ce.json";
+    private static final int RC_BACKUP = 1;
+    private static final int RC_RESTORE = 2;
+
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     SharedPreferences mPreferences;
+    private Context mContext;
     private EventBus mBus;
+    private ContentResolver mContentResolver;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mBus = EventBus.getDefault();
         mBus.register(this);
+        mContext = context;
+        mContentResolver = context.getContentResolver();
     }
 
     @Override
@@ -56,49 +68,60 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     public void handle(EmptyEvent e) {
     }
 
-    @OnShowRationale({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    public void showRationaleForStorage(final PermissionRequest request) {
-        new AlertDialogWrapper.Builder(getContext())
-                .setMessage(R.string.storage_rationale)
-                .setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton(R.string.deny, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.cancel();
-                    }
-                })
-                .show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PreferenceFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
     @Override
     public void onCreatePreferences(Bundle paramBundle, String rootKey) {
         // Load the mPreferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // Navbar Gesture
+        // Setup notification settings
+        syncShowAfterBootUpToNotificationVisibility(null);
+        Preference notificationLegacyVisibilityPref = findPreference(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY);
+        Preference showNotificationPref = findPreference(Constants.PREF_SHOW_NOTIFICATION);
+        if (CapabilityUtils.notQuickTriggerNotificationLegacyVisibility()) {
+            notificationLegacyVisibilityPref.setVisible(false);
+            showNotificationPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                syncShowAfterBootUpToNotificationVisibility(newValue);
+                NotificationUtils.setupNotification(mContext, newValue);
+                return true;
+            });
+
+        } else {
+            showNotificationPref.setVisible(false);
+            notificationLegacyVisibilityPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                syncShowAfterBootUpToNotificationVisibility(newValue);
+                NotificationUtils.setupNotification(mContext, newValue);
+                return true;
+            });
+        }
+
+        // Now on Tap or Navbar Gesture
         Preference navbarGesturePref = findPreference(Constants.PREF_NAVBAR_GESTURE);
         Preference nowOnTapPref = findPreference(Constants.PREF_NOW_ON_TAP);
-        PreferenceCategory behaviorsPref = (PreferenceCategory) findPreference(Constants.PREF_BEHAVIORS);
-        if (SystemUtils.belowJellybean())
-            navbarGesturePref.setEnabled(false);
-        if (SystemUtils.belowMarshmallow())
-            behaviorsPref.removePreference(nowOnTapPref);
-        navbarGesturePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                PackageManager packageManager = getActivity().getPackageManager();
+        if (CapabilityUtils.nowOnTapAvailable()) {
+            navbarGesturePref.setVisible(false);
+
+            // Now on Tap
+            PackageManager packageManager = mContext.getPackageManager();
+            ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
+            packageManager.setComponentEnabledSetting(componentName,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            nowOnTapPref.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent();
+                // Didn't found it in android.provider.Settings... Just hardcoded it.
+                ComponentName componentName1 = new ComponentName(
+                        Constants.PACKAGE_NAME_ANDROID_SETTINGS,
+                        Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
+                intent.setComponent(componentName1);
+                startActivity(intent);
+                return true;
+            });
+        } else {
+            nowOnTapPref.setVisible(false);
+
+            // Navbar Gesture
+            navbarGesturePref.setOnPreferenceChangeListener((preference, newValue) -> {
+                PackageManager packageManager = mContext.getPackageManager();
                 ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
                 int componentState = newValue.equals(true) ?
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
@@ -106,95 +129,60 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 packageManager.setComponentEnabledSetting(componentName, componentState,
                         PackageManager.DONT_KILL_APP);
                 return true;
-            }
-        });
-
-        // Now on Tap
-        if (SystemUtils.aboveMarshmallow()) {
-            behaviorsPref.removePreference(navbarGesturePref);
-            PackageManager packageManager = getActivity().getPackageManager();
-            ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
-            packageManager.setComponentEnabledSetting(componentName,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            });
         }
-        nowOnTapPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                // Didn't found it in android.provider.Settings... Just hardcoded it.
-                ComponentName componentName = new ComponentName(
-                        Constants.PACKAGE_NAME_ANDROID_SETTINGS,
-                        Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
-                intent.setComponent(componentName);
-                startActivity(intent);
-                return true;
-            }
-        });
 
-        // Import favorites into personal dictionary
-        Preference importImePref = findPreference(Constants.PREF_IMPORT_PERSONAL_DICT);
-        importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                int numberAdded = PersonalDictionaryUtils.importAllFavorites(getActivity().getContentResolver());
+        PreferenceCategory personalDictionaryPref = (PreferenceCategory) findPreference(Constants.PREF_PERSONAL_DICTIONARY);
+        if (CapabilityUtils.personalDictionaryUnavailable()) {
+            personalDictionaryPref.setVisible(false);
+        } else {
+            // Import favorites into personal dictionary
+            Preference importImePref = findPreference(Constants.PREF_IMPORT_PERSONAL_DICT);
+            importImePref.setOnPreferenceClickListener(preference -> {
+                int numberAdded = PersonalDictionaryUtils.importAllFavorites(mContext.getContentResolver());
                 showSnackBar(String.format(getString(R.string.imported_into_personal_dict), numberAdded));
                 return true;
-            }
-        });
+            });
 
-        // Revoke favorite from personal dictionary
-        Preference revokeImePref = findPreference(Constants.PREF_REVOKE_PERSONAL_DICT);
-        revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                int numberRevoked = PersonalDictionaryUtils.revokeAllFavorites(getActivity().getContentResolver());
+            // Revoke favorite from personal dictionary
+            Preference revokeImePref = findPreference(Constants.PREF_REVOKE_PERSONAL_DICT);
+            revokeImePref.setOnPreferenceClickListener(preference -> {
+                int numberRevoked = PersonalDictionaryUtils.revokeAllFavorites(mContext.getContentResolver());
                 showSnackBar(String.format(getString(R.string.revoked_from_personal_dict), numberRevoked));
                 return true;
-            }
-        });
+            });
+        }
 
         // Backup favorites
         Preference backupPref = findPreference(Constants.PREF_BACKUP_FAV);
-        backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                PreferenceFragmentPermissionsDispatcher.backupFavoritesWithPermissionCheck(PreferenceFragment.this);
-                return true;
-            }
+        backupPref.setOnPreferenceClickListener(preference -> {
+            backupFavorites();
+            return true;
         });
 
         // Restore favorites
         Preference restorePref = findPreference(Constants.PREF_RESTORE_FAV);
-        restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                PreferenceFragmentPermissionsDispatcher.restoreFavoritesWithPermissionCheck(PreferenceFragment.this);
-                return true;
-            }
+        restorePref.setOnPreferenceClickListener(preference -> {
+            restoreFavorites();
+            return true;
         });
 
         // GitHub Release
         Preference gitHubReleasePref = findPreference(Constants.PREF_GIT_HUB_RELEASE);
-        gitHubReleasePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                intent.setData(Uri.parse(Constants.GIT_HUB_RELEASE_URL));
-                startActivity(intent);
-                return true;
-            }
+        gitHubReleasePref.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(Constants.GIT_HUB_RELEASE_URL));
+            startActivity(intent);
+            return true;
         });
 
         // GitHub Repo
         Preference gitHubRepoPref = findPreference(Constants.PREF_GIT_HUB_REPO);
-        gitHubRepoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                intent.setData(Uri.parse(Constants.GIT_HUB_REPO_URL));
-                startActivity(intent);
-                return true;
-            }
+        gitHubRepoPref.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(Constants.GIT_HUB_REPO_URL));
+            startActivity(intent);
+            return true;
         });
 
         // Version
@@ -205,23 +193,94 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         versionPref.setSummary(getString(R.string.version_code) + " " + versionCode);
     }
 
-    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-    void backupFavorites() {
-        boolean success = BackupUtils.backupFavorites();
-        if (success) {
-            showSnackBar(getString(R.string.backed_up_favorites) + ": " + Constants.FAVORITES_BACKUP_FILE_PATH);
+    /**
+     * This method sync the state of "show it after boot-up" preference
+     * to the state of "show notification"/"notification visibility" preference
+     *
+     * e.g. if "show notification"/"notification visibility" is false or no
+     *      "show it after boot-up" cannot be true
+     *      hence we programmatically set it to false, and disable it
+     *      otherwise, we enable the "show it after boot-up" preference
+     *
+     * @param newVisibleOrVisibility
+     */
+    private void syncShowAfterBootUpToNotificationVisibility(Object newVisibleOrVisibility) {
+        CheckBoxPreference showAfterBootUpPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_AFTER_BOOT_UP);
+
+        if (CapabilityUtils.notQuickTriggerNotificationLegacyVisibility()) {
+            CheckBoxPreference showNotificationPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_NOTIFICATION);
+            boolean visible = showNotificationPref.isChecked();
+            if (newVisibleOrVisibility != null) {
+                visible = (boolean) newVisibleOrVisibility;
+            }
+            if (!visible) {
+                SharedPreferences.Editor edit = mPreferences.edit();
+                edit.putBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, false);
+                edit.apply();
+                showAfterBootUpPref.setChecked(false);
+                showAfterBootUpPref.setEnabled(false);
+            } else {
+                showAfterBootUpPref.setEnabled(true);
+            }
         } else {
-            showSnackBar(R.string.fail);
+            ListPreference notificationLegacyVisibilityPref = (ListPreference) findPreference(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY);
+            String visibility = notificationLegacyVisibilityPref.getValue();
+            if (newVisibleOrVisibility != null) {
+                visibility = (String) newVisibleOrVisibility;
+            }
+            if (Constants.QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO.equals(visibility)) {
+                SharedPreferences.Editor edit = mPreferences.edit();
+                edit.putBoolean(Constants.PREF_PERSONAL_DICTIONARY, false);
+                edit.apply();
+                showAfterBootUpPref.setChecked(false);
+                showAfterBootUpPref.setEnabled(false);
+            } else {
+                showAfterBootUpPref.setEnabled(true);
+            }
         }
     }
 
-    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void backupFavorites() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(BACKUP_FILE_MIME_TYPE);
+        intent.putExtra(Intent.EXTRA_TITLE, BACKUP_FILENAME);
+
+        startActivityForResult(intent, RC_BACKUP);
+    }
+
     void restoreFavorites() {
-        boolean success = BackupUtils.restoreFavorites();
-        if (success) {
-            showSnackBar(R.string.restored_favorites);
-        } else {
-            showSnackBar(R.string.fail);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(BACKUP_FILE_MIME_TYPE);
+
+        startActivityForResult(intent, RC_RESTORE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        OutputStream os = null;
+        InputStream is = null;
+        try {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == RC_BACKUP) {
+                    os = mContentResolver.openOutputStream(data.getData());
+                    BackupUtils.writeFavorites(os);
+                    showSnackBar(getString(R.string.backed_up_favorites));
+                } else if (requestCode == RC_RESTORE) {
+                    is = mContentResolver.openInputStream(data.getData());
+                    BackupUtils.readFavorites(is);
+                    showSnackBar(getString(R.string.restored_favorites));
+                }
+            } else {
+                showSnackBar(getString(R.string.fail));
+            }
+        } catch (IOException e) {
+            showSnackBar(getString(R.string.fail));
+        } finally {
+            IOUtils.closeQuietly(os);
+            IOUtils.closeQuietly(is);
         }
     }
 
@@ -233,9 +292,5 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     private void showSnackBar(String message) {
         mBus.post(new ShowSnackBarOnBaseActivityEvent(message));
-    }
-
-    private void showSnackBar(int resId) {
-        showSnackBar(getString(resId));
     }
 }

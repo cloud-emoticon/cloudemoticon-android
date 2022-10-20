@@ -1,10 +1,17 @@
 package org.ktachibana.cloudemoji.receivers;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import org.ktachibana.cloudemoji.activities.BootUpDummyActivity;
+import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.utils.CapabilityUtils;
+import org.ktachibana.cloudemoji.utils.NotificationUtils;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Shows notification when booted up
@@ -12,11 +19,25 @@ import org.ktachibana.cloudemoji.activities.BootUpDummyActivity;
 public class BootUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-            Intent dummyActivityIntent = new Intent(context, BootUpDummyActivity.class);
-            dummyActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            dummyActivityIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            context.startActivity(dummyActivityIntent);
+        if (!"android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+            return;
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Show notification according to prefs
+        boolean showAfterBootUp = preferences.getBoolean(Constants.PREF_SHOW_AFTER_BOOT_UP, true);
+        if (!showAfterBootUp) {
+            return;
+        }
+
+        if (CapabilityUtils.doNotNeedRuntimeNotificationPermission()) {
+            NotificationUtils.setupNotification(context, null);
+            return;
+        }
+        String[] perms = {Manifest.permission.POST_NOTIFICATIONS};
+        if (EasyPermissions.hasPermissions(context, perms)) {
+            NotificationUtils.setupNotification(context, null);
         }
     }
 }
