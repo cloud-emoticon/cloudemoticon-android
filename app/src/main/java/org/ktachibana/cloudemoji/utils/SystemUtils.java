@@ -24,6 +24,10 @@ public class SystemUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
+    public static boolean aboveNougat24() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
     public static boolean aboveOreo26() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
@@ -32,7 +36,7 @@ public class SystemUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
-    public static boolean aboveTiramisu33() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU;
+    public static boolean belowTiramisu33() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU;
     }
 }

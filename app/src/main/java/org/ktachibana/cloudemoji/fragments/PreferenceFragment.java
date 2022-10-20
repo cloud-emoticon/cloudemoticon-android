@@ -73,12 +73,21 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        // Setup notification settings
+        Preference notificationLegacyVisibilityPref = findPreference(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY);
+        Preference showNotificationPref = findPreference(Constants.PREF_SHOW_NOTIFICATION);
+        if (SystemUtils.aboveNougat24()) {
+            notificationLegacyVisibilityPref.setVisible(false);
+        } else {
+            showNotificationPref.setVisible(false);
+        }
+
         Preference navbarGesturePref = findPreference(Constants.PREF_NAVBAR_GESTURE);
         Preference nowOnTapPref = findPreference(Constants.PREF_NOW_ON_TAP);
         if (SystemUtils.aboveMarshmallow23()) {
-            // Now on Tap
             navbarGesturePref.setVisible(false);
 
+            // Now on Tap
             PackageManager packageManager = mContext.getPackageManager();
             ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
             packageManager.setComponentEnabledSetting(componentName,
@@ -87,33 +96,27 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             navbarGesturePref.setVisible(false);
 
             // Navbar Gesture
-            navbarGesturePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    PackageManager packageManager = mContext.getPackageManager();
-                    ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
-                    int componentState = newValue.equals(true) ?
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-                    packageManager.setComponentEnabledSetting(componentName, componentState,
-                            PackageManager.DONT_KILL_APP);
-                    return true;
-                }
+            navbarGesturePref.setOnPreferenceChangeListener((preference, newValue) -> {
+                PackageManager packageManager = mContext.getPackageManager();
+                ComponentName componentName = new ComponentName(getActivity(), CLS_ASSIST_ACTIVITY);
+                int componentState = newValue.equals(true) ?
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+                packageManager.setComponentEnabledSetting(componentName, componentState,
+                        PackageManager.DONT_KILL_APP);
+                return true;
             });
         }
 
-        nowOnTapPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                // Didn't found it in android.provider.Settings... Just hardcoded it.
-                ComponentName componentName = new ComponentName(
-                        Constants.PACKAGE_NAME_ANDROID_SETTINGS,
-                        Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
-                intent.setComponent(componentName);
-                startActivity(intent);
-                return true;
-            }
+        nowOnTapPref.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent();
+            // Didn't found it in android.provider.Settings... Just hardcoded it.
+            ComponentName componentName = new ComponentName(
+                    Constants.PACKAGE_NAME_ANDROID_SETTINGS,
+                    Constants.CLASS_NAME_MANAGE_ASSIST_ACTIVITY);
+            intent.setComponent(componentName);
+            startActivity(intent);
+            return true;
         });
 
 
@@ -123,70 +126,52 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         } else {
             // Import favorites into personal dictionary
             Preference importImePref = findPreference(Constants.PREF_IMPORT_PERSONAL_DICT);
-            importImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    int numberAdded = PersonalDictionaryUtils.importAllFavorites(mContext.getContentResolver());
-                    showSnackBar(String.format(getString(R.string.imported_into_personal_dict), numberAdded));
-                    return true;
-                }
+            importImePref.setOnPreferenceClickListener(preference -> {
+                int numberAdded = PersonalDictionaryUtils.importAllFavorites(mContext.getContentResolver());
+                showSnackBar(String.format(getString(R.string.imported_into_personal_dict), numberAdded));
+                return true;
             });
 
             // Revoke favorite from personal dictionary
             Preference revokeImePref = findPreference(Constants.PREF_REVOKE_PERSONAL_DICT);
-            revokeImePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    int numberRevoked = PersonalDictionaryUtils.revokeAllFavorites(mContext.getContentResolver());
-                    showSnackBar(String.format(getString(R.string.revoked_from_personal_dict), numberRevoked));
-                    return true;
-                }
+            revokeImePref.setOnPreferenceClickListener(preference -> {
+                int numberRevoked = PersonalDictionaryUtils.revokeAllFavorites(mContext.getContentResolver());
+                showSnackBar(String.format(getString(R.string.revoked_from_personal_dict), numberRevoked));
+                return true;
             });
             revokeImePref.setEnabled(false);
         }
 
         // Backup favorites
         Preference backupPref = findPreference(Constants.PREF_BACKUP_FAV);
-        backupPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                backupFavorites();
-                return true;
-            }
+        backupPref.setOnPreferenceClickListener(preference -> {
+            backupFavorites();
+            return true;
         });
 
         // Restore favorites
         Preference restorePref = findPreference(Constants.PREF_RESTORE_FAV);
-        restorePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                restoreFavorites();
-                return true;
-            }
+        restorePref.setOnPreferenceClickListener(preference -> {
+            restoreFavorites();
+            return true;
         });
 
         // GitHub Release
         Preference gitHubReleasePref = findPreference(Constants.PREF_GIT_HUB_RELEASE);
-        gitHubReleasePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                intent.setData(Uri.parse(Constants.GIT_HUB_RELEASE_URL));
-                startActivity(intent);
-                return true;
-            }
+        gitHubReleasePref.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(Constants.GIT_HUB_RELEASE_URL));
+            startActivity(intent);
+            return true;
         });
 
         // GitHub Repo
         Preference gitHubRepoPref = findPreference(Constants.PREF_GIT_HUB_REPO);
-        gitHubRepoPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent();
-                intent.setData(Uri.parse(Constants.GIT_HUB_REPO_URL));
-                startActivity(intent);
-                return true;
-            }
+        gitHubRepoPref.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(Constants.GIT_HUB_REPO_URL));
+            startActivity(intent);
+            return true;
         });
 
         // Version

@@ -28,19 +28,31 @@ public class NotificationUtils implements Constants {
     public static void setupNotification(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        String notificationVisibility = preferences.getString(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY, Constants.QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH);
-        switch (notificationVisibility) {
-            case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO:
-                setupLegacyVisibilityNo(context);
-                break;
-
-            case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_PANEL:
-                setupLegacyVisibilityPanel(context);
-                break;
-
-            case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH:
+        if (SystemUtils.aboveNougat24()) {
+            boolean visible = preferences.getBoolean(Constants.PREF_SHOW_NOTIFICATION, true);
+            if (visible) {
                 setupLegacyVisibilityBoth(context);
-                break;
+            } else {
+                setupLegacyVisibilityNo(context);
+            }
+        } else {
+            String legacyVisibility = preferences.getString(
+                    Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY,
+                    Constants.QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH
+            );
+            switch (legacyVisibility) {
+                case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_NO:
+                    setupLegacyVisibilityNo(context);
+                    break;
+
+                case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_PANEL:
+                    setupLegacyVisibilityPanel(context);
+                    break;
+
+                case QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_BOTH:
+                    setupLegacyVisibilityBoth(context);
+                    break;
+            }
         }
     }
 

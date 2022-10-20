@@ -25,6 +25,7 @@ public interface Constants {
     String PREF_REVOKE_PERSONAL_DICT = "pref_revoke_from_personal_dict";
     String PREF_NOW_ON_TAP = "pref_now_on_tap";
     String PREF_PERSONAL_DICTIONARY = "pref_ime";
+    String PREF_SHOW_NOTIFICATION = "pref_show_notification";
 
     // Repository
     int FORMAT_TYPE_XML = 0;

@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity implements SharedPreferences.OnSh
 
     @AfterPermissionGranted(RC_POST_NOTIFICATIONS)
     private void setupNotification() {
-        if (!SystemUtils.aboveTiramisu33()) {
+        if (SystemUtils.belowTiramisu33()) {
             NotificationUtils.setupNotification(this);
             return;
         }

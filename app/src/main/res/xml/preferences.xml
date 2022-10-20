@@ -10,6 +10,10 @@
             android:title="@string/notification_visibility" />
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="pref_show_notification"
+            android:title="@string/show_notification" />
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_show_after_boot_up"
             android:title="@string/show_after_boot_up" />
         <CheckBoxPreference

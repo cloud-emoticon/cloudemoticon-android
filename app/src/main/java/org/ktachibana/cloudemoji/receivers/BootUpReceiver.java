@@ -31,7 +31,7 @@ public class BootUpReceiver extends BroadcastReceiver {
             return;
         }
 
-        if (!SystemUtils.aboveTiramisu33()) {
+        if (SystemUtils.belowTiramisu33()) {
             NotificationUtils.setupNotification(context);
             return;
         }
