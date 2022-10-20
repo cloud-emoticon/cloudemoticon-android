@@ -28,7 +28,7 @@ public class NotificationUtils implements Constants {
     public static void setupNotification(Context context, Object newVisibleOrVisibility) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (SystemUtils.aboveNougat24()) {
+        if (CapabilityUtils.notQuickTriggerNotificationLegacyVisibility()) {
             boolean visible = preferences.getBoolean(Constants.PREF_SHOW_NOTIFICATION, true);
             if (newVisibleOrVisibility != null) {
                 visible = (boolean) newVisibleOrVisibility;
@@ -107,7 +107,7 @@ public class NotificationUtils implements Constants {
             Context context,
             int importance
     ) {
-        if (SystemUtils.aboveOreo26()) {
+        if (CapabilityUtils.needNotificationChannel()) {
             NotificationChannel channel = new NotificationChannel(
                     Constants.QUICK_TRIGGER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.quick_trigger_notification_channel_name),
@@ -129,7 +129,7 @@ public class NotificationUtils implements Constants {
         String text = context.getString(R.string.touch_to_launch);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pIntent;
-        if (SystemUtils.aboveS31()) {
+        if (CapabilityUtils.needPendingIntentMutability()) {
             pIntent = PendingIntent.getActivity
                     (context, 0, intent, PendingIntent.FLAG_MUTABLE);
         } else {

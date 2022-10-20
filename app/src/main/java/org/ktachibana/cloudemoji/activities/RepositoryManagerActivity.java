@@ -3,8 +3,6 @@ package org.ktachibana.cloudemoji.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -29,7 +27,6 @@ import org.ktachibana.cloudemoji.events.RepositoryExportEvent;
 import org.ktachibana.cloudemoji.events.RepositoryInvalidFormatEvent;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -173,12 +170,6 @@ public class RepositoryManagerActivity extends BaseActivity {
         intent.setType(EXPORTED_REPO_MIME_TYPE);
         intent.putExtra(Intent.EXTRA_TITLE, exportedEvent.getAlias() + ".json");
         mCurrentExportingJson = exportedEvent.getJson();
-
-        if (SystemUtils.aboveOreo26()) {
-            // Optionally, specify a URI for the directory that should be opened in
-            // the system file picker when your app creates the document.
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Environment.DIRECTORY_DOCUMENTS);
-        }
 
         startActivityForResult(intent, RC_EXPORT_REPOSITORY);
     }

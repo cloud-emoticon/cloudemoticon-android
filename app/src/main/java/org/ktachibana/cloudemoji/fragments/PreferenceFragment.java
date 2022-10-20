@@ -10,9 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.DocumentsContract;
 
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
@@ -32,7 +30,6 @@ import org.ktachibana.cloudemoji.utils.BackupUtils;
 import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
 import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,7 +78,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         syncShowAfterBootUpToNotificationVisibility(null);
         Preference notificationLegacyVisibilityPref = findPreference(Constants.PREF_NOTIFICATION_LEGACY_VISIBILITY);
         Preference showNotificationPref = findPreference(Constants.PREF_SHOW_NOTIFICATION);
-        if (SystemUtils.aboveNougat24()) {
+        if (CapabilityUtils.notQuickTriggerNotificationLegacyVisibility()) {
             notificationLegacyVisibilityPref.setVisible(false);
             showNotificationPref.setOnPreferenceChangeListener((preference, newValue) -> {
                 syncShowAfterBootUpToNotificationVisibility(newValue);
@@ -213,7 +210,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private void syncShowAfterBootUpToNotificationVisibility(Object newVisibleOrVisibility) {
         CheckBoxPreference showAfterBootUpPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_AFTER_BOOT_UP);
 
-        if (SystemUtils.aboveNougat24()) {
+        if (CapabilityUtils.notQuickTriggerNotificationLegacyVisibility()) {
             CheckBoxPreference showNotificationPref = (CheckBoxPreference) findPreference(Constants.PREF_SHOW_NOTIFICATION);
             boolean visible = showNotificationPref.isChecked();
             if (newVisibleOrVisibility != null) {
@@ -252,12 +249,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         intent.setType(BACKUP_FILE_MIME_TYPE);
         intent.putExtra(Intent.EXTRA_TITLE, BACKUP_FILENAME);
 
-        if (SystemUtils.aboveOreo26()) {
-            // Optionally, specify a URI for the directory that should be opened in
-            // the system file picker when your app creates the document.
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Environment.DIRECTORY_DOCUMENTS);
-        }
-
         startActivityForResult(intent, RC_BACKUP);
     }
 
@@ -265,12 +256,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(BACKUP_FILE_MIME_TYPE);
-
-        if (SystemUtils.aboveOreo26()) {
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Environment.DIRECTORY_DOCUMENTS);
-        }
-        // Optionally, specify a URI for the file that should appear in the
-        // system file picker when it loads.
 
         startActivityForResult(intent, RC_RESTORE);
     }

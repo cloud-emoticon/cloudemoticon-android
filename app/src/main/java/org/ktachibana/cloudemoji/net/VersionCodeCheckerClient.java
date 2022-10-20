@@ -8,13 +8,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.Constants;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
+import org.ktachibana.cloudemoji.utils.NetworkUtils;
 
 import cz.msebera.android.httpclient.Header;
 
 public class VersionCodeCheckerClient extends BaseHttpClient {
     public void checkForLatestVersionCode(@NonNull final IntCallback callback) {
-        if (SystemUtils.networkAvailable()) {
+        if (NetworkUtils.networkAvailable()) {
             mClient.get(Constants.UPDATE_CHECKER_URL, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {

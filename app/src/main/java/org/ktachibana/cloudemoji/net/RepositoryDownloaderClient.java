@@ -5,18 +5,17 @@ import androidx.annotation.NonNull;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
 import org.ktachibana.cloudemoji.BaseApplication;
 import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.models.disk.Repository;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
+import org.ktachibana.cloudemoji.utils.NetworkUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
 public class RepositoryDownloaderClient extends BaseHttpClient {
     public void downloadSource(@NonNull final Repository item, @NonNull final ObjectCallback<Repository> callback) {
-        if (SystemUtils.networkAvailable()) {
+        if (NetworkUtils.networkAvailable()) {
             mClient.get(
                     item.getUrl(),
                     new AsyncHttpResponseHandler() {

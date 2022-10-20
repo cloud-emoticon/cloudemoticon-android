@@ -8,8 +8,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.ktachibana.cloudemoji.Constants;
+import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
-import org.ktachibana.cloudemoji.utils.SystemUtils;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -31,7 +31,7 @@ public class BootUpReceiver extends BroadcastReceiver {
             return;
         }
 
-        if (SystemUtils.belowTiramisu33()) {
+        if (CapabilityUtils.doNotNeedRuntimeNotificationPermission()) {
             NotificationUtils.setupNotification(context, null);
             return;
         }
