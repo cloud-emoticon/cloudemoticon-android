@@ -9,7 +9,7 @@
     <string name="touch_to_launch">触摸以启动</string>
     <string name="title_activity_settings">设置</string>
     <string name="behaviors">行为</string>
-    <string name="close_after_copy">复制之后关闭</string>
+    <string name="close_after_copy">复制之后关闭 App</string>
     <string name="repo_url">源URL</string>
     <string name="about">关于</string>
     <string name="github_repo">GitHub 源</string>
@@ -37,7 +37,7 @@
     <string name="duplicate_emoticon">重复的颜文字</string>
     <string name="navbar_gesture_title">导航栏手势</string>
     <string name="navbar_gesture_summary">从导航栏上划以启动</string>
-    <string name="now_on_tap_title">长按 Home 键启动</string>
+    <string name="now_on_tap_title">长按 Home 键启动 App</string>
     <string name="now_on_tap_summary">请点击打开系统设置，在「辅助应用」中选择</string>
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
@@ -70,7 +70,7 @@
     <string name="added_to_repo">已添加到源</string>
     <string name="allow">允许</string>
     <string name="deny">拒绝</string>
-    <string name="backed_up_favorites">收藏已备份到</string>
+    <string name="backed_up_favorites">收藏已备份</string>
     <string name="restored_favorites">收藏已恢复</string>
     <string name="notification">通知</string>
     <string name="cool_kid">在跑调试/测试版, 屌屌哒!</string>
