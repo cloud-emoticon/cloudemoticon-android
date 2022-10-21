@@ -65,18 +65,15 @@ public class RepositoryStoreListViewAdapter extends BaseBaseAdapter {
         viewHolder.alias.setText(item.getAlias());
         viewHolder.url.setText(item.getUrl());
         viewHolder.description.setText(item.getDescription());
-        Picasso.with(mContext).load(item.getAuthorIconUrl()).into(viewHolder.authorImage);
+        Picasso.get().load(item.getAuthorIconUrl()).into(viewHolder.authorImage);
         viewHolder.author.setText(item.getAuthor());
-        viewHolder.root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Repository.hasDuplicateUrl(item.getUrl())) {
-                    mBus.post(new RepositoryDuplicatedEvent());
-                } else {
-                    Repository repository = new Repository(item.getUrl(), item.getAlias());
-                    repository.save();
-                    mBus.post(new RepositoryAddedEvent(repository));
-                }
+        viewHolder.root.setOnClickListener(v -> {
+            if (Repository.hasDuplicateUrl(item.getUrl())) {
+                mBus.post(new RepositoryDuplicatedEvent());
+            } else {
+                Repository repository = new Repository(item.getUrl(), item.getAlias());
+                repository.save();
+                mBus.post(new RepositoryAddedEvent(repository));
             }
         });
 

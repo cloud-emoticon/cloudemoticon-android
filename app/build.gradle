@@ -67,7 +67,7 @@ dependencies {
     // Database
     implementation 'com.github.satyan:sugar:b16e65326a'
     // Networking
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.loopj.android:android-async-http:1.4.10'
     implementation 'org.apache.httpcomponents:httpcore:4.4.10'
     // IO
