@@ -3,9 +3,11 @@ package org.ktachibana.cloudemoji.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -31,8 +33,7 @@ public class RepositoryStoreActivity extends BaseActivity {
     private static final String STATE_TAG = "state";
     @Bind(R.id.list)
     ListView mList;
-    @Bind(R.id.contribution_prompt)
-    TextView mContributionPrompt;
+
     private List<StoreRepository> mRepositories;
 
     @Override
@@ -71,26 +72,33 @@ public class RepositoryStoreActivity extends BaseActivity {
                         dialog.dismiss();
                     }
                 });
+    }
 
-        mContributionPrompt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new MaterialDialog.Builder(RepositoryStoreActivity.this)
-                        .title(getString(R.string.repository_store_contribution_prompt))
-                        .content(getString(R.string.repository_store_contribution_warning))
-                        .positiveText(getString(R.string.proceed))
-                        .negativeText(android.R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                Intent intent = new Intent();
-                                intent.setData(Uri.parse(Constants.REPO_STORE_CONTRIBUTION_URL));
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_repo_store, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.contribute_repo) {
+            new MaterialDialog.Builder(RepositoryStoreActivity.this)
+                    .title(getString(R.string.repository_store_contribution_prompt))
+                    .content(getString(R.string.repository_store_contribution_warning))
+                    .positiveText(getString(R.string.proceed))
+                    .negativeText(android.R.string.cancel)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            Intent intent = new Intent();
+                            intent.setData(Uri.parse(Constants.REPO_STORE_CONTRIBUTION_URL));
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
