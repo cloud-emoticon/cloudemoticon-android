@@ -57,6 +57,9 @@
         android:key="pref_about"
         android:title="@string/about">
         <Preference
+            android:key="pref_check_for_update"
+            android:title="@string/update_checker" />
+        <Preference
             android:key="pref_git_hub_release"
             android:title="@string/github_release" />
         <Preference

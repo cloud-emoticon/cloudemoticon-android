@@ -5,15 +5,6 @@
     android:orientation="vertical"
     tools:context="org.ktachibana.cloudemoji.activities.RepositoryStoreActivity">
 
-    <TextView
-        android:id="@+id/contribution_prompt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/repository_store_contribution_prompt"
-        android:textColor="@color/material_blue_500"
-        android:textSize="20sp"
-        android:textStyle="italic" />
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

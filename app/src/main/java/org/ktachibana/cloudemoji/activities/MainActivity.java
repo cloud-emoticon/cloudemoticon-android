@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,15 +16,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import org.apache.commons.io.IOUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.ktachibana.cloudemoji.BaseActivity;
 import org.ktachibana.cloudemoji.BaseApplication;
-import org.ktachibana.cloudemoji.BaseHttpClient;
-import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteAddedEvent;
@@ -35,7 +29,6 @@ import org.ktachibana.cloudemoji.fragments.RepositoriesFragmentBuilder;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.disk.Repository;
 import org.ktachibana.cloudemoji.models.memory.Source;
-import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.parsing.SourceParsingException;
 import org.ktachibana.cloudemoji.parsing.SourceReader;
 import org.ktachibana.cloudemoji.utils.CapabilityUtils;
@@ -164,24 +157,6 @@ public class MainActivity extends BaseActivity {
             Intent intent = new Intent(this, RepositoryStoreActivity.class);
             startActivityForResult(intent, Constants.REPOSITORY_STORE_REQUEST_CODE);
             return true;
-        } else if (id == R.id.update_checker) {
-            new VersionCodeCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
-                @Override
-                public void success(int result) {
-                    checkVersionCode(true, result);
-                }
-
-                @Override
-                public void fail(Throwable t) {
-                    checkVersionCode(false, 0);
-                }
-
-                @Override
-                public void finish() {
-
-                }
-            });
-            return true;
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this, PreferenceActivity.class);
             startActivityForResult(intent, Constants.PREFERENCE_REQUEST_CODE);
@@ -209,40 +184,6 @@ public class MainActivity extends BaseActivity {
     @Subscribe
     public void handle(RepositoriesPagerItemSelectedEvent event) {
         currentItem = event.getItem();
-    }
-
-    private void checkVersionCode(boolean success, int latestVersionCode) {
-        // If failed
-        if (!success) {
-            showSnackBar(R.string.update_checker_failed);
-            return;
-        }
-
-        // Get current version and compare
-        int versionCode = BuildConfig.VERSION_CODE;
-
-        if (latestVersionCode == versionCode) {
-            // Already latest
-            showSnackBar(R.string.already_latest_version);
-        } else if (latestVersionCode < versionCode) {
-            // More latest than latest
-            showSnackBar(R.string.cool_kid);
-        } else {
-            // New version available, show dialog
-            new MaterialDialog.Builder(MainActivity.this)
-                    .title(String.format(getString(R.string.new_version_available), latestVersionCode))
-                    .positiveText(R.string.go_to_play_store)
-                    .negativeText(android.R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Intent intent = new Intent();
-                            intent.setData(Uri.parse(Constants.PLAY_STORE_URL));
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
-        }
     }
 
     private void replaceMainContainer(Fragment fragment) {

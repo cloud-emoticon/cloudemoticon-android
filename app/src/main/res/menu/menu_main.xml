@@ -16,10 +16,6 @@
         android:title="@string/repository_store"
         app:showAsAction="never" />
     <item
-        android:id="@+id/update_checker"
-        android:title="@string/update_checker"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/settings"
         android:title="@string/settings"
         app:showAsAction="never" />

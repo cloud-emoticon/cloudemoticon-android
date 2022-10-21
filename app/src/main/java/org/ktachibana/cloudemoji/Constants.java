@@ -15,6 +15,7 @@ public interface Constants {
     String QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_PANEL = "panel";
     String PREF_SHOW_AFTER_BOOT_UP = "pref_show_after_boot_up";
     String PREF_VERSION = "pref_version";
+    String PREF_CHECK_FOR_UPDATE = "pref_check_for_update";
     String PREF_GIT_HUB_RELEASE = "pref_git_hub_release";
     String PREF_GIT_HUB_REPO = "pref_git_hub_repo";
     String PREF_HAS_RUN_BEFORE = "pref_has_run_before";
