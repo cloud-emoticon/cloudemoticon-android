@@ -12,20 +12,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.apache.commons.io.IOUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.ktachibana.cloudemoji.BaseHttpClient;
 import org.ktachibana.cloudemoji.BuildConfig;
 import org.ktachibana.cloudemoji.Constants;
 import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
+import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
 import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
@@ -167,6 +173,29 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+
+        // Check for update
+        Preference checkForUpdatePref = findPreference(Constants.PREF_CHECK_FOR_UPDATE);
+        checkForUpdatePref.setOnPreferenceClickListener(preference -> {
+            new VersionCodeCheckerClient().checkForLatestVersionCode(new BaseHttpClient.IntCallback() {
+                @Override
+                public void success(int result) {
+                    checkVersionCode(true, result);
+                }
+
+                @Override
+                public void fail(Throwable t) {
+                    checkVersionCode(false, 0);
+                }
+
+                @Override
+                public void finish() {
+
+                }
+            });
+            return true;
+        });
+
         // GitHub Release
         Preference gitHubReleasePref = findPreference(Constants.PREF_GIT_HUB_RELEASE);
         gitHubReleasePref.setOnPreferenceClickListener(preference -> {
@@ -292,5 +321,40 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     private void showSnackBar(String message) {
         mBus.post(new ShowSnackBarOnBaseActivityEvent(message));
+    }
+
+    private void showSnackBar(int resId) {
+        mBus.post(new ShowSnackBarOnBaseActivityEvent(getString(resId)));
+    }
+
+    private void checkVersionCode(boolean success, int latestVersionCode) {
+        // If failed
+        if (!success) {
+            showSnackBar(R.string.update_checker_failed);
+            return;
+        }
+
+        // Get current version and compare
+        int versionCode = BuildConfig.VERSION_CODE;
+
+        if (latestVersionCode == versionCode) {
+            // Already latest
+            showSnackBar(R.string.already_latest_version);
+        } else if (latestVersionCode < versionCode) {
+            // More latest than latest
+            showSnackBar(R.string.cool_kid);
+        } else {
+            // New version available, show dialog
+            new MaterialDialog.Builder(mContext)
+                    .title(String.format(getString(R.string.new_version_available), latestVersionCode))
+                    .positiveText(R.string.go_to_play_store)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive((dialog, which) -> {
+                        Intent intent = new Intent();
+                        intent.setData(Uri.parse(Constants.PLAY_STORE_URL));
+                        startActivity(intent);
+                    })
+                    .show();
+        }
     }
 }
