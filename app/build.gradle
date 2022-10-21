@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 34
-        versionName '1.4.1'
+        versionCode 35
+        versionName '1.4.2'
     }
 
     // conditionally load keystore.properties and configure release signing config
