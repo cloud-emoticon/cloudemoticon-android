@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 33
-        versionName '1.4'
+        versionCode 34
+        versionName '1.4.1'
     }
 
     // conditionally load keystore.properties and configure release signing config
@@ -37,7 +37,7 @@ android {
         release {
             debuggable false
             zipAlignEnabled true
-            minifyEnabled true
+            // TODO: do not minifyEnabled otherwise EventBus dummy methods would be gone
             signingConfig signingConfigs.release
         }
     }
