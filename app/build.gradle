@@ -11,17 +11,17 @@ android {
     }
 
     // conditionally load keystore.properties and configure release signing config
-    File keystorePropertiesFile = new File("keystores.properties")
-    if (keystorePropertiesFile.exists()) {
-        def keystoreProperties = new Properties()
-        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    def keyStoresFile = rootProject.file("keystores.properties")
+    if (keyStoresFile.exists()) {
+        def keyStoresProps = new Properties()
+        keyStoresProps.load(new FileInputStream(keyStoresFile))
 
         signingConfigs {
             release {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
+                keyAlias keyStoresProps['keyAlias']
+                keyPassword keyStoresProps['keyPassword']
+                storeFile file(keyStoresProps['storeFile'])
+                storePassword keyStoresProps['storePassword']
             }
         }
         buildTypes.release.signingConfig = signingConfigs.release
@@ -29,14 +29,16 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
             debuggable true
-            versionNameSuffix '.debug'
             zipAlignEnabled true
+            applicationIdSuffix ".debug"
+            versionNameSuffix '.debug'
         }
         release {
             debuggable false
             zipAlignEnabled true
+            minifyEnabled true
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
