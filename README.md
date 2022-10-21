@@ -29,9 +29,8 @@ A cloud solution to your favorite emoticons on Android
 * Search
 * Repository store
 * Backup and restore bookmarks
-* Swipe-up navigation bar icon to replace home
-* Add your bookmarks to your user dictionary (some IME's can use it!)
-* More...
+* Quick trigger notifcation to launch app
+* Set now-on-tap or navigation bar gesture to launch app
 
 ### Screenshot
 <img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/bookmarks.png"  width="500">
