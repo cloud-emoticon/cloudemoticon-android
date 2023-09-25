@@ -100,15 +100,6 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
                 mBus.post(new FavoriteBeginEditingEvent(favorite));
             }
         });
-//        viewHolder.(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-//                        .setEmoticon(favorite.getEmoticon())
-//                        .build()
-//                        .show();
-//            }
-//        });
 
         return view;
     }

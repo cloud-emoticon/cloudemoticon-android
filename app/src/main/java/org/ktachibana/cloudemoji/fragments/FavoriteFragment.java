@@ -23,6 +23,7 @@ import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.ui.MultiInputMaterialDialogBuilder;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 
 import java.util.List;
@@ -69,12 +70,19 @@ public class FavoriteFragment extends BaseFragment {
         this.mAdapter = new FavoriteListViewAdapter(getActivity());
         mFavoriteListView
                 .setAdapter(mAdapter);
-        mFavoriteListView
-                .setOnItemClickListener((adapterView, view, i, l) -> {
-                    Favorite favorite = (Favorite) mAdapter.getItem(i);
-                    Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
-                    mBus.post(new EntryAddedToHistoryEvent(entry));
-                });
+        mFavoriteListView.setOnItemClickListener((adapterView, view, position, id) -> {
+            Favorite favorite = (Favorite) mAdapter.getItem(position);
+            Entry entry = new Entry(favorite.getEmoticon(), favorite.getDescription());
+            mBus.post(new EntryAddedToHistoryEvent(entry));
+        });
+        mFavoriteListView.setOnItemLongClickListener((adapterView, view, position, id) -> {
+            Favorite favorite = (Favorite) mAdapter.getItem(position);
+            new ScrollableEmoticonMaterialDialogBuilder(mContext)
+                .setEmoticon(favorite.getEmoticon())
+                .build()
+                .show();
+            return true;
+        });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_create));
         mFab.attachToListView(mFavoriteListView);
         mFab.setOnClickListener(v -> popupAddFavoriteDialog());
