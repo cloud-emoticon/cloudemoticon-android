@@ -147,17 +147,6 @@ public class SourceListViewAdapter extends PinnedHeaderAdapter implements Sectio
             }
         });
 
-        // Setup on expand clicked
-//        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-//                        .setEmoticon(emoticon)
-//                        .build()
-//                        .show();
-//            }
-//        });
-
         return convertView;
     }
 

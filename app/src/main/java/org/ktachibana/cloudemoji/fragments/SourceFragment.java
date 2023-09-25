@@ -18,6 +18,7 @@ import org.ktachibana.cloudemoji.adapters.SourceListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
 import org.ktachibana.cloudemoji.models.memory.Source;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,6 +58,20 @@ public class SourceFragment extends BaseFragment {
 
             @Override
             public void onSectionHeaderClick(AdapterView<?> adapterView, int section, long id) { }
+        });
+
+        mList.setOnItemLongClickListener(new PinnedHeaderListView.OnPinnedHeaderListViewLongItemClickListener() {
+            @Override
+            public void onItemLongClick(AdapterView<?> adapterView, int section, int positionInSection, long id) {
+                Entry entry = mAdapter.getItem(section, positionInSection);
+                new ScrollableEmoticonMaterialDialogBuilder(getActivity())
+                        .setEmoticon(entry.getEmoticon())
+                        .build()
+                        .show();
+            }
+
+            @Override
+            public void onSectionHeaderLongClick(AdapterView<?> adapterView, int section, long id) {}
         });
 
         return rootView;
