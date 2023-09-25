@@ -105,12 +105,12 @@ public class FavoriteFragment extends BaseFragment {
                     }
                 })
                 .addInput(null, getString(R.string.description))
-                .addInput(null, getString(R.string.shortcut), CapabilityUtils.personalDictionaryUnavailable())
+                .addInput(null, getString(R.string.shortcut), CapabilityUtils.disableFavoriteShortcutFeature())
                 .inputs((dialog, inputs, allInputsValidated) -> {
                     if (allInputsValidated) {
                         String emoticon = inputs.get(0).toString();
                         String description = inputs.get(1).toString();
-                        String shortcut = CapabilityUtils.personalDictionaryUnavailable() ? "" : inputs.get(2).toString();
+                        String shortcut = CapabilityUtils.disableFavoriteShortcutFeature() ? "" : inputs.get(2).toString();
 
                         Favorite favorite = new Favorite(emoticon, description, shortcut);
                         favorite.save();
@@ -130,10 +130,10 @@ public class FavoriteFragment extends BaseFragment {
         final Favorite favorite = event.getFavorite();
         new MultiInputMaterialDialogBuilder(mContext)
                 .addInput(favorite.getDescription(), getString(R.string.description))
-                .addInput(favorite.getShortcut(), getString(R.string.shortcut), CapabilityUtils.personalDictionaryUnavailable())
+                .addInput(favorite.getShortcut(), getString(R.string.shortcut), CapabilityUtils.disableFavoriteShortcutFeature())
                 .inputs((dialog, inputs, allInputsValidated) -> {
                     String description = inputs.get(0).toString();
-                    String shortcut = CapabilityUtils.personalDictionaryUnavailable() ? "" : inputs.get(1).toString();
+                    String shortcut = CapabilityUtils.disableFavoriteShortcutFeature() ? "" : inputs.get(1).toString();
 
                     // Get the new favorite and SAVE
                     favorite.setDescription(description);

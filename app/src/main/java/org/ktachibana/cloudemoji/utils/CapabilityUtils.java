@@ -11,6 +11,14 @@ public class CapabilityUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    public static boolean enableFavoriteShortcutFeature() {
+        return !personalDictionaryUnavailable() || accessibilitySetTextAvailable();
+    }
+
+    public static boolean disableFavoriteShortcutFeature() {
+        return !enableFavoriteShortcutFeature();
+    }
+
     public static boolean cannotGetActiveNotifications() {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
     }
