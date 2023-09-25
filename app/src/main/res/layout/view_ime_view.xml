@@ -15,17 +15,20 @@
         <Button
             android:id="@+id/imeButton1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/imeButton3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/imeButton5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -36,17 +39,20 @@
         <Button
             android:id="@+id/imeButton2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/imeButton4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/imeButton6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
 </LinearLayout>
