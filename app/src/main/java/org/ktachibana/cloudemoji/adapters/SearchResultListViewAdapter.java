@@ -85,15 +85,15 @@ public class SearchResultListViewAdapter extends BaseAdapter {
         viewHolder.emoticon.setText(entry.getEmoticon());
         viewHolder.description.setText(description);
 
-        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-                        .setEmoticon(entry.getEmoticon())
-                        .build()
-                        .show();
-            }
-        });
+//        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+//                        .setEmoticon(entry.getEmoticon())
+//                        .build()
+//                        .show();
+//            }
+//        });
 
         return convertView;
     }
@@ -104,9 +104,6 @@ public class SearchResultListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.descriptionTextView)
         TextView description;
-
-        @Bind(R.id.historyExpandImageView)
-        ImageView expand;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

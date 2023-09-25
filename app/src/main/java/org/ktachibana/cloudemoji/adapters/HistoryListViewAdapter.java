@@ -65,15 +65,15 @@ public class HistoryListViewAdapter extends BaseAdapter {
             viewHolder.description.setText(history.getDescription());
         }
 
-        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-                        .setEmoticon(history.getEmoticon())
-                        .build()
-                        .show();
-            }
-        });
+//        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+//                        .setEmoticon(history.getEmoticon())
+//                        .build()
+//                        .show();
+//            }
+//        });
 
         return convertView;
     }
@@ -89,9 +89,6 @@ public class HistoryListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.descriptionTextView)
         TextView description;
-
-        @Bind(R.id.historyExpandImageView)
-        ImageView expand;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

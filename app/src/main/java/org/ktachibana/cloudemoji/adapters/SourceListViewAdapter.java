@@ -148,15 +148,15 @@ public class SourceListViewAdapter extends PinnedHeaderAdapter implements Sectio
         });
 
         // Setup on expand clicked
-        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-                        .setEmoticon(emoticon)
-                        .build()
-                        .show();
-            }
-        });
+//        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+//                        .setEmoticon(emoticon)
+//                        .build()
+//                        .show();
+//            }
+//        });
 
         return convertView;
     }
@@ -232,8 +232,6 @@ public class SourceListViewAdapter extends PinnedHeaderAdapter implements Sectio
         TextView description;
         @Bind(R.id.entryStarImageView)
         ImageView favorite;
-        @Bind(R.id.entryExpandImageView)
-        ImageView expand;
 
         EntryViewHolder(View view) {
             ButterKnife.bind(this, view);

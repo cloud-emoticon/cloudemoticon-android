@@ -21,6 +21,7 @@ public class ScrollableEmoticonMaterialDialogBuilder extends MaterialDialog.Buil
     public ScrollableEmoticonMaterialDialogBuilder setEmoticon(String emoticon) {
         mTextView.setText(emoticon);
         mScrollView.addView(mTextView);
+        mScrollView.setPadding(20, 20, 20, 20);
 
         super.customView(mScrollView, false);
         return this;

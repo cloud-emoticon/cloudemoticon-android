@@ -100,15 +100,15 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
                 mBus.post(new FavoriteBeginEditingEvent(favorite));
             }
         });
-        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-                        .setEmoticon(favorite.getEmoticon())
-                        .build()
-                        .show();
-            }
-        });
+//        viewHolder.(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
+//                        .setEmoticon(favorite.getEmoticon())
+//                        .build()
+//                        .show();
+//            }
+//        });
 
         return view;
     }
@@ -156,8 +156,6 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
         ImageView star;
         @Bind(R.id.favoriteEditImageView)
         ImageView edit;
-        @Bind(R.id.favoriteExpandImageView)
-        ImageView expand;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
