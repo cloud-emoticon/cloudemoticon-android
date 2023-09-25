@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.adapters.SearchResultListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.memory.Entry;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import java.util.HashSet;
 import java.util.List;
@@ -62,13 +62,19 @@ public class SearchResultFragment extends BaseFragment {
                 + this.getResources().getString(R.string.search_result_not_found));
 
         mSearchResultListView.setAdapter(new SearchResultListViewAdapter(getActivity(), mSearchResult));
-        mSearchResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map.Entry<Entry, HashSet<String>> item = (Map.Entry<Entry, HashSet<String>>) parent.getAdapter().getItem(position);
-                Entry entry = item.getKey();
-                mBus.post(new EntryAddedToHistoryEvent(entry));
-            }
+        mSearchResultListView.setOnItemClickListener((parent, view, position, id) -> {
+            Map.Entry<Entry, HashSet<String>> item = (Map.Entry<Entry, HashSet<String>>) parent.getAdapter().getItem(position);
+            Entry entry = item.getKey();
+            mBus.post(new EntryAddedToHistoryEvent(entry));
+        });
+        mSearchResultListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            Map.Entry<Entry, HashSet<String>> item = (Map.Entry<Entry, HashSet<String>>) parent.getAdapter().getItem(position);
+            Entry entry = item.getKey();
+            new ScrollableEmoticonMaterialDialogBuilder(getActivity())
+                        .setEmoticon(entry.getEmoticon())
+                        .build()
+                        .show();
+            return true;
         });
 
         return rootView;

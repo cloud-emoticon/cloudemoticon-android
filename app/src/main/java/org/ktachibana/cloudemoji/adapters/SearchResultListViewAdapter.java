@@ -85,16 +85,6 @@ public class SearchResultListViewAdapter extends BaseAdapter {
         viewHolder.emoticon.setText(entry.getEmoticon());
         viewHolder.description.setText(description);
 
-//        viewHolder.expand.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new ScrollableEmoticonMaterialDialogBuilder(mContext)
-//                        .setEmoticon(entry.getEmoticon())
-//                        .build()
-//                        .show();
-//            }
-//        });
-
         return convertView;
     }
 
