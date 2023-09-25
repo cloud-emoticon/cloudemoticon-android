@@ -7,6 +7,10 @@ public class CapabilityUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
+    public static boolean accessibilitySetTextAvailable() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
     public static boolean cannotGetActiveNotifications() {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
     }

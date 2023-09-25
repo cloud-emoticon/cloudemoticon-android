@@ -88,4 +88,6 @@
     <string name="fail">出错辣！请再试一下</string>
     <string name="exported_repo">源已导出</string>
     <string name="show_notification">启用快捷启动通知</string>
+    <string name="accessibility_service_label">云颜文字快捷输入</string>
+    <string name="accessibility_service_description">用快捷指令快速输入颜文字</string>
 </resources>
