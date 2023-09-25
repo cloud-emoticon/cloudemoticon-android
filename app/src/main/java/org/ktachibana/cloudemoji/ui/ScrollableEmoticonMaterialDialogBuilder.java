@@ -1,6 +1,7 @@
 package org.ktachibana.cloudemoji.ui;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class ScrollableEmoticonMaterialDialogBuilder extends MaterialDialog.Buil
 
     public ScrollableEmoticonMaterialDialogBuilder setEmoticon(String emoticon) {
         mTextView.setText(emoticon);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         mScrollView.addView(mTextView);
         mScrollView.setPadding(20, 20, 20, 20);
 

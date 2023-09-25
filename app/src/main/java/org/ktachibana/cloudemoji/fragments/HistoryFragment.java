@@ -1,10 +1,10 @@
 package org.ktachibana.cloudemoji.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +18,7 @@ import org.ktachibana.cloudemoji.adapters.HistoryListViewAdapter;
 import org.ktachibana.cloudemoji.events.EntryAddedToHistoryEvent;
 import org.ktachibana.cloudemoji.models.disk.History;
 import org.ktachibana.cloudemoji.models.memory.Entry;
+import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,23 +59,25 @@ public class HistoryFragment extends BaseFragment {
         mEmptyViewTextView.setText(getString(R.string.no_history_prompt));
         mAdapter = new HistoryListViewAdapter(getActivity());
         mHistoryListView.setAdapter(mAdapter);
-        mHistoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                History history = (History) mAdapter.getItem(position);
-                Entry entry = new Entry(history.getEmoticon(), history.getDescription());
-                mBus.post(new EntryAddedToHistoryEvent(entry));
-                mAdapter.updateHistory();
-            }
+        mHistoryListView.setOnItemClickListener((parent, view, position, id) -> {
+            History history = (History) mAdapter.getItem(position);
+            Entry entry = new Entry(history.getEmoticon(), history.getDescription());
+            mBus.post(new EntryAddedToHistoryEvent(entry));
+            mAdapter.updateHistory();
+        });
+        mHistoryListView.setOnItemLongClickListener((adapterView, view, position, id) -> {
+            History history = (History) mAdapter.getItem(position);
+            new ScrollableEmoticonMaterialDialogBuilder(getActivity())
+                    .setEmoticon(history.getEmoticon())
+                    .build()
+                    .show();
+            return true;
         });
         mFab.setImageDrawable(this.getResources().getDrawable(R.drawable.ic_fab_discard));
         mFab.attachToListView(mHistoryListView);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                History.deleteAll(History.class);
-                mAdapter.updateHistory();
-            }
+        mFab.setOnClickListener(v -> {
+            History.deleteAll(History.class);
+            mAdapter.updateHistory();
         });
         return rootView;
     }
