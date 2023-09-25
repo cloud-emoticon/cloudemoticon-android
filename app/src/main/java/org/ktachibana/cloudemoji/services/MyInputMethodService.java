@@ -1,7 +1,6 @@
-package org.ktachibana.cloudemoji.ime;
+package org.ktachibana.cloudemoji.services;
 
 import android.inputmethodservice.InputMethodService;
-import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
