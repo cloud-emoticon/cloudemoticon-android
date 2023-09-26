@@ -8,7 +8,7 @@
     <string name="bad_conn">网络不给力请重试</string>
     <string name="touch_to_launch">触摸以启动</string>
     <string name="title_activity_settings">设置</string>
-    <string name="behaviors">行为</string>
+    <string name="pref_section_in_app_behaviors">应用内行为</string>
     <string name="close_after_copy">复制之后关闭 App</string>
     <string name="repo_url">源URL</string>
     <string name="about">关于</string>
@@ -20,7 +20,7 @@
     <string name="added_to_fav">已添加到收藏</string>
     <string name="removed_from_fav">已从收藏中移除</string>
     <string name="notification_visibility">快捷启动通知的可见性</string>
-    <string name="show_after_boot_up">启动后显示</string>
+    <string name="show_after_boot_up">开机后显示</string>
     <string name="emoticon">颜文字</string>
     <string name="description">描述</string>
     <string name="edit_repository">编辑源</string>
@@ -37,8 +37,8 @@
     <string name="duplicate_emoticon">重复的颜文字</string>
     <string name="navbar_gesture_title">导航栏手势</string>
     <string name="navbar_gesture_summary">从导航栏上划以启动</string>
-    <string name="now_on_tap_title">长按 Home 键启动 App</string>
-    <string name="now_on_tap_summary">请点击打开系统设置，在「辅助应用」中选择</string>
+    <string name="now_on_tap_title">设置为数字应用助理</string>
+    <string name="now_on_tap_summary">您可长按 Home 键打开本 app</string>
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
     <string name="edit_favorite">编辑收藏</string>
@@ -88,6 +88,7 @@
     <string name="fail">出错辣！请再试一下</string>
     <string name="exported_repo">源已导出</string>
     <string name="show_notification">启用快捷启动通知</string>
-    <string name="accessibility_service_label">云颜文字快捷输入</string>
     <string name="accessibility_service_description">用快捷指令快速输入颜文字</string>
+    <string name="pref_section_quick_trigger_notification">快捷启动通知</string>
+    <string name="pref_section_digital_assistant_app">数字应用助理</string>
 </resources>

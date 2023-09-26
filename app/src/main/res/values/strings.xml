@@ -10,7 +10,7 @@
     <string name="empty" translatable="false">╮(￣▽￣&quot;)╭</string>
     <string name="touch_to_launch">Touch to launch</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="behaviors">Behaviors</string>
+    <string name="pref_section_in_app_behaviors">In-app behaviors</string>
     <string name="close_after_copy">Close app after copy</string>
     <string name="repo_url">Repository URL</string>
     <string name="about">About</string>
@@ -39,8 +39,7 @@
     <string name="duplicate_emoticon">Duplicate emoticon</string>
     <string name="navbar_gesture_title">Navigation bar gesture</string>
     <string name="navbar_gesture_summary">Swipe-up from the navigation bar to start</string>
-    <string name="now_on_tap_title">Hold Home button to launch app</string>
-    <string name="now_on_tap_summary">Touch to open system settings, then select "Assist app"</string>
+    <string name="now_on_tap_title">Set up as digital assistant app</string>
     <string name="no_favorite_prompt">You don\'t have any bookmarks</string>
     <string name="no_history_prompt">You don\'t have any history</string>
     <string name="edit_favorite">Edit Bookmark</string>
@@ -89,6 +88,8 @@
     <string name="notification_rationale">We need to put a sticky \"quick trigger\" notification so that you can launch Cloud Emoticon conveniently.</string>
     <string name="exported_repo">Repo exported</string>
     <string name="show_notification">Show quick trigger notification</string>
-    <string name="accessibility_service_label">Cloud emoticon quick enter</string>
     <string name="accessibility_service_description">Quickly enter emoticons by their shortcut</string>
+    <string name="pref_section_quick_trigger_notification">Quick trigger notification</string>
+    <string name="pref_section_digital_assistant_app">Digital assistant app</string>
+    <string name="now_on_tap_summary">You can hold the home button to open this app</string>
 </resources>
