@@ -64,8 +64,8 @@
     <string name="import_into_personal_dict">将全部收藏导入个人词典</string>
     <string name="imported_into_personal_dict">已将 %d 个收藏导入个人词典</string>
     <string name="no_description">没有描述</string>
-    <string name="no_shortcut">没有快捷输入</string>
-    <string name="shortcut">快捷输入</string>
+    <string name="no_shortcut">没有快捷方式</string>
+    <string name="shortcut">快捷方式</string>
     <string name="please_wait">请稍等&#8230;</string>
     <string name="added_to_repo">已添加到源</string>
     <string name="allow">允许</string>
@@ -88,7 +88,10 @@
     <string name="fail">出错辣！请再试一下</string>
     <string name="exported_repo">源已导出</string>
     <string name="show_notification">启用快捷启动通知</string>
-    <string name="accessibility_service_description">用快捷指令快速输入颜文字</string>
+    <string name="accessibility_service_description">用快捷方式快速输入颜文字</string>
     <string name="pref_section_quick_trigger_notification">快捷启动通知</string>
     <string name="pref_section_digital_assistant_app">数字应用助理</string>
+    <string name="pref_section_quick_enter">快捷输入</string>
+    <string name="pref_set_up_accessibility_title">设置快捷输入</string>
+    <string name="pref_set_up_accessibility_summary">启用本 app 的无障碍功能后，你可以用颜文字的快捷方式来快速输入颜文字</string>
 </resources>

@@ -6,7 +6,15 @@
             android:defaultValue="true"
             android:key="pref_close_after_copy"
             android:title="@string/close_after_copy" />
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="pref_quick_enter"
+        android:title="@string/pref_section_quick_enter">
+        <Preference
+            android:key="pref_set_up_accessibility"
+            android:summary="@string/pref_set_up_accessibility_summary"
+            android:title="@string/pref_set_up_accessibility_title" />
     </PreferenceCategory>
 
     <PreferenceCategory

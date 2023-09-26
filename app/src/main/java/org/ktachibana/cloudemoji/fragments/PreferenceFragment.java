@@ -138,6 +138,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
         }
 
+        final PreferenceCategory prefQuickEnter = (PreferenceCategory) findPreference(Constants.PREF_QUICK_ENTER);
+        final Preference prefSetUpAccessibility = findPreference(Constants.PREF_SET_UP_ACCESSIBILITY);
+        if (!CapabilityUtils.accessibilitySetTextAvailable()) {
+            prefQuickEnter.setVisible(false);
+        } else {
+            prefSetUpAccessibility.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
+                return true;
+            });
+        }
+
         PreferenceCategory personalDictionaryPref = (PreferenceCategory) findPreference(Constants.PREF_PERSONAL_DICTIONARY);
         if (CapabilityUtils.personalDictionaryUnavailable()) {
             personalDictionaryPref.setVisible(false);

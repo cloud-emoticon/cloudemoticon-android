@@ -20,6 +20,8 @@ public interface Constants {
     String PREF_GIT_HUB_REPO = "pref_git_hub_repo";
     String PREF_HAS_RUN_BEFORE = "pref_has_run_before";
     String PREF_NAVBAR_GESTURE = "pref_navbar_gesture";
+    String PREF_QUICK_ENTER = "pref_quick_enter";
+    String PREF_SET_UP_ACCESSIBILITY = "pref_set_up_accessibility";
     String PREF_BACKUP_FAV = "pref_backup_fav";
     String PREF_RESTORE_FAV = "pref_restore_fav";
     String PREF_IMPORT_PERSONAL_DICT = "pref_import_into_personal_dict";
