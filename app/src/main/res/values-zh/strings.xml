@@ -38,7 +38,7 @@
     <string name="navbar_gesture_title">导航栏手势</string>
     <string name="navbar_gesture_summary">从导航栏上划以启动</string>
     <string name="now_on_tap_title">设置为数字应用助理</string>
-    <string name="now_on_tap_summary">您可长按 Home 键打开本 app</string>
+    <string name="now_on_tap_summary">把本 app 设置为默认数字应用助理后，您可长按 Home 键打开它</string>
     <string name="no_favorite_prompt">你没有任何收藏</string>
     <string name="no_history_prompt">你没有任何历史</string>
     <string name="edit_favorite">编辑收藏</string>
