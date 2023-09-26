@@ -94,6 +94,6 @@
     <string name="pref_section_quick_enter">快捷输入 %1$s</string>
     <string name="pref_set_up_accessibility_title">设置快捷输入</string>
     <string name="pref_set_up_accessibility_summary">启用本 app 的无障碍功能后，你可以用颜文字的快捷方式来快速输入颜文字</string>
-    <string name="pref_set_up_accessibility_enabled_title">快捷输入已启用</string>
-    <string name="pref_set_up_accessibility_enabled_summary">我们不收集任何您所输入的文字，但如有顾虑您仍旧可以禁用此功能</string>
+    <string name="pref_set_up_accessibility_enabled_title">禁用快捷输入</string>
+    <string name="pref_set_up_accessibility_enabled_summary">快捷输入已启用。我们不收集任何您所输入的文字，但如有您有隐私方面的顾虑，您仍旧可以禁用此功能。</string>
 </resources>
