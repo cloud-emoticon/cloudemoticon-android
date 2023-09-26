@@ -2,15 +2,19 @@ package org.ktachibana.cloudemoji.fragments;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.NonNull;
 import androidx.preference.CheckBoxPreference;
@@ -32,6 +36,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.EmptyEvent;
 import org.ktachibana.cloudemoji.events.ShowSnackBarOnBaseActivityEvent;
 import org.ktachibana.cloudemoji.net.VersionCodeCheckerClient;
+import org.ktachibana.cloudemoji.services.MyAccessibilityService;
 import org.ktachibana.cloudemoji.utils.BackupUtils;
 import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 import org.ktachibana.cloudemoji.utils.NotificationUtils;
@@ -40,6 +45,7 @@ import org.ktachibana.cloudemoji.utils.PersonalDictionaryUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
@@ -48,12 +54,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private static final String BACKUP_FILENAME = "ce.json";
     private static final int RC_BACKUP = 1;
     private static final int RC_RESTORE = 2;
+    private static final int RC_ACCESSIBILITY = 3;
 
     SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
     SharedPreferences mPreferences;
     private Context mContext;
     private EventBus mBus;
     private ContentResolver mContentResolver;
+    private PreferenceCategory mPrefQuickEnter;
+    private Preference mPrefSetupAccessibility;
 
     @Override
     public void onAttach(Context context) {
@@ -138,14 +147,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
         }
 
-        final PreferenceCategory prefQuickEnter = (PreferenceCategory) findPreference(Constants.PREF_QUICK_ENTER);
-        final Preference prefSetUpAccessibility = findPreference(Constants.PREF_SET_UP_ACCESSIBILITY);
+        mPrefQuickEnter = (PreferenceCategory) findPreference(Constants.PREF_QUICK_ENTER);
+        mPrefSetupAccessibility = findPreference(Constants.PREF_SET_UP_ACCESSIBILITY);
         if (!CapabilityUtils.accessibilitySetTextAvailable()) {
-            prefQuickEnter.setVisible(false);
+            mPrefQuickEnter.setVisible(false);
         } else {
-            prefSetUpAccessibility.setOnPreferenceClickListener(preference -> {
+            syncAccessibilityServiceStateToUi();
+            mPrefSetupAccessibility.setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                startActivity(intent);
+                startActivityForResult(intent, RC_ACCESSIBILITY);
                 return true;
             });
         }
@@ -301,28 +311,69 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        OutputStream os = null;
-        InputStream is = null;
-        try {
-            if (resultCode == RESULT_OK) {
-                if (requestCode == RC_BACKUP) {
-                    os = mContentResolver.openOutputStream(data.getData());
-                    BackupUtils.writeFavorites(os);
-                    showSnackBar(getString(R.string.backed_up_favorites));
-                } else if (requestCode == RC_RESTORE) {
-                    is = mContentResolver.openInputStream(data.getData());
-                    BackupUtils.readFavorites(is);
-                    showSnackBar(getString(R.string.restored_favorites));
-                }
-            } else {
+        if (requestCode == RC_BACKUP || requestCode == RC_RESTORE) {
+            if (resultCode != RESULT_OK) {
                 showSnackBar(getString(R.string.fail));
+                return;
             }
+            if (requestCode == RC_BACKUP) {
+                onActivityResultBackup(data);
+            } else {
+                onActivityResultRestore(data);
+            }
+            return;
+        }
+        if (requestCode == RC_ACCESSIBILITY) {
+            syncAccessibilityServiceStateToUi();
+            return;
+        }
+        showSnackBar(getString(R.string.fail));
+    }
+
+    private void onActivityResultBackup(Intent data) {
+        OutputStream os = null;
+        try {
+            os = mContentResolver.openOutputStream(data.getData());
+            BackupUtils.writeFavorites(os);
+            showSnackBar(getString(R.string.backed_up_favorites));
         } catch (IOException e) {
             showSnackBar(getString(R.string.fail));
         } finally {
             IOUtils.closeQuietly(os);
+        }
+    }
+
+    private void onActivityResultRestore(Intent data) {
+        InputStream is = null;
+        try {
+            is = mContentResolver.openInputStream(data.getData());
+            BackupUtils.readFavorites(is);
+            showSnackBar(getString(R.string.restored_favorites));
+        } catch (IOException e) {
+            showSnackBar(getString(R.string.fail));
+        } finally {
             IOUtils.closeQuietly(is);
         }
+    }
+
+    private boolean isAccessibilityServiceEnabled(Class<? extends AccessibilityService> service) {
+        final AccessibilityManager am = (AccessibilityManager) getActivity().getSystemService(Context.ACCESSIBILITY_SERVICE);
+        final List<AccessibilityServiceInfo> enabledServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+
+        for (AccessibilityServiceInfo enabledService : enabledServices) {
+            final ServiceInfo enabledServiceInfo = enabledService.getResolveInfo().serviceInfo;
+            if (enabledServiceInfo.packageName.equals(getActivity().getPackageName()) && enabledServiceInfo.name.equals(service.getName()))
+                return true;
+        }
+
+        return false;
+    }
+
+    private void syncAccessibilityServiceStateToUi() {
+        final boolean isAccessibilityServiceEnabled = isAccessibilityServiceEnabled(MyAccessibilityService.class);
+        mPrefQuickEnter.setTitle(getResources().getString(R.string.pref_section_quick_enter, isAccessibilityServiceEnabled ? "✅" : "❌"));
+        mPrefSetupAccessibility.setTitle(isAccessibilityServiceEnabled ? R.string.pref_set_up_accessibility_enabled_title : R.string.pref_set_up_accessibility_title);
+        mPrefSetupAccessibility.setSummary(isAccessibilityServiceEnabled ? R.string.pref_set_up_accessibility_enabled_summary : R.string.pref_set_up_accessibility_summary);
     }
 
     @Override

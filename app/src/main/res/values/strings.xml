@@ -92,7 +92,9 @@
     <string name="pref_section_quick_trigger_notification">Quick trigger notification</string>
     <string name="pref_section_digital_assistant_app">Digital assistant app</string>
     <string name="now_on_tap_summary">After setting this app as the default digital assistant app, you can hold the home button to open it</string>
-    <string name="pref_section_quick_enter">Quick enter</string>
+    <string name="pref_section_quick_enter">Quick enter %1$s</string>
     <string name="pref_set_up_accessibility_title">Set up quick enter</string>
     <string name="pref_set_up_accessibility_summary">After enabling accessibility feature, you can quickly enter an emoticon anywhere by typing its shortcut</string>
+    <string name="pref_set_up_accessibility_enabled_title">Quick enter is enabled</string>
+    <string name="pref_set_up_accessibility_enabled_summary">We do not collect what you type, but you can still disable this feature if you have concerns</string>
 </resources>
