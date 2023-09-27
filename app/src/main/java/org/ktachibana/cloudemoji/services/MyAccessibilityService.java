@@ -30,6 +30,8 @@ public class MyAccessibilityService extends AccessibilityService {
         }
     }
 
+    private static final String[] QUICK_ENTER_STARTERS = new String[]{":", "："};
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void handleViewTextChangedEvent(AccessibilityEvent event) {
         AccessibilityNodeInfo nodeInfo = event.getSource();
@@ -49,26 +51,31 @@ public class MyAccessibilityService extends AccessibilityService {
             if (shortcut == null || shortcut.length() == 0) {
                 continue;
             }
-            final Pattern pattern = Pattern.compile(String.format(
-                    "^:%s| :%s",
-                    shortcut,
-                    shortcut));
-            final Matcher matcher = pattern.matcher(text);
-            if (!matcher.find()) {
-                continue;
+            for (final String quickEnterStarter: QUICK_ENTER_STARTERS) {
+                final Pattern pattern = Pattern.compile(String.format(
+                        "^%s%s| %s%s",
+                        quickEnterStarter,
+                        shortcut,
+                        quickEnterStarter,
+                        shortcut));
+                final Matcher matcher = pattern.matcher(text);
+                if (!matcher.find()) {
+                    continue;
+                }
+                final boolean isStart = matcher.start() == 0;
+                String replacedText;
+                if (isStart) {
+                    replacedText = matcher.replaceFirst(favorite.getEmoticon());
+                } else {
+                    replacedText = matcher.replaceFirst(" " + favorite.getEmoticon());
+                }
+                Bundle arguments = new Bundle();
+                arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, replacedText);
+                nodeInfo.performAction(
+                        AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_TEXT.getId(),
+                        arguments);
+                return;
             }
-            final boolean isStart = matcher.start() == 0;
-            String replacedText;
-            if (isStart) {
-                replacedText = matcher.replaceFirst(favorite.getEmoticon());
-            } else {
-                replacedText = matcher.replaceFirst(" " + favorite.getEmoticon());
-            }
-            Bundle arguments = new Bundle();
-            arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, replacedText);
-            nodeInfo.performAction(
-                    AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_TEXT.getId(),
-                    arguments);
         }
     }
 
