@@ -1,6 +1,10 @@
 package org.ktachibana.cloudemoji.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ import org.ktachibana.cloudemoji.R;
 import org.ktachibana.cloudemoji.events.FavoriteBeginEditingEvent;
 import org.ktachibana.cloudemoji.events.FavoriteDeletedEvent;
 import org.ktachibana.cloudemoji.models.disk.Favorite;
+import org.ktachibana.cloudemoji.ui.RoundedBackgroundSpan;
 import org.ktachibana.cloudemoji.ui.ScrollableEmoticonMaterialDialogBuilder;
 import org.ktachibana.cloudemoji.utils.CapabilityUtils;
 
@@ -62,27 +67,42 @@ public class FavoriteListViewAdapter extends BaseBaseAdapter implements DragSort
 
         final Favorite favorite = mFavorites.get(i);
 
-        // Setup contents
+        // Setup emoticon text
         viewHolder.emoticon.setText(favorite.getEmoticon());
-        if (favorite.getDescription().equals("") && (CapabilityUtils.disableFavoriteShortcutFeature() || favorite.getShortcut().equals(""))) {
+
+        // Setup description text
+        final String description = favorite.getDescription();
+        final String shortcut = !CapabilityUtils.disableFavoriteShortcutFeature() ? favorite.getShortcut() : "";
+        if (description.equals("") && shortcut.equals("")) {
             viewHolder.description.setVisibility(View.GONE);
         } else {
             viewHolder.description.setVisibility(View.VISIBLE);
-            String descriptionText =
-                    favorite.getDescription().equals("")
-                            ? "(" + mContext.getString(R.string.no_description) + ")"
-                            : favorite.getDescription();
-
-            if (CapabilityUtils.disableFavoriteShortcutFeature()) {
-                viewHolder.description.setText(descriptionText);
+            Spannable descriptionText;
+            if (description.equals("")) {
+                // hack a space at end to make it show??
+                descriptionText = new SpannableString(shortcut + " ");
+                descriptionText.setSpan(
+                        new RoundedBackgroundSpan(
+                                Color.GRAY, Color.WHITE,
+                                10, 10, 5, 5),
+                        0,
+                        shortcut.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } else if (shortcut.equals("")) {
+                descriptionText = new SpannableString(description);
             } else {
-                String shortcutText =
-                        favorite.getShortcut().equals("")
-                                ? "(" + mContext.getString(R.string.no_shortcut) + ")"
-                                : favorite.getShortcut();
-                viewHolder.description.setText(descriptionText + " -> " + shortcutText);
+                descriptionText = new SpannableString(description + " " + shortcut);
+                descriptionText.setSpan(
+                        new RoundedBackgroundSpan(
+                                Color.GRAY, Color.WHITE,
+                                10, 10, 5, 5),
+                        description.length() + 1,
+                        description.length() + 1 + shortcut.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
+            viewHolder.description.setText(descriptionText);
         }
+
         viewHolder.star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
