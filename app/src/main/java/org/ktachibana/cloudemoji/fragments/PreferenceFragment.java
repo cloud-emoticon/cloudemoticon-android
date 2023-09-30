@@ -16,14 +16,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.accessibility.AccessibilityManager;
 
-import androidx.annotation.NonNull;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.commons.io.IOUtils;
@@ -154,8 +152,22 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         } else {
             syncAccessibilityServiceStateToUi();
             mPrefSetupAccessibility.setOnPreferenceClickListener(preference -> {
-                Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                startActivityForResult(intent, RC_ACCESSIBILITY);
+                if (isAccessibilityServiceEnabled(MyAccessibilityService.class)) {
+                    showAccessibilitySettings();
+                } else {
+                    new MaterialDialog.Builder(getContext())
+                            .title(getString(R.string.quick_enter_before_enabling_prompt_title))
+                            .content(getString(R.string.quick_enter_before_enabling_prompt_summary))
+                            .positiveText(getString(R.string.proceed))
+                            .negativeText(android.R.string.cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    showAccessibilitySettings();
+                                }
+                            })
+                            .show();
+                }
                 return true;
             });
         }
@@ -382,6 +394,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         mPrefQuickEnter.setTitle(getResources().getString(R.string.pref_section_quick_enter, isAccessibilityServiceEnabled ? "✅" : "❌"));
         mPrefSetupAccessibility.setTitle(isAccessibilityServiceEnabled ? R.string.pref_set_up_accessibility_enabled_title : R.string.pref_set_up_accessibility_title);
         mPrefSetupAccessibility.setSummary(isAccessibilityServiceEnabled ? R.string.pref_set_up_accessibility_enabled_summary : R.string.pref_set_up_accessibility_summary);
+    }
+
+    private void showAccessibilitySettings() {
+        Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        startActivityForResult(intent, RC_ACCESSIBILITY);
     }
 
     @Override

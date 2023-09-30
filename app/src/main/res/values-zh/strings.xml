@@ -93,8 +93,10 @@
     <string name="pref_section_digital_assistant_app">数字应用助理</string>
     <string name="pref_section_quick_enter">快捷输入 %1$s</string>
     <string name="pref_set_up_accessibility_title">设置快捷输入</string>
-    <string name="pref_set_up_accessibility_summary">启用本 app 的无障碍功能后，你可以用颜文字的快捷方式来快速输入颜文字</string>
+    <string name="pref_set_up_accessibility_summary">用颜文字的快捷方式来快速输入颜文字</string>
     <string name="pref_set_up_accessibility_enabled_title">禁用快捷输入</string>
-    <string name="pref_set_up_accessibility_enabled_summary">快捷输入已启用。我们不收集任何您所输入的文字，但如有您有隐私方面的顾虑，您仍旧可以禁用此功能。</string>
+    <string name="pref_set_up_accessibility_enabled_summary">快捷输入已启用</string>
     <string name="pref_privacy_policy_title">隐私政策</string>
+    <string name="quick_enter_before_enabling_prompt_title">启用快捷输入之前…</string>
+    <string name="quick_enter_before_enabling_prompt_summary">如果您启用了这个功能，本 app 将会处理所有您在本设备上输入的文字。本 app 不会将文字传输出设备，也不会将文字传输给任何第三方。更多细节请查询本 app 的隐私政策。</string>
 </resources>
