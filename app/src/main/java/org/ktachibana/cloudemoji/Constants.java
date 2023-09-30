@@ -15,6 +15,7 @@ public interface Constants {
     String QUICK_TRIGGER_NOTIFICATION_LEGACY_VISIBILITY_PANEL = "panel";
     String PREF_SHOW_AFTER_BOOT_UP = "pref_show_after_boot_up";
     String PREF_VERSION = "pref_version";
+    String PREF_PRIVACY_POLICY = "pref_privacy_policy";
     String PREF_CHECK_FOR_UPDATE = "pref_check_for_update";
     String PREF_GIT_HUB_RELEASE = "pref_git_hub_release";
     String PREF_GIT_HUB_REPO = "pref_git_hub_repo";
@@ -45,7 +46,7 @@ public interface Constants {
     String UPDATE_CHECKER_URL = "http://ktachibana.party/cloudemoticon/version.json";
     String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
     String REPO_STORE_CONTRIBUTION_URL = "https://github.com/cloud-emoticon/store-repos/blob/master/CONTRIBUTING.md";
-
+    String PRIVACY_POLICY_URL = "https://emoticon.moe/android/privacy";
     // Intent
     int REPOSITORY_MANAGER_REQUEST_CODE = 0;
     int PREFERENCE_REQUEST_CODE = 1;

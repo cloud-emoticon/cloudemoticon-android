@@ -195,6 +195,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        // Privacy policy
+        final Preference privacyPolicyPref = findPreference(Constants.PREF_PRIVACY_POLICY);
+        privacyPolicyPref.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse(Constants.PRIVACY_POLICY_URL));
+            startActivity(intent);
+            return true;
+        });
 
         // Check for update
         Preference checkForUpdatePref = findPreference(Constants.PREF_CHECK_FOR_UPDATE);

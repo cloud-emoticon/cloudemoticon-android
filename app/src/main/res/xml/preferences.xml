@@ -74,6 +74,9 @@
         android:key="pref_about"
         android:title="@string/about">
         <Preference
+            android:key="pref_privacy_policy"
+            android:title="@string/pref_privacy_policy_title" />
+        <Preference
             android:key="pref_check_for_update"
             android:title="@string/update_checker" />
         <Preference
