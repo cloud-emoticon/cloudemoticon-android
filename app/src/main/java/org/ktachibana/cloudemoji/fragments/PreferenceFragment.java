@@ -166,7 +166,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     new MaterialDialog.Builder(getContext())
                             .title(getString(R.string.quick_enter_before_enabling_prompt_title))
                             .content(getString(R.string.quick_enter_before_enabling_prompt_summary))
-                            .positiveText(getString(R.string.proceed))
+                            .positiveText(R.string.quick_enter_before_enabling_consent_button)
                             .negativeText(android.R.string.cancel)
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
