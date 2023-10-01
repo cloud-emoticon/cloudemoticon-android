@@ -21,6 +21,7 @@ public interface Constants {
     String PREF_GIT_HUB_REPO = "pref_git_hub_repo";
     String PREF_HAS_RUN_BEFORE = "pref_has_run_before";
     String PREF_NAVBAR_GESTURE = "pref_navbar_gesture";
+    String PREF_QUICK_ENTER_HELP = "pref_quick_enter_help";
     String PREF_QUICK_ENTER = "pref_quick_enter";
     String PREF_SET_UP_ACCESSIBILITY = "pref_set_up_accessibility";
     String PREF_BACKUP_FAV = "pref_backup_fav";
@@ -40,13 +41,15 @@ public interface Constants {
 
     // URLs
     String DEFAULT_REPOSITORY_URL = "http://ktachibana.party/cloudemoticon/default.json";
-    String GIT_HUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
-    String GIT_HUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
+    String GITHUB_RELEASE_URL = "https://github.com/KTachibanaM/cloudemoji/releases";
+    String GITHUB_REPO_URL = "https://github.com/KTachibanaM/cloudemoji";
     String STORE_URL = "http://emoticon.moe/store.json";
     String UPDATE_CHECKER_URL = "http://ktachibana.party/cloudemoticon/version.json";
     String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji";
     String REPO_STORE_CONTRIBUTION_URL = "https://github.com/cloud-emoticon/store-repos/blob/master/CONTRIBUTING.md";
     String PRIVACY_POLICY_URL = "https://emoticon.moe/android/privacy";
+    String QUICK_ENTER_HELP_URL = "https://emoticon.moe/android/quick-enter";
+
     // Intent
     int REPOSITORY_MANAGER_REQUEST_CODE = 0;
     int PREFERENCE_REQUEST_CODE = 1;

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.accessibility.AccessibilityManager;
 
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -145,6 +146,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
         }
 
+        final Preference prefQuickEnterHelp = findPreference(Constants.PREF_QUICK_ENTER_HELP);
+        prefQuickEnterHelp.setOnPreferenceClickListener(preference -> {
+            CustomTabsIntent intent = new CustomTabsIntent.Builder().build();
+            intent.launchUrl(getContext(), Uri.parse(Constants.QUICK_ENTER_HELP_URL));
+            return true;
+        });
+
         mPrefQuickEnter = (PreferenceCategory) findPreference(Constants.PREF_QUICK_ENTER);
         mPrefSetupAccessibility = findPreference(Constants.PREF_SET_UP_ACCESSIBILITY);
         if (!CapabilityUtils.accessibilitySetTextAvailable()) {
@@ -210,9 +218,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // Privacy policy
         final Preference privacyPolicyPref = findPreference(Constants.PREF_PRIVACY_POLICY);
         privacyPolicyPref.setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse(Constants.PRIVACY_POLICY_URL));
-            startActivity(intent);
+            CustomTabsIntent intent = new CustomTabsIntent.Builder().build();
+            intent.launchUrl(getContext(), Uri.parse(Constants.PRIVACY_POLICY_URL));
             return true;
         });
 
@@ -241,18 +248,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // GitHub Release
         Preference gitHubReleasePref = findPreference(Constants.PREF_GIT_HUB_RELEASE);
         gitHubReleasePref.setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse(Constants.GIT_HUB_RELEASE_URL));
-            startActivity(intent);
+            CustomTabsIntent intent = new CustomTabsIntent.Builder().build();
+            intent.launchUrl(getContext(), Uri.parse(Constants.GITHUB_RELEASE_URL));
             return true;
         });
 
         // GitHub Repo
         Preference gitHubRepoPref = findPreference(Constants.PREF_GIT_HUB_REPO);
         gitHubRepoPref.setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse(Constants.GIT_HUB_REPO_URL));
-            startActivity(intent);
+            CustomTabsIntent intent = new CustomTabsIntent.Builder().build();
+            intent.launchUrl(getContext(), Uri.parse(Constants.GITHUB_REPO_URL));
             return true;
         });
 

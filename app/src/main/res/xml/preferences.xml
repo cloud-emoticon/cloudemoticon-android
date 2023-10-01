@@ -12,6 +12,9 @@
         android:key="pref_quick_enter"
         android:title="@string/pref_section_quick_enter">
         <Preference
+            android:key="pref_quick_enter_help"
+            android:title="@string/pref_quick_enter_help_title" />
+        <Preference
             android:key="pref_set_up_accessibility"
             android:summary="@string/pref_set_up_accessibility_summary"
             android:title="@string/pref_set_up_accessibility_title" />
