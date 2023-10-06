@@ -1,6 +1,6 @@
 # Cloud emoticon
 
-A cloud solution to your favorite emoticons on Android
+Your emoticon companion
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji)
 
@@ -8,33 +8,24 @@ A cloud solution to your favorite emoticons on Android
 
 ## Features
 
-### This app
-* downloads emoticon repositories from remote servers
-* shows them on categorized lists
-* is one-click copy capable
+Easily discover and use cute Japanese emoticons!
 
-### You only need to add your emoticons (Json or XML) from
-* your own server
-* others' repositories from our repository store
+Cloud emoticon is an app with a large collection of cute Japanese emoticons and let you conveniently use them in multiple ways.
 
-### So that you don't have to
-* hack IME's and make changes manually when you need to
-* use other cloud apps that is not one-click copy capable
-* use other un-customizable emoticon apps
+On selected Android versions, the app lets you copy your favorite emoticons with
+*  the app's own input method
+*  any other input methods using personal dictionary (only works below Marshmallow)
+*  any input fields using custom defined shortcuts (only works for Lollipop and above; required accessibility permission)
 
-### Features
-* Multi-repository management
-* Bookmarks
-* History
-* Search
-* Repository store
-* Backup and restore bookmarks
-* Quick trigger notifcation to launch app
-* Set now-on-tap or navigation bar gesture to launch app
+You can also manage emoticons with ease
+* Bookmark your favorite emoticons
+* Browse used emoticons
+* Search emoticons
+* Browse a large collection of user contributed emoticons
 
 ### Screenshot
 <img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/bookmarks.png"  width="500">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/history.png"  width="500">
+<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/history.png"  width="500">an
 <img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png"  width="500">
 <img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_manager.png"  width="500">
 <img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_store.png"  width="500">
