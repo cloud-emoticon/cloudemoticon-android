@@ -23,14 +23,6 @@ You can also manage emoticons with ease
 * Search emoticons
 * Browse a large collection of user contributed emoticons
 
-### Screenshot
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/bookmarks.png"  width="500">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/history.png"  width="500">an
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo.png"  width="500">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_manager.png"  width="500">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/repo_store.png"  width="500">
-<img src="https://raw.githubusercontent.com/KTachibanaM/cloudemoji/master/screenshots/phone/settings.png"  width="500">
-
 ## Development
 
 ### Gradle commands
