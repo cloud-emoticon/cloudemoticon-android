@@ -99,7 +99,7 @@
     <string name="pref_set_up_accessibility_enabled_summary">Quick enter is enabled</string>
     <string name="pref_privacy_policy_title">Privacy policy</string>
     <string name="quick_enter_before_enabling_prompt_title">Before enabling quick enter…</string>
-    <string name="quick_enter_before_enabling_prompt_summary">In order for the feature to work, the app needs to process all texts you enter on your device. The app do not transmit the text outside of the device or to any third-party.</string>
+    <string name="quick_enter_before_enabling_prompt_summary">Cloud Emoitcon will process all texts you enter on this device in order for quick enter to work, even when the app is closed. You may disable this feature at any time and text processing will stop immediately.</string>
     <string name="pref_quick_enter_help_title">What is this?</string>
     <string name="quick_enter_before_enabling_consent_button">I agree</string>
 </resources>
