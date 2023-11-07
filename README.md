@@ -2,9 +2,7 @@
 
 Your emoticon companion
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=org.ktachibana.cloudemoji)
-
-[Unsigned GitHub release apk](https://github.com/cloud-emoticon/cloudemoji/releases)
+[GitHub releases](https://github.com/cloud-emoticon/cloudemoji/releases)
 
 ## Features
 
